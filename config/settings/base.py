@@ -49,7 +49,7 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 ROOT_URLCONF = "config.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
-
+PROJECT_NAME = "Attendees"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
@@ -71,11 +71,20 @@ THIRD_PARTY_APPS = [
     "django_celery_beat",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_summernote",
+    "schedule",
+    "mptt",
+    "django_json_widget",
+    "private_storage",
+    # "reversion",
 ]
 
 LOCAL_APPS = [
     "attendees.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "attendees.whereabouts.apps.WhereaboutsConfig",
+    "attendees.persons.apps.PersonsConfig",
+    "attendees.occasions.apps.OccasionsConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -133,6 +142,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "attendees.middleware.TimezoneMiddleware",
 ]
 
 # STATIC
@@ -142,7 +152,10 @@ STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = [
+    str(APPS_DIR / "static"),
+    str(ROOT_DIR / "libraries"),
+]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -155,6 +168,10 @@ STATICFILES_FINDERS = [
 MEDIA_ROOT = str(APPS_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
+# django-private-storage
+PRIVATE_STORAGE_ROOT = '/media/private-media/'
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_authenticated'
+# PRIVATE_STORAGE_SERVER = 'apache'  # add this in local causes uploaded files looks blank
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -183,6 +200,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "attendees.utils.context_processors.settings_context",
+                "attendees.context_processors.common_variables",
             ],
         },
     }
@@ -208,7 +226,7 @@ CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-browser-xss-filter
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
-X_FRAME_OPTIONS = "DENY"
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -298,10 +316,12 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
+        'rest_framework.permissions.IsAuthenticated',
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+CLIENT_DEFAULT_TIME_ZONE = 'America/Los_Angeles'
