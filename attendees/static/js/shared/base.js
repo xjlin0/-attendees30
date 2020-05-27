@@ -2,7 +2,7 @@
   if (typeof Attendees === 'undefined') window.Attendees = {};
   console.log("attendees/static/js/shared/base.js");
   const timeZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  document.cookie = 'timezone=' + encodeURIComponent(timeZoneName) + '; path=/';
+  document.cookie = 'timezone=' + encodeURIComponent(timeZoneName) + ';SameSite=Lax; path=/';
 
   // $('li.active').removeClass('active');
   const $currentMenuItem = $('a[href="' + location.pathname + location.search + '"]');

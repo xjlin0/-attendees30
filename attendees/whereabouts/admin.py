@@ -12,37 +12,44 @@ class AssemblyAddressInline(admin.TabularInline):
 class AddressAdmin(admin.ModelAdmin):
     inlines = (AssemblyAddressInline,)
     list_display_links = ('street',)
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'street', 'city', 'zip_code', 'phone1', 'email1')
 
 
 class DivisionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     list_display_links = ('display_name',)
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('organization', 'display_name', 'slug', 'modified')
 
 
 class PropertyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'slug', 'campus', 'modified')
 
 
 class CampusAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'slug', 'address', 'modified')
 
 
 class SuiteAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'slug',  'site', 'modified')
 
 
 class RoomAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'label', 'suite', 'modified')
 
 
 class OrganizationAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'slug', 'hostname', 'modified')
 
 
