@@ -4,12 +4,14 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields.jsonb import JSONField
 from model_utils.models import TimeStampedModel, SoftDeletableModel
+from schedule.models import EventRelation
 
 from attendees.persons.models import Utility, Note
 
 
 class Meet(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
+    event_relations = GenericRelation(EventRelation)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     assembly = models.ForeignKey('occasions.Assembly', null=True, blank=True, on_delete=models.SET_NULL)
     attendings = models.ManyToManyField('persons.Attending', through='persons.AttendingMeet', related_name="attendings")
