@@ -21,6 +21,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
+                ('attendee_editable', models.BooleanField(default=True, help_text='[some meets are editable only by coworkers] participant can edit AttendingMeet?', verbose_name='participant can edit AttendingMeet?')),
+                ('shown_attendee', models.BooleanField(default=True, help_text='[some meets are only for internal records] show the AttendingMeet to attendee?', verbose_name='show AttendingMeet to participant?')),
                 ('start', models.DateTimeField(null=False, blank=False, default=Utility.now_with_timezone)),
                 ('finish', models.DateTimeField(null=False, blank=False, help_text="Required for user to filter by time")),
                 ('is_removed', models.BooleanField(default=False)),
