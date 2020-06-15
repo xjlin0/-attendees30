@@ -91,7 +91,7 @@ class AttendingAdmin(admin.ModelAdmin):
     list_display_links = ('attendee',)
     readonly_fields = ['id', 'created', 'modified']
     inlines = (AttendingMeetInline,) # add AttendanceInline when creating new Attending will fails on meet_names
-    list_display = ('id', 'registration', 'attendee', 'meet_names', 'finish', 'infos')
+    list_display = ('id', 'registration', 'attendee', 'meet_names', 'infos')
 
 
 class NoteAdmin(SummernoteModelAdmin):
@@ -109,7 +109,7 @@ class RelationshipAdmin(admin.ModelAdmin):
 class AttendingMeetAdmin(admin.ModelAdmin):
     list_display_links = ('attending',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'attending', 'meet', 'character', 'category', 'modified')
+    list_display = ('id', 'attending', 'meet', 'character', 'category', 'finish', 'modified')
 
 
 admin.site.register(Category, CategoryAdmin)

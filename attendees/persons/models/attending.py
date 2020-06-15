@@ -19,8 +19,6 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
     gatherings = models.ManyToManyField('occasions.Gathering', through='occasions.Attendance')
     category = models.CharField(max_length=20, null=False, blank=False, default="normal", help_text="normal, not_going, coworker, etc")
     meets = models.ManyToManyField('occasions.Meet', through='AttendingMeet', related_name="meets")
-    start = models.DateTimeField(null=False, blank=False, db_index=True, default=Utility.now_with_timezone)
-    finish = models.DateTimeField(null=False, blank=False, db_index=True, help_text="Required for user to filter by time")
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"grade": 5, "age": 11, "bed_needs": 1, "mobility": 300}. Please keep {} here even no data')
     # Todo: infos contains the following display data which are not for table join/query: age, bed_needs, mobility
 

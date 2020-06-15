@@ -1551,8 +1551,6 @@
       "registration": 1,
       "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "hi": 5,
         "age": 500,
@@ -1572,8 +1570,6 @@
       "registration": 2,
       "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 300,
@@ -1591,8 +1587,6 @@
       "registration": 2,
       "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 500,
@@ -1610,8 +1604,6 @@
       "registration": 3,
       "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 300,
@@ -1629,8 +1621,6 @@
       "registration": 2,
       "attendee": "e8c025ec-9ea2-4d61-8df3-9daeecbfb849",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 200,
@@ -1648,8 +1638,6 @@
       "registration": 4,
       "attendee": "37ba5cc7-c7a7-419f-833f-915ac68e3676",
       "category": "kingdom",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 5000,
         "mobility": 2000,
@@ -1667,8 +1655,6 @@
       "registration": 5,
       "attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 200,
@@ -1686,8 +1672,6 @@
       "registration": 6,
       "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": 500,
         "mobility": 500,
@@ -1705,8 +1689,6 @@
       "registration": 7,
       "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1724,8 +1706,6 @@
       "registration": 7,
       "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1743,8 +1723,6 @@
       "registration": 7,
       "attendee": "44e894a1-1190-4916-992a-b5eb41b35b16",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1762,8 +1740,6 @@
       "registration": 7,
       "attendee": "3566e642-3624-42e3-9644-c54b08d8c6d6",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1781,8 +1757,6 @@
       "registration": 7,
       "attendee": "fa61941f-79a4-423e-872c-0bb9662e4351",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1800,8 +1774,6 @@
       "registration": 7,
       "attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1819,8 +1791,6 @@
       "registration": 7,
       "attendee": "0498c414-abd3-4173-add1-5e42053760e4",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1838,8 +1808,6 @@
       "registration": 7,
       "attendee": "97922785-9025-40ad-9a5f-a9545f884644",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1857,8 +1825,6 @@
       "registration": 7,
       "attendee": "786a9d44-379f-4671-9004-5b3d0bd0227b",
       "category": "normal",
-      "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
       "infos": {
         "age": null,
         "mobility": 200,
@@ -1875,6 +1841,8 @@
       "is_removed": false,
       "attending": 1,
       "meet": 1,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 1,
       "category": "primary"
     }
@@ -1888,6 +1856,8 @@
       "is_removed": false,
       "attending": 2,
       "meet": 1,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 2,
       "category": "primary"
     }
@@ -1901,6 +1871,8 @@
       "is_removed": false,
       "attending": 3,
       "meet": 1,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 3,
       "category": "primary"
     }
@@ -1914,6 +1886,8 @@
       "is_removed": false,
       "attending": 4,
       "meet": 3,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 6,
       "category": "primary"
     }
@@ -1927,6 +1901,8 @@
       "is_removed": false,
       "attending": 5,
       "meet": 2,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 3,
       "category": "primary"
     }
@@ -1940,6 +1916,8 @@
       "is_removed": false,
       "attending": 6,
       "meet": 4,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 7,
       "category": "primary"
     }
@@ -1953,6 +1931,8 @@
       "is_removed": false,
       "attending": 3,
       "meet": 2,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 2,
       "category": "secondary"
     }
@@ -1966,6 +1946,8 @@
       "is_removed": false,
       "attending": 7,
       "meet": 3,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 6,
       "category": "primary"
     }
@@ -1979,6 +1961,8 @@
       "is_removed": false,
       "attending": 8,
       "meet": 6,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 8,
       "category": "primary"
     }
@@ -1992,6 +1976,8 @@
       "is_removed": false,
       "attending": 9,
       "meet": 7,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2005,6 +1991,8 @@
       "is_removed": false,
       "attending": 9,
       "meet": 8,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2018,6 +2006,8 @@
       "is_removed": false,
       "attending": 9,
       "meet": 9,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2031,6 +2021,8 @@
       "is_removed": false,
       "attending": 10,
       "meet": 8,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2044,6 +2036,8 @@
       "is_removed": false,
       "attending": 10,
       "meet": 9,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2057,6 +2051,8 @@
       "is_removed": false,
       "attending": 11,
       "meet": 9,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "honor"
     }
@@ -2070,6 +2066,8 @@
       "is_removed": false,
       "attending": 12,
       "meet": 7,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2083,6 +2081,8 @@
       "is_removed": false,
       "attending": 13,
       "meet": 7,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2096,6 +2096,8 @@
       "is_removed": false,
       "attending": 13,
       "meet": 8,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2109,6 +2111,8 @@
       "is_removed": false,
       "attending": 14,
       "meet": 8,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2122,6 +2126,8 @@
       "is_removed": false,
       "attending": 14,
       "meet": 9,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2135,6 +2141,8 @@
       "is_removed": false,
       "attending": 15,
       "meet": 8,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2148,6 +2156,8 @@
       "is_removed": false,
       "attending": 15,
       "meet": 7,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
@@ -2161,6 +2171,8 @@
       "is_removed": false,
       "attending": 16,
       "meet": 9,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "deleted"
     }
@@ -2174,6 +2186,8 @@
       "is_removed": false,
       "attending": 17,
       "meet": 7,
+      "start": "2020-01-01T18:00:00Z",
+      "finish": "2030-02-17T19:59:59Z",
       "character": 15,
       "category": "primary"
     }
