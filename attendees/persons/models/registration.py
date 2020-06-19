@@ -24,7 +24,7 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
     #     return '%s %s %s' % (self.apply_type, self.main_attendee, self.price_sum)
 
     def __str__(self):
-        return '%s' % (self.main_attendee,)
+        return '%s %s' % (self.main_attendee, self.assembly)
 
     @property
     def main_attendee_name(self):

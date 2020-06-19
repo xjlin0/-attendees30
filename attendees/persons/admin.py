@@ -89,9 +89,10 @@ class AttendingAdmin(admin.ModelAdmin):
     }
     search_fields = ('attendee__first_name', 'attendee__last_name', 'attendee__first_name2', 'attendee__last_name2')
     list_display_links = ('attendee',)
+    list_filter = ('meets',)
     readonly_fields = ['id', 'created', 'modified']
     inlines = (AttendingMeetInline,) # add AttendanceInline when creating new Attending will fails on meet_names
-    list_display = ('id', 'registration', 'attendee', 'meet_names', 'infos')
+    list_display = ('id', 'registration', 'attendee', 'meet_names')
 
 
 class NoteAdmin(SummernoteModelAdmin):

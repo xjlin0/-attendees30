@@ -18,8 +18,8 @@ class Address(TimeStampedModel, SoftDeletableModel, Utility):
     attendees = models.ManyToManyField('persons.Attendee', through='persons.AttendeeAddress')
     email1 = models.EmailField(blank=True, null=True, max_length=254, db_index=True)
     email2 = models.EmailField(blank=True, null=True, max_length=254)
-    phone1 = models.CharField(max_length=15, blank=True, null=True, db_index=True)
-    phone2 = models.CharField(max_length=15, blank=True, null=True)
+    phone1 = models.CharField(max_length=16, blank=True, null=True, db_index=True)
+    phone2 = models.CharField(max_length=16, blank=True, null=True)
     address_type = models.CharField(max_length=20, default='street', blank=True, null=True, help_text='mailing, remote or street address')
     street1 = models.CharField(max_length=50, blank=True, null=True)
     street2 = models.CharField(max_length=50, blank=True, null=True)
@@ -35,6 +35,8 @@ class Address(TimeStampedModel, SoftDeletableModel, Utility):
     def clean(self):  #needs to check if fields are valid json (even empty json)
         if not (self.street1 or self.phone1 or self.url or self.fields):
             raise ValidationError("You must specify at least a street or telephone or url or field")
+
+# should validate the format of phone to be +1-123-456-7890 so it can be dailed directly on phones
 
     class Meta:
         db_table = 'whereabouts_addresses'

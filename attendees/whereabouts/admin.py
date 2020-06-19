@@ -44,7 +44,7 @@ class SuiteAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'label', 'suite', 'modified')
+    list_display = ('display_name', 'label', 'suite', 'accessibility', 'modified')
 
 
 class OrganizationAdmin(admin.ModelAdmin):

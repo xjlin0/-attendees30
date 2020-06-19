@@ -30,9 +30,9 @@ class PriceAdmin(admin.ModelAdmin):
 
 
 class AttendanceAdmin(admin.ModelAdmin):
-    list_display_links = ('attending',)
+    list_display_links = ('get_attendee',)
     list_filter = ('gathering', 'attending', 'character', 'team')
-    list_display = ('id', 'attendance_info', 'attending', 'character', 'team', 'modified')
+    list_display = ('id', 'attendance_info', 'get_attendee', 'character', 'team', 'infos')
     readonly_fields = ['id','created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),
@@ -44,6 +44,10 @@ class AttendanceAdmin(admin.ModelAdmin):
                            ), }),
     )
 
+    def get_attendee(self, obj):
+        return obj.attending.attendee
+    get_attendee.admin_order_field  = 'attendee'  #Allows column order sorting
+    get_attendee.short_description = 'attendee'  #Rename
 
 class AttendanceInline(admin.StackedInline):
     model = Attendance
@@ -96,7 +100,7 @@ class GatheringAdmin(admin.ModelAdmin):
     list_display_links = ('display_name',)
     search_fields = ('meet__display_name', 'display_name')
     list_filter = ('meet',)
-    list_display = ('id', 'meet', 'start', 'display_name', 'location', 'modified')
+    list_display = ('id', 'meet', 'start', 'display_name', 'location', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),
