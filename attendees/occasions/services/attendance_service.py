@@ -76,6 +76,7 @@ class AttendanceService:
                         to_attendee=user.attendee,
                         scheduler=True
                     ).values_list('from_attendee')),
+                    gathering__meet__shown_audience=True,
                     gathering__meet__assembly__division__organization__slug=user.organization.slug,
                     gathering__meet__slug__in=meet_slugs,
                     gathering__start__gte=gathering_start,
