@@ -5710,6 +5710,7 @@
       "created": "2020-04-11T19:36:20.422Z",
       "modified": "2020-05-10T00:47:27.146Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "David",
       "last_name": "\u5927\u885b",
@@ -5722,7 +5723,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 8
       }
     }
   },
@@ -5733,6 +5733,7 @@
       "created": "2020-04-11T19:32:19.822Z",
       "modified": "2020-04-19T12:57:27.231Z",
       "is_removed": false,
+      "division": null,
       "user": 2,
       "first_name": "\u590f\u7532",
       "last_name": "Hagar",
@@ -5747,7 +5748,6 @@
       },
       "photo": "",
       "infos": {
-        "id": 2
       }
     }
   },
@@ -5758,6 +5758,7 @@
       "created": "2020-04-11T19:37:15.410Z",
       "modified": "2020-04-11T19:37:15.410Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "\u53c3\u5b6b",
       "last_name": "Samson",
@@ -5770,7 +5771,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 10,
         "public_name": "\u5f1f\u5144"
       }
     }
@@ -5782,6 +5782,7 @@
       "created": "2020-04-11T19:35:34.990Z",
       "modified": "2020-04-11T19:35:34.990Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Elizabeth",
       "last_name": "\u4ee5\u5229\u6c99\u4f2f",
@@ -5796,7 +5797,6 @@
       },
       "photo": "",
       "infos": {
-        "id": 7
       }
     }
   },
@@ -5807,6 +5807,7 @@
       "created": "2020-04-11T19:34:37.600Z",
       "modified": "2020-05-10T00:47:03.822Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "\u4e9e\u6bd4\u8a72",
       "last_name": "Abigail",
@@ -5819,7 +5820,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 5,
         "public_name": "\u8001\u59ca"
       }
     }
@@ -5831,6 +5831,7 @@
       "created": "2020-04-11T19:35:12.234Z",
       "modified": "2020-04-11T19:35:12.234Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "\u5e95\u6ce2\u62c9",
       "last_name": "Deborah",
@@ -5843,7 +5844,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 6,
         "public_name": "\u6230\u795e\u4e48\u4e48"
       }
     }
@@ -5855,6 +5855,7 @@
       "created": "2020-05-10T01:02:35.482Z",
       "modified": "2020-05-10T21:47:28.392Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Chileab",
       "last_name": "\u57fa\u5229\u62bc",
@@ -5867,7 +5868,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 16
       }
     }
   },
@@ -5878,6 +5878,7 @@
       "created": "2020-04-11T19:33:26.486Z",
       "modified": "2020-04-12T02:37:31.903Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "\u4ee5\u5be6\u746a\u5229",
       "last_name": "Ishmael",
@@ -5892,7 +5893,6 @@
       },
       "photo": "",
       "infos": {
-        "id": 3,
         "allergy": "peanuts",
         "public_name": "\u5927\u5bf6"
       }
@@ -5905,6 +5905,7 @@
       "created": "2020-05-10T01:00:09.119Z",
       "modified": "2020-05-10T01:00:09.119Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Nabal",
       "last_name": "\u62ff\u516b",
@@ -5917,7 +5918,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 15
       }
     }
   },
@@ -5928,6 +5928,7 @@
       "created": "2020-04-11T19:31:50.659Z",
       "modified": "2020-05-25T22:01:07.148Z",
       "is_removed": false,
+      "division": null,
       "user": 1,
       "first_name": "superuser1",
       "last_name": "system admin1",
@@ -5946,7 +5947,6 @@
       },
       "photo": "",
       "infos": {
-        "id": 1,
         "public_name": "root"
       }
     }
@@ -5958,6 +5958,7 @@
       "created": "2020-04-11T19:38:16.323Z",
       "modified": "2020-04-12T02:38:37.916Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Abraham",
       "last_name": "\u4e9e\u4f2f\u62c9\u7f55",
@@ -5970,7 +5971,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 13
       }
     }
   },
@@ -5981,6 +5981,7 @@
       "created": "2020-04-11T19:37:45.378Z",
       "modified": "2020-04-12T02:38:10.671Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Lydia",
       "last_name": "\u5442\u5e95\u4e9e",
@@ -5995,7 +5996,6 @@
       },
       "photo": "",
       "infos": {
-        "id": 11,
         "other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
       }
     }
@@ -6007,6 +6007,7 @@
       "created": "2020-04-11T19:34:03.252Z",
       "modified": "2020-04-11T19:34:03.252Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "John",
       "last_name": "\u7d04\u7ff0",
@@ -6019,7 +6020,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 4,
         "public_name": "\u4f7f\u5f92\u7d04\u7ff0"
       }
     }
@@ -6031,6 +6031,7 @@
       "created": "2020-04-11T19:38:00.844Z",
       "modified": "2020-04-12T02:39:24.365Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Isaac",
       "last_name": "\u4ee5\u6492",
@@ -6043,7 +6044,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 12
       }
     }
   },
@@ -6054,6 +6054,7 @@
       "created": "2020-04-11T19:36:42.735Z",
       "modified": "2020-04-11T19:36:42.735Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "\u4ee5\u65af\u5e16",
       "last_name": "Esther",
@@ -6066,7 +6067,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 9,
         "public_name": "\u7687\u540e"
       }
     }
@@ -6078,6 +6078,7 @@
       "created": "2020-04-11T19:38:35.150Z",
       "modified": "2020-04-12T02:39:02.233Z",
       "is_removed": false,
+      "division": null,
       "user": null,
       "first_name": "Sarah",
       "last_name": "\u6492\u62c9",
@@ -6090,7 +6091,6 @@
       "progressions": {},
       "photo": "",
       "infos": {
-        "id": 14
       }
     }
   },

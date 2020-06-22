@@ -1,5 +1,4 @@
 from django.db import models
-from uuid import uuid4
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields.jsonb import JSONField
@@ -17,11 +16,10 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     # BE_LISTED_KEYWORDS = ['care receiver']  # let the attendee's attendance showed in their parent/caregiver account
 
     notes = GenericRelation(Note)
-    # uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
+    division = models.ForeignKey('whereabouts.Division', null=True, blank=True, on_delete=models.SET_NULL)
     addresses = models.ManyToManyField('whereabouts.Address', through='AttendeeAddress', related_name='addresses')
     user = models.OneToOneField('users.User', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
