@@ -1,9 +1,41 @@
 import csv
-from collections import namedtuple
 
 
 def import_household_people_address(household_csv, people_csv, address_csv):
     print("running import_household_people_address ...")
+    households = csv.DictReader(household_csv)
+    peoples = csv.DictReader(people_csv)
+    addresses = csv.DictReader(address_csv)
+
+    import_addresses(addresses)
+
+    try:
+        # for household in households:
+        #     pass
+        #     print(household)
+        # for people in peoples:
+        #     pass
+        #     print(people)
+        # for address in addresses:
+        #     pass
+        #     print(address)
+        pass
+
+    except Exception as e:
+        print('Cannot proceed, reason: ', e)
+
+    pass
+
+
+def import_addresses(addresses):
+
+    pass
+
+
+def check_all_headers():
+    #households_headers = ['HouseholdID', 'HousholdLN', 'HousholdFN', 'SpouseFN', 'AddressID', 'HouseholdPhone', 'HouseholdFax', 'AttendenceCount', 'FlyerMailing', 'CardMailing', 'UpdateDir', 'PrintDir', 'LastUpdate', 'HouseholdNote', 'FirstDate', '海沃之友', 'Congregation']
+    #peoples_headers = ['LastName', 'FirstName', 'NickName', 'ChineseName', 'Photo', 'Sex', 'Active', 'HouseholdID', 'HouseholdRole', 'E-mail', 'WorkPhone', 'WorkExtension', 'CellPhone', 'BirthDate', 'Skills', 'FirstDate', 'BapDate', 'BapLocation', 'Member', 'MemberDate', 'Fellowship', 'Group', 'LastContacted', 'AssignmentID', 'LastUpdated', 'PeopleNote', 'Christian']
+    #addresses_headers = ['AddressID', 'Street', 'City', 'State', 'Zip', 'Country']
     pass
 
 
@@ -24,5 +56,5 @@ def run(household_csv_file, people_csv_file, address_csv_file, *extras):
     print(extras)
 
     if household_csv_file and people_csv_file and address_csv_file:
-        with open(household_csv_file) as household_csv, open(people_csv_file) as people_csv, open(address_csv_file) as address_csv:
+        with open(household_csv_file, mode='r', encoding='utf-8-sig') as household_csv, open(people_csv_file, mode='r', encoding='utf-8-sig') as people_csv, open(address_csv_file, mode='r', encoding='utf-8-sig') as address_csv:
             import_household_people_address(household_csv, people_csv, address_csv)

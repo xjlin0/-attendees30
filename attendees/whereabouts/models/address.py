@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.indexes import GinIndex
 
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
@@ -41,6 +42,9 @@ class Address(TimeStampedModel, SoftDeletableModel, Utility):
     class Meta:
         db_table = 'whereabouts_addresses'
         verbose_name_plural = 'Addresses'
+        indexes = [
+            GinIndex(fields=['fields'], name='address_fields_gin', ),
+        ]
 
     @property
     def street(self):

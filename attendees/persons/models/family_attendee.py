@@ -7,7 +7,7 @@ class FamilyAttendee(TimeStampedModel, SoftDeletableModel):
     family = models.ForeignKey('persons.Family', null=False, blank=False, on_delete=models.CASCADE, related_name="family")
     attendee = models.ForeignKey('persons.Attendee', null=False, blank=False, on_delete=models.CASCADE, related_name="attendee")
     role = models.ForeignKey('persons.Relation', related_name='role', null=False, blank=False, on_delete=models.SET(0), verbose_name='attendee is', help_text="[Title] the family role of the attendee?")
-    display_order = models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)
+    display_order = models.SmallIntegerField(default=1, blank=False, null=False, db_index=True, help_text="0 will be household header")
 
     def __str__(self):
         return '%s %s %s' % (self.family, self.role, self.attendee)
