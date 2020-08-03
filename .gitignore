@@ -323,6 +323,7 @@ tags
 ### Project template
 
 attendees/media/
+attendees/scripts/real_data
 
 .pytest_cache/
 
