@@ -28,6 +28,7 @@ class Address(TimeStampedModel, SoftDeletableModel, Utility):
     state = models.CharField(max_length=10, default='CA', blank=True, null=True)
     zip_code = models.CharField(max_length=10, null=True, blank=True)
     url = models.URLField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=10, default='N/A', blank=True, null=True)
     fields = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
 
     def get_absolute_url(self):

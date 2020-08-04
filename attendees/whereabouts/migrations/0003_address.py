@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
                 ('state', models.CharField(default='CA', max_length=10, blank=True, null=True)),
                 ('zip_code', models.CharField(max_length=10, null=True, blank=True)),
                 ('url', models.URLField(blank=True, null=True, max_length=255)),
+                ('country', models.CharField(default='N/A', max_length=10, blank=True, null=True)),
                 ('fields', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={
