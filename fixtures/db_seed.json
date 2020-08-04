@@ -342,7 +342,7 @@
   },
   {
     "model": "whereabouts.address",
-    "pk": 1,
+    "pk": "5a9c79ce-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:20:51.529Z",
       "modified": "2020-04-11T18:20:51.529Z",
@@ -359,12 +359,14 @@
       "state": "CA",
       "zip_code": "94541",
       "url": "https://chineseforchristchurch.org/",
-      "fields": {}
+      "fields": {
+        "id": 1
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 2,
+    "pk": "63ecbf98-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:21:36.525Z",
       "modified": "2020-04-11T18:21:36.525Z",
@@ -381,12 +383,14 @@
       "state": "CA",
       "zip_code": "94541",
       "url": "https://www.thecrossing.website/",
-      "fields": {}
+      "fields": {
+        "id": 2
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 3,
+    "pk": "6b3a2650-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:22:32.505Z",
       "modified": "2020-04-11T18:22:32.505Z",
@@ -403,12 +407,14 @@
       "state": "CA",
       "zip_code": "11111",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 3
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 4,
+    "pk": "6f1ddc30-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:23:10.733Z",
       "modified": "2020-04-11T18:23:10.733Z",
@@ -425,12 +431,14 @@
       "state": "CA",
       "zip_code": "22222",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 4
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 5,
+    "pk": "7259e448-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:23:51.688Z",
       "modified": "2020-04-11T18:23:51.688Z",
@@ -447,12 +455,14 @@
       "state": "CA",
       "zip_code": "33333",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 5
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 6,
+    "pk": "7a8dbaea-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:24:29.705Z",
       "modified": "2020-04-11T18:24:29.705Z",
@@ -469,12 +479,14 @@
       "state": "CA",
       "zip_code": "44444",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 6
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 7,
+    "pk": "7f9308b0-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:26:10.767Z",
       "modified": "2020-04-11T18:26:10.767Z",
@@ -491,12 +503,14 @@
       "state": "CA",
       "zip_code": "55555",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 7
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 8,
+    "pk": "83b5a4c0-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:27:19.494Z",
       "modified": "2020-04-11T18:27:19.494Z",
@@ -513,12 +527,14 @@
       "state": "CA",
       "zip_code": "66666",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 8
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 9,
+    "pk": "8ce4cfee-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-11T18:31:54.276Z",
       "modified": "2020-04-11T18:31:54.276Z",
@@ -535,12 +551,14 @@
       "state": "GG",
       "zip_code": "99999",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 9
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 10,
+    "pk": "908eb39e-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-04-20T16:36:06.375Z",
       "modified": "2020-04-20T16:40:03.539Z",
@@ -557,12 +575,14 @@
       "state": "TW",
       "zip_code": null,
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 10
+      }
     }
   },
   {
     "model": "whereabouts.address",
-    "pk": 11,
+    "pk": "9a331cdc-d65d-11ea-822b-dad084263286",
     "fields": {
       "created": "2020-06-19T15:17:47.102Z",
       "modified": "2020-06-19T15:18:10.908Z",
@@ -579,7 +599,9 @@
       "state": "CA",
       "zip_code": "94928",
       "url": null,
-      "fields": {}
+      "fields": {
+        "id": 11
+      }
     }
   },
   {
@@ -591,7 +613,7 @@
       "is_removed": false,
       "display_name": "CFCC Main",
       "slug": "d7c8Fd-main",
-      "address": 1
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286"
     }
   },
   {
@@ -603,7 +625,7 @@
       "is_removed": false,
       "display_name": "\u5929\u4e0a",
       "slug": "faBd6C-sky",
-      "address": 9
+      "address": "8ce4cfee-d65d-11ea-822b-dad084263286"
     }
   },
   {
@@ -615,7 +637,7 @@
       "is_removed": false,
       "display_name": "Sonoma State University",
       "slug": "sonoma-state-university",
-      "address": 11
+      "address": "9a331cdc-d65d-11ea-822b-dad084263286"
     }
   },
   {
@@ -627,7 +649,7 @@
       "is_removed": false,
       "display_name": "CFCC Fellowship Hall",
       "slug": "fellowship-hall",
-      "address": 1,
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "campus": 1
     }
   },
@@ -640,7 +662,7 @@
       "is_removed": false,
       "display_name": "CFCC \u820a\u4e3b\u5802",
       "slug": "old-main-sanctuary",
-      "address": 1,
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "campus": 1
     }
   },
@@ -653,7 +675,7 @@
       "is_removed": false,
       "display_name": "SSU Sauvignon Village",
       "slug": "ssu-sauvignon-village",
-      "address": 11,
+      "address": "9a331cdc-d65d-11ea-822b-dad084263286",
       "campus": 3
     }
   },
@@ -666,7 +688,7 @@
       "is_removed": false,
       "display_name": "SSU Student Center",
       "slug": "ssu-student-center",
-      "address": 11,
+      "address": "9a331cdc-d65d-11ea-822b-dad084263286",
       "campus": 3
     }
   },
@@ -2899,7 +2921,7 @@
       "modified": "2020-04-12T02:35:56.316Z",
       "is_removed": false,
       "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
-      "address": 5,
+      "address": "7259e448-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -2911,7 +2933,7 @@
       "modified": "2020-04-12T02:36:28.174Z",
       "is_removed": false,
       "attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "address": 3,
+      "address": "6b3a2650-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -2923,7 +2945,7 @@
       "modified": "2020-04-12T02:37:31.869Z",
       "is_removed": false,
       "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "address": 3,
+      "address": "6b3a2650-d65d-11ea-822b-dad084263286",
       "category": "resident"
     }
   },
@@ -2935,7 +2957,7 @@
       "modified": "2020-04-12T02:37:31.870Z",
       "is_removed": false,
       "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "address": 4,
+      "address": "6f1ddc30-d65d-11ea-822b-dad084263286",
       "category": "resident"
     }
   },
@@ -2947,7 +2969,7 @@
       "modified": "2020-04-12T02:38:10.664Z",
       "is_removed": false,
       "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
-      "address": 2,
+      "address": "63ecbf98-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -2959,7 +2981,7 @@
       "modified": "2020-04-12T02:38:37.899Z",
       "is_removed": false,
       "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "address": 6,
+      "address": "7a8dbaea-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -2971,7 +2993,7 @@
       "modified": "2020-04-12T02:39:02.228Z",
       "is_removed": false,
       "attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "address": 6,
+      "address": "7a8dbaea-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -2983,7 +3005,7 @@
       "modified": "2020-04-12T02:39:24.344Z",
       "is_removed": false,
       "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "address": 6,
+      "address": "7a8dbaea-d65d-11ea-822b-dad084263286",
       "category": "main"
     }
   },
@@ -3097,7 +3119,7 @@
       "modified": "2020-04-11T18:41:13.836Z",
       "is_removed": false,
       "assembly": 1,
-      "address": 1,
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "category": "normal"
     }
   },
@@ -3109,7 +3131,7 @@
       "modified": "2020-04-11T18:41:25.032Z",
       "is_removed": false,
       "assembly": 2,
-      "address": 1,
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "category": "normal"
     }
   },
@@ -3121,7 +3143,7 @@
       "modified": "2020-04-20T16:36:48.153Z",
       "is_removed": false,
       "assembly": 3,
-      "address": 10,
+      "address": "908eb39e-d65d-11ea-822b-dad084263286",
       "category": "normal"
     }
   },
@@ -3133,7 +3155,7 @@
       "modified": "2020-04-11T18:41:57.656Z",
       "is_removed": false,
       "assembly": 4,
-      "address": 9,
+      "address": "8ce4cfee-d65d-11ea-822b-dad084263286",
       "category": "normal"
     }
   },
@@ -3145,7 +3167,7 @@
       "modified": "2020-05-09T22:31:18.495Z",
       "is_removed": false,
       "assembly": 5,
-      "address": 1,
+      "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "category": "normal"
     }
   },
@@ -3157,7 +3179,7 @@
       "modified": "2020-06-19T15:26:20.428Z",
       "is_removed": false,
       "assembly": 6,
-      "address": 11,
+      "address": "9a331cdc-d65d-11ea-822b-dad084263286",
       "category": "primary"
     }
   },

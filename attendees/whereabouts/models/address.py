@@ -5,15 +5,15 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.indexes import GinIndex
 
-from model_utils.models import TimeStampedModel, SoftDeletableModel
+from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 
 from attendees.persons.models import Utility, Note
 from attendees.occasions.models import Assembly, AssemblyAddress
 
 
-class Address(TimeStampedModel, SoftDeletableModel, Utility):
+class Address(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
-    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=True, null=True, db_index=True, help_text='optional label')
     assemblies = models.ManyToManyField(Assembly, through=AssemblyAddress)
     attendees = models.ManyToManyField('persons.Attendee', through='persons.AttendeeAddress')
@@ -43,6 +43,7 @@ class Address(TimeStampedModel, SoftDeletableModel, Utility):
     class Meta:
         db_table = 'whereabouts_addresses'
         verbose_name_plural = 'Addresses'
+        ordering = ['created']
         indexes = [
             GinIndex(fields=['fields'], name='address_fields_gin', ),
         ]
