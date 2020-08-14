@@ -1,5 +1,7 @@
 import csv
 
+from attendees.whereabouts.models import Address
+
 
 def import_household_people_address(household_csv, people_csv, address_csv):
     print("running import_household_people_address ...")
@@ -22,13 +24,32 @@ def import_household_people_address(household_csv, people_csv, address_csv):
         pass
 
     except Exception as e:
-        print('Cannot proceed, reason: ', e)
+        print('Cannot proceed import_household_people_address, reason: ', e)
 
     pass
 
 
 def import_addresses(addresses):
+    try:
+        for address in addresses:
+            print('Importing: ', address)
+            address_id = int(address['AddressID'])
+            address_values={
+                'street1': address.get('Street'),
+                'city': address.get('City'),
+                'state': address.get('State'),
+                'zip_code': address.get('Zip'),
+                'country': address.get('Country'),
+                'fields': {'access_address_id': address_id}
+            }
 
+            Address.objects.update_or_create(
+                fields__access_address_id=address_id,
+                defaults=address_values
+            )
+
+    except Exception as e:
+        print('Cannot proceed import_addresses, reason: ', e)
     pass
 
 
