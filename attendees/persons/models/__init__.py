@@ -11,3 +11,4 @@ from .registration import Registration
 from .attending import Attending
 from .attending_meet import AttendingMeet
 from .attendee_address import AttendeeAddress
+from .family_address import FamilyAddress

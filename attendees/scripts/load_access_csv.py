@@ -31,6 +31,7 @@ def import_household_people_address(household_csv, people_csv, address_csv):
 
 def import_addresses(addresses):
     try:
+        count = 0
         for address in addresses:
             print('Importing: ', address)
             address_id = int(address['AddressID'])
@@ -42,11 +43,12 @@ def import_addresses(addresses):
                 'country': address.get('Country'),
                 'fields': {'access_address_id': address_id}
             }
-
             Address.objects.update_or_create(
                 fields__access_address_id=address_id,
                 defaults=address_values
             )
+            count += 1
+        print('Number of address successfully imported/updated: ', count)
 
     except Exception as e:
         print('Cannot proceed import_addresses, reason: ', e)

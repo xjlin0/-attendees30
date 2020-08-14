@@ -8,6 +8,7 @@ class Family(UUIDModel, TimeStampedModel, SoftDeletableModel):
     # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     # slug = models.SlugField(max_length=50, help_text='uniq key', blank=False, null=False, unique=True)
     attendees = models.ManyToManyField('persons.Attendee', through='FamilyAttendee', related_name='attendees')
+    addresses = models.ManyToManyField('whereabouts.Address', through='FamilyAddress')
     display_name = models.CharField(max_length=50, blank=True, null=True)
     display_order = models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"2010id": "3"}. Please keep {} here even no data')

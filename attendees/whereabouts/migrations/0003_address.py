@@ -41,6 +41,7 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'whereabouts_addresses',
                 'verbose_name_plural': 'Addresses',
+                'ordering': ['created'],
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
