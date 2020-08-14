@@ -38,16 +38,20 @@ def import_addresses(addresses):
     try:
         count = 0
         for address in addresses:
-            print('Importing: ', address)
-            address_id = int('0' + address.get('AddressID', '0'))
-            if address_id > 0:
+            print('Importing/updating: ', address)
+            address_id = address.get('AddressID')
+
+            if address_id:
                 address_values = {
                     'street1': address.get('Street'),
                     'city': address.get('City'),
                     'state': address.get('State'),
                     'zip_code': address.get('Zip'),
                     'country': address.get('Country'),
-                    'fields': {'access_address_id': address_id}
+                    'fields': {
+                        'access_address_id': address_id,
+                        'access_address_values': address,
+                    }
                 }
                 Address.objects.update_or_create(
                     fields__access_address_id=address_id,
@@ -65,12 +69,15 @@ def import_household_ids(households):
     try:
         count = 0
         for household in households:
-            print('Importing: ', household)
-            household_id = int('0' + household.get('HouseholdID', '0'))
-            address_id = int('0' + household.get('AddressID', '0'))
-            if household_id > 0:
+            print('Importing/updating: ', household)
+            household_id = household.get('HouseholdID')
+            address_id = household.get('AddressID')
+            if household_id:
                 household_values = {
-                    'infos': {'access_household_id': household_id}
+                    'infos': {
+                        'access_household_id': household_id,
+                        'access_household_values': household,
+                    }
                 }
 
                 family, created = Family.objects.update_or_create(
@@ -78,7 +85,7 @@ def import_household_ids(households):
                     defaults=household_values
                 )
 
-                if address_id > 0:
+                if address_id:
                     FamilyAddress.objects.update_or_create(
                         family=family,
                         address=Address.objects.get(fields__access_address_id=address_id)
