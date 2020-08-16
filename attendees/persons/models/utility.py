@@ -19,6 +19,16 @@ class Utility:
     def now_with_timezone():  # 1923 years from now
         return datetime.now(timezone.utc)
 
+    @staticmethod
+    def presence(string, default_when_none=None):
+        if not string:
+            return default_when_none
+        else:
+            if string.isspace():
+                return default_when_none
+            else:
+                return string.strip()
+
     # @property
     # def notes(self):
     #     return Note.objects.filter(

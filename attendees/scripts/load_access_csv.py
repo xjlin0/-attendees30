@@ -1,6 +1,6 @@
 import csv
 
-from attendees.persons.models import Family, FamilyAddress
+from attendees.persons.models import Family, FamilyAddress, Utility
 from attendees.whereabouts.models import Address
 
 
@@ -39,15 +39,15 @@ def import_addresses(addresses):
         count = 0
         for address in addresses:
             print('Importing/updating: ', address)
-            address_id = address.get('AddressID')
+            address_id = Utility.presence(address.get('AddressID'))
 
             if address_id:
                 address_values = {
-                    'street1': address.get('Street'),
-                    'city': address.get('City'),
-                    'state': address.get('State'),
-                    'zip_code': address.get('Zip'),
-                    'country': address.get('Country'),
+                    'street1': Utility.presence(address.get('Street')),
+                    'city': Utility.presence(address.get('City')),
+                    'state': Utility.presence(address.get('State')),
+                    'zip_code': Utility.presence(address.get('Zip')),
+                    'country': Utility.presence(address.get('Country')),
                     'fields': {
                         'access_address_id': address_id,
                         'access_address_values': address,
@@ -70,25 +70,37 @@ def import_household_ids(households):
         count = 0
         for household in households:
             print('Importing/updating: ', household)
-            household_id = household.get('HouseholdID')
-            address_id = household.get('AddressID')
+            household_id = Utility.presence(household.get('HouseholdID'))
+            address_id = Utility.presence(household.get('AddressID'))
+            display_name = (household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')).strip()
             if household_id:
                 household_values = {
+                    'display_name': display_name,
                     'infos': {
                         'access_household_id': household_id,
                         'access_household_values': household,
+                        'congregation': Utility.presence(household.get('Congregation')),
+                        'last_update': Utility.presence(household.get('LastUpdate')),
                     }
                 }
 
-                family, created = Family.objects.update_or_create(
+                family, family_created = Family.objects.update_or_create(
                     infos__access_household_id=household_id,
                     defaults=household_values
                 )
 
                 if address_id:
+                    address, address_created = Address.objects.update_or_create(
+                        fields__access_address_id=address_id,
+                        defaults={
+                            'display_name':  display_name,
+                            'phone1': Utility.presence(household.get('HouseholdPhone')),
+                            'phone2': Utility.presence(household.get('HouseholdFax')),
+                        }
+                    )
                     FamilyAddress.objects.update_or_create(
                         family=family,
-                        address=Address.objects.get(fields__access_address_id=address_id)
+                        address=address
                     )
 
                 count += 1

@@ -39,10 +39,11 @@ class CategoryAdmin(admin.ModelAdmin):
 class FamilyAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     inlines = (FamilyAttendeeInline,)
-    list_display_links = ('display_name',)
-    list_display = ('id', 'display_name', 'display_order', 'modified')
+    list_display_links = ('id',)
+    list_display = ('id', 'display_name', 'display_order', 'infos', 'created')
     fieldsets = (
         (None, {"fields": (tuple(['display_name', 'display_order']),
+                           tuple(['infos']),
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )
@@ -113,6 +114,11 @@ class AttendingMeetAdmin(admin.ModelAdmin):
     list_display = ('id', 'attending', 'meet', 'character', 'category', 'finish', 'modified')
 
 
+class FamilyAddressAdmin(admin.ModelAdmin):
+    readonly_fields = ['id', 'created', 'modified']
+    list_display = ('id', 'family', 'address', 'created', 'modified')
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(Family, FamilyAdmin)
@@ -123,3 +129,4 @@ admin.site.register(Attending, AttendingAdmin)
 admin.site.register(Relation, RelationAdmin)
 admin.site.register(Relationship, RelationshipAdmin)
 admin.site.register(AttendingMeet, AttendingMeetAdmin)
+admin.site.register(FamilyAddress, FamilyAddressAdmin)
