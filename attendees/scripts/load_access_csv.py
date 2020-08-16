@@ -67,7 +67,7 @@ def import_household_ids(households, division1_slug, division2_slug):
             print('Importing/updating: ', household)
             household_id = Utility.presence(household.get('HouseholdID'))
             address_id = Utility.presence(household.get('AddressID'))
-            display_name = (household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')).strip()
+            display_name = (household.get('HousholdLN', '') + ' ' + household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')).strip()
             congregation = Utility.presence(household.get('Congregation'))
 
             if household_id:
@@ -135,7 +135,7 @@ def import_attendee_id(peoples):
                     'last_name': last_name,
                     'first_name2': None,
                     'last_name2': None,
-                    'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).value,
+                    'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
                     'infos': {
                         'access_people_household_id': household_id,
                         'access_people_values': people,
