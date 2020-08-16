@@ -873,6 +873,7 @@
       "created": "2020-05-02T22:02:57.456Z",
       "modified": "2020-05-02T22:02:57.456Z",
       "is_removed": false,
+      "division": null,
       "display_name": "Abraham & Sarah",
       "display_order": 0,
       "infos": {}
@@ -885,6 +886,7 @@
       "created": "2020-05-10T00:46:32.567Z",
       "modified": "2020-05-10T00:46:32.567Z",
       "is_removed": false,
+      "division": null,
       "display_name": "David&Abigail",
       "display_order": 0,
       "infos": {}
@@ -897,6 +899,7 @@
       "created": "2020-05-02T21:17:26.399Z",
       "modified": "2020-05-02T21:40:25.209Z",
       "is_removed": false,
+      "division": null,
       "display_name": "Hagar & Ishmael",
       "display_order": 0,
       "infos": {}

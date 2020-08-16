@@ -6,7 +6,7 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 
 class Family(UUIDModel, TimeStampedModel, SoftDeletableModel):
     # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    # slug = models.SlugField(max_length=50, help_text='uniq key', blank=False, null=False, unique=True)
+    division = models.ForeignKey('whereabouts.Division', null=True, blank=True, on_delete=models.SET_NULL)
     attendees = models.ManyToManyField('persons.Attendee', through='FamilyAttendee', related_name='attendees')
     addresses = models.ManyToManyField('whereabouts.Address', through='FamilyAddress')
     display_name = models.CharField(max_length=50, blank=True, null=True)

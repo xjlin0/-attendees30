@@ -40,10 +40,10 @@ class FamilyAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     inlines = (FamilyAttendeeInline,)
     list_display_links = ('id',)
-    list_display = ('id', 'display_name', 'display_order', 'infos', 'created')
+    list_display = ('id', 'display_name', 'infos', 'division', 'created')
     fieldsets = (
         (None, {"fields": (tuple(['display_name', 'display_order']),
-                           tuple(['infos']),
+                           tuple(['infos', 'division']),
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )
