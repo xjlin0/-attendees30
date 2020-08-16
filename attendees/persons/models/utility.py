@@ -29,6 +29,25 @@ class Utility:
             else:
                 return string.strip()
 
+    @staticmethod
+    def boolean_or_datetext_or_original(original_value, strip_first=True):
+        boolean_converter = {
+            'TRUE': True,
+            'FALSE': False,
+        }
+
+        if isinstance(original_value, str):
+            value = Utility.presence(original_value) if strip_first else original_value
+            if value.upper() in boolean_converter:
+                return boolean_converter.get(value.upper())
+            else:
+                try:
+                    return datetime.strptime(value, '%m/%d/%Y').strftime('%Y-%m-%d')
+                except ValueError:
+                    return value
+        else:
+            return original_value
+
     # @property
     # def notes(self):
     #     return Note.objects.filter(

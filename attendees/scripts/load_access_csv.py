@@ -117,6 +117,17 @@ def import_attendee_id(peoples):
         'F': GenderEnum.FEMALE,
         'M': GenderEnum.MALE,
     }
+
+    progression_converter = {
+        'Christian': 'christian',
+        'Member': 'cfcc_member',
+        'MemberDate': 'member_since',
+        'FirstDate': 'visit_since',
+        'BapDate': 'baptized_since',
+        'BapLocation': 'baptism_location',
+        'Group': 'language_group',
+        'Active': 'active',
+    }
     try:
         count = 0
         for people in peoples:
@@ -136,6 +147,7 @@ def import_attendee_id(peoples):
                     'first_name2': None,
                     'last_name2': None,
                     'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
+                    'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                     'infos': {
                         'access_people_household_id': household_id,
                         'access_people_values': people,
