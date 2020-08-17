@@ -40,6 +40,7 @@ class FamilyAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
+    search_fields = ('display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     inlines = (FamilyAttendeeInline,)
     list_display_links = ('id',)

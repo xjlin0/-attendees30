@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-from attendees.persons.models import Family, FamilyAddress, Utility, GenderEnum, Attendee
+from attendees.persons.models import Family, FamilyAddress, Relation, Utility, GenderEnum, Attendee, FamilyAttendee
 from attendees.whereabouts.models import Address, Division
 
 
@@ -173,10 +173,30 @@ def import_attendee_id(peoples):
                     'infos__access_people_household_id': household_id,
                 }
 
-                Attendee.objects.update_or_create(
+                attendee, attendee_created = Attendee.objects.update_or_create(
                     **{k: v for (k, v) in query_values.items() if v is not None},
                     defaults={k: v for (k, v) in attendee_values.items() if v is not None}
                 )
+
+                if household_role:   # filling temporary family roles
+                    family = Family.objects.filter(infos__access_household_id=household_id).first()
+                    if family:       # there are some missing records in the access data
+                        if household_role == 'A(Self)':
+                            relation = Relation.objects.get(title='self')
+                            display_order = 0
+                        elif household_role == 'B(Spouse)':
+                            relation = Relation.objects.get(title='spouse')
+                            display_order = 1
+                        else:
+                            relation = Relation.objects.get(title='child')
+                            display_order = 10
+
+                        FamilyAttendee.objects.update_or_create(
+                            family=family,
+                            attendee=attendee,
+                            defaults={'display_order': display_order, 'role': relation}
+                        )
+
                 count += 1
         return count
 
