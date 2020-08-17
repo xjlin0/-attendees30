@@ -137,7 +137,7 @@ def import_attendee_id(peoples):
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     for people in peoples:
         try:
-            print('Importing/updating: ', people)
+            print('Importing/updating row count: ', successfully_processed_count)
             first_name = Utility.presence(people.get('FirstName'))
             last_name = Utility.presence(people.get('LastName'))
             birth_date = Utility.presence(people.get('BirthDate'))
@@ -202,10 +202,12 @@ def import_attendee_id(peoples):
                             attendee=attendee,
                             defaults={'display_order': display_order, 'role': relation}
                         )
+                    else:
+                        print('Cannot find the household id: ', household_id, ' for people: ', people)
             successfully_processed_count += 1
 
         except Exception as e:
-            print('While importing/updating attendee: ', attendee)
+            print('While importing/updating people: ', people)
             print('Cannot proceed import_attendee_id, reason: ', e)
     return successfully_processed_count
 
