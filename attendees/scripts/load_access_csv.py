@@ -14,6 +14,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_household_ids(households, division1_slug, division2_slug)
         upserted_attendee_count = import_attendee_id(peoples)
+        print("\n\nProcessing results of importing/updating Access export csv files:\n")
         print('Number of address successfully imported/updated: ', upserted_address_count)
         print('Number of households successfully imported/updated: ', upserted_household_id_count)
         print('Number of people successfully imported/updated: ', upserted_attendee_count)
@@ -28,11 +29,11 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
 
 
 def import_addresses(addresses):
-    print("\n\nRunning import_addresses ...\n")
+    print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
     for address in addresses:
         try:
-            print('Importing/updating: ', address)
+            print('.', end='')
             address_id = Utility.presence(address.get('AddressID'))
 
             if address_id:
@@ -66,11 +67,11 @@ def import_household_ids(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    print("\n\nRunning import_household_ids ...\n")
+    print("\n\nRunning import_household_ids:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     for household in households:
         try:
-            print('Importing/updating: ', household)
+            print('.', end='')
             household_id = Utility.presence(household.get('HouseholdID'))
             address_id = Utility.presence(household.get('AddressID'))
             display_name = (household.get('HousholdLN', '') + ' ' + household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')).strip()
@@ -133,11 +134,11 @@ def import_attendee_id(peoples):
         'Group': 'language_group',
         'Active': 'active',
     }
-    print("\n\nRunning import_attendee_id ...\n")
+    print("\n\nRunning import_attendee_id: \n")
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     for people in peoples:
         try:
-            print('Importing/updating row count: ', successfully_processed_count)
+            print('.', end='')
             first_name = Utility.presence(people.get('FirstName'))
             last_name = Utility.presence(people.get('LastName'))
             birth_date = Utility.presence(people.get('BirthDate'))
@@ -163,8 +164,8 @@ def import_attendee_id(peoples):
                 if birth_date:
                     try:
                         attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').strftime('%Y-%m-%d')
-                    except ValueError:
-                        print('import_attendee_id error on BirthDate, people: ', people)
+                    except ValueError as ve:
+                        print("\nImport_attendee_id error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing \n")
 
                 if name2:  # assume longest last name is 2 characters
                     break_position = -2 if len(name2) > 2 else -1
@@ -203,12 +204,12 @@ def import_attendee_id(peoples):
                             defaults={'display_order': display_order, 'role': relation}
                         )
                     else:
-                        print('Cannot find the household id: ', household_id, ' for people: ', people)
+                        print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing \n")
             successfully_processed_count += 1
 
         except Exception as e:
-            print('While importing/updating people: ', people)
-            print('Cannot proceed import_attendee_id, reason: ', e)
+            print("\nWhile importing/updating people: ", people)
+            print('Cannot save import_attendee_id, reason: ', e)
     return successfully_processed_count
 
 
@@ -241,14 +242,14 @@ def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, d
     :return: None, but write to Attendees db (create or update)
     """
 
-    print("running load_access_csv.py... with arguments: ")
-    print("here is household_csv_file: ", household_csv_file)
-    print("here is people_csv_file: ", people_csv_file)
-    print("here is address_csv_file: ", address_csv_file)
-    print(division1_slug)
-    print(division2_slug)
-    print(extras)
-    print("divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug")
+    print("Running load_access_csv.py... with arguments: ")
+    print("Reading household_csv_file: ", household_csv_file)
+    print("Reading people_csv_file: ", people_csv_file)
+    print("Reading address_csv_file: ", address_csv_file)
+    print("Reading division1_slug: ", division1_slug)
+    print("Reading division2_slug: ", division2_slug)
+    print("Reading extras: ", extras)
+    print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug")
 
     if household_csv_file and people_csv_file and address_csv_file and division1_slug and division2_slug:
         with open(household_csv_file, mode='r', encoding='utf-8-sig') as household_csv, open(people_csv_file, mode='r', encoding='utf-8-sig') as people_csv, open(address_csv_file, mode='r', encoding='utf-8-sig') as address_csv:
