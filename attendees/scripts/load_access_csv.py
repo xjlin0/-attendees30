@@ -5,7 +5,7 @@ from attendees.whereabouts.models import Address, Division
 
 
 def import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug):
-    print("running import_household_people_address ...")
+    print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
     peoples = csv.DictReader(people_csv)
     addresses = csv.DictReader(address_csv)
@@ -17,6 +17,10 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         print('Number of address successfully imported/updated: ', upserted_address_count)
         print('Number of households successfully imported/updated: ', upserted_household_id_count)
         print('Number of people successfully imported/updated: ', upserted_attendee_count)
+
+        if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
+            duplicate_addresses_to_attdees()
+            reassign_family_roles()
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
 
@@ -24,9 +28,10 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
 
 
 def import_addresses(addresses):
-    try:
-        count = 0
-        for address in addresses:
+    print("\n\nRunning import_addresses ...\n")
+    successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
+    for address in addresses:
+        try:
             print('Importing/updating: ', address)
             address_id = Utility.presence(address.get('AddressID'))
 
@@ -46,12 +51,12 @@ def import_addresses(addresses):
                     fields__access_address_id=address_id,
                     defaults=address_values
                 )
-                count += 1
-        return count
+            successfully_processed_count += 1
 
-    except Exception as e:
-        print('Cannot proceed import_addresses, reason: ', e)
-    pass
+        except Exception as e:
+            print('While importing/updating address: ', address)
+            print('An error occurred and cannot proceed import_addresses(), reason: ', e)
+    return successfully_processed_count
 
 
 def import_household_ids(households, division1_slug, division2_slug):
@@ -61,9 +66,10 @@ def import_household_ids(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    try:
-        count = 0
-        for household in households:
+    print("\n\nRunning import_household_ids ...\n")
+    successfully_processed_count = 0  # households.line_num always advances despite of processing success
+    for household in households:
+        try:
             print('Importing/updating: ', household)
             household_id = Utility.presence(household.get('HouseholdID'))
             address_id = Utility.presence(household.get('AddressID'))
@@ -103,13 +109,12 @@ def import_household_ids(households, division1_slug, division2_slug):
                         family=family,
                         address=address
                     )
+            successfully_processed_count += 1
 
-                count += 1
-        return count
-
-    except Exception as e:
-        print('Cannot proceed import_households, reason: ', e)
-    pass
+        except Exception as e:
+            print('While importing/updating household: ', household)
+            print('An error occurred and cannot proceed import_households, reason: ', e)
+    return successfully_processed_count
 
 
 def import_attendee_id(peoples):
@@ -128,9 +133,10 @@ def import_attendee_id(peoples):
         'Group': 'language_group',
         'Active': 'active',
     }
-    try:
-        count = 0
-        for people in peoples:
+    print("\n\nRunning import_attendee_id ...\n")
+    successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
+    for people in peoples:
+        try:
             print('Importing/updating: ', people)
             first_name = Utility.presence(people.get('FirstName'))
             last_name = Utility.presence(people.get('LastName'))
@@ -196,13 +202,23 @@ def import_attendee_id(peoples):
                             attendee=attendee,
                             defaults={'display_order': display_order, 'role': relation}
                         )
+            successfully_processed_count += 1
 
-                count += 1
-        return count
+        except Exception as e:
+            print('While importing/updating attendee: ', attendee)
+            print('Cannot proceed import_attendee_id, reason: ', e)
+    return successfully_processed_count
 
-    except Exception as e:
-        print('Cannot proceed import_addresses, reason: ', e)
+
+def duplicate_addresses_to_attdees():
+    # families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
+
+
     pass
+
+def reassign_family_roles():
+    pass
+
 
 def check_all_headers():
     #households_headers = ['HouseholdID', 'HousholdLN', 'HousholdFN', 'SpouseFN', 'AddressID', 'HouseholdPhone', 'HouseholdFax', 'AttendenceCount', 'FlyerMailing', 'CardMailing', 'UpdateDir', 'PrintDir', 'LastUpdate', 'HouseholdNote', 'FirstDate', '海沃之友', 'Congregation']
