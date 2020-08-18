@@ -196,10 +196,16 @@ def import_attendee_id(peoples):
                             relation = Relation.objects.get(title='self')
                             display_order = 0
                         elif household_role == 'B(Spouse)':
-                            relation = Relation.objects.get(title='spouse')
+                            relation = Relation.objects.get(
+                                title__in=['spouse', 'husband', 'wife'],
+                                gender=attendee.gender,
+                            )
                             display_order = 1
                         else:
-                            relation = Relation.objects.get(title='child')
+                            relation = Relation.objects.get(
+                                title__in=['child', 'son', 'daughter'],
+                                gender=attendee.gender,
+                            )
                             display_order = 10
 
                         FamilyAttendee.objects.update_or_create(
@@ -238,25 +244,25 @@ def reprocess_family_roles():
     for family in imported_non_single_families:
         try:
             print('.', end='')
-            children = family.attendees.filter(familyattendee__role__title='child').all()
+            children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
+            # couple = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).all()
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
-                relation = Relation.objects.filter(
+                relation = Relation.objects.get(
                     title__in=['brother', 'sister', 'sibling'],
                     gender=to_child.gender,
-                ).first()
-                if relation:
-                    Relationship.objects.update_or_create(
-                        from_attendee=from_child,
-                        to_attendee=to_child,
-                        relation=relation,
-                        defaults={
-                                    'in_family': family,
-                                    'emergency_contact': relation.emergency_contact,
-                                    'scheduler': relation.scheduler,
-                                 }
-                    )
-                    successfully_processed_count += 1
+                )
+                Relationship.objects.update_or_create(
+                    from_attendee=from_child,
+                    to_attendee=to_child,
+                    relation=relation,
+                    defaults={
+                                'in_family': family,
+                                'emergency_contact': relation.emergency_contact,
+                                'scheduler': relation.scheduler,
+                             }
+                )
+                successfully_processed_count += 1
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
             print('Cannot save relationship, reason: ', e)
