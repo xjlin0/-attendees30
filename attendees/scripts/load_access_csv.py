@@ -258,23 +258,25 @@ def reprocess_family_roles():
         try:
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
-            parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()
+            parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
 
             if len(parents) > 1:  # skip for singles
-                if len(parents.values_list('gender', flat=True).distinct()) < 2: # correct mislabelled data
-                    husband = parents.first()
+                if len(parents.values_list('gender', flat=True).distinct()) < 2:
+                    print("\n Parents genders are mislabelled, trying to reassign them: ", parents)
+                    husband = parents.order_by('created').first()
                     husband.gender = GenderEnum.MALE.name
                     husband.save()
                     husband_familyattendee = husband.familyattendee_set.first()
                     husband_familyattendee.role=husband_role
                     husband_familyattendee.save()
 
-                    wife = parents.last()
+                    wife = parents.order_by('created').last()
                     wife.gender = GenderEnum.FEMALE.name
                     wife.save()
                     wife_familyattendee = wife.familyattendee_set.first()
                     wife_familyattendee.role=wife_role
                     wife_familyattendee.save()
+                    print('After reassigning, now husband is: ', husband, '. And wife is: ', wife, '. Continuing. ')
 
                 unspecified_househead = family.attendees.filter(familyattendee__role__title='self').first()
                 if unspecified_househead:
@@ -287,10 +289,9 @@ def reprocess_family_roles():
                         attendee=unspecified_househead,
                         defaults={'display_order': 0, 'role': househead_role}
                     )
-                #
+
                 husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
                 wife = family.attendees.filter(familyattendee__role__title='wife').first()
-
 
                 Relationship.objects.update_or_create(
                     from_attendee=wife,
@@ -302,7 +303,6 @@ def reprocess_family_roles():
                         'scheduler': husband_role.scheduler,
                     }
                 )
-
 
                 Relationship.objects.update_or_create(
                     from_attendee=husband,
