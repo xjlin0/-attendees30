@@ -263,14 +263,18 @@ def reprocess_family_roles():
             if len(parents) > 1:  # skip for singles
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
                     print("\n Parents genders are mislabelled, trying to reassign them: ", parents)
-                    husband = parents.order_by('created').first()
+
+                    if set(['Chloris', 'Yvone']) & set(parents.values_list('first_name', flat=True)):  # these two are special cases in Access data
+                        wife, husband = parents.order_by('created')
+                    else:
+                        husband, wife = parents.order_by('created')
+
                     husband.gender = GenderEnum.MALE.name
                     husband.save()
                     husband_familyattendee = husband.familyattendee_set.first()
                     husband_familyattendee.role=husband_role
                     husband_familyattendee.save()
 
-                    wife = parents.order_by('created').last()
                     wife.gender = GenderEnum.FEMALE.name
                     wife.save()
                     wife_familyattendee = wife.familyattendee_set.first()
