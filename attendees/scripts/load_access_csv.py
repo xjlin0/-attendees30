@@ -1,6 +1,9 @@
 import csv
 from datetime import datetime
-from attendees.persons.models import Family, FamilyAddress, Relation, Utility, GenderEnum, Attendee, FamilyAttendee
+
+from django.db.models.aggregates import Count
+
+from attendees.persons.models import Family, FamilyAddress, Relation, Utility, GenderEnum, Attendee, FamilyAttendee, AttendeeAddress
 from attendees.whereabouts.models import Address, Division
 
 
@@ -20,8 +23,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         print('Number of people successfully imported/updated: ', upserted_attendee_count)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            duplicate_addresses_to_attdees()
-            reassign_family_roles()
+            repreocess_addresses_and_family_roles()
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
 
@@ -203,6 +205,15 @@ def import_attendee_id(peoples):
                             attendee=attendee,
                             defaults={'display_order': display_order, 'role': relation}
                         )
+
+                        address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
+                        address = Address.objects.filter(fields__access_address_id=address_id).first()
+                        if address:
+                            AttendeeAddress.objects.update_or_create(
+                                address=address,
+                                attendee=attendee,
+                                defaults={'category': 'from FamilyAddress'}
+                            )
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing \n")
             successfully_processed_count += 1
@@ -213,14 +224,10 @@ def import_attendee_id(peoples):
     return successfully_processed_count
 
 
-def duplicate_addresses_to_attdees():
-    # families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
-
-
-    pass
-
-def reassign_family_roles():
-    pass
+def repreocess_addresses_and_family_roles():
+    families = Family.objects.annotate(c=Count('familyattendee')).filter(c__gte=2).order_by('created')
+    for family in families:
+        pass
 
 
 def check_all_headers():
