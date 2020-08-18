@@ -25,7 +25,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
             upserted_relationship_count = reprocess_family_roles()
-            print("\nNumber of relationship successfully imported/updated: ", upserted_relationship_count)
+            print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
 
@@ -61,6 +61,7 @@ def import_addresses(addresses):
         except Exception as e:
             print('While importing/updating address: ', address)
             print('An error occurred and cannot proceed import_addresses(), reason: ', e)
+    print('done!')
     return successfully_processed_count
 
 
@@ -119,6 +120,7 @@ def import_household_ids(households, division1_slug, division2_slug):
         except Exception as e:
             print('While importing/updating household: ', household)
             print('An error occurred and cannot proceed import_households, reason: ', e)
+    print('done!')
     return successfully_processed_count
 
 
@@ -169,7 +171,7 @@ def import_attendee_id(peoples):
                     try:
                         attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').strftime('%Y-%m-%d')
                     except ValueError as ve:
-                        print("\nImport_attendee_id error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing \n")
+                        print("\nImport_attendee_id error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing. \n")
 
                 if name2:  # assume longest last name is 2 characters
                     break_position = -2 if len(name2) > 2 else -1
@@ -223,12 +225,13 @@ def import_attendee_id(peoples):
                                 defaults={'category': 'from FamilyAddress'}
                             )
                     else:
-                        print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing \n")
+                        print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
             successfully_processed_count += 1
 
         except Exception as e:
             print("\nWhile importing/updating people: ", people)
             print('Cannot save import_attendee_id, reason: ', e)
+    print('done!')
     return successfully_processed_count
 
 
@@ -266,6 +269,7 @@ def reprocess_family_roles():
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
             print('Cannot save relationship, reason: ', e)
+    print('done!')
     return successfully_processed_count
 
 
