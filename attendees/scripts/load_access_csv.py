@@ -201,7 +201,7 @@ def import_attendee_id(peoples):
                             relation = Relation.objects.get(
                                 title__in=['spouse', 'husband', 'wife'],
                                 gender=attendee.gender,
-                            )
+                            )  # There are wives mislabelled as 'Male' in Access data
                             display_order = 1
                         else:
                             relation = Relation.objects.get(
@@ -237,6 +237,16 @@ def import_attendee_id(peoples):
 
 def reprocess_family_roles():
     print("\n\nRunning reprocess_family_roles: \n")
+    husband_role = Relation.objects.get(
+        title='husband',
+        gender=GenderEnum.MALE.name,
+    )
+
+    wife_role = Relation.objects.get(
+        title='wife',
+        gender=GenderEnum.FEMALE.name,
+    )
+
     imported_non_single_families = Family.objects.annotate(
                                             attendee_count=Count('familyattendee'),
                                         ).filter(
@@ -248,24 +258,115 @@ def reprocess_family_roles():
         try:
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
-            # couple = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).all()
+            parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()
+
+            if len(parents) > 1:  # skip for singles
+                if len(parents.values_list('gender', flat=True).distinct()) < 2: # correct mislabelled data
+                    husband = parents.first()
+                    husband.gender = GenderEnum.MALE.name
+                    husband.save()
+                    husband_familyattendee = husband.familyattendee_set.first()
+                    husband_familyattendee.role=husband_role
+                    husband_familyattendee.save()
+
+                    wife = parents.last()
+                    wife.gender = GenderEnum.FEMALE.name
+                    wife.save()
+                    wife_familyattendee = wife.familyattendee_set.first()
+                    wife_familyattendee.role=wife_role
+                    wife_familyattendee.save()
+
+                unspecified_househead = family.attendees.filter(familyattendee__role__title='self').first()
+                if unspecified_househead:
+                    househead_role = Relation.objects.get(
+                        title__in=['husband', 'wife'],
+                        gender=unspecified_househead.gender,
+                    )
+                    FamilyAttendee.objects.update_or_create(
+                        family=family,
+                        attendee=unspecified_househead,
+                        defaults={'display_order': 0, 'role': househead_role}
+                    )
+                #
+                husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
+                wife = family.attendees.filter(familyattendee__role__title='wife').first()
+
+
+                Relationship.objects.update_or_create(
+                    from_attendee=wife,
+                    to_attendee=husband,
+                    relation=husband_role,
+                    defaults={
+                        'in_family': family,
+                        'emergency_contact': husband_role.emergency_contact,
+                        'scheduler': husband_role.scheduler,
+                    }
+                )
+
+
+                Relationship.objects.update_or_create(
+                    from_attendee=husband,
+                    to_attendee=wife,
+                    relation=wife_role,
+                    defaults={
+                        'in_family': family,
+                        'emergency_contact': wife_role.emergency_contact,
+                        'scheduler': wife_role.scheduler,
+                    }
+                )
+                successfully_processed_count += 2
+
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
-                relation = Relation.objects.get(
+                househead_role = Relation.objects.get(
                     title__in=['brother', 'sister', 'sibling'],
                     gender=to_child.gender,
                 )
                 Relationship.objects.update_or_create(
                     from_attendee=from_child,
                     to_attendee=to_child,
-                    relation=relation,
+                    relation=househead_role,
                     defaults={
                                 'in_family': family,
-                                'emergency_contact': relation.emergency_contact,
-                                'scheduler': relation.scheduler,
+                                'emergency_contact': househead_role.emergency_contact,
+                                'scheduler': househead_role.scheduler,
                              }
                 )
                 successfully_processed_count += 1
+
+            for parent in parents:
+                for child in children:
+                    child_role = Relation.objects.get(
+                        title__in=['child', 'son', 'daughter'],
+                        gender=child.gender,
+                    )
+                    Relationship.objects.update_or_create(
+                        from_attendee=parent,
+                        to_attendee=child,
+                        relation=child_role,
+                        defaults={
+                            'in_family': family,
+                            'emergency_contact': child_role.emergency_contact,
+                            'scheduler': child_role.scheduler,
+                        }
+                    )
+
+                    parent_role = Relation.objects.get(
+                        title__in=['father', 'mother', 'parent'],
+                        gender=parent.gender,
+                    )
+                    Relationship.objects.update_or_create(
+                        from_attendee=child,
+                        to_attendee=parent,
+                        relation=parent_role,
+                        defaults={
+                            'in_family': family,
+                            'emergency_contact': parent_role.emergency_contact,
+                            'scheduler': parent_role.scheduler,
+                        }
+                    )
+                    successfully_processed_count += 2
+
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
             print('Cannot save relationship, reason: ', e)
