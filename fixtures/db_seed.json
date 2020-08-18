@@ -1432,6 +1432,22 @@
     }
   },
   {
+    "model": "persons.relation",
+    "pk": 29,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "UNSPECIFIED",
+      "reciprocal_ids": "[\"29\"]",
+      "title": "sibling",
+      "display_order": 53,
+      "emergency_contact": false,
+      "scheduler": false,
+      "relative": true
+    }
+  },
+  {
     "model": "persons.relationship",
     "pk": 1,
     "fields": {

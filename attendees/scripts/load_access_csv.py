@@ -1,9 +1,10 @@
 import csv
 from datetime import datetime
+from itertools import permutations
 
 from django.db.models.aggregates import Count
 
-from attendees.persons.models import Family, FamilyAddress, Relation, Utility, GenderEnum, Attendee, FamilyAttendee, AttendeeAddress
+from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, AttendeeAddress, Relationship
 from attendees.whereabouts.models import Address, Division
 
 
@@ -23,7 +24,8 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         print('Number of people successfully imported/updated: ', upserted_attendee_count)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            repreocess_addresses_and_family_roles()
+            upserted_relationship_count = reprocess_family_roles()
+            print("\nNumber of relationship successfully imported/updated: ", upserted_relationship_count)
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
 
@@ -224,10 +226,41 @@ def import_attendee_id(peoples):
     return successfully_processed_count
 
 
-def repreocess_addresses_and_family_roles():
-    families = Family.objects.annotate(c=Count('familyattendee')).filter(c__gte=2).order_by('created')
-    for family in families:
-        pass
+def reprocess_family_roles():
+    print("\n\nRunning reprocess_family_roles: \n")
+    imported_non_single_families = Family.objects.annotate(
+                                            attendee_count=Count('familyattendee'),
+                                        ).filter(
+                                            attendee_count__gt=1,
+                                            infos__access_household_id__isnull=False
+                                        ).order_by('created')
+    successfully_processed_count = 0
+    for family in imported_non_single_families:
+        try:
+            print('.', end='')
+            children = family.attendees.filter(familyattendee__role__title='child').all()
+            siblings = permutations(children, 2)
+            for (from_child, to_child) in siblings:
+                relation = Relation.objects.filter(
+                    title__in=['brother', 'sister', 'sibling'],
+                    gender=to_child.gender,
+                ).first()
+                if relation:
+                    Relationship.objects.update_or_create(
+                        from_attendee=from_child,
+                        to_attendee=to_child,
+                        relation=relation,
+                        defaults={
+                                    'in_family': family,
+                                    'emergency_contact': relation.emergency_contact,
+                                    'scheduler': relation.scheduler,
+                                 }
+                    )
+                    successfully_processed_count += 1
+        except Exception as e:
+            print("\nWhile importing/updating relationship for family: ", family)
+            print('Cannot save relationship, reason: ', e)
+    return successfully_processed_count
 
 
 def check_all_headers():
