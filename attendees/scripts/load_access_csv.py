@@ -2,8 +2,6 @@ import csv
 from datetime import datetime
 from itertools import permutations
 
-from django.db.models.aggregates import Count
-
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, AttendeeAddress, Relationship
 from attendees.whereabouts.models import Address, Division
 
@@ -24,7 +22,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         print('Number of people successfully imported/updated: ', upserted_attendee_count)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            upserted_relationship_count = reprocess_family_roles()
+            upserted_relationship_count = reprocess_emails_and_family_roles()
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
@@ -235,7 +233,7 @@ def import_attendee_id(peoples):
     return successfully_processed_count
 
 
-def reprocess_family_roles():
+def reprocess_emails_and_family_roles():
     print("\n\nRunning reprocess_family_roles: \n")
     husband_role = Relation.objects.get(
         title='husband',
@@ -247,18 +245,14 @@ def reprocess_family_roles():
         gender=GenderEnum.FEMALE.name,
     )
 
-    imported_non_single_families = Family.objects.annotate(
-                                            attendee_count=Count('familyattendee'),
-                                        ).filter(
-                                            attendee_count__gt=1,
-                                            infos__access_household_id__isnull=False
-                                        ).order_by('created')
+    imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
     successfully_processed_count = 0
-    for family in imported_non_single_families:
+    for family in imported_families:
         try:
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
+            families_address = Address.objects.filter(pk=family.addresses.first().id).first()
 
             if len(parents) > 1:  # skip for singles
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
@@ -295,7 +289,14 @@ def reprocess_family_roles():
                     )
 
                 husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
-                wife = family.attendees.filter(familyattendee__role__title='wife').first()
+                wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
+
+                if families_address:
+                    hushand_email = husband.infos.get('access_people_values', {}).get('E-mail')
+                    wife_email = wife.infos.get('access_people_values', {}).get('E-mail')
+                    families_address.email1 = Utility.presence(hushand_email)
+                    families_address.email2 = Utility.presence(wife_email)
+                    families_address.save()
 
                 Relationship.objects.update_or_create(
                     from_attendee=wife,
@@ -319,6 +320,13 @@ def reprocess_family_roles():
                     }
                 )
                 successfully_processed_count += 2
+
+            else:
+                househead_single = family.attendees.filter(familyattendee__role__title='self').first()
+                if families_address:
+                    self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
+                    families_address.email1 = Utility.presence(self_email)
+                    families_address.save()
 
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
