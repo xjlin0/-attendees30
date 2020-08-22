@@ -1,6 +1,9 @@
 import csv
 from datetime import datetime
 from itertools import permutations
+from glob import glob
+from pathlib import Path
+from django.core.files import File
 
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, AttendeeAddress, Relationship
 from attendees.whereabouts.models import Address, Division
@@ -189,6 +192,8 @@ def import_attendee_id(peoples):
                     defaults={k: v for (k, v) in attendee_values.items() if v is not None}
                 )
 
+                update_attendee_photo(attendee, Utility.presence(people.get('Photo')))
+
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
                     if family:       # there are some missing records in the access data
@@ -224,6 +229,8 @@ def import_attendee_id(peoples):
                             )
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
+            else:
+                print('There is no household_id or first/lastname of the people: ', people)
             successfully_processed_count += 1
 
         except Exception as e:
@@ -384,6 +391,25 @@ def reprocess_emails_and_family_roles():
             print('Cannot save relationship, reason: ', e)
     print('done!')
     return successfully_processed_count
+
+
+def update_attendee_photo(attendee, photo_names):
+    if photo_names:
+        photo_infos={}
+        for photo_filename in photo_names.split(';'):
+            found_picture_files = glob('**/' + photo_filename, recursive=True)
+            found_picture_file_name = found_picture_files[0] if len(found_picture_files) > 0 else None
+            if found_picture_file_name:
+                pathlib_file_name = Path(found_picture_file_name)
+                file_modified_time = datetime.fromtimestamp(pathlib_file_name.stat().st_mtime)
+                photo_infos[found_picture_file_name] = file_modified_time
+        if bool(photo_infos):
+            latest_file_name = max(photo_infos, key=photo_infos.get)
+            picture_name = latest_file_name.split('/')[-1]
+            image_file = File(file=open(latest_file_name, 'rb'), name=picture_name)
+            attendee.photo.delete()
+            attendee.photo.save(picture_name, image_file, True)
+            attendee.save()
 
 
 def check_all_headers():
