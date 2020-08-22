@@ -155,7 +155,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
     str(ROOT_DIR / "libraries"),
-]
+] # https://rahmonov.me/posts/django-static-files/
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -169,7 +169,7 @@ MEDIA_ROOT = str(APPS_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 # django-private-storage
-PRIVATE_STORAGE_ROOT = '/media/private-media/'
+PRIVATE_STORAGE_ROOT = str(APPS_DIR / "media/private-media")
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 # PRIVATE_STORAGE_SERVER = 'apache'  # add this in local causes uploaded files looks blank
 

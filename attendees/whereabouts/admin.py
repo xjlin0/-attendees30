@@ -11,6 +11,7 @@ class AssemblyAddressInline(admin.TabularInline):
 
 class AddressAdmin(admin.ModelAdmin):
     inlines = (AssemblyAddressInline,)
+    search_fields = ('display_name', 'street1', 'city', 'zip_code', 'phone1', 'email1')
     list_display_links = ('street',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('display_name', 'street', 'city', 'zip_code', 'phone1', 'email1')

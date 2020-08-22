@@ -40,8 +40,8 @@ class Migration(migrations.Migration):
                 ('actual_birthday', models.DateField(blank=True, null=True)),
                 ('estimated_birthday', models.DateField(blank=True, null=True)),
                 ('deathday', models.DateField(blank=True, null=True)),
+                ('photo', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='attendee_portrait', verbose_name='Photo')),
                 ('progressions', JSONField(blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data', null=True)),
-                ('photo', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='attendees', verbose_name='Photo')),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"food allergy": "peanuts", "public_name": "John", "other_name": "Apostle"}. Please keep {} here even no data', null=True)),
             ],
             options={
