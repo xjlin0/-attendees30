@@ -16,6 +16,11 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
     addresses = csv.DictReader(address_csv)
 
     try:
+        initial_time = datetime.utcnow()
+        initial_address_count = Address.objects.count()
+        initial_family_count = Family.objects.count()
+        initial_attendee_count = Attendee.objects.count()
+        initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
         upserted_attendee_count = import_attendees(peoples)
@@ -24,9 +29,19 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
             upserted_relationship_count = reprocess_emails_and_family_roles()
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
+            print('Initial address count: ', initial_address_count, '. final address count: ', Address.objects.count(), end="\n")
+
             print('Number of households successfully imported/updated: ', upserted_household_id_count)
+            print('Initial family count: ', initial_family_count, '. final family count: ', Family.objects.count(), end="\n")
+
             print('Number of people successfully imported/updated: ', upserted_attendee_count)
+            print('Initial attendee count: ', initial_attendee_count, '. final attendee count: ', Attendee.objects.count(), end="\n")
+
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
+            print('Initial relationship count: ', initial_relationship_count, '. final relationship count: ', Relationship.objects.count(), end="\n")
+
+            time_taken = (datetime.utcnow() - initial_time).total_seconds()
+            print('Importing/updating Access CSV is now done, seconds taken: ', time_taken)
         else:
             print('Importing/updating address or household or attendee error, result count does not exist!')
     except Exception as e:
@@ -75,14 +90,14 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    print("\n\nRunning import_household_ids:\n")
+    print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     for household in households:
         try:
             print('.', end='')
             household_id = Utility.presence(household.get('HouseholdID'))
             address_id = Utility.presence(household.get('AddressID'))
-            display_name = (household.get('HousholdLN', '') + ' ' + household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')).strip()
+            display_name = Utility.presence(household.get('HousholdLN', '') + ' ' + household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')) or 'household_id: ' + household_id
             congregation = Utility.presence(household.get('Congregation'))
 
             if household_id:
@@ -143,7 +158,7 @@ def import_attendees(peoples):
         'Group': 'language_group',
         'Active': 'active',
     }
-    print("\n\nRunning import_attendee_id: \n")
+    print("\n\nRunning import_attendees: \n")
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     for people in peoples:
         try:
@@ -332,10 +347,12 @@ def reprocess_emails_and_family_roles():
 
             else:
                 househead_single = family.attendees.filter(familyattendee__role__title='self').first()
-                if families_address:
+                if families_address and househead_single:
                     self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
                     families_address.email1 = Utility.presence(self_email)
                     families_address.save()
+                else:
+                    print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. househead_single: ', househead_single, '. Continuing to next record.')
 
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
