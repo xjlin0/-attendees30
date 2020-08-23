@@ -17,16 +17,18 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
 
     try:
         upserted_address_count = import_addresses(addresses)
-        upserted_household_id_count = import_household_ids(households, division1_slug, division2_slug)
-        upserted_attendee_count = import_attendee_id(peoples)
-        print("\n\nProcessing results of importing/updating Access export csv files:\n")
-        print('Number of address successfully imported/updated: ', upserted_address_count)
-        print('Number of households successfully imported/updated: ', upserted_household_id_count)
-        print('Number of people successfully imported/updated: ', upserted_attendee_count)
+        upserted_household_id_count = import_households(households, division1_slug, division2_slug)
+        upserted_attendee_count = import_attendees(peoples)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
             upserted_relationship_count = reprocess_emails_and_family_roles()
+            print("\n\nProcessing results of importing/updating Access export csv files:\n")
+            print('Number of address successfully imported/updated: ', upserted_address_count)
+            print('Number of households successfully imported/updated: ', upserted_household_id_count)
+            print('Number of people successfully imported/updated: ', upserted_attendee_count)
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
+        else:
+            print('Importing/updating address or household or attendee error, result count does not exist!')
     except Exception as e:
         print('Cannot proceed import_household_people_address, reason: ', e)
 
@@ -66,7 +68,7 @@ def import_addresses(addresses):
     return successfully_processed_count
 
 
-def import_household_ids(households, division1_slug, division2_slug):
+def import_households(households, division1_slug, division2_slug):
     division1 = Division.objects.get(slug=division1_slug)
     division2 = Division.objects.get(slug=division2_slug)
     division_converter = {
@@ -125,7 +127,7 @@ def import_household_ids(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendee_id(peoples):
+def import_attendees(peoples):
     gender_converter = {
         'F': GenderEnum.FEMALE,
         'M': GenderEnum.MALE,
