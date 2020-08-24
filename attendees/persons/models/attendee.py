@@ -103,9 +103,13 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     def age(self):
         birthday = self.actual_birthday or self.estimated_birthday
-        if birthday:
-            return (date.today() - birthday) // timedelta(days=365.2425)
-        else:
+        try:
+            if birthday:
+                return (date.today() - birthday) // timedelta(days=365.2425)
+            else:
+                return None
+        except Exception as e:
+            print(self.__str__() + "'s birthday incorrect: ", birthday, '. Type: ', type(birthday), ' exception: ', e)
             return None
 
     def __str__(self):

@@ -188,9 +188,9 @@ def import_attendees(peoples, division3_slug):
 
                 if birth_date:
                     try:
-                        attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').strftime('%Y-%m-%d')
+                        attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').date()
                     except ValueError as ve:
-                        print("\nImport_attendee_id error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing. \n")
+                        print("\nImport_attendees error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing. \n")
 
                 if name2:  # assume longest last name is 2 characters
                     break_position = -2 if len(name2) > 2 else -1
@@ -231,7 +231,7 @@ def import_attendees(peoples, division3_slug):
                                 title__in=['child', 'son', 'daughter'],
                                 gender=attendee.gender,
                             )
-                            if attendee.age and attendee.age < 11:
+                            if attendee.age() and attendee.age() < 11:  # k-5
                                 attendee.division = division3
                             display_order = 10
 
@@ -258,7 +258,7 @@ def import_attendees(peoples, division3_slug):
 
         except Exception as e:
             print("\nWhile importing/updating people: ", people)
-            print('Cannot save import_attendee_id, reason: ', e)
+            print('Cannot save import_attendees, reason: ', e)
     print('done!')
     return successfully_processed_count
 
@@ -302,7 +302,7 @@ def reprocess_emails_and_family_roles():
                     wife.gender = GenderEnum.FEMALE.name
                     wife.save()
                     wife_familyattendee = wife.familyattendee_set.first()
-                    wife_familyattendee.role=wife_role
+                    wife_familyattendee.role = wife_role
                     wife_familyattendee.save()
                     print('After reassigning, now husband is: ', husband, '. And wife is: ', wife, '. Continuing. ')
 
@@ -387,7 +387,11 @@ def reprocess_emails_and_family_roles():
                 )
                 successfully_processed_count += 1
 
-            for parent in parents:
+            for parent in family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all():  # reload to get updated parent gender
+                parent_role = Relation.objects.get(
+                    title__in=['father', 'mother', 'parent'],
+                    gender=parent.gender,
+                )
                 for child in children:
                     child_role = Relation.objects.get(
                         title__in=['child', 'son', 'daughter'],
@@ -404,10 +408,6 @@ def reprocess_emails_and_family_roles():
                         }
                     )
 
-                    parent_role = Relation.objects.get(
-                        title__in=['father', 'mother', 'parent'],
-                        gender=parent.gender,
-                    )
                     Relationship.objects.update_or_create(
                         from_attendee=child,
                         to_attendee=parent,
