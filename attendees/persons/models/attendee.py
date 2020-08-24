@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
 from django.utils.functional import cached_property
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date, timedelta
 from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 from private_storage.fields import PrivateFileField
 from . import GenderEnum, Note, Utility
@@ -100,6 +100,13 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
                             )
                         )
                     )
+
+    def age(self):
+        birthday = self.actual_birthday or self.estimated_birthday
+        if birthday:
+            return (date.today() - birthday) // timedelta(days=365.2425)
+        else:
+            return None
 
     def __str__(self):
         return self.display_label

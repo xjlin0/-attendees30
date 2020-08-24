@@ -9,7 +9,7 @@ from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress,
 from attendees.whereabouts.models import Address, Division
 
 
-def import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug):
+def import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug):
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
     peoples = csv.DictReader(people_csv)
@@ -23,7 +23,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count = import_attendees(peoples)
+        upserted_attendee_count = import_attendees(peoples, division3_slug)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
             upserted_relationship_count = reprocess_emails_and_family_roles()
@@ -142,7 +142,7 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples):
+def import_attendees(peoples, division3_slug):
     gender_converter = {
         'F': GenderEnum.FEMALE,
         'M': GenderEnum.MALE,
@@ -159,6 +159,7 @@ def import_attendees(peoples):
         'Active': 'active',
     }
     print("\n\nRunning import_attendees: \n")
+    division3 = Division.objects.get(slug=division3_slug)
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     for people in peoples:
         try:
@@ -217,19 +218,24 @@ def import_attendees(peoples):
                         if household_role == 'A(Self)':
                             relation = Relation.objects.get(title='self')
                             display_order = 0
+                            attendee.division = family.division
                         elif household_role == 'B(Spouse)':
                             relation = Relation.objects.get(
                                 title__in=['spouse', 'husband', 'wife'],
                                 gender=attendee.gender,
                             )  # There are wives mislabelled as 'Male' in Access data
                             display_order = 1
+                            attendee.division = family.division
                         else:
                             relation = Relation.objects.get(
                                 title__in=['child', 'son', 'daughter'],
                                 gender=attendee.gender,
                             )
+                            if attendee.age and attendee.age < 11:
+                                attendee.division = division3
                             display_order = 10
 
+                        attendee.save()
                         FamilyAttendee.objects.update_or_create(
                             family=family,
                             attendee=attendee,
@@ -447,14 +453,15 @@ def check_all_headers():
     pass
 
 
-def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, division2_slug, *extras):
+def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, division2_slug, division3_slug, *extras):
     """
     An importer to import old MS Access db data, if same records founds in Attendees db, it will update.
     :param household_csv_file: a comma separated file of household with headers, from MS Access
     :param people_csv_file: a comma separated file of household with headers, from MS Access
     :param address_csv_file: a comma separated file of household with headers, from MS Access
     :param division1_slug: slug of division 1
-    :param division1_slug: slug of division 2
+    :param division2_slug: slug of division 2
+    :param division3_slug: slug of division 3
     :param extras: optional other arguments
     :return: None, but write to Attendees db (create or update)
     """
@@ -465,9 +472,10 @@ def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, d
     print("Reading address_csv_file: ", address_csv_file)
     print("Reading division1_slug: ", division1_slug)
     print("Reading division2_slug: ", division2_slug)
+    print("Reading division3_slug: ", division3_slug)
     print("Reading extras: ", extras)
     print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug")
 
     if household_csv_file and people_csv_file and address_csv_file and division1_slug and division2_slug:
         with open(household_csv_file, mode='r', encoding='utf-8-sig') as household_csv, open(people_csv_file, mode='r', encoding='utf-8-sig') as people_csv, open(address_csv_file, mode='r', encoding='utf-8-sig') as address_csv:
-            import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug)
+            import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug)
