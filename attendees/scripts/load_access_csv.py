@@ -346,13 +346,22 @@ def reprocess_emails_and_family_roles():
                 successfully_processed_count += 2
 
             else:
-                househead_single = family.attendees.filter(familyattendee__role__title='self').first()
+                househead_single = parents.first()
+                if househead_single:  # update gender by family role since family role records are better updated.
+                    original_household_role = househead_single.infos.get('access_people_values', {}).get('HouseholdRole')
+                    if original_household_role == 'B(Spouse)':  # 'Chloris', 'Yvone' are parents > 1
+                        househead_single.gender = GenderEnum.FEMALE.name
+                        househead_single.save()
+                        family_attendee = househead_single.familyattendee_set.first()
+                        family_attendee.role = wife_role
+                        family_attendee.save()
+
                 if families_address and househead_single:
                     self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
                     families_address.email1 = Utility.presence(self_email)
                     families_address.save()
                 else:
-                    print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. househead_single: ', househead_single, '. Continuing to next record.')
+                    print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. househead_single: ', househead_single, '. household_id: ', family.infos['access_household_id'], '. Continuing to next record.')
 
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
