@@ -1,4 +1,4 @@
-import csv
+import csv, os
 from datetime import datetime
 from itertools import permutations
 from glob import glob
@@ -40,7 +40,9 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
             print('Initial relationship count: ', initial_relationship_count, '. final relationship count: ', Relationship.objects.count(), end="\n")
 
-            print("Photo import results:\n", *photo_import_results)
+            number_of_attendees_with_photo_assigned = len(photo_import_results)
+            attendees_missing_photos = list(filter(None.__ne__, photo_import_results))
+            print("\nPhoto import results: Out of ", number_of_attendees_with_photo_assigned, ' attendees assigned with photos, ', len(attendees_missing_photos), " were missing photo files:\n", *attendees_missing_photos)
 
             time_taken = (datetime.utcnow() - initial_time).total_seconds()
             print('Importing/updating Access CSV is now done, seconds taken: ', time_taken)
@@ -263,7 +265,7 @@ def import_attendees(peoples, division3_slug):
             print("\nWhile importing/updating people: ", people)
             print('Cannot save import_attendees, reason: ', e)
     print('done!')
-    return successfully_processed_count, list(filter(None.__ne__, photo_import_results))
+    return successfully_processed_count, photo_import_results  # list(filter(None.__ne__, photo_import_results))
 
 
 def reprocess_emails_and_family_roles():
@@ -445,7 +447,12 @@ def update_attendee_photo(attendee, photo_names):
             latest_file_name = max(photo_infos, key=photo_infos.get)
             picture_name = latest_file_name.split('/')[-1]
             image_file = File(file=open(latest_file_name, 'rb'), name=picture_name)
+
+            old_file_path = attendee.photo.path
             attendee.photo.delete()
+            if os.path.isfile(old_file_path):
+                os.remove(old_file_path)
+
             attendee.photo.save(picture_name, image_file, True)
             attendee.save()
             import_photo_success = True
