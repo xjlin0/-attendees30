@@ -23,7 +23,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count = import_attendees(peoples, division3_slug)
+        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
             upserted_relationship_count = reprocess_emails_and_family_roles()
@@ -39,6 +39,8 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
 
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
             print('Initial relationship count: ', initial_relationship_count, '. final relationship count: ', Relationship.objects.count(), end="\n")
+
+            print("Photo import results:\n", *photo_import_results)
 
             time_taken = (datetime.utcnow() - initial_time).total_seconds()
             print('Importing/updating Access CSV is now done, seconds taken: ', time_taken)
@@ -161,6 +163,7 @@ def import_attendees(peoples, division3_slug):
     print("\n\nRunning import_attendees: \n")
     division3 = Division.objects.get(slug=division3_slug)
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
+    photo_import_results = []
     for people in peoples:
         try:
             print('.', end='')
@@ -210,7 +213,7 @@ def import_attendees(peoples, division3_slug):
                     defaults={k: v for (k, v) in attendee_values.items() if v is not None}
                 )
 
-                update_attendee_photo(attendee, Utility.presence(people.get('Photo')))
+                photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -231,7 +234,7 @@ def import_attendees(peoples, division3_slug):
                                 title__in=['child', 'son', 'daughter'],
                                 gender=attendee.gender,
                             )
-                            if attendee.age() and attendee.age() < 11:  # k-5
+                            if attendee.age() and attendee.age() < 11:  # k-5 to kid, should > 10 to EN?
                                 attendee.division = division3
                             display_order = 10
 
@@ -260,7 +263,7 @@ def import_attendees(peoples, division3_slug):
             print("\nWhile importing/updating people: ", people)
             print('Cannot save import_attendees, reason: ', e)
     print('done!')
-    return successfully_processed_count
+    return successfully_processed_count, list(filter(None.__ne__, photo_import_results))
 
 
 def reprocess_emails_and_family_roles():
@@ -428,6 +431,7 @@ def reprocess_emails_and_family_roles():
 
 
 def update_attendee_photo(attendee, photo_names):
+    import_photo_success = False
     if photo_names:
         photo_infos={}
         for photo_filename in photo_names.split(';'):
@@ -444,6 +448,13 @@ def update_attendee_photo(attendee, photo_names):
             attendee.photo.delete()
             attendee.photo.save(picture_name, image_file, True)
             attendee.save()
+            import_photo_success = True
+    else:
+        import_photo_success = None
+    if import_photo_success or import_photo_success is None:
+        return None  # import failure message
+    else:
+        return 'Attendee ' + str(attendee) + ' photo file(s) missing: ' + photo_names + "\n"
 
 
 def check_all_headers():
