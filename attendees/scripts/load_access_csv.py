@@ -5,11 +5,24 @@ from glob import glob
 from pathlib import Path
 from django.core.files import File
 
-from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, AttendeeAddress, Relationship
+from attendees.occasions.models import Gathering, Assembly
+from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
+    AttendeeAddress, Relationship, Registration
+from attendees.users.admin import User
 from attendees.whereabouts.models import Address, Division
 
 
-def import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug):
+def import_household_people_address(
+        household_csv,
+        people_csv,
+        address_csv,
+        division1_slug,
+        division2_slug,
+        division3_slug,
+        data_assembly_slug,
+        member_gathering_id,
+        directory_gathering_id
+    ):
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
     peoples = csv.DictReader(people_csv)
@@ -23,10 +36,10 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug)
+        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_gathering_id)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            upserted_relationship_count = reprocess_emails_and_family_roles()
+            upserted_relationship_count = reprocess_emails_and_family_roles(data_assembly_slug , directory_gathering_id)
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
             print('Initial address count: ', initial_address_count, '. final address count: ', Address.objects.count(), end="\n")
@@ -54,6 +67,7 @@ def import_household_people_address(household_csv, people_csv, address_csv, divi
     pass
 
 
+# Todo: Add created by notes in every instance in notes/infos
 def import_addresses(addresses):
     print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
@@ -146,7 +160,7 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples, division3_slug):
+def import_attendees(peoples, division3_slug, data_assembly_slug, member_gathering_id):
     gender_converter = {
         'F': GenderEnum.FEMALE,
         'M': GenderEnum.MALE,
@@ -162,8 +176,33 @@ def import_attendees(peoples, division3_slug):
         'Group': 'language_group',
         'Active': 'active',
     }
+
+    family_to_attendee_infos_converter = {
+        'AttendenceCount': 'attendance_count',
+        'FlyerMailing': 'flyer_mailing',
+        'CardMailing': 'card_mailing',
+        'UpdateDir': 'update_directory',
+        'PrintDir': 'print_directory',
+        'LastUpdate': 'household_last_update',
+        '海沃之友': 'hayward_friend',
+    }
+
     print("\n\nRunning import_attendees: \n")
-    division3 = Division.objects.get(slug=division3_slug)
+    division3 = Division.objects.get(slug=division3_slug)  # kid
+    data_assembly = Assembly.objects.get(pk=data_assembly_slug)
+    member_gathering = Gathering.objects.get(pk=member_gathering_id)
+    admin_iniviter = User.objects.first().attendee # Todo: assume the first user is the system admin, need to change the registration of main_attendee to secretary after importing all attendees
+    member_registration, member_registration_created = Registration.objects.update_or_create(
+        infos__created_reason='CFCC member registration from importer',
+        defaults={
+            'main_attendee': admin_iniviter,
+            'assembly': data_assembly,
+            'infos': {
+                'created_reason': 'CFCC member registration from importer',
+            }
+        }
+    )
+
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -195,7 +234,7 @@ def import_attendees(peoples, division3_slug):
                     try:
                         attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').date()
                     except ValueError as ve:
-                        print("\nImport_attendees error on BirthDate of people: ", people, '. Reason: ', ve, ". This bithday will be skipped. Other columns of this people will still be saved. Continuing. \n")
+                        print("\nImport_attendees error on BirthDate of people: ", people, '. Reason: ', ve, ". This birthday will be skipped. Other columns of this people will still be saved. Continuing. \n")
 
                 if name2:  # assume longest last name is 2 characters
                     break_position = -2 if len(name2) > 2 else -1
@@ -216,6 +255,7 @@ def import_attendees(peoples, division3_slug):
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
+                update_attendee_member(attendee, member_registration, member_gathering)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -239,6 +279,9 @@ def import_attendees(peoples, division3_slug):
                             if attendee.age() and attendee.age() < 11:  # k-5 to kid, should > 10 to EN?
                                 attendee.division = division3
                             display_order = 10
+
+                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('access_household_values', {}).get(access_header)) is not None}
+                        attendee.infos = {**attendee.infos, **some_household_values}
 
                         attendee.save()
                         FamilyAttendee.objects.update_or_create(
@@ -268,7 +311,7 @@ def import_attendees(peoples, division3_slug):
     return successfully_processed_count, photo_import_results  # list(filter(None.__ne__, photo_import_results))
 
 
-def reprocess_emails_and_family_roles():
+def reprocess_emails_and_family_roles(data_assembly_slug, directory_gathering_id):
     print("\n\nRunning reprocess_family_roles: \n")
     husband_role = Relation.objects.get(
         title='husband',
@@ -279,6 +322,8 @@ def reprocess_emails_and_family_roles():
         title='wife',
         gender=GenderEnum.FEMALE.name,
     )
+    data_assembly = Assembly.objects.get(pk=data_assembly_slug)
+    directory_gathering = Gathering.objects.get(pk=directory_gathering_id)
 
     imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
     successfully_processed_count = 0
@@ -312,6 +357,7 @@ def reprocess_emails_and_family_roles():
                     print('After reassigning, now husband is: ', husband, '. And wife is: ', wife, '. Continuing. ')
 
                 unspecified_househead = family.attendees.filter(familyattendee__role__title='self').first()
+                # Todo: even some househeads are alone, there are some cases of bachelor/widow !!
                 if unspecified_househead:
                     househead_role = Relation.objects.get(
                         title__in=['husband', 'wife'],
@@ -425,11 +471,39 @@ def reprocess_emails_and_family_roles():
                     )
                     successfully_processed_count += 2
 
+            update_directory_data(data_assembly, family, directory_gathering)
+
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
             print('Cannot save relationship, reason: ', e)
     print('done!')
     return successfully_processed_count
+
+
+def update_attendee_member(attendee, member_registration, member_gathering):
+    if attendee.progressions.get('cfcc_member'):
+        pass
+
+
+def update_directory_data(data_assembly, family, directory_gathering):
+    if family.infos.get('access_household_values', {}).get('PrintDir'):
+        access_household_id = family.infos.get('access_household_id')
+        househead = family.attendees.order_by('familyattendee__display_order').first()
+
+        directory_registration, directory_registration_created = Registration.objects.update_or_create(
+            infos__access_household_id=access_household_id,
+            defaults={
+                'main_attendee': househead,
+                'assembly': data_assembly,
+                'infos': {
+                    'access_household_id': access_household_id,
+                }
+            }
+        )
+
+
+        #members = family.attendees.filter(progressions__cfcc_member=True)
+    pass
 
 
 def update_attendee_photo(attendee, photo_names):
@@ -471,15 +545,30 @@ def check_all_headers():
     pass
 
 
-def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, division2_slug, division3_slug, *extras):
+def run(
+        household_csv_file,
+        people_csv_file,
+        address_csv_file,
+        division1_slug,
+        division2_slug,
+        division3_slug,
+        data_assembly_slug,
+        member_gathering_id,
+        directory_gathering_id,
+        *extras
+    ):
     """
     An importer to import old MS Access db data, if same records founds in Attendees db, it will update.
     :param household_csv_file: a comma separated file of household with headers, from MS Access
     :param people_csv_file: a comma separated file of household with headers, from MS Access
     :param address_csv_file: a comma separated file of household with headers, from MS Access
-    :param division1_slug: slug of division 1
-    :param division2_slug: slug of division 2
-    :param division3_slug: slug of division 3
+    :param division1_slug: slug of division 1  # ch
+    :param division2_slug: slug of division 2  # en
+    :param division3_slug: slug of division 3  # kid
+    :param division3_slug: slug of division 3  # kid
+    :param data_assembly_slug: slug of data_assembly
+    :param member_gathering_id: primary id of member_gathering
+    :param directory_gathering_id: primary id of directory_gathering
     :param extras: optional other arguments
     :return: None, but write to Attendees db (create or update)
     """
@@ -491,9 +580,13 @@ def run(household_csv_file, people_csv_file, address_csv_file, division1_slug, d
     print("Reading division1_slug: ", division1_slug)
     print("Reading division2_slug: ", division2_slug)
     print("Reading division3_slug: ", division3_slug)
+    print("Reading data_assembly_slug: ", data_assembly_slug)
+    print("Reading member_gathering_id: ", member_gathering_id)
+    print("Reading directory_gathering_id: ", directory_gathering_id)
     print("Reading extras: ", extras)
-    print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug")
+    print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug division3_slug member_data_assembly_slug gathering_id directory_gathering_id")
 
     if household_csv_file and people_csv_file and address_csv_file and division1_slug and division2_slug:
         with open(household_csv_file, mode='r', encoding='utf-8-sig') as household_csv, open(people_csv_file, mode='r', encoding='utf-8-sig') as people_csv, open(address_csv_file, mode='r', encoding='utf-8-sig') as address_csv:
-            import_household_people_address(household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug)
+            import_household_people_address(
+                household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug, data_assembly_slug, member_gathering_id, directory_gathering_id)

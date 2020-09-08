@@ -4382,6 +4382,40 @@
     }
   },
   {
+    "model": "occasions.gathering",
+    "pk": 30,
+    "fields": {
+      "created": "2020-06-19T23:06:21.924Z",
+      "modified": "2020-06-19T23:06:21.924Z",
+      "is_removed": false,
+      "meet": 9,
+      "start": "2020-07-18T17:45:00Z",
+      "finish": "2099-07-18T19:00:00Z",
+      "display_name": "CFCCH會員 member",
+      "infos": {},
+      "occurrence": null,
+      "site_type": 32,
+      "site_id": 1
+    }
+  },
+  {
+    "model": "occasions.gathering",
+    "pk": 31,
+    "fields": {
+      "created": "2020-06-19T23:06:21.924Z",
+      "modified": "2020-06-19T23:06:21.924Z",
+      "is_removed": false,
+      "meet": 8,
+      "start": "2020-07-18T17:45:00Z",
+      "finish": "2099-07-18T19:00:00Z",
+      "display_name": "CFCCH通訊錄 directory",
+      "infos": {},
+      "occurrence": null,
+      "site_type": 32,
+      "site_id": 1
+    }
+  },
+  {
     "model": "occasions.team",
     "pk": 1,
     "fields": {

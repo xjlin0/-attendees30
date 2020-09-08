@@ -42,7 +42,13 @@ class Utility:
                 return boolean_converter.get(value.upper())
             else:
                 try:
-                    return datetime.strptime(value, '%m/%d/%Y').strftime('%Y-%m-%d')
+                    if value.count('/') == 2:
+                        if len(value.split('/')[-1]) > 2:
+                            return datetime.strptime(value, '%m/%d/%Y').strftime('%Y-%m-%d')
+                        else:
+                            return datetime.strptime(value, '%m/%d/%y').strftime('%Y-%m-%d')
+                    else:
+                        return value
                 except ValueError:
                     return value
         else:
