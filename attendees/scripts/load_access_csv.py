@@ -189,7 +189,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_gatheri
 
     print("\n\nRunning import_attendees: \n")
     division3 = Division.objects.get(slug=division3_slug)  # kid
-    data_assembly = Assembly.objects.get(pk=data_assembly_slug)
+    data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     member_gathering = Gathering.objects.get(pk=member_gathering_id)
     admin_iniviter = User.objects.first().attendee # Todo: assume the first user is the system admin, need to change the registration of main_attendee to secretary after importing all attendees
     member_registration, member_registration_created = Registration.objects.update_or_create(
@@ -322,7 +322,7 @@ def reprocess_emails_and_family_roles(data_assembly_slug, directory_gathering_id
         title='wife',
         gender=GenderEnum.FEMALE.name,
     )
-    data_assembly = Assembly.objects.get(pk=data_assembly_slug)
+    data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     directory_gathering = Gathering.objects.get(pk=directory_gathering_id)
 
     imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
@@ -522,10 +522,11 @@ def update_attendee_photo(attendee, photo_names):
             picture_name = latest_file_name.split('/')[-1]
             image_file = File(file=open(latest_file_name, 'rb'), name=picture_name)
 
-            old_file_path = attendee.photo.path
-            attendee.photo.delete()
-            if os.path.isfile(old_file_path):
-                os.remove(old_file_path)
+            if attendee.photo:
+                old_file_path = attendee.photo.path
+                attendee.photo.delete()
+                if os.path.isfile(old_file_path):
+                    os.remove(old_file_path)
 
             attendee.photo.save(picture_name, image_file, True)
             attendee.save()
