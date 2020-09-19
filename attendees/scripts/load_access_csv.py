@@ -232,7 +232,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_gatheri
 
                 if birth_date:
                     try:
-                        attendee_values['actual_birthday'] = datetime.strptime(birth_date, '%m/%d/%Y').date()
+                        formatting_birthdate = Utility.boolean_or_datetext_or_original(birth_date)
+                        attendee_values['actual_birthday'] = datetime.strptime(formatting_birthdate, '%Y-%m-%d').date()
                     except ValueError as ve:
                         print("\nImport_attendees error on BirthDate of people: ", people, '. Reason: ', ve, ". This birthday will be skipped. Other columns of this people will still be saved. Continuing. \n")
 
