@@ -23,6 +23,20 @@ def import_household_people_address(
         member_gathering_id,
         directory_gathering_id
     ):
+    """
+    Entry function of entire importer, it execute importers in sequence and print out results.
+    :param household_csv: an existing file object of household with headers, from MS Access
+    :param people_csv: an existing file object of household with headers, from MS Access
+    :param address_csv: an existing file object of household with headers, from MS Access
+    :param division1_slug: slug of division 1  # ch
+    :param division2_slug: slug of division 2  # en
+    :param division3_slug: slug of division 3  # kid
+    :param data_assembly_slug: slug of data_assembly
+    :param member_gathering_id: primary id of member_gathering
+    :param directory_gathering_id: primary id of directory_gathering
+    :return: None, but print out importing status and write to Attendees db (create or update)
+    """
+
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
     peoples = csv.DictReader(people_csv)
@@ -69,6 +83,12 @@ def import_household_people_address(
 
 # Todo: Add created by notes in every instance in notes/infos
 def import_addresses(addresses):
+    """
+    Importer of addresses from MS Access.
+    :param addresses: file content of address accessible by headers, from MS Access
+    :return: successfully processed address count, also print out importing status and write to Attendees db (create or update)
+    """
+
     print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
     for address in addresses:
@@ -102,6 +122,13 @@ def import_addresses(addresses):
 
 
 def import_households(households, division1_slug, division2_slug):
+    """
+    Importer of households from MS Access.
+    :param households: file content of households accessible by headers, from MS Access
+    :param division1_slug: slug of division 1  # ch
+    :param division2_slug: slug of division 2  # en
+    :return: successfully processed family count, also print out importing status and write FamilyAddress to Attendees db (create or update)
+    """
     division1 = Division.objects.get(slug=division1_slug)
     division2 = Division.objects.get(slug=division2_slug)
     division_converter = {
@@ -161,6 +188,14 @@ def import_households(households, division1_slug, division2_slug):
 
 
 def import_attendees(peoples, division3_slug, data_assembly_slug, member_gathering_id):
+    """
+    Importer of each people from MS Access.
+    :param peoples: file content of people accessible by headers, from MS Access
+    :param division3_slug: slug of division 3  # kid
+    :param data_assembly_slug: slug of data_assembly
+    :param member_gathering_id: primary id of member_gathering
+    :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
+    """
     gender_converter = {
         'F': GenderEnum.FEMALE,
         'M': GenderEnum.MALE,
@@ -313,6 +348,12 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_gatheri
 
 
 def reprocess_emails_and_family_roles(data_assembly_slug, directory_gathering_id):
+    """
+    Reprocess extra data (email/relationship) from FamilyAttendee, also do data correction of Role
+    :param data_assembly_slug: slug of data_assembly
+    :param directory_gathering_id: primary id of directory_gathering
+    :return: successfully processed relation count, also print out importing status and write to Attendees db (create or update)
+    """
     print("\n\nRunning reprocess_family_roles: \n")
     husband_role = Relation.objects.get(
         title='husband',
@@ -487,6 +528,13 @@ def update_attendee_member(attendee, member_registration, member_gathering):
 
 
 def update_directory_data(data_assembly, family, directory_gathering):
+    """
+    update assembly and gathering for directory.
+    :param data_assembly: data_assembly
+    :param family: each family
+    :param directory_gathering: directory_gathering
+    :return: None, but print out importing status and write to Attendees db (create or update)
+    """
     if family.infos.get('access_household_values', {}).get('PrintDir'):
         access_household_id = family.infos.get('access_household_id')
         househead = family.attendees.order_by('familyattendee__display_order').first()
@@ -508,6 +556,12 @@ def update_directory_data(data_assembly, family, directory_gathering):
 
 
 def update_attendee_photo(attendee, photo_names):
+    """
+    search photo file and update photo for attendee (update/create).
+    :param attendee: attendee
+    :param photo_names: photo_names from MS Access data
+    :return: None, but  write to Attendees db (create or update)
+    """
     import_photo_success = False
     if photo_names:
         photo_infos={}
