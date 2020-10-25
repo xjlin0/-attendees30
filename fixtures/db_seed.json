@@ -3494,9 +3494,9 @@
       "modified": "2020-05-11T14:39:46.573Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "\u6703\u773e",
+      "display_name": "一般會眾",
       "display_order": 0,
-      "slug": "d7c8Fd-cfcc-congregation-general",
+      "slug": "d7c8Fd-cfcc-congregation-data-general",
       "info": null,
       "type": "audience"
     }
@@ -3589,6 +3589,36 @@
       "slug": "2020-cfcc-summer-retreat2020-passenger",
       "info": null,
       "type": "normal"
+    }
+  },
+  {
+    "model": "occasions.character",
+    "pk": 22,
+    "fields": {
+      "created": "2020-06-19T21:58:12.422Z",
+      "modified": "2020-06-19T21:58:31.744Z",
+      "is_removed": false,
+      "assembly": 6,
+      "display_name": "教會會員",
+      "display_order": 0,
+      "slug": "d7c8Fd-cfcc-congregation-data-member",
+      "info": null,
+      "type": "internal"
+    }
+  },
+  {
+    "model": "occasions.character",
+    "pk": 23,
+    "fields": {
+      "created": "2020-06-19T21:58:12.422Z",
+      "modified": "2020-06-19T21:58:31.744Z",
+      "is_removed": false,
+      "assembly": 6,
+      "display_name": "教會通訊錄",
+      "display_order": 0,
+      "slug": "d7c8Fd-cfcc-congregation-data-directory",
+      "info": null,
+      "type": "internal"
     }
   },
   {

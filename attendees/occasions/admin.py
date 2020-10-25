@@ -9,6 +9,7 @@ from .models import *
 
 
 class AssemblyAddressAdmin(admin.ModelAdmin):
+    readonly_fields = ['id', 'created', 'modified']
     list_display = ('assembly', 'address', 'modified')
 
 
@@ -46,8 +47,9 @@ class AttendanceAdmin(admin.ModelAdmin):
 
     def get_attendee(self, obj):
         return obj.attending.attendee
-    get_attendee.admin_order_field  = 'attendee'  #Allows column order sorting
+    get_attendee.admin_order_field = 'attendee'  #Allows column order sorting
     get_attendee.short_description = 'attendee'  #Rename
+
 
 class AttendanceInline(admin.StackedInline):
     model = Attendance
@@ -63,6 +65,7 @@ class AttendanceInline(admin.StackedInline):
 class CharacterAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     list_filter = ('assembly',)
+    readonly_fields = ['id', 'created', 'modified']
     list_display_links = ('display_name',)
     list_display = ('id', 'assembly', 'display_name', 'slug', 'display_order', 'type')
 
