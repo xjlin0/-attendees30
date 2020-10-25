@@ -5,10 +5,9 @@ from glob import glob
 from pathlib import Path
 from django.core.files import File
 
-from attendees.occasions.models import Gathering, Assembly, Meet
+from attendees.occasions.models import Assembly, Meet
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
-    AttendeeAddress, Relationship, Registration, Attending
-from attendees.users.admin import User
+    AttendeeAddress, Relationship, Registration, Attending, AttendingMeet
 from attendees.whereabouts.models import Address, Division
 
 
@@ -187,13 +186,13 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples, division3_slug, data_assembly_slug, member_gathering_id):
+def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug):
     """
     Importer of each people from MS Access.
     :param peoples: file content of people accessible by headers, from MS Access
-    :param division3_slug: slug of division 3  # kid
-    :param data_assembly_slug: slug of data_assembly
-    :param member_gathering_id: primary id of member_gathering
+    :param division3_slug: key of division 3  # kid
+    :param data_assembly_slug: key of data_assembly
+    :param member_meet_slug: key of member_meet
     :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
     """
     gender_converter = {
@@ -225,18 +224,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_gatheri
     print("\n\nRunning import_attendees: \n")
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
-    member_gathering = Gathering.objects.get(pk=member_gathering_id)
-    admin_iniviter = User.objects.first().attendee # Todo: assume the first user is the system admin, need to change the registration of main_attendee to secretary after importing all attendees
-    member_registration, member_registration_created = Registration.objects.update_or_create(
-        infos__created_reason='CFCC member registration from importer',
-        defaults={
-            'main_attendee': admin_iniviter,
-            'assembly': data_assembly,
-            'infos': {
-                'created_reason': 'CFCC member registration from importer',
-            }
-        }
-    )
+    member_meet = Meet.objects.get(slug=member_meet_slug)
 
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
@@ -291,7 +279,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_gatheri
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_member(attendee, member_registration, member_gathering)
+                update_attendee_member(attendee, data_assembly, member_meet)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -522,10 +510,56 @@ def reprocess_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
     return successfully_processed_count
 
 
-def update_attendee_member(attendee, member_registration, member_meet):
+def update_attendee_member(attendee, data_assembly, member_meet):
     # members = family.attendees.filter(progressions__cfcc_member=True)
     if attendee.progressions.get('cfcc_member'):
-        pass
+        member_registration, member_registration_created = Registration.objects.update_or_create(
+            infos__created_reason='CFCC member registration from importer',
+            main_attendee=attendee,
+            defaults={
+                'main_attendee': attendee,  # admin/secretary may change for future members.
+                'assembly': data_assembly,
+                'infos': {
+                    'created_reason': 'CFCC member registration from importer',
+                }
+            }
+        )
+
+        member_attending, member_attending_created = Attending.objects.update_or_create(
+            infos__created_reason='CFCC member registration from importer',
+            attendee=attendee,
+            registration=member_registration,
+            defaults={
+                'registration': member_registration,
+                'attendee': attendee,
+                'infos': {
+                    'created_reason': 'CFCC member registration from importer',
+                }
+            }
+        )
+
+        attending_meet_default = {
+            'attending': member_attending,
+            'meet': member_meet,
+            'character': 'CFCC member',
+            'category': 'primary',
+            'finish': Utility.forever(),
+            'info':{
+                'created_reason': 'CFCC member registration from importer',
+            }
+
+        }
+
+        if attendee.progressions.get('member_since'):
+            attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d')
+        else:
+            attending_meet_default['start'] = Utility.now_with_timezone()
+
+        AttendingMeet.objects.update_or_create(
+            attending=member_attending,
+            meet=member_meet,
+            defaults=attending_meet_default,
+        )
 
 
 def update_directory_data(data_assembly, family, directory_meet):
@@ -564,8 +598,22 @@ def update_directory_data(data_assembly, family, directory_meet):
                     }
                 )
 
-                directory_attending.meets.add(directory_meet)
-                directory_attending.save()
+                AttendingMeet.objects.update_or_create(
+                    attending=directory_attending,
+                    meet=directory_meet,
+                    defaults={
+                        'attending': directory_attending,
+                        'meet': directory_meet,
+                        'character': 'directory lister',
+                        'category': 'primary',
+                        'start': Utility.now_with_timezone(),
+                        'finish': Utility.forever(),
+                        'info':{
+                            'created_reason': 'CFCC directory listing from importer',
+                        }
+
+                    }
+                )
 
 
 def update_attendee_photo(attendee, photo_names):
