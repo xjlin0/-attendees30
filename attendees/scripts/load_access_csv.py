@@ -1,4 +1,5 @@
 import csv, os, pytz
+from dateutil.parser import parse
 from datetime import datetime
 from itertools import permutations
 from glob import glob
@@ -511,7 +512,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
-            print('Cannot save relationship, reason: ', e)
+            print('Cannot save relationship or update_directory_data, reason: ', e)
     print('done!')
     return successfully_processed_count
 
@@ -552,7 +553,14 @@ def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_cha
         }
 
         if attendee.progressions.get('member_since'):
-            attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
+            try:
+                attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
+            except Exception as e:
+                print("\nWhile get member join date for attendee: ", attendee)
+                print("in attendee.progressions: ", attendee.progressions)
+                print('cannot parse the member join date, reason: ', e)
+                attending_meet_default['start'] = parse(attendee.progressions.get('member_since')).astimezone(pdt)
+                print('randomly making a wild guess here of the date to be: ', attending_meet_default['start'])
         else:
             attending_meet_default['start'] = Utility.now_with_timezone()
 
@@ -588,7 +596,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                 }
             )
 
-            for family_member in family.attendees:
+            for family_member in family.attendees.all():
                 directory_attending, directory_attending_created = Attending.objects.update_or_create(
                     infos__access_household_id=access_household_id,
                     defaults={
