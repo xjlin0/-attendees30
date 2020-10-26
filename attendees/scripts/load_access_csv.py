@@ -1,11 +1,11 @@
-import csv, os
+import csv, os, pytz
 from datetime import datetime
 from itertools import permutations
 from glob import glob
 from pathlib import Path
 from django.core.files import File
 
-from attendees.occasions.models import Assembly, Meet
+from attendees.occasions.models import Assembly, Meet, Character
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
     AttendeeAddress, Relationship, Registration, Attending, AttendingMeet
 from attendees.whereabouts.models import Address, Division
@@ -20,7 +20,9 @@ def import_household_people_address(
         division3_slug,
         data_assembly_slug,
         member_meet_slug,
-        directory_meet_slug
+        directory_meet_slug,
+        member_character_slug,
+        directory_character_slug,
     ):
     """
     Entry function of entire importer, it execute importers in sequence and print out results.
@@ -33,6 +35,8 @@ def import_household_people_address(
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_gathering
     :param directory_meet_slug: key of directory_gathering
+    :param member_character_slug: key of member_character
+    :param directory_character_slug: key of directory_character
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
 
@@ -49,10 +53,10 @@ def import_household_people_address(
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug)
+        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            upserted_relationship_count = reprocess_emails_and_family_roles(data_assembly_slug , directory_meet_slug)
+            upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug)
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
             print('Initial address count: ', initial_address_count, '. final address count: ', Address.objects.count(), end="\n")
@@ -186,13 +190,14 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug):
+def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug):
     """
     Importer of each people from MS Access.
     :param peoples: file content of people accessible by headers, from MS Access
     :param division3_slug: key of division 3  # kid
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
+    :param member_character_slug: key of member_character
     :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
     """
     gender_converter = {
@@ -225,7 +230,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     member_meet = Meet.objects.get(slug=member_meet_slug)
-
+    pdt = pytz.timezone('America/Los_Angeles')
+    member_character = Character.objects.get(slug=member_character_slug)
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -279,7 +285,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_member(attendee, data_assembly, member_meet)
+                update_attendee_member(pdt, attendee, data_assembly, member_meet, member_character)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -335,7 +341,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     return successfully_processed_count, photo_import_results  # list(filter(None.__ne__, photo_import_results))
 
 
-def reprocess_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
+def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug):
     """
     Reprocess extra data (email/relationship) from FamilyAttendee, also do data correction of Role
     :param data_assembly_slug: key of data_assembly
@@ -354,7 +360,7 @@ def reprocess_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
     )
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     directory_meet = Meet.objects.get(slug=directory_meet_slug)
-
+    directory_character = Character.objects.get(slug=directory_character_slug)
     imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
     successfully_processed_count = 0
     for family in imported_families:
@@ -501,7 +507,7 @@ def reprocess_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
                     )
                     successfully_processed_count += 2
 
-            update_directory_data(data_assembly, family, directory_meet)
+            update_directory_data(data_assembly, family, directory_meet, directory_character)
 
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
@@ -510,8 +516,7 @@ def reprocess_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
     return successfully_processed_count
 
 
-def update_attendee_member(attendee, data_assembly, member_meet):
-    # members = family.attendees.filter(progressions__cfcc_member=True)
+def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_character):
     if attendee.progressions.get('cfcc_member'):
         member_registration, member_registration_created = Registration.objects.update_or_create(
             infos__created_reason='CFCC member registration from importer',
@@ -541,17 +546,13 @@ def update_attendee_member(attendee, data_assembly, member_meet):
         attending_meet_default = {
             'attending': member_attending,
             'meet': member_meet,
-            'character': 'CFCC member',
+            'character': member_character,
             'category': 'primary',
             'finish': Utility.forever(),
-            'info':{
-                'created_reason': 'CFCC member registration from importer',
-            }
-
         }
 
         if attendee.progressions.get('member_since'):
-            attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d')
+            attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
         else:
             attending_meet_default['start'] = Utility.now_with_timezone()
 
@@ -562,12 +563,13 @@ def update_attendee_member(attendee, data_assembly, member_meet):
         )
 
 
-def update_directory_data(data_assembly, family, directory_meet):
+def update_directory_data(data_assembly, family, directory_meet, directory_character):
     """
     update assembly and gathering for directory.
     :param data_assembly: data_assembly
     :param family: each family
     :param directory_meet: directory_meet
+    :param directory_character: directory_character
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
     if family.infos.get('access_household_values', {}).get('PrintDir') == 'TRUE':
@@ -604,14 +606,10 @@ def update_directory_data(data_assembly, family, directory_meet):
                     defaults={
                         'attending': directory_attending,
                         'meet': directory_meet,
-                        'character': 'directory lister',
+                        'character': directory_character,
                         'category': 'primary',
                         'start': Utility.now_with_timezone(),
                         'finish': Utility.forever(),
-                        'info':{
-                            'created_reason': 'CFCC directory listing from importer',
-                        }
-
                     }
                 )
 
@@ -672,6 +670,8 @@ def run(
         data_assembly_slug,
         member_meet_slug,
         directory_meet_slug,
+        member_character_slug,
+        directory_character_slug,
         *extras
     ):
     """
@@ -686,6 +686,8 @@ def run(
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
     :param directory_meet_slug: key of directory_meet
+    :param member_character_slug: key of member_character
+    :param directory_character_slug: key of directory_character
     :param extras: optional other arguments
     :return: None, but write to Attendees db (create or update)
     """
@@ -700,10 +702,23 @@ def run(
     print("Reading data_assembly_slug: ", data_assembly_slug)
     print("Reading member_meet_slug: ", member_meet_slug)
     print("Reading directory_meet_slug: ", directory_meet_slug)
+    print("Reading member_character_slug: ", member_character_slug)
+    print("Reading directory_character_slug: ", directory_character_slug)
     print("Reading extras: ", extras)
-    print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug division3_slug member_data_assembly_slug gathering_id directory_gathering_id")
+    print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug division3_slug member_data_assembly_member_meet_slug directory_meet_slug member_character_slug directory_character_slug")
 
     if household_csv_file and people_csv_file and address_csv_file and division1_slug and division2_slug:
         with open(household_csv_file, mode='r', encoding='utf-8-sig') as household_csv, open(people_csv_file, mode='r', encoding='utf-8-sig') as people_csv, open(address_csv_file, mode='r', encoding='utf-8-sig') as address_csv:
             import_household_people_address(
-                household_csv, people_csv, address_csv, division1_slug, division2_slug, division3_slug, data_assembly_slug, member_meet_slug, directory_meet_slug)
+                household_csv,
+                people_csv,
+                address_csv,
+                division1_slug,
+                division2_slug,
+                division3_slug,
+                data_assembly_slug,
+                member_meet_slug,
+                directory_meet_slug,
+                member_character_slug,
+                directory_character_slug
+            )
