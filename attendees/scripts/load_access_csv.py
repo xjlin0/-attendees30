@@ -1,5 +1,4 @@
-import csv, os, pytz
-from dateutil.parser import parse
+import csv, os, pytz, dateparser
 from datetime import datetime
 from itertools import permutations
 from glob import glob
@@ -455,7 +454,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     families_address.email1 = Utility.presence(self_email)
                     families_address.save()
                 else:
-                    print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. househead_single: ', househead_single, '. household_id: ', family.infos['access_household_id'], '. Continuing to next record.')
+                    if Attendee.objects.filter(infos__access_people_household_id=family.infos['access_household_id']):
+                        print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
+                    else:
+                        pass  # skipping since there is no such people with the household id in the original access data.
 
             siblings = permutations(children, 2)
             for (from_child, to_child) in siblings:
@@ -559,7 +561,7 @@ def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_cha
                 print("\nWhile get member join date for attendee: ", attendee)
                 print("in attendee.progressions: ", attendee.progressions)
                 print('cannot parse the member join date, reason: ', e)
-                attending_meet_default['start'] = parse(attendee.progressions.get('member_since')).astimezone(pdt)
+                attending_meet_default['start'] = dateparser.parse(attendee.progressions.get('member_since')).astimezone(pdt)
                 print('randomly making a wild guess here of the date to be: ', attending_meet_default['start'])
         else:
             attending_meet_default['start'] = Utility.now_with_timezone()
