@@ -521,27 +521,28 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
 def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_character):
     if attendee.progressions.get('cfcc_member'):
-        member_registration, member_registration_created = Registration.objects.update_or_create(
-            infos__created_reason='CFCC member registration from importer',
+        access_household_id = attendee.infos.get('access_people_household_id')
+        data_registration, data_registration_created = Registration.objects.update_or_create(
+            assembly=data_assembly,
             main_attendee=attendee,
             defaults={
                 'main_attendee': attendee,  # admin/secretary may change for future members.
                 'assembly': data_assembly,
                 'infos': {
-                    'created_reason': 'CFCC member registration from importer',
+                    'access_household_id': access_household_id,
+                    'created_reason': 'CFCC member/directory registration from importer',
                 }
             }
         )
 
         member_attending, member_attending_created = Attending.objects.update_or_create(
-            infos__created_reason='CFCC member registration from importer',
             attendee=attendee,
-            registration=member_registration,
+            registration=data_registration,
             defaults={
-                'registration': member_registration,
+                'registration': data_registration,
                 'attendee': attendee,
                 'infos': {
-                    'created_reason': 'CFCC member registration from importer',
+                    'created_reason': 'CFCC member/directory registration from importer',
                 }
             }
         )
@@ -587,22 +588,25 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
         househead = family.attendees.order_by('familyattendee__display_order').first()
 
         if househead:
-            directory_registration, directory_registration_created = Registration.objects.update_or_create(
-                infos__access_household_id=access_household_id,
+            data_registration, data_registration_created = Registration.objects.update_or_create(
+                assembly=data_assembly,
+                main_attendee=househead,
                 defaults={
                     'main_attendee': househead,
                     'assembly': data_assembly,
                     'infos': {
                         'access_household_id': access_household_id,
+                        'created_reason': 'CFCC member/directory registration from importer',
                     }
                 }
             )
 
             for family_member in family.attendees.all():
                 directory_attending, directory_attending_created = Attending.objects.update_or_create(
-                    infos__access_household_id=access_household_id,
+                    registration=data_registration,
+                    attendee=family_member,
                     defaults={
-                        'registration': directory_registration,
+                        'registration': data_registration,
                         'attendee': family_member,
                         'infos': {
                             'access_household_id': access_household_id,
