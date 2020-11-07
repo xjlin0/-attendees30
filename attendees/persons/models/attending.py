@@ -30,9 +30,12 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
     def get_absolute_url(self):
         return reverse('attending_detail', args=[str(self.id)])
 
-    class Meta:  # Todo: add unique constrain for registration & attendee even registration can be null.
+    class Meta:
         db_table = 'persons_attendings'
         ordering = ['registration']
+        constraints = [
+            models.UniqueConstraint(fields=['registration', 'attendee'], name="registration_attendee")
+        ]
         indexes = [
             GinIndex(fields=['infos'], name='attending_infos_gin', ),
         ]

@@ -30,9 +30,12 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
     def main_attendee_name(self):
         return self.main_attendee
 
-    class Meta:  # Same main attendee may register for the same assembly for different events, so No uniq key on main_attendee & assembly
+    class Meta:
         db_table = 'persons_registrations'
         ordering = ('assembly', 'main_attendee__last_name', 'main_attendee__first_name')
+        constraints = [
+            models.UniqueConstraint(fields=['assembly', 'main_attendee'], name="assembly_main_attendee")
+        ]
         indexes = [
             GinIndex(fields=['infos'], name='registration_infos_gin', ),
         ]

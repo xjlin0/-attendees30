@@ -76,6 +76,7 @@ class AttendeeAdmin(admin.ModelAdmin):
 
 
 class RegistrationAdmin(admin.ModelAdmin):
+    list_per_page = 600
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
@@ -89,6 +90,7 @@ class AttendanceInline(admin.StackedInline):
 
 
 class AttendingAdmin(admin.ModelAdmin):
+    list_per_page = 600
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }

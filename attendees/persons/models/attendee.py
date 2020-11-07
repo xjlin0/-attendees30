@@ -35,7 +35,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     @property
     def display_label(self):
-        return (self.first_name or '') + ' ' + (self.last_name or '') + (self.last_name2 or '') + ' ' + (self.first_name2 or '')
+        return (self.first_name or '') + ' ' + (self.last_name or '') + ' ' + (self.last_name2 or '') + (self.first_name2 or '')
 
     @cached_property
     def family_members(self):
