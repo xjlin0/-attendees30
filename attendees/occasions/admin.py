@@ -84,7 +84,7 @@ class MeetAdmin(admin.ModelAdmin):
     search_fields = ('display_name',)
     list_filter = ('assembly',)
     list_display_links = ('display_name',)
-    list_display = ('display_name', 'slug', 'assembly', 'location')
+    list_display = ('id', 'display_name', 'slug', 'assembly', 'location')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish', 'slug']),
