@@ -23,6 +23,8 @@ def import_household_people_address(
         directory_meet_slug,
         member_character_slug,
         directory_character_slug,
+        roaster_meet_slug,
+        data_general_character_slug,
     ):
     """
     Entry function of entire importer, it execute importers in sequence and print out results.
@@ -37,6 +39,8 @@ def import_household_people_address(
     :param directory_meet_slug: key of directory_gathering
     :param member_character_slug: key of member_character
     :param directory_character_slug: key of directory_character
+    :param roaster_meet_slug: key of roaster_meet_slug
+    :param data_general_character_slug: key of data_general_character_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
 
@@ -53,7 +57,7 @@ def import_household_people_address(
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug)
+        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
             upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug)
@@ -190,7 +194,7 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug):
+def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug):
     """
     Importer of each people from MS Access.
     :param peoples: file content of people accessible by headers, from MS Access
@@ -198,6 +202,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
     :param member_character_slug: key of member_character
+    :param roaster_meet_slug: key of roaster_meet_slug
+    :param data_general_character_slug: key of data_general_character_slug
     :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
     """
     gender_converter = {
@@ -230,8 +236,10 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     member_meet = Meet.objects.get(slug=member_meet_slug)
+    roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
     pdt = pytz.timezone('America/Los_Angeles')
     member_character = Character.objects.get(slug=member_character_slug)
+    roaster_character = Character.objects.get(slug=data_general_character_slug)
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -285,7 +293,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_member(pdt, attendee, data_assembly, member_meet, member_character)
+                update_attendee_attendings(pdt, attendee, data_assembly, member_meet, member_character)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -330,6 +338,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             )
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
+
+                update_attendee_roaster(attendee, data_assembly, roaster_meet, roaster_character)
             else:
                 print('There is no household_id or first/lastname of the people: ', people)
             successfully_processed_count += 1
@@ -519,7 +529,46 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     return successfully_processed_count
 
 
-def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_character):
+def update_attendee_roaster(attendee, data_assembly, roaster_meet, roaster_character):
+    if attendee.infos.get('attendance_count'):
+        access_household_id = attendee.infos.get('access_people_household_id')
+        data_registration, data_registration_created = Registration.objects.update_or_create(
+            assembly=data_assembly,
+            main_attendee=attendee,
+            defaults={
+                'main_attendee': attendee,  # admin/secretary may change for future members.
+                'assembly': data_assembly,
+                'infos': {
+                    'access_household_id': access_household_id,
+                    'created_reason': 'CFCC member/directory registration from importer',
+                }
+            }
+        )
+
+        data_attending, data_attending_created = Attending.objects.update_or_create(
+            attendee=attendee,
+            registration=data_registration,
+            defaults={
+                'registration': data_registration,
+                'attendee': attendee,
+                'infos': {
+                    'created_reason': 'CFCC member/directory registration from importer',
+                }
+            }
+        )
+
+        AttendingMeet.objects.update_or_create(
+            attending=data_attending,
+            meet=roaster_meet,
+            defaults={
+                'character': roaster_character,
+                'category': 'primary',
+                'finish': Utility.forever(),
+            },
+        )
+
+
+def update_attendee_attendings(pdt, attendee, data_assembly, member_meet, member_character):
     if attendee.progressions.get('cfcc_member'):
         access_household_id = attendee.infos.get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
@@ -535,7 +584,7 @@ def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_cha
             }
         )
 
-        member_attending, member_attending_created = Attending.objects.update_or_create(
+        data_attending, data_attending_created = Attending.objects.update_or_create(
             attendee=attendee,
             registration=data_registration,
             defaults={
@@ -547,30 +596,30 @@ def update_attendee_member(pdt, attendee, data_assembly, member_meet, member_cha
             }
         )
 
-        attending_meet_default = {
-            'attending': member_attending,
+        member_attending_meet_default = {
+            'attending': data_attending,
             'meet': member_meet,
             'character': member_character,
-            'category': 'primary',
+            'category': 'tertiary',
             'finish': Utility.forever(),
         }
 
         if attendee.progressions.get('member_since'):
             try:
-                attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
+                member_attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
             except Exception as e:
                 print("\nWhile get member join date for attendee: ", attendee)
                 print("in attendee.progressions: ", attendee.progressions)
                 print('cannot parse the member join date, reason: ', e)
-                attending_meet_default['start'] = dateparser.parse(attendee.progressions.get('member_since')).astimezone(pdt)
-                print('randomly making a wild guess here of the date to be: ', attending_meet_default['start'])
+                member_attending_meet_default['start'] = dateparser.parse(attendee.progressions.get('member_since')).astimezone(pdt)
+                print('randomly making a wild guess here of the date to be: ', member_attending_meet_default['start'])
         else:
-            attending_meet_default['start'] = Utility.now_with_timezone()
+            member_attending_meet_default['start'] = Utility.now_with_timezone()
 
         AttendingMeet.objects.update_or_create(
-            attending=member_attending,
+            attending=data_attending,
             meet=member_meet,
-            defaults=attending_meet_default,
+            defaults=member_attending_meet_default,
         )
 
 
@@ -621,7 +670,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'attending': directory_attending,
                         'meet': directory_meet,
                         'character': directory_character,
-                        'category': 'primary',
+                        'category': 'secondary',
                         'start': Utility.now_with_timezone(),
                         'finish': Utility.forever(),
                     }
@@ -686,6 +735,8 @@ def run(
         directory_meet_slug,
         member_character_slug,
         directory_character_slug,
+        roaster_meet_slug,
+        data_general_character_slug,
         *extras
     ):
     """
@@ -696,12 +747,13 @@ def run(
     :param division1_slug: key of division 1  # ch
     :param division2_slug: key of division 2  # en
     :param division3_slug: key of division 3  # kid
-    :param division3_slug: key of division 3  # kid
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
     :param directory_meet_slug: key of directory_meet
     :param member_character_slug: key of member_character
     :param directory_character_slug: key of directory_character
+    :param roaster_meet_slug: key of roaster_meet_slug
+    :param data_general_character_slug: key of data_general_character_slug
     :param extras: optional other arguments
     :return: None, but write to Attendees db (create or update)
     """
@@ -718,6 +770,8 @@ def run(
     print("Reading directory_meet_slug: ", directory_meet_slug)
     print("Reading member_character_slug: ", member_character_slug)
     print("Reading directory_character_slug: ", directory_character_slug)
+    print("Reading roaster_meet_slug: ", roaster_meet_slug)
+    print("Reading data_general_character_slug: ", data_general_character_slug)
     print("Reading extras: ", extras)
     print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug division3_slug member_data_assembly_member_meet_slug directory_meet_slug member_character_slug directory_character_slug")
 
@@ -734,5 +788,7 @@ def run(
                 member_meet_slug,
                 directory_meet_slug,
                 member_character_slug,
-                directory_character_slug
+                directory_character_slug,
+                roaster_meet_slug,
+                data_general_character_slug,
             )
