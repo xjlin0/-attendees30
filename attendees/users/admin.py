@@ -28,6 +28,7 @@ class MenuAuthGroupInline(admin.TabularInline):
 
 @admin.register(Menu)
 class MenuAdmin(MPTTModelAdmin):
+    readonly_fields = ['id', 'created', 'modified']
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'100%'})},
     }

@@ -51,7 +51,7 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
         max_length=255,
         blank=True,
         null=True,
-        help_text="use relative path (including leading & ending slash '/') such as /0_organization_name/app/division/meets/",
+        help_text="use relative path (including leading & ending slash '/') such as /app/division/assembly/page-name",
     )
 
     url_name = models.SlugField(

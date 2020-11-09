@@ -286,7 +286,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 4,
+      "rght": 6,
       "tree_id": 3,
       "level": 0
     }
@@ -304,11 +304,36 @@
       "html_type": "a",
       "urn": "/occasions/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_all_attendances/",
       "url_name": "datagrid_assembly_all_attendances",
-      "display_name": "\u5d07\u62dc\u9ede\u540d\u55ae roaster",
+      "display_name": "\u6703\u773e\u51fa\u5e2d attendance",
       "display_order": 3500,
       "infos": {
         "class": "dropdown-item",
         "title": "roaster list"
+      },
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 3,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 14,
+    "fields": {
+      "created": "2020-11-09T00:11:23.118Z",
+      "modified": "2020-11-09T00:12:21.495Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 12,
+      "html_type": "a",
+      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_all_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
+      "url_name": "datagrid_assembly_all_attendings",
+      "display_name": "\u6703\u773e\u53c3\u8207 attending",
+      "display_order": 3200,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "congregation attending"
       },
       "lft": 2,
       "rght": 3,
@@ -359,6 +384,7 @@
       "state": "CA",
       "zip_code": "94541",
       "url": "https://chineseforchristchurch.org/",
+      "country": "N/A",
       "fields": {
         "id": 1
       }
@@ -383,6 +409,7 @@
       "state": "CA",
       "zip_code": "94541",
       "url": "https://www.thecrossing.website/",
+      "country": "N/A",
       "fields": {
         "id": 2
       }
@@ -407,6 +434,7 @@
       "state": "CA",
       "zip_code": "11111",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 3
       }
@@ -431,6 +459,7 @@
       "state": "CA",
       "zip_code": "22222",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 4
       }
@@ -455,6 +484,7 @@
       "state": "CA",
       "zip_code": "33333",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 5
       }
@@ -479,6 +509,7 @@
       "state": "CA",
       "zip_code": "44444",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 6
       }
@@ -503,6 +534,7 @@
       "state": "CA",
       "zip_code": "55555",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 7
       }
@@ -527,6 +559,7 @@
       "state": "CA",
       "zip_code": "66666",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 8
       }
@@ -551,6 +584,7 @@
       "state": "GG",
       "zip_code": "99999",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 9
       }
@@ -575,6 +609,7 @@
       "state": "TW",
       "zip_code": null,
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 10
       }
@@ -599,6 +634,7 @@
       "state": "CA",
       "zip_code": "94928",
       "url": null,
+      "country": "N/A",
       "fields": {
         "id": 11
       }
@@ -3494,7 +3530,7 @@
       "modified": "2020-05-11T14:39:46.573Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "一般會眾",
+      "display_name": "\u4e00\u822c\u6703\u773e",
       "display_order": 0,
       "slug": "d7c8Fd-cfcc-congregation-data-general",
       "info": null,
@@ -3599,7 +3635,7 @@
       "modified": "2020-06-19T21:58:31.744Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "教會會員",
+      "display_name": "\u6559\u6703\u6703\u54e1",
       "display_order": 0,
       "slug": "d7c8Fd-cfcc-congregation-data-member",
       "info": null,
@@ -3614,7 +3650,7 @@
       "modified": "2020-06-19T21:58:31.744Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "教會通訊錄",
+      "display_name": "\u6559\u6703\u901a\u8a0a\u9304",
       "display_order": 0,
       "slug": "d7c8Fd-cfcc-congregation-data-directory",
       "info": null,
@@ -4421,7 +4457,7 @@
       "meet": 9,
       "start": "2020-07-18T17:45:00Z",
       "finish": "2099-07-18T19:00:00Z",
-      "display_name": "CFCCH會員 member",
+      "display_name": "CFCCH\u6703\u54e1 member",
       "infos": {},
       "occurrence": null,
       "site_type": 32,
@@ -4438,7 +4474,7 @@
       "meet": 8,
       "start": "2020-07-18T17:45:00Z",
       "finish": "2099-07-18T19:00:00Z",
-      "display_name": "CFCCH通訊錄 directory",
+      "display_name": "CFCCH\u901a\u8a0a\u9304 directory",
       "infos": {},
       "occurrence": null,
       "site_type": 32,
@@ -4957,10 +4993,6 @@
         74,
         75,
         76,
-        185,
-        186,
-        187,
-        188,
         189,
         190,
         191,
@@ -4993,6 +5025,10 @@
         154,
         155,
         156,
+        185,
+        186,
+        187,
+        188,
         181,
         182,
         183,
@@ -5082,10 +5118,6 @@
         70,
         71,
         72,
-        185,
-        186,
-        187,
-        188,
         189,
         190,
         192,
@@ -5114,6 +5146,10 @@
         154,
         155,
         156,
+        185,
+        186,
+        187,
+        188,
         181,
         182,
         184,
@@ -5176,9 +5212,6 @@
         28,
         29,
         76,
-        185,
-        186,
-        188,
         193,
         194,
         196,
@@ -5193,6 +5226,9 @@
         153,
         154,
         156,
+        185,
+        186,
+        188,
         184,
         145,
         149,
@@ -5229,34 +5265,30 @@
         70,
         71,
         72,
-        185,
-        186,
-        187,
-        188,
         189,
         190,
         191,
         192,
-        197,
-        198,
-        199,
-        200,
-        205,
-        206,
-        207,
-        208,
-        201,
-        202,
-        203,
-        204,
         193,
         194,
         195,
         196,
+        201,
+        202,
+        203,
+        204,
         209,
         210,
         211,
         212,
+        205,
+        206,
+        207,
+        208,
+        197,
+        198,
+        199,
+        200,
         157,
         158,
         159,
@@ -5281,6 +5313,10 @@
         154,
         155,
         156,
+        185,
+        186,
+        187,
+        188,
         181,
         182,
         183,
@@ -5358,38 +5394,34 @@
         74,
         75,
         76,
-        185,
-        186,
-        187,
-        188,
         189,
         190,
         191,
         192,
-        213,
-        214,
-        215,
-        216,
-        197,
-        198,
-        199,
-        200,
-        205,
-        206,
-        207,
-        208,
-        201,
-        202,
-        203,
-        204,
         193,
         194,
         195,
         196,
+        201,
+        202,
+        203,
+        204,
         209,
         210,
         211,
         212,
+        205,
+        206,
+        207,
+        208,
+        197,
+        198,
+        199,
+        200,
+        213,
+        214,
+        215,
+        216,
         157,
         158,
         159,
@@ -5414,6 +5446,10 @@
         154,
         155,
         156,
+        185,
+        186,
+        187,
+        188,
         181,
         182,
         183,
@@ -5805,6 +5841,19 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 29,
+    "fields": {
+      "created": "2020-11-09T00:11:23.143Z",
+      "modified": "2020-11-09T00:11:23.143Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 14
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 1,
     "fields": {
@@ -5899,10 +5948,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -5922,12 +5970,11 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
+      "photo": "",
       "progressions": {
         "belief": "believer"
       },
-      "photo": "",
-      "infos": {
-      }
+      "infos": {}
     }
   },
   {
@@ -5947,8 +5994,8 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
+      "progressions": {},
       "infos": {
         "public_name": "\u5f1f\u5144"
       }
@@ -5971,12 +6018,11 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
+      "photo": "",
       "progressions": {
         "belief": "judge"
       },
-      "photo": "",
-      "infos": {
-      }
+      "infos": {}
     }
   },
   {
@@ -5996,8 +6042,8 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
+      "progressions": {},
       "infos": {
         "public_name": "\u8001\u59ca"
       }
@@ -6020,8 +6066,8 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
+      "progressions": {},
       "infos": {
         "public_name": "\u6230\u795e\u4e48\u4e48"
       }
@@ -6044,10 +6090,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -6067,10 +6112,10 @@
       "actual_birthday": null,
       "estimated_birthday": "2010-02-04",
       "deathday": null,
+      "photo": "",
       "progressions": {
         "belief": "not sure"
       },
-      "photo": "",
       "infos": {
         "allergy": "peanuts",
         "public_name": "\u5927\u5bf6"
@@ -6094,10 +6139,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -6117,6 +6161,7 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
+      "photo": "",
       "progressions": {
         "belief": "believer",
         "baptized": {
@@ -6124,7 +6169,6 @@
           "place": "SF, CA"
         }
       },
-      "photo": "",
       "infos": {
         "public_name": "root"
       }
@@ -6147,10 +6191,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -6170,10 +6213,10 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
+      "photo": "",
       "progressions": {
         "belief": "baptized"
       },
-      "photo": "",
       "infos": {
         "other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
       }
@@ -6196,8 +6239,8 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
+      "progressions": {},
       "infos": {
         "public_name": "\u4f7f\u5f92\u7d04\u7ff0"
       }
@@ -6220,10 +6263,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -6243,8 +6285,8 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
+      "progressions": {},
       "infos": {
         "public_name": "\u7687\u540e"
       }
@@ -6267,10 +6309,9 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "progressions": {},
       "photo": "",
-      "infos": {
-      }
+      "progressions": {},
+      "infos": {}
     }
   },
   {
