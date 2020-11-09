@@ -37,6 +37,10 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def display_label(self):
         return (self.first_name or '') + ' ' + (self.last_name or '') + ' ' + (self.last_name2 or '') + (self.first_name2 or '')
 
+    @property
+    def division_label(self):
+        return self.division.display_name if self.division else None
+
     @cached_property
     def family_members(self):
         return self.__class__.objects.filter(families__in=self.families.all())
@@ -64,10 +68,10 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         return self.caregiver_addresses_for_fields_of(['phone1', 'phone2'])
 
     def caregiver_addresses_for_fields_of(self, fields):
-        return ', '.join(
+        return ', '.join(set(
             a.self_addresses_for_fields_of(fields) for a in
                 self.get_relative_emergency_contacts()
-        )
+        ))
 
     def get_relative_emergency_contacts(self):
         return self.related_ones.filter(

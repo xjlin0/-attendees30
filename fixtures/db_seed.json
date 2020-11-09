@@ -5874,7 +5874,7 @@
       "modified": "2020-04-26T02:24:52.639Z",
       "is_removed": false,
       "organization": 1,
-      "display_name": "Crossing Ministry",
+      "display_name": "The Crossing",
       "slug": "cfcc-crossing-ministry",
       "audience_auth_group": 0
     }
@@ -5887,7 +5887,7 @@
       "modified": "2020-04-26T02:24:58.270Z",
       "is_removed": false,
       "organization": 1,
-      "display_name": "Children Ministry",
+      "display_name": "Junior Ministry",
       "slug": "cfcc-children-ministry",
       "audience_auth_group": 3
     }

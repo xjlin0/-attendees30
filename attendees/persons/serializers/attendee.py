@@ -13,6 +13,7 @@ class AttendeeSerializer(serializers.ModelSerializer):
         model = Attendee
         fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
             'display_label',
+            'division_label',
             'parents_notifiers_names',
             'self_email_addresses',
             'caregiver_email_addresses',

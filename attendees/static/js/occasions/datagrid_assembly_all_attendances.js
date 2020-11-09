@@ -23,7 +23,9 @@ Attendees.attendances = {
     columnResizingMode: 'nextColumn',
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
-    loadPanel: true,
+    loadPanel: {
+      enabled: true
+    },
     grouping: {
         autoExpandAll: true,
     },

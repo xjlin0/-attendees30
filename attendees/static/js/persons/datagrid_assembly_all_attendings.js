@@ -62,7 +62,9 @@ Attendees.attendings = {
     columnResizingMode: 'nextColumn',
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
-    loadPanel: true,
+    loadPanel: {
+      enabled: true
+    },
     wordWrapEnabled: false,
     grouping: {
       autoExpandAll: true,
@@ -137,6 +139,10 @@ Attendees.attendings = {
 //      }
 //    },   // template for using registration intead
     {
+      caption: 'division',
+      dataField: "attendee.division_label",
+    },
+    {
       caption: 'grade',
       dataField: "infos.grade",
       calculateCellValue: rowData => rowData.infos.grade,
@@ -162,7 +168,7 @@ Attendees.attendings = {
       },
     },
     {
-      caption: "Parents/Caregivers",
+      caption: "Families/Caregivers",
       dataField: "attendee.parents_notifiers_names",
       calculateCellValue: rowData => rowData.attendee.parents_notifiers_names,
     },
@@ -173,7 +179,7 @@ Attendees.attendings = {
       calculateCellValue: rowData => rowData.attendee.self_email_addresses,
     },
     {
-      caption: "Parents emails",
+      caption: "Families emails",
       dataField: "attendee.caregiver_email_addresses",
       calculateCellValue: rowData => rowData.attendee.caregiver_email_addresses,
     },
@@ -183,7 +189,7 @@ Attendees.attendings = {
       calculateCellValue: rowData => rowData.attendee.self_phone_numbers,
     },
     {
-      caption: "Parents phones",
+      caption: "Families phones",
       dataField: "attendee.caregiver_phone_numbers",
       calculateCellValue: rowData => rowData.attendee.caregiver_phone_numbers,
     },
