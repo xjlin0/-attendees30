@@ -38,6 +38,11 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
+        migrations.AddConstraint(
+            model_name='attendance',
+            constraint=models.UniqueConstraint(fields=('gathering', 'attending', 'character', 'team'),
+                                               name='gathering_attending_character_team'),
+        ),
         migrations.AddIndex(
             model_name='attendance',
             index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='attendance_infos_gin'),

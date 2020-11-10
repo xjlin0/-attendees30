@@ -53,6 +53,10 @@ class Attendance(TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'occasions_attendances'
+        constraints = [
+            models.UniqueConstraint(fields=['gathering', 'attending', 'character', 'team'],
+                                    name='gathering_attending_character_team')
+        ]
         indexes = [
             GinIndex(fields=['infos'], name='attendance_infos_gin', ),
         ]

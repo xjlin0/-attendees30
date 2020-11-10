@@ -5,7 +5,7 @@ from glob import glob
 from pathlib import Path
 from django.core.files import File
 
-from attendees.occasions.models import Assembly, Meet, Character
+from attendees.occasions.models import Assembly, Meet, Character, Gathering
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
     AttendeeAddress, Relationship, Registration, Attending, AttendingMeet
 from attendees.whereabouts.models import Address, Division
@@ -236,10 +236,15 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     member_meet = Meet.objects.get(slug=member_meet_slug)
+    member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
+    roaster_gathering = Gathering.objects.filter(meet=roaster_meet).last()
     pdt = pytz.timezone('America/Los_Angeles')
     member_character = Character.objects.get(slug=member_character_slug)
     roaster_character = Character.objects.get(slug=data_general_character_slug)
+
+
+
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -293,7 +298,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_attendings(pdt, attendee, data_assembly, member_meet, member_character)
+                update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -339,7 +344,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 
-                update_attendee_roaster(attendee, data_assembly, roaster_meet, roaster_character)
+                update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roaster_character, roaster_gathering)
             else:
                 print('There is no household_id or first/lastname of the people: ', people)
             successfully_processed_count += 1
@@ -370,6 +375,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     )
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     directory_meet = Meet.objects.get(slug=directory_meet_slug)
+    directory_gathering = Gathering.objects.filter(meet=directory_meet).last()
     directory_character = Character.objects.get(slug=directory_character_slug)
     imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
     successfully_processed_count = 0
@@ -520,7 +526,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     )
                     successfully_processed_count += 2
 
-            update_directory_data(data_assembly, family, directory_meet, directory_character)
+            update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering)
 
         except Exception as e:
             print("\nWhile importing/updating relationship for family: ", family)
@@ -529,7 +535,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     return successfully_processed_count
 
 
-def update_attendee_roaster(attendee, data_assembly, roaster_meet, roaster_character):
+def update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roaster_character, roaster_gathering):
     if attendee.infos.get('attendance_count'):
         access_household_id = attendee.infos.get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
@@ -567,8 +573,10 @@ def update_attendee_roaster(attendee, data_assembly, roaster_meet, roaster_chara
             },
         )
 
+        # Todo: need to add gathering so that attendance list shows up
 
-def update_attendee_attendings(pdt, attendee, data_assembly, member_meet, member_character):
+
+def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering):
     if attendee.progressions.get('cfcc_member'):
         access_household_id = attendee.infos.get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
@@ -622,14 +630,17 @@ def update_attendee_attendings(pdt, attendee, data_assembly, member_meet, member
             defaults=member_attending_meet_default,
         )
 
+        # Todo: need to add gathering so that attendance list shows up
 
-def update_directory_data(data_assembly, family, directory_meet, directory_character):
+
+def update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering):
     """
     update assembly and gathering for directory.
     :param data_assembly: data_assembly
     :param family: each family
     :param directory_meet: directory_meet
     :param directory_character: directory_character
+    :param directory_gathering: directory_gathering
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
     if family.infos.get('access_household_values', {}).get('PrintDir') == 'TRUE':
@@ -675,6 +686,8 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'finish': Utility.forever(),
                     }
                 )
+
+                # Todo: need to add gathering so that attendance list shows up
 
 
 def update_attendee_photo(attendee, photo_names):
