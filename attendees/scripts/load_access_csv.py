@@ -5,7 +5,7 @@ from glob import glob
 from pathlib import Path
 from django.core.files import File
 
-from attendees.occasions.models import Assembly, Meet, Character, Gathering
+from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
     AttendeeAddress, Relationship, Registration, Attending, AttendingMeet
 from attendees.whereabouts.models import Address, Division
@@ -243,8 +243,6 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     member_character = Character.objects.get(slug=member_character_slug)
     roaster_character = Character.objects.get(slug=data_general_character_slug)
 
-
-
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -439,6 +437,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'in_family': family,
                         'emergency_contact': husband_role.emergency_contact,
                         'scheduler': husband_role.scheduler,
+                        'finish': Utility.forever(),
                     }
                 )
 
@@ -450,6 +449,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'in_family': family,
                         'emergency_contact': wife_role.emergency_contact,
                         'scheduler': wife_role.scheduler,
+                        'finish': Utility.forever(),
                     }
                 )
                 successfully_processed_count += 2
@@ -487,8 +487,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     relation=househead_role,
                     defaults={
                                 'in_family': family,
-                                'emergency_contact': househead_role.emergency_contact,
-                                'scheduler': househead_role.scheduler,
+                                'emergency_contact': False,
+                                'scheduler': False,
+                                'finish': Utility.forever(),
                              }
                 )
                 successfully_processed_count += 1
@@ -511,6 +512,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'in_family': family,
                             'emergency_contact': child_role.emergency_contact,
                             'scheduler': child_role.scheduler,
+                            'finish': Utility.forever(),
                         }
                     )
 
@@ -522,6 +524,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'in_family': family,
                             'emergency_contact': parent_role.emergency_contact,
                             'scheduler': parent_role.scheduler,
+                            'finish': Utility.forever(),
                         }
                     )
                     successfully_processed_count += 2
@@ -569,11 +572,29 @@ def update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roast
             defaults={
                 'character': roaster_character,
                 'category': 'primary',
-                'finish': Utility.forever(),
+                'start': roaster_gathering.start,
+                'finish': roaster_gathering.finish,
             },
         )
 
-        # Todo: need to add gathering so that attendance list shows up
+        Attendance.objects.update_or_create(
+            gathering=roaster_gathering,
+            attending=data_attending,
+            character=roaster_character,
+            team=None,
+            defaults={
+                'gathering': roaster_gathering,
+                'attending': data_attending,
+                'character': roaster_character,
+                'team': None,
+                'start': roaster_gathering.start,
+                'finish': roaster_gathering.finish,
+                'infos': {
+                    'access_household_id': access_household_id,
+                    'created_reason': 'CFCC member/directory registration from importer',
+                },
+            }
+        )
 
 
 def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering):
@@ -599,6 +620,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'registration': data_registration,
                 'attendee': attendee,
                 'infos': {
+                    'access_household_id': access_household_id,
                     'created_reason': 'CFCC member/directory registration from importer',
                 }
             }
@@ -609,7 +631,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             'meet': member_meet,
             'character': member_character,
             'category': 'tertiary',
-            'finish': Utility.forever(),
+            'finish': member_gathering.finish,
         }
 
         if attendee.progressions.get('member_since'):
@@ -630,7 +652,24 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             defaults=member_attending_meet_default,
         )
 
-        # Todo: need to add gathering so that attendance list shows up
+        Attendance.objects.update_or_create(
+            gathering=member_gathering,
+            attending=data_attending,
+            character=member_character,
+            team=None,
+            defaults={
+                'gathering': member_gathering,
+                'attending': data_attending,
+                'character': member_character,
+                'team': None,
+                'start': member_attending_meet_default['start'],
+                'finish': member_gathering.finish,
+                'infos': {
+                    'access_household_id': access_household_id,
+                    'created_reason': 'CFCC member/directory registration from importer',
+                },
+            }
+        )
 
 
 def update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering):
@@ -670,6 +709,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'attendee': family_member,
                         'infos': {
                             'access_household_id': access_household_id,
+                            'created_reason': 'CFCC member/directory registration from importer',
                         }
                     }
                 )
@@ -682,12 +722,29 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'meet': directory_meet,
                         'character': directory_character,
                         'category': 'secondary',
-                        'start': Utility.now_with_timezone(),
-                        'finish': Utility.forever(),
+                        'start': directory_gathering.start,
+                        'finish': directory_gathering.finish,
                     }
                 )
 
-                # Todo: need to add gathering so that attendance list shows up
+                Attendance.objects.update_or_create(
+                    gathering=directory_gathering,
+                    attending=directory_attending,
+                    character=directory_character,
+                    team=None,
+                    defaults={
+                        'gathering': directory_gathering,
+                        'attending': directory_attending,
+                        'character': directory_character,
+                        'team': None,
+                        'start': directory_gathering.start,
+                        'finish': directory_gathering.finish,
+                        'infos': {
+                            'access_household_id': access_household_id,
+                            'created_reason': 'CFCC member/directory registration from importer',
+                        },
+                    }
+                )
 
 
 def update_attendee_photo(attendee, photo_names):
