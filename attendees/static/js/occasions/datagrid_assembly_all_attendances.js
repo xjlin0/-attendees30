@@ -37,6 +37,7 @@ Attendees.attendances = {
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     loadPanel: {
+      message: 'Fetching...',
       enabled: true
     },
     grouping: {
@@ -44,6 +45,10 @@ Attendees.attendances = {
     },
     groupPanel: {
         visible: "auto",
+    },
+    columnChooser: {
+      enabled: true,
+      mode: "select",
     },
     columns: [
       {
