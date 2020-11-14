@@ -32,7 +32,7 @@ class PriceAdmin(admin.ModelAdmin):
 
 class AttendanceAdmin(admin.ModelAdmin):
     list_display_links = ('get_attendee',)
-    list_filter = ('gathering', 'attending', 'character', 'team')
+    list_filter = (('gathering', admin.RelatedOnlyFieldListFilter), ('character', admin.RelatedOnlyFieldListFilter), ('team', admin.RelatedOnlyFieldListFilter))  # too many attendings even with ('attending', admin.RelatedOnlyFieldListFilter)
     list_display = ('id', 'attendance_info', 'get_attendee', 'character', 'team', 'infos')
     readonly_fields = ['id','created', 'modified']
     fieldsets = (
@@ -60,6 +60,10 @@ class AttendanceInline(admin.StackedInline):
                            tuple(['infos']),
                            ), }),
     )
+    #
+    # def get_queryset(self, request):
+    #     qs = super(AttendanceInline, self).get_queryset(request)
+    #     return qs[:10]  # does not work
 
 
 class CharacterAdmin(admin.ModelAdmin):
@@ -99,7 +103,7 @@ class GatheringAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    inlines = (AttendanceInline,)
+    # inlines = (AttendanceInline,)  # too many and haven't found easy way to limit inline models
     list_display_links = ('display_name',)
     search_fields = ('meet__display_name', 'display_name')
     list_filter = ('meet',)
