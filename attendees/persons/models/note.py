@@ -7,8 +7,7 @@ from model_utils.models import UUIDModel, TimeStampedModel, SoftDeletableModel
 
 
 class Note(UUIDModel, TimeStampedModel, SoftDeletableModel):
-    COUNSELING = 'counseling'  # private data
-    USER_GROUP_CAN_ACCESS_COUNSELING = ''
+    COUNSELING = 'counseling'  # for private data, only counselor group
 
     content_type = models.ForeignKey(ContentType, on_delete=models.SET(0))
     object_id = models.CharField(max_length=36)

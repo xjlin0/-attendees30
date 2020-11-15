@@ -25,6 +25,13 @@ class User(AbstractUser):
         else:
             return self.organization and self.organization.slug == organization_slug
 
+    def is_counselor(self):
+        organization_counselor_group = self.organization.infos['counselor'] if self.organization else None
+        return self.belongs_to_groups_of([organization_counselor_group])
+
+    def attendee_uuid_str(self):
+        return str(self.attendee.id) if self.attendee else ''
+
     def attend_divisions_of(self, division_slugs):
         return self.attendee and self.attendee.attending_set.filter(divisions__slug__in=division_slugs).exists()
 

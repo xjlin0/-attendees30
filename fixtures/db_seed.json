@@ -350,7 +350,10 @@
       "is_removed": false,
       "slug": "d7c8Fd-cfcc-hayward",
       "display_name": "Chinese for Christ Church of Hayward",
-      "hostname": "192.168.99.100"
+      "infos": {
+        "counselor": "d7c8Fd_cfcc_data_counselor",
+        "hostname": "192.168.99.100"
+      }
     }
   },
   {
@@ -362,7 +365,9 @@
       "is_removed": false,
       "slug": "faBd6C-heaven",
       "display_name": "\u5929\u5802",
-      "hostname": "heaven.heaven"
+      "infos": {
+        "hostname": "heaven.heaven"
+      }
     }
   },
   {

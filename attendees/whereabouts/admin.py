@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.postgres import fields
+from django_json_widget.widgets import JSONEditorWidget
 from attendees.occasions.models import *
 from attendees.persons.models import *
 from .models import *
@@ -49,9 +51,12 @@ class RoomAdmin(admin.ModelAdmin):
 
 
 class OrganizationAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug', 'hostname', 'modified')
+    list_display = ('display_name', 'slug', 'infos', 'modified')
 
 
 admin.site.register(Address, AddressAdmin)

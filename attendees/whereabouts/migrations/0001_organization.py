@@ -2,6 +2,7 @@
 
 import attendees.persons.models.utility
 from django.db import migrations, models
+from django.contrib.postgres.fields.jsonb import JSONField
 import django.utils.timezone
 import model_utils.fields
 
@@ -22,11 +23,15 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('slug', models.SlugField(help_text='alphanumeric only', max_length=50, unique=True)),
                 ('display_name', models.CharField(max_length=50)),
-                ('hostname', models.CharField(max_length=190, unique=True, blank=False, null=False, help_text="where the app deployed")),
+                ('infos', JSONField(blank=True, default=dict, help_text='Example: {"hostname": "where the app deployed"}. Please keep {} here even no data', null=True)),
             ],
             options={
                 'db_table': 'whereabouts_organizations',
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
+        ),
+        migrations.AddIndex(
+            model_name='organization',
+            index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='organization_infos_gin'),
         ),
     ]

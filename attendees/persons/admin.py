@@ -1,6 +1,8 @@
+from django.db.models import Q
 from django_summernote.admin import SummernoteModelAdmin
 from django.contrib.postgres import fields
 from django_json_widget.widgets import JSONEditorWidget
+from django.contrib import messages
 from django.contrib import admin
 from attendees.occasions.models import *
 from attendees.whereabouts.models import *
@@ -103,14 +105,26 @@ class AttendingAdmin(admin.ModelAdmin):
 
 
 class NoteAdmin(SummernoteModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+    search_fields = ('body',)
+    readonly_fields = ['id', 'created', 'modified']
     summernote_fields = ('body',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'category', 'content_object', 'display_order', 'modified')
 
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
+        if request.user.is_counselor():
+            return qs.filter(
+                        ~Q(category='counseling')
+                          |
+                        (Q(category='counseling') and Q(infos__can_access__contains=request.user.attendee_uuid_str()))
+                    )
         return qs.exclude(category=Note.COUNSELING)
 
 
