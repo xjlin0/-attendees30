@@ -105,7 +105,13 @@ class AttendingAdmin(admin.ModelAdmin):
 class NoteAdmin(SummernoteModelAdmin):
     summernote_fields = ('body',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('body', 'content_type', 'object_id', 'content_object', 'display_order', 'modified')
+    list_display = ('id', 'category', 'content_object', 'display_order', 'modified')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.exclude(category=Note.COUNSELING)
 
 
 class RelationshipAdmin(admin.ModelAdmin):
