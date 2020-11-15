@@ -114,7 +114,6 @@ class NoteAdmin(SummernoteModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'category', 'content_object', 'display_order', 'modified')
 
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.resolver_match.func.__name__ == 'changelist_view':
@@ -123,8 +122,11 @@ class NoteAdmin(SummernoteModelAdmin):
             return qs.filter(
                         ~Q(category='counseling')
                           |
-                        (Q(category='counseling') and Q(infos__can_access__contains=request.user.attendee_uuid_str()))
-                    )
+                        (Q(category='counseling') and (Q(infos__can_access__contains=request.user.attendee_uuid_str())
+                                                       |
+                                                       Q(infos__can_access__contains=Note.ALL_COUNSELORS))
+                         )
+            )
         return qs.exclude(category=Note.COUNSELING)
 
 
