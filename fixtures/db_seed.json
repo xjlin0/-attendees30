@@ -304,7 +304,7 @@
       "html_type": "a",
       "urn": "/occasions/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_all_attendances/",
       "url_name": "datagrid_assembly_all_attendances",
-      "display_name": "出席紀錄 attendance",
+      "display_name": "\u51fa\u5e2d\u7d00\u9304 attendance",
       "display_order": 3500,
       "infos": {
         "class": "dropdown-item",
@@ -351,8 +351,8 @@
       "slug": "d7c8Fd-cfcc-hayward",
       "display_name": "Chinese for Christ Church of Hayward",
       "infos": {
-        "counselor": "d7c8Fd_cfcc_data_counselor",
-        "hostname": "192.168.99.100"
+        "hostname": "192.168.99.100",
+        "counselor": "d7c8Fd_cfcc_data_counselor"
       }
     }
   },
@@ -925,7 +925,7 @@
     "pk": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
     "fields": {
       "created": "1999-05-10T00:46:32.567Z",
-      "modified": "2020-05-10T00:46:32.567Z",
+      "modified": "2020-11-16T04:14:46.595Z",
       "is_removed": false,
       "division": null,
       "display_name": "David&Abigail",
@@ -935,10 +935,23 @@
   },
   {
     "model": "persons.family",
+    "pk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+    "fields": {
+      "created": "2020-11-16T02:07:31.509Z",
+      "modified": "2020-11-16T04:15:45.122Z",
+      "is_removed": false,
+      "division": null,
+      "display_name": "Issac & Rebecca",
+      "display_order": 0,
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.family",
     "pk": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
     "fields": {
       "created": "1999-05-02T21:17:26.399Z",
-      "modified": "2020-05-02T21:40:25.209Z",
+      "modified": "2020-11-16T04:15:07.313Z",
       "is_removed": false,
       "division": null,
       "display_name": "Hagar & Ishmael",
@@ -951,12 +964,12 @@
     "pk": 1,
     "fields": {
       "created": "1999-05-02T21:17:26.404Z",
-      "modified": "2020-05-02T21:17:26.404Z",
+      "modified": "2020-11-16T04:15:07.315Z",
       "is_removed": false,
       "family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
       "role": 2,
-      "display_order": 1
+      "display_order": 0
     }
   },
   {
@@ -977,12 +990,12 @@
     "pk": 3,
     "fields": {
       "created": "1999-05-02T21:40:25.188Z",
-      "modified": "2020-05-02T21:40:25.188Z",
+      "modified": "2020-11-16T04:15:07.314Z",
       "is_removed": false,
       "family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "role": 1,
-      "display_order": 0
+      "display_order": 1
     }
   },
   {
@@ -1022,6 +1035,84 @@
       "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
       "role": 3,
       "display_order": 2
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 7,
+    "fields": {
+      "created": "1999-11-16T04:14:12.375Z",
+      "modified": "2020-11-16T04:14:12.375Z",
+      "is_removed": false,
+      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "role": 5,
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 8,
+    "fields": {
+      "created": "1999-11-16T04:14:12.375Z",
+      "modified": "2020-11-16T04:14:12.375Z",
+      "is_removed": false,
+      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "role": 6,
+      "display_order": 1
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 9,
+    "fields": {
+      "created": "1999-11-16T04:14:12.376Z",
+      "modified": "2020-11-16T04:15:45.124Z",
+      "is_removed": false,
+      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "role": 3,
+      "display_order": 2
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 10,
+    "fields": {
+      "created": "1999-11-16T04:14:12.376Z",
+      "modified": "2020-11-16T04:15:45.123Z",
+      "is_removed": false,
+      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "role": 3,
+      "display_order": 3
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 11,
+    "fields": {
+      "created": "1999-11-16T04:14:46.578Z",
+      "modified": "2020-11-16T04:14:46.578Z",
+      "is_removed": false,
+      "family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
+      "attendee": "0498c414-abd3-4173-add1-5e42053760e4",
+      "role": 5,
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.familyattendee",
+    "pk": 12,
+    "fields": {
+      "created": "1999-11-16T04:14:46.579Z",
+      "modified": "2020-11-16T04:14:46.579Z",
+      "is_removed": false,
+      "family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
+      "attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
+      "role": 6,
+      "display_order": 1
     }
   },
   {
@@ -1793,6 +1884,198 @@
     }
   },
   {
+    "model": "persons.relationship",
+    "pk": 19,
+    "fields": {
+      "created": "2020-11-16T02:08:30.603Z",
+      "modified": "2020-11-16T02:08:30.603Z",
+      "is_removed": false,
+      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "relation": 6,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T02:08:07Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 20,
+    "fields": {
+      "created": "2020-11-16T03:34:47.908Z",
+      "modified": "2020-11-16T03:34:47.908Z",
+      "is_removed": false,
+      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "relation": 3,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T03:34:15Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 21,
+    "fields": {
+      "created": "2020-11-16T03:35:33.700Z",
+      "modified": "2020-11-16T03:35:33.700Z",
+      "is_removed": false,
+      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "relation": 5,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T03:34:52Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 22,
+    "fields": {
+      "created": "2020-11-16T03:35:33.701Z",
+      "modified": "2020-11-16T03:35:33.701Z",
+      "is_removed": false,
+      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "relation": 3,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T03:34:52Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 23,
+    "fields": {
+      "created": "2020-11-16T03:36:05.883Z",
+      "modified": "2020-11-16T03:36:05.883Z",
+      "is_removed": false,
+      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "relation": 1,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T03:35:37Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 24,
+    "fields": {
+      "created": "2020-11-16T03:36:05.884Z",
+      "modified": "2020-11-16T03:36:05.884Z",
+      "is_removed": false,
+      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "relation": 2,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T03:35:37Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 25,
+    "fields": {
+      "created": "2020-11-16T04:03:38.519Z",
+      "modified": "2020-11-16T04:03:38.519Z",
+      "is_removed": false,
+      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "relation": 1,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:02:59Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 26,
+    "fields": {
+      "created": "2020-11-16T04:03:38.520Z",
+      "modified": "2020-11-16T04:03:38.520Z",
+      "is_removed": false,
+      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "relation": 2,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:02:59Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 27,
+    "fields": {
+      "created": "2020-11-16T04:03:38.521Z",
+      "modified": "2020-11-16T04:03:38.521Z",
+      "is_removed": false,
+      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "relation": 8,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:02:59Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 28,
+    "fields": {
+      "created": "2020-11-16T04:03:58.162Z",
+      "modified": "2020-11-16T04:05:31.279Z",
+      "is_removed": false,
+      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "relation": 3,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:03:44Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 29,
+    "fields": {
+      "created": "2020-11-16T04:04:19.273Z",
+      "modified": "2020-11-16T04:05:41.606Z",
+      "is_removed": false,
+      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "relation": 3,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:04:10Z"
+    }
+  },
+  {
+    "model": "persons.relationship",
+    "pk": 30,
+    "fields": {
+      "created": "2020-11-16T04:04:45.083Z",
+      "modified": "2020-11-16T04:05:02.444Z",
+      "is_removed": false,
+      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "relation": 8,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "finish": "3937-05-24T04:04:24Z"
+    }
+  },
+  {
     "model": "persons.registration",
     "pk": 1,
     "fields": {
@@ -1961,6 +2244,18 @@
     }
   },
   {
+    "model": "persons.registration",
+    "pk": 12,
+    "fields": {
+      "created": "1999-11-16T04:08:53.276Z",
+      "modified": "2020-11-16T04:08:53.276Z",
+      "is_removed": false,
+      "assembly": 5,
+      "main_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "infos": {}
+    }
+  },
+  {
     "model": "persons.attending",
     "pk": 1,
     "fields": {
@@ -2103,7 +2398,7 @@
     "pk": 9,
     "fields": {
       "created": "1999-05-10T00:26:30.151Z",
-      "modified": "2020-05-10T00:26:30.151Z",
+      "modified": "2020-11-16T04:27:15.585Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
@@ -2120,7 +2415,7 @@
     "pk": 10,
     "fields": {
       "created": "1999-05-10T00:38:07.725Z",
-      "modified": "2020-05-10T00:38:07.725Z",
+      "modified": "2020-11-16T04:28:23.325Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
@@ -2137,7 +2432,7 @@
     "pk": 11,
     "fields": {
       "created": "1999-05-10T00:40:42.362Z",
-      "modified": "2020-05-10T00:40:42.362Z",
+      "modified": "2020-11-16T04:28:44.178Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "44e894a1-1190-4916-992a-b5eb41b35b16",
@@ -2171,7 +2466,7 @@
     "pk": 13,
     "fields": {
       "created": "1999-05-10T00:43:59.588Z",
-      "modified": "2020-05-10T00:43:59.588Z",
+      "modified": "2020-11-16T04:31:00.794Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "fa61941f-79a4-423e-872c-0bb9662e4351",
@@ -2188,7 +2483,7 @@
     "pk": 14,
     "fields": {
       "created": "1999-05-10T00:49:35.465Z",
-      "modified": "2020-05-10T00:49:35.465Z",
+      "modified": "2020-11-16T04:29:23.094Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
@@ -2205,7 +2500,7 @@
     "pk": 15,
     "fields": {
       "created": "1999-05-10T00:50:29.566Z",
-      "modified": "2020-05-10T00:50:29.566Z",
+      "modified": "2020-11-16T04:29:42.734Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "0498c414-abd3-4173-add1-5e42053760e4",
@@ -2222,7 +2517,7 @@
     "pk": 16,
     "fields": {
       "created": "1999-05-10T02:30:26.834Z",
-      "modified": "2020-05-10T02:33:35.455Z",
+      "modified": "2020-11-16T04:30:14.651Z",
       "is_removed": false,
       "registration": 7,
       "attendee": "97922785-9025-40ad-9a5f-a9545f884644",
@@ -2339,6 +2634,84 @@
       "registration": 9,
       "attendee": "786a9d44-379f-4671-9004-5b3d0bd0227b",
       "category": "not_going",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 25,
+    "fields": {
+      "created": "1999-11-16T04:11:12.212Z",
+      "modified": "2020-11-16T04:11:12.212Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "category": "normal",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 26,
+    "fields": {
+      "created": "1999-11-16T04:12:14.214Z",
+      "modified": "2020-11-16T04:12:14.214Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
+      "category": "normal",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 27,
+    "fields": {
+      "created": "1999-11-16T04:20:38.649Z",
+      "modified": "2020-11-16T04:20:38.649Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "category": "normal",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 28,
+    "fields": {
+      "created": "1999-11-16T04:22:54.159Z",
+      "modified": "2020-11-16T04:22:54.159Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+      "category": "normal",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 29,
+    "fields": {
+      "created": "1999-11-16T04:23:35.092Z",
+      "modified": "2020-11-16T04:23:35.092Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+      "category": "normal",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attending",
+    "pk": 30,
+    "fields": {
+      "created": "1999-11-16T04:24:18.313Z",
+      "modified": "2020-11-16T04:24:18.313Z",
+      "is_removed": false,
+      "registration": 12,
+      "attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+      "category": "normal",
       "infos": {}
     }
   },
@@ -2482,14 +2855,14 @@
     "pk": 10,
     "fields": {
       "created": "1999-05-10T00:26:30.161Z",
-      "modified": "2020-05-10T00:26:30.161Z",
+      "modified": "2020-11-16T04:27:15.586Z",
       "is_removed": false,
       "attending": 9,
       "meet": 7,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
       "character": 15,
-      "category": "primary"
+      "category": "secondary"
     }
   },
   {
@@ -2497,14 +2870,14 @@
     "pk": 11,
     "fields": {
       "created": "1999-05-10T00:26:30.161Z",
-      "modified": "2020-05-10T00:26:30.161Z",
+      "modified": "2020-11-16T04:27:15.587Z",
       "is_removed": false,
       "attending": 9,
       "meet": 8,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
-      "category": "primary"
+      "character": 23,
+      "category": "secondary"
     }
   },
   {
@@ -2512,13 +2885,13 @@
     "pk": 12,
     "fields": {
       "created": "1999-05-10T00:26:30.162Z",
-      "modified": "2020-05-10T00:26:30.162Z",
+      "modified": "2020-11-16T04:27:15.590Z",
       "is_removed": false,
       "attending": 9,
       "meet": 9,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "character": 22,
       "category": "primary"
     }
   },
@@ -2527,14 +2900,14 @@
     "pk": 13,
     "fields": {
       "created": "1999-05-10T00:38:07.734Z",
-      "modified": "2020-05-10T00:38:07.734Z",
+      "modified": "2020-11-16T04:28:23.326Z",
       "is_removed": false,
       "attending": 10,
       "meet": 8,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
-      "category": "primary"
+      "character": 23,
+      "category": "secondary"
     }
   },
   {
@@ -2542,13 +2915,13 @@
     "pk": 14,
     "fields": {
       "created": "1999-05-10T00:38:07.735Z",
-      "modified": "2020-05-10T00:38:07.735Z",
+      "modified": "2020-11-16T04:28:23.327Z",
       "is_removed": false,
       "attending": 10,
       "meet": 9,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "character": 22,
       "category": "primary"
     }
   },
@@ -2557,13 +2930,13 @@
     "pk": 15,
     "fields": {
       "created": "1999-05-10T00:40:42.372Z",
-      "modified": "2020-05-10T00:40:42.372Z",
+      "modified": "2020-11-16T04:28:44.179Z",
       "is_removed": false,
       "attending": 11,
       "meet": 9,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "character": 22,
       "category": "honor"
     }
   },
@@ -2602,13 +2975,13 @@
     "pk": 18,
     "fields": {
       "created": "1999-05-10T00:43:59.598Z",
-      "modified": "2020-05-10T00:43:59.598Z",
+      "modified": "2020-11-16T04:31:00.796Z",
       "is_removed": false,
       "attending": 13,
       "meet": 8,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "character": 23,
       "category": "primary"
     }
   },
@@ -2617,14 +2990,14 @@
     "pk": 19,
     "fields": {
       "created": "1999-05-10T00:49:35.475Z",
-      "modified": "2020-05-10T00:49:35.475Z",
+      "modified": "2020-11-16T04:29:23.096Z",
       "is_removed": false,
       "attending": 14,
       "meet": 8,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
-      "category": "primary"
+      "character": 23,
+      "category": "secondary"
     }
   },
   {
@@ -2632,13 +3005,13 @@
     "pk": 20,
     "fields": {
       "created": "1999-05-10T00:49:35.475Z",
-      "modified": "2020-05-10T00:49:35.475Z",
+      "modified": "2020-11-16T04:29:23.097Z",
       "is_removed": false,
       "attending": 14,
       "meet": 9,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "character": 22,
       "category": "primary"
     }
   },
@@ -2647,14 +3020,14 @@
     "pk": 21,
     "fields": {
       "created": "1999-05-10T00:50:29.576Z",
-      "modified": "2020-05-10T00:50:29.576Z",
+      "modified": "2020-11-16T04:29:42.735Z",
       "is_removed": false,
       "attending": 15,
       "meet": 8,
       "start": "2020-01-01T18:00:00Z",
       "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
-      "category": "primary"
+      "character": 23,
+      "category": "secondary"
     }
   },
   {
@@ -2677,13 +3050,13 @@
     "pk": 23,
     "fields": {
       "created": "1999-05-10T02:30:26.843Z",
-      "modified": "2020-05-10T02:33:35.456Z",
+      "modified": "2020-11-16T04:30:14.653Z",
       "is_removed": false,
       "attending": 16,
       "meet": 9,
       "start": "2020-01-01T18:00:00Z",
-      "finish": "2030-02-17T19:59:59Z",
-      "character": 15,
+      "finish": "2020-02-17T19:59:59Z",
+      "character": 22,
       "category": "deleted"
     }
   },
@@ -3044,6 +3417,96 @@
       "start": "2020-06-19T22:56:02Z",
       "finish": "2020-08-19T23:39:35Z",
       "character": 20,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 48,
+    "fields": {
+      "created": "1999-11-16T04:11:12.225Z",
+      "modified": "2020-11-16T04:11:12.225Z",
+      "is_removed": false,
+      "attending": 25,
+      "meet": 8,
+      "start": "2020-11-16T04:09:43Z",
+      "finish": "2099-11-16T04:10:50Z",
+      "character": 23,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 49,
+    "fields": {
+      "created": "1999-11-16T04:12:14.225Z",
+      "modified": "2020-11-16T04:12:14.225Z",
+      "is_removed": false,
+      "attending": 26,
+      "meet": 8,
+      "start": "2020-11-16T04:11:27Z",
+      "finish": "2099-11-16T04:12:10Z",
+      "character": 23,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 50,
+    "fields": {
+      "created": "1999-11-16T04:20:38.665Z",
+      "modified": "2020-11-16T04:20:38.665Z",
+      "is_removed": false,
+      "attending": 27,
+      "meet": 8,
+      "start": "2020-11-16T04:20:14Z",
+      "finish": "2099-11-16T04:20:31Z",
+      "character": 23,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 51,
+    "fields": {
+      "created": "1999-11-16T04:22:54.172Z",
+      "modified": "2020-11-16T04:22:54.172Z",
+      "is_removed": false,
+      "attending": 28,
+      "meet": 8,
+      "start": "2020-11-16T04:22:26Z",
+      "finish": "2099-11-16T04:22:50Z",
+      "character": 23,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 52,
+    "fields": {
+      "created": "1999-11-16T04:23:35.106Z",
+      "modified": "2020-11-16T04:23:35.106Z",
+      "is_removed": false,
+      "attending": 29,
+      "meet": 8,
+      "start": "2020-11-16T04:23:06Z",
+      "finish": "2099-11-16T04:23:22Z",
+      "character": 23,
+      "category": "primary"
+    }
+  },
+  {
+    "model": "persons.attendingmeet",
+    "pk": 53,
+    "fields": {
+      "created": "1999-11-16T04:24:18.323Z",
+      "modified": "2020-11-16T04:24:18.323Z",
+      "is_removed": false,
+      "attending": 30,
+      "meet": 8,
+      "start": "2020-11-16T04:23:51Z",
+      "finish": "2099-11-16T04:24:14Z",
+      "character": 23,
       "category": "primary"
     }
   },
@@ -3724,7 +4187,7 @@
     "pk": 4,
     "fields": {
       "created": "1999-04-11T18:50:57.777Z",
-      "modified": "2020-05-27T14:51:50.777Z",
+      "modified": "2020-11-16T02:02:28.876Z",
       "is_removed": false,
       "assembly": 4,
       "shown_audience": true,
@@ -3734,8 +4197,8 @@
       "display_name": "\u5929\u5802 \u73bb\u7483\u6d77\u5929\u4f7f\u8a69\u73ed",
       "slug": "faBd6C-sea-of-glass-angel-choir",
       "infos": {},
-      "site_type": 31,
-      "site_id": 9
+      "site_type": 32,
+      "site_id": 2
     }
   },
   {
@@ -3840,7 +4303,7 @@
     "pk": 10,
     "fields": {
       "created": "2020-06-19T15:30:01.426Z",
-      "modified": "2020-06-19T16:41:17.173Z",
+      "modified": "2020-11-16T02:02:09.657Z",
       "is_removed": false,
       "assembly": 6,
       "shown_audience": true,
@@ -3850,8 +4313,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u98df\u5bbf",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-accommodation",
       "infos": {},
-      "site_type": 31,
-      "site_id": 11
+      "site_type": 32,
+      "site_id": 3
     }
   },
   {
@@ -3859,7 +4322,7 @@
     "pk": 11,
     "fields": {
       "created": "2020-06-19T15:32:09.408Z",
-      "modified": "2020-06-19T17:37:15.723Z",
+      "modified": "2020-11-16T02:01:39.484Z",
       "is_removed": false,
       "assembly": 6,
       "shown_audience": true,
@@ -3869,8 +4332,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u63a5\u9001",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-transportation",
       "infos": {},
-      "site_type": 31,
-      "site_id": 11
+      "site_type": 32,
+      "site_id": 3
     }
   },
   {
@@ -3878,7 +4341,7 @@
     "pk": 12,
     "fields": {
       "created": "2020-06-19T15:37:13.360Z",
-      "modified": "2020-06-19T22:54:18.911Z",
+      "modified": "2020-11-16T02:01:31.023Z",
       "is_removed": false,
       "assembly": 6,
       "shown_audience": true,
@@ -3888,8 +4351,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u8a0e\u8ad6\u5c0f\u7d44",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-panel",
       "infos": {},
-      "site_type": 31,
-      "site_id": 11
+      "site_type": 32,
+      "site_id": 3
     }
   },
   {
@@ -3897,7 +4360,7 @@
     "pk": 13,
     "fields": {
       "created": "2020-06-19T16:29:12.121Z",
-      "modified": "2020-06-19T16:35:35.681Z",
+      "modified": "2020-11-16T02:02:01.749Z",
       "is_removed": false,
       "assembly": 6,
       "shown_audience": true,
@@ -3907,8 +4370,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u4e2d\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-chinese-program",
       "infos": {},
-      "site_type": 33,
-      "site_id": 1
+      "site_type": 32,
+      "site_id": 3
     }
   },
   {
@@ -3935,7 +4398,7 @@
     "pk": 15,
     "fields": {
       "created": "2020-06-19T16:39:27.103Z",
-      "modified": "2020-06-19T16:42:36.618Z",
+      "modified": "2020-11-16T02:01:48.346Z",
       "is_removed": false,
       "assembly": 6,
       "shown_audience": true,
@@ -3945,8 +4408,27 @@
       "display_name": "2020\u590f\u4ee4\u6703\u82f1\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-english-program",
       "infos": {},
-      "site_type": 34,
-      "site_id": 8
+      "site_type": 32,
+      "site_id": 3
+    }
+  },
+  {
+    "model": "occasions.meet",
+    "pk": 16,
+    "fields": {
+      "created": "2020-05-09T22:36:23.046Z",
+      "modified": "2020-05-27T14:54:48.770Z",
+      "is_removed": false,
+      "assembly": 5,
+      "shown_audience": false,
+      "audience_editable": false,
+      "start": "2020-05-12T14:54:35Z",
+      "finish": "2099-05-12T15:54:36Z",
+      "display_name": "\u95dc\u61f7\u4ea4\u901a",
+      "slug": "d7c8Fd-cfcc-congregation-care",
+      "infos": {},
+      "site_type": 29,
+      "site_id": 1
     }
   },
   {
@@ -5533,7 +6015,7 @@
       ]
     }
   },
-    {
+  {
     "model": "auth.group",
     "pk": 6,
     "fields": {
@@ -6210,6 +6692,28 @@
   },
   {
     "model": "persons.attendee",
+    "pk": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
+    "fields": {
+      "created": "2020-11-16T04:02:53.691Z",
+      "modified": "2020-11-16T04:03:38.547Z",
+      "is_removed": false,
+      "division": null,
+      "user": null,
+      "first_name": "\u4ee5\u6383",
+      "last_name": "Esau",
+      "first_name2": null,
+      "last_name2": null,
+      "gender": "MALE",
+      "actual_birthday": null,
+      "estimated_birthday": null,
+      "deathday": null,
+      "photo": "",
+      "progressions": {},
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attendee",
     "pk": "786a9d44-379f-4671-9004-5b3d0bd0227b",
     "fields": {
       "created": "1999-05-10T01:02:35.482Z",
@@ -6255,6 +6759,28 @@
         "allergy": "peanuts",
         "public_name": "\u5927\u5bf6"
       }
+    }
+  },
+  {
+    "model": "persons.attendee",
+    "pk": "8b3b2130-9ec4-469b-9b64-efef141fceee",
+    "fields": {
+      "created": "2020-11-16T02:06:06.493Z",
+      "modified": "2020-11-16T04:05:41.605Z",
+      "is_removed": false,
+      "division": null,
+      "user": null,
+      "first_name": "Rebecca",
+      "last_name": "\u5229\u767e\u52a0",
+      "first_name2": null,
+      "last_name2": null,
+      "gender": "FEMALE",
+      "actual_birthday": null,
+      "estimated_birthday": null,
+      "deathday": null,
+      "photo": "",
+      "progressions": {},
+      "infos": {}
     }
   },
   {
@@ -6333,6 +6859,28 @@
   },
   {
     "model": "persons.attendee",
+    "pk": "be687517-d7bf-407a-8088-e3ed64ca62b8",
+    "fields": {
+      "created": "2020-11-16T02:06:58.862Z",
+      "modified": "2020-11-16T04:05:02.443Z",
+      "is_removed": false,
+      "division": null,
+      "user": null,
+      "first_name": "James",
+      "last_name": "\u96c5\u5404",
+      "first_name2": null,
+      "last_name2": null,
+      "gender": "MALE",
+      "actual_birthday": null,
+      "estimated_birthday": null,
+      "deathday": null,
+      "photo": "",
+      "progressions": {},
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.attendee",
     "pk": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
     "fields": {
       "created": "1999-04-11T19:37:45.378Z",
@@ -6386,7 +6934,7 @@
     "pk": "f3b780ad-c736-490e-8731-58b96dfd81f8",
     "fields": {
       "created": "1999-04-11T19:38:00.844Z",
-      "modified": "2020-04-12T02:39:24.365Z",
+      "modified": "2020-11-16T04:05:31.278Z",
       "is_removed": false,
       "division": null,
       "user": null,
