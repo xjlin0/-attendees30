@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from attendees.persons.views import (
     api_assembly_meet_attendings_viewset,
+    api_data_attendings_viewset,
     api_assembly_meet_attendees_viewset,
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendings_list_view,
@@ -16,6 +17,11 @@ router = routers.DefaultRouter()
 router.register(
     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/assembly_meet_attendings',
     api_assembly_meet_attendings_viewset,
+    basename='attending',
+)
+router.register(
+    'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/data_attendings',
+    api_data_attendings_viewset,
     basename='attending',
 )
 router.register(
