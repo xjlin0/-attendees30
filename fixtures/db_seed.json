@@ -80,7 +80,7 @@
       "display_order": 1400,
       "infos": {
         "class": "dropdown-item",
-        "title": "Coworkers Activities"
+        "title": "Coworkers attendance"
       },
       "lft": 8,
       "rght": 9,
@@ -105,7 +105,7 @@
       "display_order": 1300,
       "infos": {
         "class": "dropdown-item",
-        "title": "My Activities"
+        "title": "My (families) attendance"
       },
       "lft": 6,
       "rght": 7,
@@ -327,8 +327,8 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_all_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
-      "url_name": "datagrid_assembly_all_attendings",
+      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_data_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
+      "url_name": "datagrid_assembly_data_attendings",
       "display_name": "\u6703\u773e\u53c3\u8207 attending",
       "display_order": 3200,
       "infos": {
