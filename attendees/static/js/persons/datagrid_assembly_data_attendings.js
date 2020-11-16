@@ -16,6 +16,8 @@ Attendees.attendings = {
     $("div.attendings").dxDataGrid(Attendees.attendings.attendingsFormats);
 
     $('form.attendings-filter').on('change', 'select.search-filters', Attendees.utilities.debounce(250, Attendees.attendings.fetchAttendings));
+
+    Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
   fetchAttendings: (event) => {
@@ -63,6 +65,7 @@ Attendees.attendings = {
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     loadPanel: {
+      message: 'Fetching...',
       enabled: true
     },
     wordWrapEnabled: false,
@@ -117,6 +120,21 @@ Attendees.attendings = {
       caption: 'attendee',
       dataField: "attendee.display_label",
     },
+    {
+      dataField: "attendee.division",
+      lookup: {
+        valueExpr: "id",
+        displayExpr: "display_name",
+        dataSource: {
+          store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON($('div.attendings').data('divisions-endpoint'));
+              },
+          }),
+        },
+      }
+    },
   ],
 
   attendingsFormatsColumnsEnd: [
@@ -139,15 +157,6 @@ Attendees.attendings = {
 //      }
 //    },   // template for using registration intead
     {
-      caption: 'division',
-      dataField: "attendee.division_label",
-    },
-    {
-      caption: 'grade',
-      dataField: "infos.grade",
-      calculateCellValue: rowData => rowData.infos.grade,
-    },
-    {
       caption: 'Birthday',
       dataHtmlTitle: "Could be real or estimated, depends on user inputs",
       dataField: "attendee",
@@ -157,46 +166,15 @@ Attendees.attendings = {
       },
     },
     {
-      caption: 'Age',
-      dataHtmlTitle: "Could be real or estimated, depends on user inputs",
-      dataField: "attendee",
-      dataType: "number",
-      calculateCellValue: rowData => {
-        const oneYear = 31557600 * 1000;
-        const birthday = rowData.attendee.actual_birthday ? rowData.attendee.actual_birthday : rowData.attendee.estimated_birthday;
-        return birthday ? Math.round((new Date() - new Date(birthday))/oneYear): rowData.infos.age;
-      },
-    },
-    {
-      caption: "Families/Caregivers",
-      dataField: "attendee.parents_notifiers_names",
-      calculateCellValue: rowData => rowData.attendee.parents_notifiers_names,
-    },
-    {
       caption: "Self emails",
       dataField: "attendee.self_email_addresses",
 //        width: '15%',
       calculateCellValue: rowData => rowData.attendee.self_email_addresses,
     },
     {
-      caption: "Families emails",
-      dataField: "attendee.caregiver_email_addresses",
-      calculateCellValue: rowData => rowData.attendee.caregiver_email_addresses,
-    },
-    {
       caption: "Self phones",
       dataField: "attendee.self_phone_numbers",
       calculateCellValue: rowData => rowData.attendee.self_phone_numbers,
-    },
-    {
-      caption: "Families phones",
-      dataField: "attendee.caregiver_phone_numbers",
-      calculateCellValue: rowData => rowData.attendee.caregiver_phone_numbers,
-    },
-    {
-      caption: 'allergy',
-      dataField: "attendee.infos.allergy",
-      calculateCellValue: rowData => rowData.attendee.infos.allergy,
     },
   ],
 

@@ -12,18 +12,7 @@ Attendees.attendances = {
     $('div.for-select-all').on('click', 'input.select-all', e => Attendees.utilities.toggleSelect2All(e, 'select.search-filters'));
     $("div.attendances").dxDataGrid(Attendees.attendances.attendancesFormats);
 
-    Attendees.attendances.setLoader();
-  },
-
-  setLoader: () => {
-    $(document).ajaxStop(function(){
-      $('div.dx-loadpanel').dxLoadPanel('hide');
-    });
-
-    $(document).ajaxStart(function(){
-      $('div.dx-loadpanel').dxLoadPanel('show');
-    });
-
+    Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
   attendancesFormats: {

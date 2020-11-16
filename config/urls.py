@@ -28,8 +28,13 @@ urlpatterns = [
           namespace="occasions",
       ),
     ),
-    path("<slug:organization_slug>/whereabouts/",
-       include("attendees.whereabouts.urls", namespace="whereabouts")),
+    path(
+        "whereabouts/",
+        include(
+           "attendees.whereabouts.urls",
+           namespace="whereabouts",
+        )
+    ),
     path(
       "persons/",
       include(

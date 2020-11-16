@@ -47,6 +47,7 @@ class DatagridAssemblyDataAttendingsListView(RouteGuard, ListView):
             else:
                 # chosen_character_slugs = self.request.GET.getlist('characters', [])
                 # context.update({'chosen_character_slugs': chosen_character_slugs})
+                context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
                 context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
                 context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
                 context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})

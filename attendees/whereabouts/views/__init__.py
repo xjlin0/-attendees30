@@ -1,1 +1,1 @@
-from .api.divisions import api_division_viewset
+from .api.user_divisions import api_user_division_viewset

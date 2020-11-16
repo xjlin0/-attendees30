@@ -74,7 +74,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     inlines = (AttendeeAddressInline, RelationshipInline)
     list_display_links = ('id',)
-    list_display = ('id', 'first_name', 'last_name', 'last_name2', 'first_name2', 'progressions', 'infos')
+    list_display = ('id', 'division', 'first_name', 'last_name', 'last_name2', 'first_name2', 'progressions', 'infos')
 
 
 class RegistrationAdmin(admin.ModelAdmin):

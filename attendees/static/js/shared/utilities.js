@@ -3,6 +3,17 @@ Attendees.utilities = {
     console.log("attendees/static/js/shared/utilities.js");
   },
 
+  setAjaxLoaderOnDevExtreme: () => {
+    $(document).ajaxStop(function(){
+      $('div.dx-loadpanel').dxLoadPanel('hide');
+    });
+
+    $(document).ajaxStart(function(){
+      $('div.dx-loadpanel').dxLoadPanel('show');
+    });
+
+  },
+
   debounce : (delay, fn) => {
     let timer = null;
     return (...arguments) => {
