@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('division', models.ForeignKey(blank=True, null=True, on_delete=models.deletion.SET_NULL, to='whereabouts.Division')),
+                ('division', models.ForeignKey(default=0, blank=False, null=False, on_delete=models.SET(0), to='whereabouts.Division')),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
                 ('display_order', models.SmallIntegerField(db_index=True, default=0)),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"2010id": "3"}. Please keep {} here even no data', null=True)),

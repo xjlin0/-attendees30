@@ -23,7 +23,7 @@ class DivisionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     list_display_links = ('display_name',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('organization', 'display_name', 'slug', 'modified')
+    list_display = ('id', 'organization', 'display_name', 'slug', 'modified')
 
 
 class PropertyAdmin(admin.ModelAdmin):

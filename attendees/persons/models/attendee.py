@@ -17,7 +17,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
-    division = models.ForeignKey('whereabouts.Division', null=True, blank=True, on_delete=models.SET_NULL)
+    division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
     addresses = models.ManyToManyField('whereabouts.Address', through='AttendeeAddress', related_name='addresses')
     user = models.OneToOneField('users.User', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')

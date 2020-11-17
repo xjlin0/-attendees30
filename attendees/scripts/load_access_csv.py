@@ -136,6 +136,7 @@ def import_households(households, division1_slug, division2_slug):
     :param division2_slug: slug of division 2  # en
     :return: successfully processed family count, also print out importing status and write FamilyAddress to Attendees db (create or update)
     """
+    default_division = Division.objects.first()
     division1 = Division.objects.get(slug=division1_slug)
     division2 = Division.objects.get(slug=division2_slug)
     division_converter = {
@@ -155,6 +156,7 @@ def import_households(households, division1_slug, division2_slug):
             if household_id:
                 household_values = {
                     'display_name': display_name,
+                    'division': default_division,
                     'infos': {
                         'access_household_id': household_id,
                         'access_household_values': household,
@@ -233,6 +235,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     }
 
     print("\n\nRunning import_attendees: \n")
+    default_division = Division.objects.first()
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     member_meet = Meet.objects.get(slug=member_meet_slug)
@@ -304,14 +307,14 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         if household_role == 'A(Self)':
                             relation = Relation.objects.get(title='self')
                             display_order = 0
-                            attendee.division = family.division
+                            attendee.division = family.division or default_division
                         elif household_role == 'B(Spouse)':
                             relation = Relation.objects.get(
                                 title__in=['spouse', 'husband', 'wife'],
                                 gender=attendee.gender,
                             )  # There are wives mislabelled as 'Male' in Access data
                             display_order = 1
-                            attendee.division = family.division
+                            attendee.division = family.division or default_division
                         else:
                             relation = Relation.objects.get(
                                 title__in=['child', 'son', 'daughter'],

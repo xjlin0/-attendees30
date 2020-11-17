@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('division', models.ForeignKey(blank=True, null=True, on_delete=models.deletion.SET_NULL, to='whereabouts.Division')),
+                ('division', models.ForeignKey(default=0, blank=False, null=False, on_delete=models.SET(0), to='whereabouts.Division')),
                 ('first_name', models.CharField(blank=True, db_index=True, max_length=25, null=True)),
                 ('last_name', models.CharField(blank=True, db_index=True, max_length=25, null=True)),
                 ('first_name2', models.CharField(blank=True, db_index=True, max_length=12, null=True)),
