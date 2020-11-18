@@ -3,21 +3,116 @@ Attendees.attendings = {
 
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendings.js");
 
-    Attendees.attendings.setAttendingsFormatsColumns();
+    var store = new DevExpress.data.CustomStore({
+        key: "id",
+        load: function (loadOptions) {
+            var deferred = $.Deferred(),
+                args = {};
 
-    Attendees.attendings.setDefaults();
+            [
+                "skip",
+                "take",
+                "requireTotalCount",
+                "requireGroupCount",
+                "sort",
+                "filter",
+                "totalSummary",
+                "group",
+                "groupSummary"
+            ].forEach(function(i) {
+                if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+                    args[i] = JSON.stringify(loadOptions[i]);
+            });
+            $.ajax({
+                url: "/persons/api/odata_attendings/",
+                dataType: "json",
+                data: args,
+                success: function(result) {
+                    deferred.resolve(result.data, {
+                        totalCount: result.totalCount,
+                        summary: result.summary,
+                        groupCount: result.groupCount
+                    });
+                },
+                error: function() {
+                    deferred.reject("Data Loading Error");
+                },
+                timeout: 5000
+            });
 
-    $('.basic-multiple').select2({
-      theme: 'bootstrap4',
+            return deferred.promise();
+        }
     });
 
-    $('div.for-select-all').on('click', 'input.select-all', e => Attendees.utilities.toggleSelect2All(e, 'select.search-filters'));
+    $("div.attendings").dxDataGrid({
+        dataSource: store,
+        showBorders: true,
+        remoteOperations: true,
+        paging: {
+            pageSize:10
+        },
+        pager: {
+            showPageSizeSelector: true,
+            allowedPageSizes: [10, 50, 200]
+        },
+        columns: [
+          {
+            dataField: "id",
+//            dataType: "number"
+          },
+          {
+            dataField: "attending_label",
+          },
+          {
+            dataField: "attendee.division_label",
+          },
+        ]
+    }).dxDataGrid("instance");
 
-    $("div.attendings").dxDataGrid(Attendees.attendings.attendingsFormats);
 
-    $('form.attendings-filter').on('change', 'select.search-filters', Attendees.utilities.debounce(250, Attendees.attendings.fetchAttendings));
+//      $("div.attendings").dxDataGrid({
+//        dataSource: customDataSource,
+//        remoteOperations: { groupPaging: true }
+//      })
 
-    Attendees.utilities.setAjaxLoaderOnDevExtreme();
+
+
+
+
+//    $("div.attendings").dxDataGrid({
+//      // client side processing
+//      dataSource: new DevExpress.data.CustomStore({
+//        key: "id",
+//        load: () => {
+//          return $
+//            .getJSON("http://192.168.99.100:8000/whereabouts/api/user_divisions/")
+//            .fail(() => { throw "Data loading error" });
+//        }
+//      })
+//    });
+
+
+
+
+//    Attendees.attendings.setAttendingsFormatsColumns();
+//
+//    Attendees.attendings.setDefaults();
+//
+//    $('.basic-multiple').select2({
+//      theme: 'bootstrap4',
+//    });
+//
+//    $('div.for-select-all').on('click', 'input.select-all', e => Attendees.utilities.toggleSelect2All(e, 'select.search-filters'));
+//
+//    $("div.attendings").dxDataGrid(Attendees.attendings.attendingsFormats);
+//
+//    $('form.attendings-filter').on('change', 'select.search-filters', Attendees.utilities.debounce(250, Attendees.attendings.fetchAttendings));
+//
+//    Attendees.utilities.setAjaxLoaderOnDevExtreme();
+  },
+
+  isNotEmpty: (value) => {
+      return value !== undefined && value !== null && value !== "";
   },
 
   fetchAttendings: (event) => {

@@ -4139,7 +4139,9 @@
       "finish": "2099-05-12T15:53:45Z",
       "display_name": "The Rock",
       "slug": "d7c8Fd-junior-regular-the-rock",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 35,
       "site_id": 1
     }
@@ -4158,7 +4160,9 @@
       "finish": "2099-05-12T15:53:57Z",
       "display_name": "Little foot",
       "slug": "d7c8Fd-junior-regular-little-foot",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 34,
       "site_id": 1
     }
@@ -4177,7 +4181,9 @@
       "finish": "2099-05-12T15:55:22Z",
       "display_name": "\u5f71\u97f3\u4e2d\u63a7",
       "slug": "d7c8Fd-cfcc-adault-sunday-recording-av-control",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 33,
       "site_id": 1
     }
@@ -4196,7 +4202,9 @@
       "finish": "2099-05-12T15:53:21Z",
       "display_name": "\u5929\u5802 \u73bb\u7483\u6d77\u5929\u4f7f\u8a69\u73ed",
       "slug": "faBd6C-sea-of-glass-angel-choir",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 32,
       "site_id": 2
     }
@@ -4215,7 +4223,9 @@
       "finish": "2099-12-31T15:54:58Z",
       "display_name": "kid Christmas Celebration \u5152\u5c11\u8056\u8a95\u6703",
       "slug": "d7c8Fd-junior-regular-christmas-celebration",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 32,
       "site_id": 1
     }
@@ -4234,7 +4244,9 @@
       "finish": "2030-05-12T14:53:04Z",
       "display_name": "\u9752\u5c11\u77ed\u5ba3\u82f1\u8a9e\u6559\u5b78",
       "slug": "d7c8Fd-junior-special-english-teaching",
-      "infos": {},
+      "infos": {
+        "attended_category": "attended"
+      },
       "site_type": 31,
       "site_id": 10
     }
@@ -4254,7 +4266,8 @@
       "display_name": "\u4e3b\u65e5\u5d07\u62dc",
       "slug": "d7c8Fd-cfcc-congregation-roaster",
       "infos": {
-        "extending_attending_days": 90
+        "extending_attending_days": 90,
+        "attended_category": "Attended"
       },
       "site_type": 33,
       "site_id": 1
@@ -4274,7 +4287,9 @@
       "finish": "2099-05-12T15:54:36Z",
       "display_name": "\u901a\u8a0a\u9304",
       "slug": "d7c8Fd-cfcc-congregation-directory",
-      "infos": {},
+      "infos": {
+        "attended_category": "Listed"
+      },
       "site_type": 29,
       "site_id": 1
     }
@@ -4293,7 +4308,9 @@
       "finish": "2099-05-12T15:54:26Z",
       "display_name": "\u6703\u54e1",
       "slug": "d7c8Fd-cfcc-congregation-member",
-      "infos": {},
+      "infos": {
+        "attended_category": "Joined"
+      },
       "site_type": 29,
       "site_id": 1
     }
@@ -4312,7 +4329,9 @@
       "finish": "2020-07-21T15:29:58Z",
       "display_name": "2020\u590f\u4ee4\u6703\u98df\u5bbf",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-accommodation",
-      "infos": {},
+      "infos": {
+        "attended_category": "Checked-in"
+      },
       "site_type": 32,
       "site_id": 3
     }
@@ -4331,7 +4350,9 @@
       "finish": "2020-07-19T15:31:42Z",
       "display_name": "2020\u590f\u4ee4\u6703\u63a5\u9001",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-transportation",
-      "infos": {},
+      "infos": {
+        "attended_category": "Boarded"
+      },
       "site_type": 32,
       "site_id": 3
     }
@@ -4350,7 +4371,9 @@
       "finish": "2020-07-19T15:37:06Z",
       "display_name": "2020\u590f\u4ee4\u6703\u8a0e\u8ad6\u5c0f\u7d44",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-panel",
-      "infos": {},
+      "infos": {
+        "attended_category": "Attended"
+      },
       "site_type": 32,
       "site_id": 3
     }
@@ -4369,7 +4392,9 @@
       "finish": "2020-07-19T16:28:42Z",
       "display_name": "2020\u590f\u4ee4\u6703\u4e2d\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-chinese-program",
-      "infos": {},
+      "infos": {
+        "attended_category": "Attended"
+      },
       "site_type": 32,
       "site_id": 3
     }
@@ -4388,7 +4413,9 @@
       "finish": "2020-07-19T16:32:24Z",
       "display_name": "2020\u590f\u4ee4\u6703\u5152\u7ae5\u6d3b\u52d5",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-junior-program",
-      "infos": {},
+      "infos": {
+        "attended_category": "Attended"
+      },
       "site_type": 34,
       "site_id": 7
     }
@@ -4407,7 +4434,9 @@
       "finish": "2020-07-19T16:39:12Z",
       "display_name": "2020\u590f\u4ee4\u6703\u82f1\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd-cfcc-summer-retreat-2020-english-program",
-      "infos": {},
+      "infos": {
+        "attended_category": "Attended"
+      },
       "site_type": 32,
       "site_id": 3
     }
@@ -4426,7 +4455,9 @@
       "finish": "2099-05-12T15:54:36Z",
       "display_name": "\u95dc\u61f7\u4ea4\u901a",
       "slug": "d7c8Fd-cfcc-congregation-care",
-      "infos": {},
+      "infos": {
+        "attended_category": "Discussed"
+      },
       "site_type": 29,
       "site_id": 1
     }

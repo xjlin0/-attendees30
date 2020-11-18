@@ -1,6 +1,5 @@
 import time
 
-from django.db.models.expressions import F
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets

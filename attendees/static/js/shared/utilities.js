@@ -14,6 +14,10 @@ Attendees.utilities = {
 
   },
 
+  isNotEmpty: (value) => {
+    return value !== undefined && value !== null && value !== '';
+  },
+
   debounce : (delay, fn) => {
     let timer = null;
     return (...arguments) => {
