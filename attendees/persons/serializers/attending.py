@@ -12,6 +12,8 @@ class AttendingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attending
+        meta_dict = dict()
+        meta_dict['total_count'] = Attending.objects.count()
         fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
             'attending_label',
             'meets_info',

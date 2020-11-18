@@ -13,7 +13,8 @@ class ODataRenderer(JSONRenderer):
         }
 
         if str(status_code).startswith('2'):
-            response["totalCount"] = len(data)
+            meta_dict = getattr(renderer_context.get('view').get_serializer().Meta, 'meta_dict')
+            response["totalCount"] = meta_dict['total_count']
         else:
             response["status"] = "error"
             response["data"] = []
