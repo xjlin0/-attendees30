@@ -22,13 +22,14 @@ class ApiODataAttendingsViewSet(ModelViewSet):  # from GenericAPIView
         """
         :return: queryset ordered by query params from DataGrid
         """
+        current_user_organization = self.request.user.organization
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
         orderby_list = []
         for orderby_dict in json.loads(orderby_string):
             direction = '-' if orderby_dict.get('desc', False) else ''
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
             orderby_list.append(direction + field)
-        return Attending.objects.order_by(*orderby_list)
+        return Attending.objects.filter(attendee__division__organization=current_user_organization).order_by(*orderby_list)
 
 
 api_odata_attendings_viewset = ApiODataAttendingsViewSet

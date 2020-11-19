@@ -64,16 +64,38 @@ Attendees.dataAttendings = {
     },
     columns: [
       {
+        caption: "attending_id",
         dataField: "id",
         dataType: "number",
       },
       {
-        dataField: "attendee",
-        dataType: "string",
+        caption: "attendee",
+        dataField: "attendee.display_label",
+//        dataType: "string",
       },
+//      {
+//        caption: "division",
+//        dataField: "attendee.division",
+//        dataType: "number",
+//      },
       {
+        caption: "division",
         dataField: "attendee.division",
-        dataType: "number",
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+//                const $selectedMeets = $('select.filter-meets').val();
+//                if ($selectedMeets.length > 0) {
+                  return $.getJSON($('div.attendings').data('divisions-endpoint'));
+//                }
+              },
+            }),
+          },
+        }
       },
     ]
   },
