@@ -4,8 +4,8 @@ Attendees.attendings = {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendings.js");
 
     var store = new DevExpress.data.CustomStore({
-        key: "id",
-        load: function (loadOptions) {
+        key: 'id',
+        load: (loadOptions) => {
             var deferred = $.Deferred(),
                 args = {};
 
@@ -19,25 +19,26 @@ Attendees.attendings = {
                 "totalSummary",
                 "group",
                 "groupSummary"
-            ].forEach(function(i) {
+            ].forEach((i) => {
                 if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
                     args[i] = JSON.stringify(loadOptions[i]);
             });
+
             $.ajax({
-                url: "/persons/api/odata_attendings/",
-                dataType: "json",
-                data: args,
-                success: function(result) {
-                    deferred.resolve(result.data, {
-                        totalCount: result.totalCount,
-                        summary: result.summary,
-                        groupCount: result.groupCount
-                    });
-                },
-                error: function() {
-                    deferred.reject("Data Loading Error");
-                },
-                timeout: 5000
+              url: '/persons/api/odata_attendings/',
+              dataType: 'json',
+              data: args,
+              success: (result) => {
+                deferred.resolve(result.data, {
+                  totalCount: result.totalCount,
+                  summary:    result.summary,
+                  groupCount: result.groupCount
+                });
+              },
+              error: () => {
+                deferred.reject('Data Loading Error, probably time out?');
+              },
+              timeout: 30000,
             });
 
             return deferred.promise();
@@ -53,12 +54,11 @@ Attendees.attendings = {
         },
         pager: {
             showPageSizeSelector: true,
-            allowedPageSizes: [10, 50, 200]
+            allowedPageSizes: [10, 15, 100]
         },
         columns: [
           {
             dataField: "id",
-//            dataType: "number"
           },
           {
             dataField: "attending_label",
