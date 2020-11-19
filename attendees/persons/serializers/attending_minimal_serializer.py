@@ -1,11 +1,12 @@
 from attendees.persons.models import Attending
-from .attendee import AttendeeSerializer
+from attendees.persons.serializers import AttendeeMinimalSerializer
+# from .attendee import AttendeeSerializer
 from rest_framework import serializers
 
 
 class AttendingMinimalSerializer(serializers.ModelSerializer):
     # meets_info = serializers.SerializerMethodField()
-    attendee = AttendeeSerializer(many=False, read_only=True)
+    attendee = AttendeeMinimalSerializer(many=False, read_only=True)
 
     # def get_meets_info(self, obj):
     #     return {am.meet.slug: am.character.display_name for am in obj.attendingmeet_set.all()}

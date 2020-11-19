@@ -70,14 +70,12 @@ Attendees.dataAttendings = {
       },
       {
         caption: "attendee",
-        dataField: "attendee.display_label",
-//        dataType: "string",
+        dataField: "attendee",
+        calculateCellValue: rowData => {
+          const name2 = [rowData.attendee.last_name2, rowData.attendee.first_name2].join(''); // no space
+          return [rowData.attendee.first_name, rowData.attendee.last_name, name2].join(' ').trim().replace('  ', ' ')
+        },
       },
-//      {
-//        caption: "division",
-//        dataField: "attendee.division",
-//        dataType: "number",
-//      },
       {
         caption: "division",
         dataField: "attendee.division",
@@ -88,14 +86,11 @@ Attendees.dataAttendings = {
             store: new DevExpress.data.CustomStore({
               key: "id",
               load: () => {
-//                const $selectedMeets = $('select.filter-meets').val();
-//                if ($selectedMeets.length > 0) {
-                  return $.getJSON($('div.attendings').data('divisions-endpoint'));
-//                }
+                return $.getJSON($('div.attendings').data('divisions-endpoint'));
               },
             }),
           },
-        }
+        },
       },
     ]
   },
