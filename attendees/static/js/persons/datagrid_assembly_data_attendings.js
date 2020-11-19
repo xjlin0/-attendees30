@@ -59,12 +59,15 @@ Attendees.attendings = {
         columns: [
           {
             dataField: "id",
+            dataType: "number",
           },
           {
-            dataField: "attending_label",
+            dataField: "attendee",
+            dataType: "string",
           },
           {
-            dataField: "attendee.division_label",
+            dataField: "attendee.division",
+            dataType: "number",
           },
         ]
     }).dxDataGrid("instance");
