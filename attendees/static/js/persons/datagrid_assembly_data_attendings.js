@@ -53,7 +53,37 @@ Attendees.dataAttendings = {
 
   dataGridOpts: {
     dataSource: null, // set later in startDataGrid()
-    showBorders: true,
+
+
+    filterRow: { visible: true },  //filter doesn't work with fields with calculateDisplayValue yet
+    searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
+    columnResizingMode: 'nextColumn',
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    loadPanel: {
+      enabled: true
+    },
+    wordWrapEnabled: false,
+    grouping: {
+      autoExpandAll: true,
+    },
+    groupPanel: {
+      visible: "auto",
+    },
+    columnChooser: {
+      enabled: true,
+      mode: "select",
+    },
+    columnFixing: {
+      enabled: true
+    },
+    onCellPrepared: e => e.rowType === "header" && e.column.dataHtmlTitle && e.cellElement.attr("title", e.column.dataHtmlTitle),
+
+
+    showBorders: false,
     remoteOperations: true,
     paging: {
         pageSize:10
@@ -69,7 +99,7 @@ Attendees.dataAttendings = {
         dataType: "number",
       },
       {
-        caption: "attendee",
+        caption: "attendee header",
         dataField: "attendee",
         calculateCellValue: rowData => {
           const name2 = [rowData.attendee.last_name2, rowData.attendee.first_name2].join(''); // no space
@@ -77,6 +107,7 @@ Attendees.dataAttendings = {
         },
       },
       {
+        dataHtmlTitle: "showing only divisions of current user organization",
         caption: "division",
         dataField: "attendee.division",
         lookup: {

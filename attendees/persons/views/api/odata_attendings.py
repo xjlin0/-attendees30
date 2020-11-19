@@ -20,6 +20,9 @@ class ApiODataAttendingsViewSet(ModelViewSet):  # from GenericAPIView
     # Todo: probably also need to check if the assembly belongs to the division
     def get_queryset(self):
         """
+        still need to work with filter and grouping and move to service layer
+        filter = '["attendee","contains","Lydia"]'  or '[["id","=",3],"and",["attendee","contains","John"]]'
+        group =  '[{"selector":"attendee.division","desc":false,"isExpanded":false}]'
         :return: queryset ordered by query params from DataGrid
         """
         current_user_organization = self.request.user.organization
