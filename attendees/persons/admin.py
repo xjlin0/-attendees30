@@ -76,6 +76,15 @@ class AttendeeAdmin(admin.ModelAdmin):
     list_display_links = ('id',)
     list_display = ('id', 'division', 'first_name', 'last_name', 'last_name2', 'first_name2', 'progressions', 'infos')
 
+    # def get_queryset(self, request):
+    #     qs = super().get_queryset(request)
+    #     if not request.user.is_superuser and request.resolver_match.func.__name__ == 'changelist_view':
+    #         messages.warning(request, 'Not all, but only attendees in your organization will be shown here.')
+    #     Todo: maybe if their families in the other organization?
+    #         return qs.filter(division__organization=request.user.organization)
+    #     else:
+    #         return qs
+
 
 class RegistrationAdmin(admin.ModelAdmin):
     # list_per_page = 1000
