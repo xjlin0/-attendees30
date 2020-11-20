@@ -286,7 +286,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 6,
+      "rght": 8,
       "tree_id": 3,
       "level": 0
     }
@@ -310,8 +310,8 @@
         "class": "dropdown-item",
         "title": "roaster list"
       },
-      "lft": 4,
-      "rght": 5,
+      "lft": 6,
+      "rght": 7,
       "tree_id": 3,
       "level": 1
     }
@@ -334,6 +334,31 @@
       "infos": {
         "class": "dropdown-item",
         "title": "congregation attending"
+      },
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 3,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 15,
+    "fields": {
+      "created": "2020-11-20T16:12:21.803Z",
+      "modified": "2020-11-20T16:12:21.803Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 12,
+      "html_type": "a",
+      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_test_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
+      "url_name": "datagrid_assembly_test_attendings",
+      "display_name": "\u6e2c\u8a66\u53c3\u8207 attending",
+      "display_order": 3100,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "test congregation attending"
       },
       "lft": 2,
       "rght": 3,
@@ -6471,6 +6496,19 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 30,
+    "fields": {
+      "created": "2020-11-20T16:12:21.812Z",
+      "modified": "2020-11-20T16:12:21.812Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -6478,7 +6516,7 @@
       "modified": "2020-04-26T02:24:46.054Z",
       "is_removed": false,
       "organization": 1,
-      "display_name": "未指定unspecified",
+      "display_name": "\u672a\u6307\u5b9aunspecified",
       "slug": "cfcc-unspecified",
       "audience_auth_group": 0
     }
