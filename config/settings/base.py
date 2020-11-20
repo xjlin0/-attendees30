@@ -321,6 +321,11 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.IsAuthenticated',
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #         'persons.renderers.ODataRenderer',
+    #     ),
+    'DEFAULT_PAGINATION_CLASS': 'persons.paginators.CustomStorePagination',
+    'PAGE_SIZE': 20,
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
