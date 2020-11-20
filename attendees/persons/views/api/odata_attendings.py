@@ -32,7 +32,19 @@ class ApiODataAttendingsViewSet(ModelViewSet):  # from GenericAPIView
             direction = '-' if orderby_dict.get('desc', False) else ''
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
             orderby_list.append(direction + field)
-        return Attending.objects.filter(attendee__division__organization=current_user_organization).order_by(*orderby_list)
+
+        meet_slugs = ['d7c8Fd-cfcc-congregation-roaster', 'd7c8Fd-cfcc-congregation-directory',
+                      'd7c8Fd-cfcc-congregation-member', 'd7c8Fd-cfcc-congregation-care']
+        character_slugs = ['d7c8Fd-cfcc-congregation-data-general', 'd7c8Fd-cfcc-congregation-data-member',
+                           'd7c8Fd-cfcc-congregation-data-directory']
+        assembly_slug = 'cfcc-congregation-data'
+
+        return Attending.objects.filter(
+            attendee__division__organization=current_user_organization,
+            meets__slug__in=meet_slugs,
+            attendingmeet__character__slug__in=character_slugs,
+            meets__assembly__slug=assembly_slug,
+        ).order_by(*orderby_list).distinct()
 
 
 api_odata_attendings_viewset = ApiODataAttendingsViewSet
