@@ -3,6 +3,10 @@ Attendees.utilities = {
     console.log("attendees/static/js/shared/utilities.js");
   },
 
+  isNotEmpty: (value) => {
+      return value !== undefined && value !== null && value !== "";
+  },
+
   setAjaxLoaderOnDevExtreme: () => {
     $(document).ajaxStop(function(){
       $('div.dx-loadpanel').dxLoadPanel('hide');
