@@ -11,7 +11,7 @@ from attendees.persons.serializers import AttendingMinimalSerializer
 
 
 @method_decorator([login_required], name='dispatch')
-class ApiODataAttendingsViewSet(ModelViewSet):  # from GenericAPIView
+class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
     """
     API endpoint that allows Attending to be viewed or edited.
     """
@@ -47,4 +47,4 @@ class ApiODataAttendingsViewSet(ModelViewSet):  # from GenericAPIView
         ).order_by(*orderby_list).distinct()
 
 
-api_odata_attendings_viewset = ApiODataAttendingsViewSet
+api_datagrid_data_attendees_viewset = ApiDatagridDataAttendeesViewSet

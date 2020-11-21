@@ -1,12 +1,12 @@
-Attendees.testAttendings = {
+Attendees.dataAttendees = {
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
-    Attendees.testAttendings.startDataGrid();
+    Attendees.dataAttendees.startDataGrid();
   },
 
   startDataGrid: () => {
-    Attendees.testAttendings.dataGridOpts['dataSource'] = Attendees.testAttendings.customStore;
-    $("div.attendings").dxDataGrid(Attendees.testAttendings.dataGridOpts).dxDataGrid("instance");
+    Attendees.dataAttendees.dataGridOpts['dataSource'] = Attendees.dataAttendees.customStore;
+    $("div.dataAttendees").dxDataGrid(Attendees.dataAttendees.dataGridOpts).dxDataGrid("instance");
   },
 
   customStore: new DevExpress.data.CustomStore({
@@ -31,7 +31,7 @@ Attendees.testAttendings = {
       });
 
       $.ajax({
-        url: "/persons/api/odata_attendings/",
+        url: "/persons/api/datagrid_data_attendees/",
         dataType: "json",
         data: args,
         success: (result) => {
@@ -117,7 +117,7 @@ Attendees.testAttendings = {
             store: new DevExpress.data.CustomStore({
               key: "id",
               load: () => {
-                return $.getJSON($('div.attendings').data('divisions-endpoint'));
+                return $.getJSON($('div.dataAttendees').data('divisions-endpoint'));
               },
             }),
           },
@@ -201,8 +201,8 @@ Attendees.testAttendings = {
 //  setAttendingsFormatsColumns: () => {
 //
 //    const meetColumns=[];
-//    const availableMeets = JSON.parse(document.querySelector('div.attendings').dataset.availableMeets); // $('div.attendings').data('available-meets');
-//    // const availableCharacters = JSON.parse(document.querySelector('div.attendings').dataset.availableCharacters);
+//    const availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets); // $('div.attendings').data('available-meets');
+//    // const availableCharacters = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableCharacters);
 //
 //    availableMeets.forEach(meet => {
 //      meetColumns.push({
@@ -235,7 +235,7 @@ Attendees.testAttendings = {
 //          store: new DevExpress.data.CustomStore({
 //              key: "id",
 //              load: () => {
-//                return $.getJSON($('div.attendings').data('divisions-endpoint'));
+//                return $.getJSON($('div.dataAttendees').data('divisions-endpoint'));
 //              },
 //          }),
 //        },
@@ -255,7 +255,7 @@ Attendees.testAttendings = {
 ////                  load: () => {
 ////                    const $selectedMeets = $('select.filter-meets').val();
 ////                    if ($selectedMeets.length > 0) {
-////                      return $.getJSON($('div.attendings').data('characters-endpoint'), {meets: $selectedMeets});
+////                      return $.getJSON($('div.dataAttendees').data('characters-endpoint'), {meets: $selectedMeets});
 ////                    }
 ////                  },
 ////              }),
@@ -294,5 +294,5 @@ Attendees.testAttendings = {
 }
 
 $(document).ready(() => {
-  Attendees.testAttendings.init();
+  Attendees.dataAttendees.init();
 });

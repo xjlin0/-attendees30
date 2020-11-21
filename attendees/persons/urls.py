@@ -4,7 +4,7 @@ from rest_framework import routers
 from attendees.persons.views import (
     api_assembly_meet_attendings_viewset,
     api_data_attendings_viewset,
-    api_odata_attendings_viewset,
+    api_datagrid_data_attendees_viewset,
     api_assembly_meet_attendees_viewset,
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
@@ -17,8 +17,8 @@ app_name = "persons"
 
 router = routers.DefaultRouter()
 router.register(
-    'api/odata_attendings',
-    api_odata_attendings_viewset,
+    'api/datagrid_data_attendees',
+    api_datagrid_data_attendees_viewset,
     basename='attending',
 )
 router.register(
