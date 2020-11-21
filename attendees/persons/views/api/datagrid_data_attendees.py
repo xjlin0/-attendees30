@@ -2,11 +2,10 @@
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from rest_framework.utils import json
+
 from rest_framework.viewsets import ModelViewSet
 
-from attendees.persons.models import Attending
-from attendees.persons.services import AttendingService
+from attendees.persons.services import AttendeeService
 from attendees.persons.serializers import AttendingMinimalSerializer
 
 
@@ -27,24 +26,11 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         """
         current_user_organization = self.request.user.organization
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
-        orderby_list = []
-        for orderby_dict in json.loads(orderby_string):
-            direction = '-' if orderby_dict.get('desc', False) else ''
-            field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
-            orderby_list.append(direction + field)
 
-        meet_slugs = ['d7c8Fd-cfcc-congregation-roaster', 'd7c8Fd-cfcc-congregation-directory',
-                      'd7c8Fd-cfcc-congregation-member', 'd7c8Fd-cfcc-congregation-care']
-        character_slugs = ['d7c8Fd-cfcc-congregation-data-general', 'd7c8Fd-cfcc-congregation-data-member',
-                           'd7c8Fd-cfcc-congregation-data-directory']
-        assembly_slug = 'cfcc-congregation-data'
-
-        return Attending.objects.filter(
-            attendee__division__organization=current_user_organization,
-            meets__slug__in=meet_slugs,
-            attendingmeet__character__slug__in=character_slugs,
-            meets__assembly__slug=assembly_slug,
-        ).order_by(*orderby_list).distinct()
+        return AttendeeService.by_datagrid_params(
+            current_user_organization=current_user_organization,
+            orderby_string=orderby_string
+        )
 
 
 api_datagrid_data_attendees_viewset = ApiDatagridDataAttendeesViewSet
