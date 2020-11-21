@@ -1,3 +1,5 @@
+from django.contrib.postgres.aggregates.general import ArrayAgg
+
 from rest_framework.utils import json
 
 from attendees.persons.models import Attendee, Attending
@@ -37,9 +39,10 @@ class AttendeeService:
                            'd7c8Fd-cfcc-congregation-data-directory']
         assembly_slug = 'cfcc-congregation-data'
 
-        return Attending.objects.filter(
-            attendee__division__organization=current_user_organization,
-            meets__slug__in=meet_slugs,
-            attendingmeet__character__slug__in=character_slugs,
-            meets__assembly__slug=assembly_slug,
-        ).order_by(*orderby_list).distinct()
+        return Attendee.objects.select_related().prefetch_related().annotate(
+                meets_info=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
+               ).filter(
+                attendings__meets__slug__in=meet_slugs,
+                attendings__attendingmeet__character__slug__in=character_slugs,
+                attendings__meets__assembly__slug=assembly_slug,
+               )

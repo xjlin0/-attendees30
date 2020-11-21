@@ -94,22 +94,22 @@ Attendees.dataAttendees = {
     },
     columns: [
       {
-        caption: "attending_id",
+        caption: "attendee_id",
         dataField: "id",
-        dataType: "number",
+        dataType: "string",
       },
       {
         caption: "attendee header",
-        dataField: "attendee",
+        dataField: "first_name",
         calculateCellValue: rowData => {
-          const name2 = [rowData.attendee.last_name2, rowData.attendee.first_name2].join(''); // no space
-          return [rowData.attendee.first_name, rowData.attendee.last_name, name2].join(' ').trim().replace('  ', ' ')
+          const name2 = [rowData.last_name2, rowData.first_name2].join(''); // no space
+          return [rowData.first_name, rowData.last_name, name2].join(' ').trim().replace('  ', ' ')
         },
       },
       {
         dataHtmlTitle: "showing only divisions of current user organization",
         caption: "division",
-        dataField: "attendee.division",
+        dataField: "division",
         lookup: {
           valueExpr: "id",
           displayExpr: "display_name",
