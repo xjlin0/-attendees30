@@ -352,13 +352,13 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_test_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
-      "url_name": "datagrid_assembly_test_attendings",
-      "display_name": "\u6e2c\u8a66\u53c3\u8207 attending",
+      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_data_attendees/",
+      "url_name": "datagrid_assembly_data_attendees",
+      "display_name": "會員資料 attendee",
       "display_order": 3100,
       "infos": {
         "class": "dropdown-item",
-        "title": "test congregation attending"
+        "title": "congregation attendee data"
       },
       "lft": 2,
       "rght": 3,

@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator([login_required], name='dispatch')
-class DatagridAssemblyTestAttendingsListView(RouteGuard, ListView):
+class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
     queryset = []
-    template_name = 'persons/datagrid_assembly_test_attendings.html'
+    template_name = 'persons/datagrid_assembly_data_attendees.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,4 +66,4 @@ class DatagridAssemblyTestAttendingsListView(RouteGuard, ListView):
     #     return ''
 
 
-datagrid_assembly_test_attendings_list_view = DatagridAssemblyTestAttendingsListView.as_view()
+datagrid_assembly_data_attendees_list_view = DatagridAssemblyDataAttendeesListView.as_view()

@@ -1,6 +1,6 @@
 Attendees.testAttendings = {
   init: () => {
-    console.log("attendees/static/js/persons/datagrid_assembly_test_attendings.js");
+    console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
     Attendees.testAttendings.startDataGrid();
   },
 
