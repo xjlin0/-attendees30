@@ -13,7 +13,7 @@ Attendees.dataAttendees = {
     key: "id",
     load: (loadOptions) => {
       const deferred = $.Deferred();
-      const args = {};
+      const args = {assembly: $('div.dataAttendees').data('assembly')};
 
       [
         "skip",

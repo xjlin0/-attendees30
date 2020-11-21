@@ -20,7 +20,7 @@ class AttendeeService:
                 )
 
     @staticmethod
-    def by_datagrid_params(current_user_organization, orderby_string):
+    def by_datagrid_params(current_user_organization, assembly_slug, orderby_string):
         """
         :param assembly_slug:
         :param meet_slugs:
@@ -33,17 +33,17 @@ class AttendeeService:
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
             orderby_list.append(direction + field)
 
-        meet_slugs = ['d7c8Fd-cfcc-congregation-roaster', 'd7c8Fd-cfcc-congregation-directory',
-                      'd7c8Fd-cfcc-congregation-member', 'd7c8Fd-cfcc-congregation-care']
-        character_slugs = ['d7c8Fd-cfcc-congregation-data-general', 'd7c8Fd-cfcc-congregation-data-member',
-                           'd7c8Fd-cfcc-congregation-data-directory']
-        assembly_slug = 'cfcc-congregation-data'
+        # meet_slugs = ['d7c8Fd-cfcc-congregation-roaster', 'd7c8Fd-cfcc-congregation-directory',
+        #               'd7c8Fd-cfcc-congregation-member', 'd7c8Fd-cfcc-congregation-care']
+        # character_slugs = ['d7c8Fd-cfcc-congregation-data-general', 'd7c8Fd-cfcc-congregation-data-member',
+        #                    'd7c8Fd-cfcc-congregation-data-directory']
+        # assembly_slug = 'cfcc-congregation-data'
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                 meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
                ).filter(
                 division__organization=current_user_organization,
-                attendings__meets__slug__in=meet_slugs,
-                attendings__attendingmeet__character__slug__in=character_slugs,
+                # attendings__meets__slug__in=meet_slugs,
+                # attendings__attendingmeet__character__slug__in=character_slugs,
                 attendings__meets__assembly__slug=assembly_slug,
                )
