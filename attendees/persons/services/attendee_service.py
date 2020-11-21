@@ -40,8 +40,9 @@ class AttendeeService:
         assembly_slug = 'cfcc-congregation-data'
 
         return Attendee.objects.select_related().prefetch_related().annotate(
-                meets_info=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
+                meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
                ).filter(
+                division__organization=current_user_organization,
                 attendings__meets__slug__in=meet_slugs,
                 attendings__attendingmeet__character__slug__in=character_slugs,
                 attendings__meets__assembly__slug=assembly_slug,
