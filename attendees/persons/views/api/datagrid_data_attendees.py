@@ -27,11 +27,13 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         current_user_organization = self.request.user.organization
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
         assembly_slug = self.request.query_params.get('assembly')
+        filters_list = self.request.query_params.getlist('filter', [])
 
         return AttendeeService.by_datagrid_params(
             current_user_organization=current_user_organization,
             assembly_slug=assembly_slug,
             orderby_string=orderby_string,
+            filters_list=filters_list,
         )
 
 

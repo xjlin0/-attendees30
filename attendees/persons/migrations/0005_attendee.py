@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(blank=True, db_index=True, max_length=25, null=True)),
                 ('first_name2', models.CharField(blank=True, db_index=True, max_length=12, null=True)),
                 ('last_name2', models.CharField(blank=True, db_index=True, max_length=8, null=True)),
-                ('full_name', models.CharField(blank=True, db_index=True, max_length=70, null=True)),
+                ('full_name', models.CharField(blank=True, db_index=True, max_length=70, null=True, help_text='will be replaced by generated column in migration')),
                 ('gender', models.CharField(choices=GenderEnum.choices(), default=GenderEnum.UNSPECIFIED, max_length=11)),
                 ('actual_birthday', models.DateField(blank=True, null=True)),
                 ('estimated_birthday', models.DateField(blank=True, null=True)),

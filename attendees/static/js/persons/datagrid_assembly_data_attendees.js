@@ -56,7 +56,7 @@ Attendees.dataAttendees = {
 
 
     filterRow: { visible: true },  //filter doesn't work with fields with calculateDisplayValue yet
-    searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
+//    searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
@@ -99,12 +99,9 @@ Attendees.dataAttendees = {
         dataType: "string",
       },
       {
-        caption: "attendee header",
-        dataField: "first_name",
-        calculateCellValue: rowData => {
-          const name2 = [rowData.last_name2, rowData.first_name2].join(''); // no space
-          return [rowData.first_name, rowData.last_name, name2].join(' ').trim().replace('  ', ' ')
-        },
+        caption: "Full name",
+        dataField: "full_name",
+        dataType: "string",
       },
       {
         dataHtmlTitle: "showing only divisions of current user organization",

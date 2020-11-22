@@ -25,7 +25,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     first_name2 = models.CharField(max_length=12, db_index=True, null=True, blank=True)
     last_name2 = models.CharField(max_length=8, db_index=True, null=True, blank=True)
-    full_name = models.CharField(max_length=70, db_index=True, null=True, blank=True)
+    full_name = models.CharField(max_length=70, db_index=True, null=True, blank=True, help_text='will be replaced by generated column in migration')
     gender = models.CharField(max_length=11, blank=False, null=False, default=GenderEnum.UNSPECIFIED, choices=GenderEnum.choices())
     actual_birthday = models.DateField(blank=True, null=True)
     estimated_birthday = models.DateField(blank=True, null=True)
@@ -138,4 +138,4 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         ]
 
     class ReadonlyMeta:
-        readonly = ["full_name"]
+        readonly = ["full_name"]  # generated column

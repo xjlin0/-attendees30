@@ -70,7 +70,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('first_name', 'last_name', 'last_name2', 'first_name2')
+    search_fields = ('full_name',)
     readonly_fields = ['id', 'created', 'modified', 'full_name']
     inlines = (AttendeeAddressInline, RelationshipInline)
     list_display_links = ('id',)

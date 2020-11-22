@@ -1,8 +1,9 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
+from django.db.models import Q
 
 from rest_framework.utils import json
 
-from attendees.persons.models import Attendee, Attending
+from attendees.persons.models import Attendee
 
 
 class AttendeeService:
@@ -20,11 +21,12 @@ class AttendeeService:
                 )
 
     @staticmethod
-    def by_datagrid_params(current_user_organization, assembly_slug, orderby_string):
+    def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
         """
+        :param current_user_organization:
         :param assembly_slug:
-        :param meet_slugs:
-        :param character_slugs:
+        :param orderby_string:
+        :param filters_list:
         :return:
         """
         orderby_list = []
@@ -33,17 +35,31 @@ class AttendeeService:
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
             orderby_list.append(direction + field)
 
-        # meet_slugs = ['d7c8Fd-cfcc-congregation-roaster', 'd7c8Fd-cfcc-congregation-directory',
-        #               'd7c8Fd-cfcc-congregation-member', 'd7c8Fd-cfcc-congregation-care']
-        # character_slugs = ['d7c8Fd-cfcc-congregation-data-general', 'd7c8Fd-cfcc-congregation-data-member',
-        #                    'd7c8Fd-cfcc-congregation-data-directory']
-        # assembly_slug = 'cfcc-congregation-data'
+        filters = {
+            "division__organization":  current_user_organization,
+            "attendings__meets__assembly__slug": assembly_slug,
+        } # merge the filters from
+        # filters_list = ["division","=",2]
+        # filterRow: [["names","contains","nameY"],"and",["division","=",2]]
+        # searchPanel: [[["id","contains","idZ"],"and",["names","contains","nameX"],"and",["division","=",2]],"and",[["id","contains","nameY"],"or",["names","contains","nameY"]]]
+
+        # if filters_list:
+        #     if isinstance(filters_list[0], list):  # this is a 2d list always using "and"
+        #         pass
+        #     else:  # this is only a 1d list simple filtering
+        #         if filters_list[1]=='contains':
+        #             pass
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                 meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
-               ).filter(
-                division__organization=current_user_organization,
-                # attendings__meets__slug__in=meet_slugs,
-                # attendings__attendingmeet__character__slug__in=character_slugs,
-                attendings__meets__assembly__slug=assembly_slug,
-               )
+               ).filter(**filters).order_by(*orderby_list)
+
+    @staticmethod
+    def parse_plain_filter_array(self, filter_array):
+        filters={}
+
+        if filter_array:
+            if filter_array[1] == '=':  # exact match from filter
+                filters[filter_array[0]] = filter_array[2]
+
+        return filters
