@@ -1,4 +1,4 @@
-
+import ast
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -27,7 +27,8 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         current_user_organization = self.request.user.organization
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
         assembly_slug = self.request.query_params.get('assembly')
-        filters_list = self.request.query_params.getlist('filter', [])
+        filters_list_string = self.request.query_params.get('filter', '[]')
+        filters_list = ast.literal_eval(filters_list_string)  # Datagrid didn't send array in standard url params
 
         return AttendeeService.by_datagrid_params(
             current_user_organization=current_user_organization,

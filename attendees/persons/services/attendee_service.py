@@ -29,47 +29,45 @@ class AttendeeService:
         :param filters_list:
         :return:
         """
-        orderby_list = []
-        for orderby_dict in json.loads(orderby_string):
-            direction = '-' if orderby_dict.get('desc', False) else ''
-            field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
-            orderby_list.append(direction + field)
+        orderby_list = AttendeeService.filter_order(orderby_string)
 
-        # filters = {
-        #     "division__organization":  current_user_organization,
-        #     "attendings__meets__assembly__slug": assembly_slug,
-        # } # merge the filters from
-        # filters_list = ["division","=",2]
-        # filterRow: [["names","contains","nameY"],"and",["division","=",2]]
-        # searchPanel: [[["id","contains","idZ"],"and",["names","contains","nameX"],"and",["division","=",2]],"and",[["id","contains","nameY"],"or",["names","contains","nameY"]]]
-        final_query = AttendeeService.parse_filter_arrays(
-            query=Q(division__organization=current_user_organization).add(  # preventing browser hacks
-                  Q(attendings__meets__assembly__slug=assembly_slug), Q.AND
-            ),
-            filters_list=filters_list,
-        )
+        init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
+                      Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
+
+        final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                 meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
                ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
-    def parse_filter_arrays(query, filters_list):
-        # if filters_list:
-        #     if isinstance(filters_list[0], list):  # this is a 2d list always using "and"
-        #         pass
-        #     else:  # this is only a 1d list simple filtering
-        #         if filters_list[1]=='contains':
-        #             pass
-
-        return query
+    def filter_order(orderby_string):
+        orderby_list = []
+        for orderby_dict in json.loads(orderby_string):
+            direction = '-' if orderby_dict.get('desc', False) else ''
+            field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
+            orderby_list.append(direction + field)
+        return orderby_list
 
     @staticmethod
-    def parse_unit_filter_array(filter_array):
-        filters={}
-
-        if filter_array:
-            if filter_array[1] == '=':  # exact match from filter
-                filters[filter_array[0]] = filter_array[2]
-
-        return filters
+    def filter_parser(filters_list):
+        if filters_list:
+            if 'and' in filters_list and 'or' in filters_list:
+                raise Exception('cannot process both or + and at the same level!')
+            elif filters_list[1] == 'and':
+                and_list = [element for element in filters_list if element != 'and']
+                and_query = AttendeeService.filter_parser(and_list[0])
+                for and_element in and_list[1:]:
+                    and_query.add(AttendeeService.filter_parser(and_element), Q.AND)
+                return and_query
+            elif filters_list[1] == 'or':
+                or_list = [element for element in filters_list if element != 'or']
+                or_query = AttendeeService.filter_parser(or_list[0])
+                for or_element in or_list[1:]:
+                    or_query.add(AttendeeService.filter_parser(or_element), Q.OR)
+                return or_query
+            elif filters_list[1] == '=':
+                return Q(**{filters_list[0].replace('.', '__'): filters_list[2]})
+            elif filters_list[1] == 'contains':
+                return Q(**{filters_list[0].replace('.', '__') + '__icontains': filters_list[2]})
+        return Q()
