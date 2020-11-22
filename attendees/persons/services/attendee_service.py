@@ -35,14 +35,26 @@ class AttendeeService:
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
             orderby_list.append(direction + field)
 
-        filters = {
-            "division__organization":  current_user_organization,
-            "attendings__meets__assembly__slug": assembly_slug,
-        } # merge the filters from
+        # filters = {
+        #     "division__organization":  current_user_organization,
+        #     "attendings__meets__assembly__slug": assembly_slug,
+        # } # merge the filters from
         # filters_list = ["division","=",2]
         # filterRow: [["names","contains","nameY"],"and",["division","=",2]]
         # searchPanel: [[["id","contains","idZ"],"and",["names","contains","nameX"],"and",["division","=",2]],"and",[["id","contains","nameY"],"or",["names","contains","nameY"]]]
+        final_query = AttendeeService.parse_filter_arrays(
+            query=Q(division__organization=current_user_organization).add(  # preventing browser hacks
+                  Q(attendings__meets__assembly__slug=assembly_slug), Q.AND
+            ),
+            filters_list=filters_list,
+        )
 
+        return Attendee.objects.select_related().prefetch_related().annotate(
+                meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
+               ).filter(final_query).order_by(*orderby_list)
+
+    @staticmethod
+    def parse_filter_arrays(query, filters_list):
         # if filters_list:
         #     if isinstance(filters_list[0], list):  # this is a 2d list always using "and"
         #         pass
@@ -50,12 +62,10 @@ class AttendeeService:
         #         if filters_list[1]=='contains':
         #             pass
 
-        return Attendee.objects.select_related().prefetch_related().annotate(
-                meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
-               ).filter(**filters).order_by(*orderby_list)
+        return query
 
     @staticmethod
-    def parse_plain_filter_array(self, filter_array):
+    def parse_unit_filter_array(filter_array):
         filters={}
 
         if filter_array:
