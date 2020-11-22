@@ -25,6 +25,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     first_name2 = models.CharField(max_length=12, db_index=True, null=True, blank=True)
     last_name2 = models.CharField(max_length=8, db_index=True, null=True, blank=True)
+    full_name = models.CharField(max_length=70, db_index=True, null=True, blank=True)
     gender = models.CharField(max_length=11, blank=False, null=False, default=GenderEnum.UNSPECIFIED, choices=GenderEnum.choices())
     actual_birthday = models.DateField(blank=True, null=True)
     estimated_birthday = models.DateField(blank=True, null=True)
@@ -135,3 +136,6 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
             GinIndex(fields=['infos'], name='attendee_infos_gin', ),
             GinIndex(fields=['progressions'], name='attendee_progressions_gin', ),
         ]
+
+    class ReadonlyMeta:
+        readonly = ["full_name"]

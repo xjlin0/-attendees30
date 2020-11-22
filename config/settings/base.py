@@ -76,6 +76,7 @@ THIRD_PARTY_APPS = [
     "mptt",
     "django_json_widget",
     "private_storage",
+    "django_readonly_field",
     # "reversion",
 ]
 

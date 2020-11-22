@@ -36,6 +36,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(blank=True, db_index=True, max_length=25, null=True)),
                 ('first_name2', models.CharField(blank=True, db_index=True, max_length=12, null=True)),
                 ('last_name2', models.CharField(blank=True, db_index=True, max_length=8, null=True)),
+                ('full_name', models.CharField(blank=True, db_index=True, max_length=70, null=True)),
                 ('gender', models.CharField(choices=GenderEnum.choices(), default=GenderEnum.UNSPECIFIED, max_length=11)),
                 ('actual_birthday', models.DateField(blank=True, null=True)),
                 ('estimated_birthday', models.DateField(blank=True, null=True)),
@@ -49,6 +50,21 @@ class Migration(migrations.Migration):
                 'ordering': ['last_name', 'first_name'],
             },
             bases=(utility.Utility, models.Model),
+        ),
+        migrations.RunSQL(
+            sql="""
+                ALTER TABLE persons_attendees DROP COLUMN full_name;
+                ALTER TABLE persons_attendees ADD COLUMN full_name VARCHAR(70)
+                      GENERATED ALWAYS AS (TRIM(
+                        COALESCE(first_name, '') || ' ' ||
+                        COALESCE(last_name, '')  || ' ' ||
+                        COALESCE(last_name2, '')   ||
+                        COALESCE(first_name2, '') 
+                      )) STORED;
+                CREATE INDEX attendee_full_name_raw
+                  ON persons_attendees (full_name);
+                """,
+            # reverse_sql="",
         ),
         migrations.AddIndex(
             model_name='attendee',

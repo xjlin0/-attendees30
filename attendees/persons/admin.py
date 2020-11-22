@@ -71,10 +71,10 @@ class AttendeeAdmin(admin.ModelAdmin):
         fields.JSONField: {'widget': JSONEditorWidget},
     }
     search_fields = ('first_name', 'last_name', 'last_name2', 'first_name2')
-    readonly_fields = ['id', 'created', 'modified']
+    readonly_fields = ['id', 'created', 'modified', 'full_name']
     inlines = (AttendeeAddressInline, RelationshipInline)
     list_display_links = ('id',)
-    list_display = ('id', 'division', 'first_name', 'last_name', 'last_name2', 'first_name2', 'progressions', 'infos')
+    list_display = ('id', 'division', 'full_name', 'progressions', 'infos')
 
     # def get_queryset(self, request):
     #     qs = super().get_queryset(request)
