@@ -29,7 +29,7 @@ class AttendeeService:
         :param filters_list:
         :return:
         """
-        orderby_list = AttendeeService.filter_order(orderby_string)
+        orderby_list = AttendeeService.orderby_parser(orderby_string)
 
         init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
                       Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
@@ -37,11 +37,11 @@ class AttendeeService:
         final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
-                meet_slugs=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
+                joined_meets=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
                ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
-    def filter_order(orderby_string):
+    def orderby_parser(orderby_string):
         orderby_list = []
         for orderby_dict in json.loads(orderby_string):
             direction = '-' if orderby_dict.get('desc', False) else ''

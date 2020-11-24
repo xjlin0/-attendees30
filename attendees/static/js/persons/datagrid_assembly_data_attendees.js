@@ -56,7 +56,7 @@ Attendees.dataAttendees = {
 
 
     filterRow: { visible: true },  //filter doesn't work with fields with calculateDisplayValue yet
-//    searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
+    searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
@@ -90,7 +90,7 @@ Attendees.dataAttendees = {
     },
     pager: {
         showPageSizeSelector: true,
-        allowedPageSizes: [10, 15, 100]
+        allowedPageSizes: [10, 100, 1000]
     },
     columns: [
       {
@@ -104,11 +104,25 @@ Attendees.dataAttendees = {
         dataType: "string",
       },
       {
+        caption: "member",
+        dataField: "joined_meets.roaster",
+        dataType: "string",
+        calculateCellValue: (rowData)=>{
+          meet_slug='d7c8Fd-cfcc-congregation-roaster'
+          meet_name="roaster"
+          if (rowData.joined_meets.includes(meet_slug)){
+            return meet_name;
+          }else{
+            return "+";
+          }
+        },
+      },
+      {
         dataHtmlTitle: "showing only divisions of current user organization",
         caption: "division",
         dataField: "division",
         lookup: {
-          valueExpr: "id",
+          valueExpr: "id",   // valueExpr has to be string
           displayExpr: "display_name",
           dataSource: {
             store: new DevExpress.data.CustomStore({
