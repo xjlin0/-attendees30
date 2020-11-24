@@ -105,7 +105,7 @@ Attendees.dataAttendees = {
       },
       {
         caption: "member",
-        dataField: "joined_meets.roaster",
+        dataField: "",
         dataType: "string",
         calculateCellValue: (rowData)=>{
           meet_slug='d7c8Fd-cfcc-congregation-roaster'
