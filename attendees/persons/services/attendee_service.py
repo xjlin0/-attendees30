@@ -1,5 +1,5 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
-from django.db.models import Q
+from django.db.models import Q, CharField
 
 from rest_framework.utils import json
 
