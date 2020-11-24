@@ -9,6 +9,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
     # self_phone_numbers = serializers.CharField()
     # caregiver_phone_numbers = serializers.CharField()
     joined_meets = serializers.JSONField()
+    joined_roaster = serializers.CharField()
 
     class Meta:
         model = Attendee

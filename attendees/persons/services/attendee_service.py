@@ -1,5 +1,6 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
 from django.db.models import Q, CharField
+from django.db.models.expressions import Case, When, Value
 
 from rest_framework.utils import json
 
@@ -37,8 +38,16 @@ class AttendeeService:
         final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
-                joined_meets=ArrayAgg('attendings__meets__slug', distinct=True, order='slug')
-               ).filter(final_query).order_by(*orderby_list)
+                joined_meets=ArrayAgg('attendings__meets__slug', distinct=True, order='slug'),
+                joined_roaster=Case(
+                    When(attendings__meets__slug='d7c8Fd-cfcc-congregation-roaster',
+                         then=Value('yes')
+                         ),
+                    default=Value('+'),
+                    distinct=True,
+                    output_field=CharField()
+                )
+        ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
     def orderby_parser(orderby_string):
