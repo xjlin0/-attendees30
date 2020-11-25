@@ -41,7 +41,7 @@ class AttendeeService:
         return Attendee.objects.select_related().prefetch_related().annotate(
                 joined_meets=ArrayAgg('attendings__meets__slug', distinct=True, order='slug'),
                 joined_roaster=Case(
-                    When(attendings__meets__slug='d7c8Fd-cfcc-congregation-roaster',
+                    When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster',
                          then=Value('yes')
                          ),
                     default=Value('+'),
@@ -63,7 +63,7 @@ class AttendeeService:
     def filter_parser(filters_list):
         if filters_list:
             if 'and' in filters_list and 'or' in filters_list:
-                raise Exception('cannot process both or + and at the same level!')
+                raise Exception('cannot process both or + and at the same level! please wrap them in separated lists')
             elif filters_list[1] == 'and':
                 and_list = [element for element in filters_list if element != 'and']
                 and_query = AttendeeService.filter_parser(and_list[0])

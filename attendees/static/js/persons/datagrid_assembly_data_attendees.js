@@ -108,7 +108,7 @@ Attendees.dataAttendees = {
         dataField: "",
         dataType: "string",
         calculateCellValue: (rowData)=>{
-          meet_slug='d7c8Fd-cfcc-congregation-roaster'
+          meet_slug='d7c8Fd_cfcc_congregation_roaster'
           meet_name="roaster"
           if (rowData.joined_meets.includes(meet_slug)){
             return meet_name;
