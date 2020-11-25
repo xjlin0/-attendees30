@@ -4,15 +4,15 @@
     "pk": 1,
     "fields": {
       "name": "CFCC Main Calendar",
-      "slug": "cfcc-calendar"
+      "slug": "cfcc_calendar"
     }
   },
   {
     "model": "schedule.calendar",
     "pk": 2,
     "fields": {
-      "name": "CFCC summer retreat 2020",
-      "slug": "cfcc-summer-retreat-2020"
+      "name": "CFCC summer retreat 2020 Calendar",
+      "slug": "cfcc_summer_retreat_2020_calendar"
     }
   },
   {
@@ -47,7 +47,7 @@
       "parent": null,
       "html_type": "a",
       "urn": "#",
-      "url_name": "My-Info",
+      "url_name": "My_Info",
       "display_name": "My Info \u76f8\u95dc\u884c\u7a0b",
       "display_order": 1000,
       "infos": {
@@ -125,7 +125,7 @@
       "parent": null,
       "html_type": "a",
       "urn": "#",
-      "url_name": "Children-Ministry",
+      "url_name": "Children_Ministry",
       "display_name": "Children Ministry \u5152\u7ae5\u90e8",
       "display_order": 2000,
       "infos": {
@@ -153,7 +153,7 @@
       "parent": 1,
       "html_type": "a",
       "urn": "#",
-      "url_name": "Registration-updates",
+      "url_name": "Registration_updates",
       "display_name": "Registration/updates \u8a3b\u518a/\u66f4\u65b0",
       "display_order": 1100,
       "infos": {
@@ -176,7 +176,7 @@
       "category": "main",
       "parent": 4,
       "html_type": "a",
-      "urn": "/persons/cfcc-children-ministry/cfcc-junior-regular-activity/datagrid_assembly_all_attendings/?characters=d7c8Fd-cfcc-kid-student",
+      "urn": "/persons/cfcc_children_ministry/cfcc_junior_regular_activity/datagrid_assembly_all_attendings/?characters=d7c8Fd_cfcc_kid_student",
       "url_name": "datagrid_assembly_all_attendings",
       "display_name": "regular-kid attending \u4e00\u822c\u6d3b\u52d5\u53c3\u8207",
       "display_order": 2300,
@@ -201,7 +201,7 @@
       "category": "main",
       "parent": 4,
       "html_type": "a",
-      "urn": "/occasions/cfcc-children-ministry/cfcc-junior-regular-activity/datagrid_assembly_all_attendances/",
+      "urn": "/occasions/cfcc_children_ministry/cfcc_junior_regular_activity/datagrid_assembly_all_attendances/",
       "url_name": "datagrid_assembly_all_attendances",
       "display_name": "regular-kid attendances \u4e00\u822c\u6d3b\u52d5\u51fa\u5e2d",
       "display_order": 2500,
@@ -227,7 +227,7 @@
       "parent": 1,
       "html_type": "div",
       "urn": null,
-      "url_name": "divider-between-registration-activities",
+      "url_name": "divider_between_registration_activities",
       "display_name": "divider between registration&activities",
       "display_order": 1200,
       "infos": {
@@ -251,7 +251,7 @@
       "parent": 4,
       "html_type": "div",
       "urn": null,
-      "url_name": "divider-between-participation-attendances",
+      "url_name": "divider_between_participation_attendances",
       "display_name": "divider between participation & attendance date",
       "display_order": 2400,
       "infos": {
@@ -275,7 +275,7 @@
       "parent": null,
       "html_type": "a",
       "urn": "#",
-      "url_name": "congregation-data",
+      "url_name": "congregation_data",
       "display_name": "congregation data \u6703\u773e\u8cc7\u6599",
       "display_order": 3000,
       "infos": {
@@ -302,7 +302,7 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/occasions/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_all_attendances/",
+      "urn": "/occasions/cfcc_data_management/cfcc_congregation_data/datagrid_assembly_all_attendances/",
       "url_name": "datagrid_assembly_all_attendances",
       "display_name": "\u51fa\u5e2d\u7d00\u9304 attendance",
       "display_order": 3500,
@@ -327,7 +327,7 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_data_attendings/?characters=d7c8Fd-cfcc-congregation-data-general",
+      "urn": "/persons/cfcc_data_management/cfcc_congregation_data/datagrid_assembly_data_attendings/?characters=d7c8Fd_cfcc_congregation_data_general",
       "url_name": "datagrid_assembly_data_attendings",
       "display_name": "\u6703\u773e\u53c3\u8207 attending",
       "display_order": 3200,
@@ -352,7 +352,7 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcc-data-management/cfcc-congregation-data/datagrid_assembly_data_attendees/",
+      "urn": "/persons/cfcc_data_management/cfcc_congregation_data/datagrid_assembly_data_attendees/",
       "url_name": "datagrid_assembly_data_attendees",
       "display_name": "會員資料 attendee",
       "display_order": 3100,
@@ -373,7 +373,7 @@
       "created": "2020-04-11T18:15:06.495Z",
       "modified": "2020-04-12T06:00:08.781Z",
       "is_removed": false,
-      "slug": "d7c8Fd-cfcc-hayward",
+      "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "Chinese for Christ Church of Hayward",
       "infos": {
         "hostname": "192.168.99.100",
@@ -388,7 +388,7 @@
       "created": "1999-04-11T18:15:20.284Z",
       "modified": "2020-04-12T05:55:41.743Z",
       "is_removed": false,
-      "slug": "faBd6C-heaven",
+      "slug": "faBd6C_heaven",
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
         "hostname": "heaven.heaven"
@@ -678,7 +678,7 @@
       "modified": "2020-06-19T15:44:44.716Z",
       "is_removed": false,
       "display_name": "CFCC Main",
-      "slug": "d7c8Fd-main",
+      "slug": "d7c8Fd_main",
       "address": "5a9c79ce-d65d-11ea-822b-dad084263286"
     }
   },
@@ -690,7 +690,7 @@
       "modified": "2020-04-20T15:51:39.797Z",
       "is_removed": false,
       "display_name": "\u5929\u4e0a",
-      "slug": "faBd6C-sky",
+      "slug": "faBd6C_sky",
       "address": "8ce4cfee-d65d-11ea-822b-dad084263286"
     }
   },
@@ -702,7 +702,7 @@
       "modified": "2020-06-19T15:45:05.925Z",
       "is_removed": false,
       "display_name": "Sonoma State University",
-      "slug": "sonoma-state-university",
+      "slug": "sonoma_state_university",
       "address": "9a331cdc-d65d-11ea-822b-dad084263286"
     }
   },
@@ -714,7 +714,7 @@
       "modified": "2020-06-19T15:47:44.600Z",
       "is_removed": false,
       "display_name": "CFCC Fellowship Hall",
-      "slug": "fellowship-hall",
+      "slug": "fellowship_hall",
       "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "campus": 1
     }
@@ -727,7 +727,7 @@
       "modified": "2020-06-19T15:47:37.778Z",
       "is_removed": false,
       "display_name": "CFCC \u820a\u4e3b\u5802",
-      "slug": "old-main-sanctuary",
+      "slug": "old_main_sanctuary",
       "address": "5a9c79ce-d65d-11ea-822b-dad084263286",
       "campus": 1
     }
@@ -740,7 +740,7 @@
       "modified": "2020-06-19T15:49:18.369Z",
       "is_removed": false,
       "display_name": "SSU Sauvignon Village",
-      "slug": "ssu-sauvignon-village",
+      "slug": "ssu_sauvignon_village",
       "address": "9a331cdc-d65d-11ea-822b-dad084263286",
       "campus": 3
     }
@@ -753,7 +753,7 @@
       "modified": "2020-06-19T16:13:09.702Z",
       "is_removed": false,
       "display_name": "SSU Student Center",
-      "slug": "ssu-student-center",
+      "slug": "ssu_student_center",
       "address": "9a331cdc-d65d-11ea-822b-dad084263286",
       "campus": 3
     }
@@ -766,7 +766,7 @@
       "modified": "2020-06-19T15:51:25.573Z",
       "is_removed": false,
       "display_name": "CFCC \u526f\u58022\u6a13",
-      "slug": "cfcc-fellowship-2f",
+      "slug": "cfcc_fellowship_2f",
       "property": 1,
       "site": "2F"
     }
@@ -779,7 +779,7 @@
       "modified": "2020-06-19T15:54:58.877Z",
       "is_removed": false,
       "display_name": "SSU 5115",
-      "slug": "ssu-5115",
+      "slug": "ssu_5115",
       "property": 3,
       "site": "Grenache"
     }
@@ -792,7 +792,7 @@
       "modified": "2020-06-19T16:00:59.524Z",
       "is_removed": false,
       "display_name": "SSU 6202",
-      "slug": "ssu-6202",
+      "slug": "ssu_6202",
       "property": 3,
       "site": "Marsanne"
     }
@@ -805,7 +805,7 @@
       "modified": "2020-06-19T15:55:42.159Z",
       "is_removed": false,
       "display_name": "SSU 7104",
-      "slug": "ssu-7104",
+      "slug": "ssu_7104",
       "property": 3,
       "site": "Sirah"
     }
@@ -818,7 +818,7 @@
       "modified": "2020-06-19T16:17:09.636Z",
       "is_removed": false,
       "display_name": "SSU Cooperage",
-      "slug": "ssu-cooperage",
+      "slug": "ssu_cooperage",
       "property": 3,
       "site": "Sauv Quad"
     }
@@ -831,7 +831,7 @@
       "modified": "2020-06-19T16:21:09.147Z",
       "is_removed": false,
       "display_name": "SSU The Kitchens",
-      "slug": "ssu-the-kitchens",
+      "slug": "ssu_the_kitchens",
       "property": 4,
       "site": "1F"
     }
@@ -844,7 +844,7 @@
       "modified": "2020-06-19T16:30:40.463Z",
       "is_removed": false,
       "display_name": "SSU Dry Creek",
-      "slug": "ssu-dry-creek",
+      "slug": "ssu_dry_creek",
       "property": 4,
       "site": "2F"
     }
@@ -857,7 +857,7 @@
       "modified": "2020-06-19T16:42:18.285Z",
       "is_removed": false,
       "display_name": "SSU Ballrooms",
-      "slug": "ssu-ballrooms",
+      "slug": "ssu_ballrooms",
       "property": 4,
       "site": "B & C"
     }
@@ -884,7 +884,7 @@
       "modified": "2020-06-19T16:01:11.185Z",
       "is_removed": false,
       "display_name": "SSU 5115-A",
-      "slug": "ssu-5115",
+      "slug": "ssu_5115",
       "suite": 2,
       "label": "A",
       "accessibility": 0
@@ -898,7 +898,7 @@
       "modified": "2020-06-19T16:01:17.889Z",
       "is_removed": false,
       "display_name": "SSU 5115-B",
-      "slug": "ssu-5115-b",
+      "slug": "ssu_5115_b",
       "suite": 2,
       "label": "B",
       "accessibility": 0
@@ -912,7 +912,7 @@
       "modified": "2020-06-19T16:02:23.018Z",
       "is_removed": false,
       "display_name": "SSU 6202-C",
-      "slug": "ssu-6202-c",
+      "slug": "ssu_6202_c",
       "suite": 3,
       "label": "C",
       "accessibility": 1000
@@ -926,7 +926,7 @@
       "modified": "2020-06-19T16:04:53.661Z",
       "is_removed": false,
       "display_name": "SSU 7104 living room",
-      "slug": "ssu-7104-living",
+      "slug": "ssu_7104_living",
       "suite": 4,
       "label": "living room",
       "accessibility": 0
@@ -3643,7 +3643,7 @@
       "category": "normal",
       "display_name": "CFCC\u5152\u5c11\u5e38\u898f\u6d3b\u52d5",
       "display_order": 0,
-      "slug": "cfcc-junior-regular-activity",
+      "slug": "cfcc_junior_regular_activity",
       "need_age": true,
       "division": 3
     }
@@ -3660,7 +3660,7 @@
       "category": "normal",
       "display_name": "CFCC\u6210\u4eba\u4e3b\u65e5\u5d07\u62dc",
       "display_order": 0,
-      "slug": "cfcc-adult-sunday-worship",
+      "slug": "cfcc_adult_sunday_worship",
       "need_age": false,
       "division": 1
     }
@@ -3677,7 +3677,7 @@
       "category": "normal",
       "display_name": "CFCC\u5152\u5c11\u7279\u5225\u6d3b\u52d5",
       "display_order": 0,
-      "slug": "cfcc-junior-special-activity",
+      "slug": "cfcc_junior_special_activity",
       "need_age": true,
       "division": 3
     }
@@ -3694,7 +3694,7 @@
       "category": "normal",
       "display_name": "heaven\u5bf6\u5ea7\u656c\u62dc",
       "display_order": 0,
-      "slug": "heaven-throne-worship",
+      "slug": "heaven_throne_worship",
       "need_age": false,
       "division": 4
     }
@@ -3711,7 +3711,7 @@
       "category": "normal",
       "display_name": "CFCC\u6703\u773e\u8cc7\u6599",
       "display_order": 0,
-      "slug": "cfcc-congregation-data",
+      "slug": "cfcc_congregation_data",
       "need_age": false,
       "division": 5
     }
@@ -3728,7 +3728,7 @@
       "category": "normal",
       "display_name": "\u590f\u4ee4\u67032020",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat-2020",
+      "slug": "cfcc_summer_retreat_2020",
       "need_age": false,
       "division": 6
     }
@@ -3815,7 +3815,7 @@
       "assembly": 1,
       "display_name": "Student",
       "display_order": 32766,
-      "slug": "d7c8Fd-cfcc-kid-student",
+      "slug": "d7c8Fd_cfcc_kid_student",
       "info": null,
       "type": "audience"
     }
@@ -3830,7 +3830,7 @@
       "assembly": 1,
       "display_name": "LG Leader 1",
       "display_order": 1,
-      "slug": "d7c8Fd-cfcc-kid-LGleader1",
+      "slug": "d7c8Fd_cfcc_kid_LGleader1",
       "info": null,
       "type": "coworker"
     }
@@ -3845,7 +3845,7 @@
       "assembly": 1,
       "display_name": "LG Leader 2",
       "display_order": 2,
-      "slug": "d7c8Fd-cfcc-kid-LGleader2",
+      "slug": "d7c8Fd_cfcc_kid_LGleader2",
       "info": null,
       "type": "coworker"
     }
@@ -3860,7 +3860,7 @@
       "assembly": 1,
       "display_name": "Worship Leader 1",
       "display_order": 3,
-      "slug": "d7c8Fd-cfcc-kid-leader-1worship",
+      "slug": "d7c8Fd_cfcc_kid_worship_leader1",
       "info": null,
       "type": "coworker"
     }
@@ -3875,7 +3875,7 @@
       "assembly": 1,
       "display_name": "Worship Leader 2",
       "display_order": 4,
-      "slug": "d7c8Fd-cfcc-kid-leader-2worship",
+      "slug": "d7c8Fd_cfcc_kid_worship_leader2",
       "info": null,
       "type": "coworker"
     }
@@ -3890,7 +3890,7 @@
       "assembly": 2,
       "display_name": "A/V controller",
       "display_order": 0,
-      "slug": "d7c8Fd-adult-sunday-av-controller",
+      "slug": "d7c8Fd_adult_sunday_av_controller",
       "info": null,
       "type": "coworker"
     }
@@ -3905,7 +3905,7 @@
       "assembly": 4,
       "display_name": "sky choir member",
       "display_order": 9999,
-      "slug": "faBd6C-sky-choir-member",
+      "slug": "faBd6C_sky_choir_member",
       "info": null,
       "type": "coworker"
     }
@@ -3920,7 +3920,7 @@
       "assembly": 3,
       "display_name": "\u77ed\u5ba3\u53f8\u6a5f",
       "display_order": 7777,
-      "slug": "d7c8fd-cfcc-kid-short-mission-driver",
+      "slug": "d7c8fd_cfcc_kid_short_mission_driver",
       "info": null,
       "type": "coworker"
     }
@@ -3935,7 +3935,7 @@
       "assembly": 1,
       "display_name": "Food Helper",
       "display_order": 5,
-      "slug": "d7c8Fd-cfcc-kid-food-helper",
+      "slug": "d7c8Fd_cfcc_kid_food_helper",
       "info": null,
       "type": "coworker"
     }
@@ -3950,7 +3950,7 @@
       "assembly": 1,
       "display_name": "SG Leader Kindergarten",
       "display_order": 6,
-      "slug": "d7c8Fd-cfcc-kid-leader-SG-kindergarten",
+      "slug": "d7c8Fd_cfcc_kid_leader_SG_kindergarten",
       "info": null,
       "type": "coworker"
     }
@@ -3965,7 +3965,7 @@
       "assembly": 1,
       "display_name": "SG Leader 1st Grade",
       "display_order": 7,
-      "slug": "d7c8Fd-cfcc-kid-leader-SG-1G",
+      "slug": "d7c8Fd_cfcc_kid_leader_SG_1G",
       "info": null,
       "type": "coworker"
     }
@@ -3980,7 +3980,7 @@
       "assembly": 1,
       "display_name": "SG Leader 2nd Grade",
       "display_order": 8,
-      "slug": "d7c8Fd-cfcc-kid-leader-SG-2G",
+      "slug": "d7c8Fd_cfcc_kid_leader_SG_2G",
       "info": null,
       "type": "coworker"
     }
@@ -3995,7 +3995,7 @@
       "assembly": 1,
       "display_name": "SG Leader 3rd & 4th Grades",
       "display_order": 9,
-      "slug": "d7c8Fd-cfcc-kid-leader-SG-34G",
+      "slug": "d7c8Fd_cfcc_kid_leader_SG_34G",
       "info": null,
       "type": "coworker"
     }
@@ -4010,7 +4010,7 @@
       "assembly": 1,
       "display_name": "SG Leader 5th& 6th Grades",
       "display_order": 10,
-      "slug": "d7c8Fd-cfcc-kid-leader-SG-56G",
+      "slug": "d7c8Fd_cfcc_kid_leader_SG_56G",
       "info": null,
       "type": "coworker"
     }
@@ -4025,7 +4025,7 @@
       "assembly": 5,
       "display_name": "\u4e00\u822c\u6703\u773e",
       "display_order": 0,
-      "slug": "d7c8Fd-cfcc-congregation-data-general",
+      "slug": "d7c8Fd_cfcc_congregation_data_general",
       "info": null,
       "type": "audience"
     }
@@ -4040,7 +4040,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u53c3\u8207\u6703\u773e",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat2020-attendee",
+      "slug": "cfcc_summer_retreat2020_attendee",
       "info": null,
       "type": "audience"
     }
@@ -4055,7 +4055,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u540c\u5de5",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat2020-coworkers",
+      "slug": "cfcc_summer_retreat2020_coworkers",
       "info": null,
       "type": "coworker"
     }
@@ -4070,7 +4070,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u63a5\u9001\u53f8\u6a5f",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat2020-driver",
+      "slug": "cfcc_summer_retreat2020_driver",
       "info": null,
       "type": "normal"
     }
@@ -4085,7 +4085,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u8a0e\u8ad6\u5c0f\u7d44\u54e1",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat2020-panel-member",
+      "slug": "cfcc_summer_retreat2020_panel_member",
       "info": null,
       "type": "normal"
     }
@@ -4100,7 +4100,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u8a0e\u8ad6\u5c0f\u7d44\u9577",
       "display_order": 0,
-      "slug": "cfcc-summer-retreat2020-panel-leader",
+      "slug": "cfcc_summer_retreat2020_panel_leader",
       "info": null,
       "type": "normal"
     }
@@ -4115,7 +4115,7 @@
       "assembly": 6,
       "display_name": "\u590f\u4ee4\u67032020\u63a5\u9001\u4e58\u5ba2",
       "display_order": 0,
-      "slug": "2020-cfcc-summer-retreat2020-passenger",
+      "slug": "2020_cfcc_summer_retreat2020_passenger",
       "info": null,
       "type": "normal"
     }
@@ -4130,7 +4130,7 @@
       "assembly": 5,
       "display_name": "\u6559\u6703\u6703\u54e1",
       "display_order": 0,
-      "slug": "d7c8Fd-cfcc-congregation-data-member",
+      "slug": "d7c8Fd_cfcc_congregation_data_member",
       "info": null,
       "type": "internal"
     }
@@ -4145,9 +4145,30 @@
       "assembly": 5,
       "display_name": "\u6559\u6703\u901a\u8a0a\u9304",
       "display_order": 0,
-      "slug": "d7c8Fd-cfcc-congregation-data-directory",
+      "slug": "d7c8Fd_cfcc_congregation_data_directory",
       "info": null,
       "type": "internal"
+    }
+  },
+  {
+    "model": "occasions.meet",
+    "pk": 0,
+    "fields": {
+      "created": "2020-04-11T18:47:42.792Z",
+      "modified": "2020-05-27T14:54:06.742Z",
+      "is_removed": false,
+      "assembly": 5,
+      "shown_audience": true,
+      "audience_editable": true,
+      "start": "2020-05-12T14:53:44Z",
+      "finish": "2299-05-12T15:53:45Z",
+      "display_name": "訪客 visitor",
+      "slug": "d7c8Fd_cfcc_congregation_visitor",
+      "infos": {
+        "notice": "the finish date of attending_meets of visitor is always forever to show all attendees."
+      },
+      "site_type": 35,
+      "site_id": 1
     }
   },
   {
@@ -4163,7 +4184,7 @@
       "start": "2020-05-12T14:53:44Z",
       "finish": "2099-05-12T15:53:45Z",
       "display_name": "The Rock",
-      "slug": "d7c8Fd-junior-regular-the-rock",
+      "slug": "d7c8Fd_junior_regular_the_rock",
       "infos": {},
       "site_type": 35,
       "site_id": 1
@@ -4182,7 +4203,7 @@
       "start": "2020-05-12T14:53:56Z",
       "finish": "2099-05-12T15:53:57Z",
       "display_name": "Little foot",
-      "slug": "d7c8Fd-junior-regular-little-foot",
+      "slug": "d7c8Fd_junior_regular_little_foot",
       "infos": {},
       "site_type": 34,
       "site_id": 1
@@ -4201,7 +4222,7 @@
       "start": "2020-05-12T14:55:20Z",
       "finish": "2099-05-12T15:55:22Z",
       "display_name": "\u5f71\u97f3\u4e2d\u63a7",
-      "slug": "d7c8Fd-cfcc-adault-sunday-recording-av-control",
+      "slug": "d7c8Fd_cfcc_adault_sunday_recording_av_control",
       "infos": {},
       "site_type": 33,
       "site_id": 1
@@ -4220,7 +4241,7 @@
       "start": "2020-05-12T14:53:19Z",
       "finish": "2099-05-12T15:53:21Z",
       "display_name": "\u5929\u5802 \u73bb\u7483\u6d77\u5929\u4f7f\u8a69\u73ed",
-      "slug": "faBd6C-sea-of-glass-angel-choir",
+      "slug": "faBd6C_sea_of_glass_angel_choir",
       "infos": {},
       "site_type": 32,
       "site_id": 2
@@ -4239,7 +4260,7 @@
       "start": "2020-05-12T14:54:57Z",
       "finish": "2099-12-31T15:54:58Z",
       "display_name": "kid Christmas Celebration \u5152\u5c11\u8056\u8a95\u6703",
-      "slug": "d7c8Fd-junior-regular-christmas-celebration",
+      "slug": "d7c8Fd_junior_regular_christmas_celebration",
       "infos": {},
       "site_type": 32,
       "site_id": 1
@@ -4258,7 +4279,7 @@
       "start": "2020-05-12T14:53:03Z",
       "finish": "2030-05-12T14:53:04Z",
       "display_name": "\u9752\u5c11\u77ed\u5ba3\u82f1\u8a9e\u6559\u5b78",
-      "slug": "d7c8Fd-junior-special-english-teaching",
+      "slug": "d7c8Fd_junior_special_english_teaching",
       "infos": {},
       "site_type": 31,
       "site_id": 10
@@ -4277,7 +4298,7 @@
       "start": "2020-05-12T14:54:44Z",
       "finish": "2099-05-12T15:54:46Z",
       "display_name": "\u4e3b\u65e5\u5d07\u62dc",
-      "slug": "d7c8Fd-cfcc-congregation-roaster",
+      "slug": "d7c8Fd_cfcc_congregation_roaster",
       "infos": {
         "extending_attending_days": 90
       },
@@ -4298,7 +4319,7 @@
       "start": "2020-05-12T14:54:35Z",
       "finish": "2099-05-12T15:54:36Z",
       "display_name": "\u901a\u8a0a\u9304",
-      "slug": "d7c8Fd-cfcc-congregation-directory",
+      "slug": "d7c8Fd_cfcc_congregation_directory",
       "infos": {},
       "site_type": 29,
       "site_id": 1
@@ -4317,7 +4338,7 @@
       "start": "2020-05-12T14:54:24Z",
       "finish": "2099-05-12T15:54:26Z",
       "display_name": "\u6703\u54e1",
-      "slug": "d7c8Fd-cfcc-congregation-member",
+      "slug": "d7c8Fd_cfcc_congregation_member",
       "infos": {},
       "site_type": 29,
       "site_id": 1
@@ -4336,7 +4357,7 @@
       "start": "2020-07-17T15:28:40Z",
       "finish": "2020-07-21T15:29:58Z",
       "display_name": "2020\u590f\u4ee4\u6703\u98df\u5bbf",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-accommodation",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_accommodation",
       "infos": {},
       "site_type": 32,
       "site_id": 3
@@ -4355,7 +4376,7 @@
       "start": "2020-07-17T15:30:54Z",
       "finish": "2020-07-19T15:31:42Z",
       "display_name": "2020\u590f\u4ee4\u6703\u63a5\u9001",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-transportation",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_transportation",
       "infos": {},
       "site_type": 32,
       "site_id": 3
@@ -4374,7 +4395,7 @@
       "start": "2020-07-17T15:34:41Z",
       "finish": "2020-07-19T15:37:06Z",
       "display_name": "2020\u590f\u4ee4\u6703\u8a0e\u8ad6\u5c0f\u7d44",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-panel",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_panel",
       "infos": {},
       "site_type": 32,
       "site_id": 3
@@ -4393,7 +4414,7 @@
       "start": "2020-07-17T16:28:13Z",
       "finish": "2020-07-19T16:28:42Z",
       "display_name": "2020\u590f\u4ee4\u6703\u4e2d\u6587\u8b70\u7a0b",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-chinese-program",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_chinese_program",
       "infos": {},
       "site_type": 32,
       "site_id": 3
@@ -4412,7 +4433,7 @@
       "start": "2020-07-17T16:32:20Z",
       "finish": "2020-07-19T16:32:24Z",
       "display_name": "2020\u590f\u4ee4\u6703\u5152\u7ae5\u6d3b\u52d5",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-junior-program",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_junior_program",
       "infos": {},
       "site_type": 34,
       "site_id": 7
@@ -4431,7 +4452,7 @@
       "start": "2020-07-17T16:38:38Z",
       "finish": "2020-07-19T16:39:12Z",
       "display_name": "2020\u590f\u4ee4\u6703\u82f1\u6587\u8b70\u7a0b",
-      "slug": "d7c8Fd-cfcc-summer-retreat-2020-english-program",
+      "slug": "d7c8Fd_cfcc_summer_retreat_2020_english_program",
       "infos": {},
       "site_type": 32,
       "site_id": 3
@@ -4450,7 +4471,7 @@
       "start": "2020-05-12T14:54:35Z",
       "finish": "2099-05-12T15:54:36Z",
       "display_name": "\u95dc\u61f7\u4ea4\u901a",
-      "slug": "d7c8Fd-cfcc-congregation-care",
+      "slug": "d7c8Fd_cfcc_congregation_care",
       "infos": {},
       "site_type": 29,
       "site_id": 1
@@ -5001,7 +5022,7 @@
       "modified": "2020-06-19T17:47:27.877Z",
       "is_removed": false,
       "meet": 1,
-      "slug": "cfcc-kid-large-group-4g",
+      "slug": "cfcc_kid_large_group_4g",
       "display_name": "CFCC kid Large Group 4G",
       "display_order": 0,
       "infos": {},
@@ -5017,7 +5038,7 @@
       "modified": "2020-06-19T17:32:01.376Z",
       "is_removed": false,
       "meet": 13,
-      "slug": "cfcc-2020-summer-retreat-chinese-panel1",
+      "slug": "cfcc_2020_summer_retreat_chinese_panel1",
       "display_name": "CFCC 2020\u590f\u4ee4\u6703\u4e2d\u6587\u8a0e\u8ad6\u5c0f\u7d441",
       "display_order": 0,
       "infos": {},
@@ -5033,7 +5054,7 @@
       "modified": "2020-06-19T17:31:52.194Z",
       "is_removed": false,
       "meet": 13,
-      "slug": "cfcc-2020-summer-retreat-chinese-panel2",
+      "slug": "cfcc_2020_summer_retreat_chinese_panel2",
       "display_name": "CFCC 2020\u590f\u4ee4\u6703\u4e2d\u6587\u8a0e\u8ad6\u5c0f\u7d442",
       "display_order": 0,
       "infos": {},
@@ -5049,7 +5070,7 @@
       "modified": "2020-06-19T17:49:51.014Z",
       "is_removed": false,
       "meet": 13,
-      "slug": "cfcc-2020-summer-retreat-pickup-1",
+      "slug": "cfcc_2020_summer_retreat_pickup_1",
       "display_name": "CFCC 2020\u590f\u4ee4\u6703 \u63a5\u9001 pickup1",
       "display_order": 0,
       "infos": {},
@@ -5065,7 +5086,7 @@
       "modified": "2020-06-19T17:50:42.866Z",
       "is_removed": false,
       "meet": 13,
-      "slug": "cfcc-2020-summer-retreat-pickup2",
+      "slug": "cfcc_2020_summer_retreat_pickup2",
       "display_name": "CFCC 2020\u590f\u4ee4\u6703 \u63a5\u9001 pickup2",
       "display_order": 0,
       "infos": {},
@@ -6517,7 +6538,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "\u672a\u6307\u5b9aunspecified",
-      "slug": "cfcc-unspecified",
+      "slug": "cfcc_unspecified",
       "audience_auth_group": 0
     }
   },
@@ -6530,7 +6551,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "\u4e2d\u6587\u90e8",
-      "slug": "cfcc-chinese-ministry",
+      "slug": "cfcc_chinese_ministry",
       "audience_auth_group": 0
     }
   },
@@ -6543,7 +6564,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "The Crossing",
-      "slug": "cfcc-crossing-ministry",
+      "slug": "cfcc_crossing_ministry",
       "audience_auth_group": 0
     }
   },
@@ -6556,7 +6577,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "Junior Ministry",
-      "slug": "cfcc-children-ministry",
+      "slug": "cfcc_children_ministry",
       "audience_auth_group": 3
     }
   },
@@ -6569,7 +6590,7 @@
       "is_removed": false,
       "organization": 2,
       "display_name": "\u6c38\u6046\u656c\u62dc",
-      "slug": "ever-worship",
+      "slug": "ever_worship",
       "audience_auth_group": 0
     }
   },
@@ -6582,7 +6603,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "\u8cc7\u6599\u90e8",
-      "slug": "cfcc-data-management",
+      "slug": "cfcc_data_management",
       "audience_auth_group": 4
     }
   },
@@ -6595,7 +6616,7 @@
       "is_removed": false,
       "organization": 1,
       "display_name": "\u7279\u6703",
-      "slug": "special-conference",
+      "slug": "special_conference",
       "audience_auth_group": 5
     }
   },

@@ -34,6 +34,7 @@ class AttendeeService:
 
         init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
                       Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
+        # need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
 
