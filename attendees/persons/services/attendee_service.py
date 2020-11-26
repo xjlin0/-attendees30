@@ -1,6 +1,6 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
-from django.db.models import Q, CharField
-from django.db.models.expressions import Case, When, Value
+from django.db.models import Q, Count, IntegerField
+from django.db.models.expressions import Case, When
 
 from rest_framework.utils import json
 
@@ -40,19 +40,14 @@ class AttendeeService:
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                 joined_meets=ArrayAgg('attendings__meets__slug', distinct=True, order='slug'),
-                joined_roaster=Case(
-                    When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster',
-                         then=Value('yes')
-                         ),
-                    default=Value('+'),
-                    distinct=True,
-                    output_field=CharField()
-                )
-        ).filter(final_query).order_by(*orderby_list)
+                # joined_roaster=Count('attendings__meets__slug', filter=Q(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster'), distinct=True),
+                # joined_roaster=Count(Case(When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster', then=1), output_field=IntegerField())),
+                ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
     def orderby_parser(orderby_string):
         orderby_list = []
+        # how to sort joined_meets like [{"selector":"d7c8Fd_cfcc_congregation_roaster","desc":false}] ?
         for orderby_dict in json.loads(orderby_string):
             direction = '-' if orderby_dict.get('desc', False) else ''
             field = orderby_dict.get('selector', 'id').replace('.', '__')  # convert attendee.division to attendee__division
