@@ -238,13 +238,14 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     default_division = Division.objects.first()
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
+    visitor_meet = Meet.objects.first()
     member_meet = Meet.objects.get(slug=member_meet_slug)
     member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
     roaster_gathering = Gathering.objects.filter(meet=roaster_meet).last()
     pdt = pytz.timezone('America/Los_Angeles')
     member_character = Character.objects.get(slug=member_character_slug)
-    roaster_character = Character.objects.get(slug=data_general_character_slug)
+    general_character = Character.objects.get(slug=data_general_character_slug)
 
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
@@ -345,7 +346,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 
-                update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roaster_character, roaster_gathering)
+                update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering)
             else:
                 print('There is no household_id or first/lastname of the people: ', people)
             successfully_processed_count += 1
@@ -541,39 +542,50 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     return successfully_processed_count
 
 
-def update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roaster_character, roaster_gathering):
+def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering):
+    access_household_id = attendee.infos.get('access_people_household_id')
+    data_registration, data_registration_created = Registration.objects.update_or_create(
+        assembly=data_assembly,
+        main_attendee=attendee,
+        defaults={
+            'main_attendee': attendee,  # admin/secretary may change for future members.
+            'assembly': data_assembly,
+            'infos': {
+                'access_household_id': access_household_id,
+                'created_reason': 'CFCC member/directory registration from importer',
+            }
+        }
+    )
+
+    data_attending, data_attending_created = Attending.objects.update_or_create(
+        attendee=attendee,
+        registration=data_registration,
+        defaults={
+            'registration': data_registration,
+            'attendee': attendee,
+            'infos': {
+                'created_reason': 'CFCC member/directory registration from importer',
+            }
+        }
+    )
+
+    AttendingMeet.objects.update_or_create(
+        attending=data_attending,
+        meet=visitor_meet,
+        defaults={
+            'character': general_character,
+            'category': 'primary',
+            'start': visitor_meet.start,
+            'finish': visitor_meet.finish,
+        },
+    )
+
     if attendee.infos.get('attendance_count'):
-        access_household_id = attendee.infos.get('access_people_household_id')
-        data_registration, data_registration_created = Registration.objects.update_or_create(
-            assembly=data_assembly,
-            main_attendee=attendee,
-            defaults={
-                'main_attendee': attendee,  # admin/secretary may change for future members.
-                'assembly': data_assembly,
-                'infos': {
-                    'access_household_id': access_household_id,
-                    'created_reason': 'CFCC member/directory registration from importer',
-                }
-            }
-        )
-
-        data_attending, data_attending_created = Attending.objects.update_or_create(
-            attendee=attendee,
-            registration=data_registration,
-            defaults={
-                'registration': data_registration,
-                'attendee': attendee,
-                'infos': {
-                    'created_reason': 'CFCC member/directory registration from importer',
-                }
-            }
-        )
-
         AttendingMeet.objects.update_or_create(
             attending=data_attending,
             meet=roaster_meet,
             defaults={
-                'character': roaster_character,
+                'character': general_character,
                 'category': 'primary',
                 'start': roaster_gathering.start,
                 'finish': roaster_gathering.finish,
@@ -583,12 +595,12 @@ def update_attendee_worship_roaster(attendee, data_assembly, roaster_meet, roast
         Attendance.objects.update_or_create(
             gathering=roaster_gathering,
             attending=data_attending,
-            character=roaster_character,
+            character=general_character,
             team=None,
             defaults={
                 'gathering': roaster_gathering,
                 'attending': data_attending,
-                'character': roaster_character,
+                'character': general_character,
                 'team': None,
                 'start': roaster_gathering.start,
                 'finish': roaster_gathering.finish,
