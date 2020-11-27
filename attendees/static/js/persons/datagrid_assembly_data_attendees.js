@@ -90,7 +90,7 @@ Attendees.dataAttendees = {
     },
     pager: {
         showPageSizeSelector: true,
-        allowedPageSizes: [15, 150, 1500]
+        allowedPageSizes: [10, 20, 5000]
     },
     columns: [
       {
@@ -105,7 +105,7 @@ Attendees.dataAttendees = {
       },
       {
         caption: "member",
-        dataField: "hi5",
+        dataField: "",
         dataType: "string",
         calculateCellValue: (rowData)=>{
           meet_slug='d7c8Fd_cfcc_congregation_roaster'
