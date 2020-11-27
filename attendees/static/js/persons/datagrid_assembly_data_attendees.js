@@ -1,7 +1,9 @@
 Attendees.dataAttendees = {
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
+    Attendees.dataAttendees.setMeetsColumns();
     Attendees.dataAttendees.startDataGrid();
+    Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
   startDataGrid: () => {
@@ -64,15 +66,16 @@ Attendees.dataAttendees = {
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     loadPanel: {
-      enabled: true
+      message: 'Fetching...',
+      enabled: true,
     },
     wordWrapEnabled: false,
     grouping: {
       autoExpandAll: true,
     },
-    groupPanel: {
-      visible: "auto",
-    },
+//    groupPanel: {
+//      visible: "auto",
+//    },
     columnChooser: {
       enabled: true,
       mode: "select",
@@ -92,50 +95,53 @@ Attendees.dataAttendees = {
         showPageSizeSelector: true,
         allowedPageSizes: [10, 20, 5000]
     },
-    columns: [
-      {
-        caption: "attendee_id",
-        dataField: "id",
-        dataType: "string",
-      },
-      {
-        caption: "Full name",
-        dataField: "full_name",
-        dataType: "string",
-      },
-      {
-        caption: "member",
-        dataField: "",
-        dataType: "string",
-        calculateCellValue: (rowData)=>{
-          meet_slug='d7c8Fd_cfcc_congregation_roaster'
-          meet_name="roaster"
-          if (rowData.joined_meets.includes(meet_slug)){
-            return meet_name;
-          }else{
-            return "+";
-          }
+    columns: null,  // will be initialized later.
+    },
+
+  initialAttendeesColumns: [
+//    {
+//      caption: "attendee_id",
+//      dataField: "id",
+//      dataType: "string",
+//    },
+    {
+      caption: "Full name",
+      dataField: "full_name",
+      dataType: "string",
+    },
+    {
+      dataHtmlTitle: "showing only divisions of current user organization",
+      caption: "division",
+      dataField: "division",
+      lookup: {
+        valueExpr: "id",   // valueExpr has to be string, not function
+        displayExpr: "display_name",
+        dataSource: {
+          store: new DevExpress.data.CustomStore({
+            key: "id",
+            load: () => {
+              return $.getJSON($('div.dataAttendees').data('divisions-endpoint'));
+            },
+          }),
         },
       },
-      {
-        dataHtmlTitle: "showing only divisions of current user organization",
-        caption: "division",
-        dataField: "division",
-        lookup: {
-          valueExpr: "id",   // valueExpr has to be string
-          displayExpr: "display_name",
-          dataSource: {
-            store: new DevExpress.data.CustomStore({
-              key: "id",
-              load: () => {
-                return $.getJSON($('div.dataAttendees').data('divisions-endpoint'));
-              },
-            }),
-          },
-        },
-      },
-    ]
-  },
+    },
+  ],
+
+  otherAttendeesColumns: [
+    {
+      caption: "Phone",
+      dataField: "self_phone_numbers",
+      allowSorting: false,
+      dataType: "string",
+    },
+    {
+      caption: "Email",
+      dataField: "self_email_addresses",
+      allowSorting: false,
+      dataType: "string",
+    },
+  ],
 
 //  fetchAttendings: (event) => {
 //    Attendees.utilities.alterCheckBoxAndValidations(event.currentTarget, 'input.select-all');
@@ -209,23 +215,27 @@ Attendees.dataAttendees = {
 //  visibleColumns: [
 //  ],
 //
-//  setAttendingsFormatsColumns: () => {
-//
-//    const meetColumns=[];
-//    const availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets); // $('div.attendings').data('available-meets');
-//    // const availableCharacters = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableCharacters);
-//
-//    availableMeets.forEach(meet => {
-//      meetColumns.push({
-//        visible: false,
-//        caption: meet.display_name,
-//        dataField: meet.slug,  // used as the key for toggling visibility
-//        calculateCellValue: rowData => rowData.meets_info[meet.slug],
-//      })
-//    });
-//
-//    Attendees.attendings.attendingsFormats['columns']=[...Attendees.attendings.attendingsFormatsColumnsStart, ...meetColumns, ...Attendees.attendings.attendingsFormatsColumnsEnd]
-//  },
+  setMeetsColumns: () => {
+    const meetColumns=[];
+    const availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets); // $('div.attendings').data('available-meets');
+
+    availableMeets.forEach(meet => {
+      meetColumns.push({
+        visible: meet.id > 0,
+        caption: meet.display_name,
+        dataField: '',  // Not supporting order by meet yet: it needs both annotation and order_by in Django query
+        calculateCellValue: (rowData) => {
+          if (rowData.joined_meets.includes(meet.slug)) {
+            return meet.display_name;
+          }else{
+            return '+';
+          }
+        }
+      })
+    });
+
+    Attendees.dataAttendees.dataGridOpts['columns']=[...Attendees.dataAttendees.initialAttendeesColumns, ...meetColumns, ...Attendees.dataAttendees.otherAttendeesColumns]
+  },
 //
 //
 //  attendingsFormatsColumnsStart: [

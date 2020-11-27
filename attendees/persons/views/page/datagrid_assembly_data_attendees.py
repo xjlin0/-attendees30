@@ -26,14 +26,14 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
-        available_meets = Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('display_name')
+        available_meets = Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
         available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
         context.update({
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
             'available_meets': available_meets,
-            'available_meets_json': dumps([model_to_dict(m, fields=('slug', 'display_name')) for m in available_meets]),
+            'available_meets_json': dumps([model_to_dict(m, fields=('id', 'slug', 'display_name')) for m in available_meets]),
             'available_characters': available_characters,
             'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
         })

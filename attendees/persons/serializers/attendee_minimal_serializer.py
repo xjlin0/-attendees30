@@ -4,9 +4,9 @@ from rest_framework import serializers
 
 class AttendeeMinimalSerializer(serializers.ModelSerializer):
     # parents_notifiers_names = serializers.CharField()
-    # self_email_addresses = serializers.CharField()
+    self_email_addresses = serializers.CharField()
     # caregiver_email_addresses = serializers.CharField()
-    # self_phone_numbers = serializers.CharField()
+    self_phone_numbers = serializers.CharField()
     # caregiver_phone_numbers = serializers.CharField()
     # joined_roaster = serializers.IntegerField()
     joined_meets = serializers.JSONField()
