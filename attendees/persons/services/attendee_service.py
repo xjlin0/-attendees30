@@ -101,5 +101,20 @@ class AttendeeService:
             elif filters_list[1] == '=':
                 return Q(**{filters_list[0].replace('.', '__'): filters_list[2]})
             elif filters_list[1] == 'contains':
-                return Q(**{filters_list[0].replace('.', '__') + '__icontains': filters_list[2]})
+                return Q(**{AttendeeService.convert_methods(filters_list[0]) + '__icontains': filters_list[2]})
         return Q()
+
+    def convert_methods(query_field):
+        """
+        some of the values are calculated cell values, and need to convert back to db field for search
+        :return: string of fields in database
+        """
+        converter = {
+            'self_phone_numbers': 'addresses__fields',
+            'self_email_addresses': 'addresses__fields',
+        }
+
+        if query_field in converter:
+            return converter[query_field]
+        else:
+            return query_field.replace('.', '__')
