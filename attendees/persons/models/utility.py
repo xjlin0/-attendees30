@@ -1,4 +1,6 @@
+import pytz
 from datetime import datetime, timedelta, timezone
+from django.conf import settings
 
 
 class Utility:
@@ -28,6 +30,20 @@ class Utility:
                 return default_when_none
             else:
                 return string.strip()
+
+    @staticmethod
+    def parsedate_or_now(date_text, default_format='%Y-%m-%d', default_timezone=pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE)):
+        parsed_date = Utility.now_with_timezone()
+        if isinstance(date_text, str):
+            if date_text.count('/') == 2 and default_format.count('-') == 2:
+                default_format = '%m/%d/%Y'
+            try:
+                parsing_datetime = datetime.strptime(date_text, default_format)
+                parsed_date = parsing_datetime.astimezone(default_timezone)
+            except:
+                print("\nCannot parse date for date_text: ", date_text)
+
+        return parsed_date
 
     @staticmethod
     def boolean_or_datetext_or_original(original_value, strip_first=True):

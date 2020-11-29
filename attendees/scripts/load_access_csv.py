@@ -649,20 +649,9 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             'meet': member_meet,
             'character': member_character,
             'category': 'tertiary',
+            'start': Utility.parsedate_or_now(attendee.progressions.get('member_since')),
             'finish': member_gathering.finish,
         }
-
-        if attendee.progressions.get('member_since'):
-            try:
-                member_attending_meet_default['start'] = datetime.strptime(attendee.progressions.get('member_since'), '%Y-%m-%d').astimezone(pdt)
-            except Exception as e:
-                print("\nWhile get member join date for attendee: ", attendee)
-                print("in attendee.progressions: ", attendee.progressions)
-                print('cannot parse the member join date, reason: ', e)
-                member_attending_meet_default['start'] = dateparser.parse(attendee.progressions.get('member_since')).astimezone(pdt)
-                print('randomly making a wild guess here of the date to be: ', member_attending_meet_default['start'])
-        else:
-            member_attending_meet_default['start'] = Utility.now_with_timezone()
 
         AttendingMeet.objects.update_or_create(
             attending=data_attending,

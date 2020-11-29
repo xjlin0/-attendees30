@@ -19,10 +19,10 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'street', 'city', 'zip_code', 'phone1', 'email1')
 
     def phone1(self, instance):
-        return instance.fields['phone1']
+        return instance.fields.get('phone1')
 
     def email1(self, instance):
-        return instance.fields['email1']
+        return instance.fields.get('email1')
 
 
 class DivisionAdmin(admin.ModelAdmin):
