@@ -109,12 +109,9 @@ class AttendeeService:
         some of the values are calculated cell values, and need to convert back to db field for search
         :return: string of fields in database
         """
-        converter = {
+        field_converter = {
             'self_phone_numbers': 'addresses__fields',
             'self_email_addresses': 'addresses__fields',
         }
 
-        if query_field in converter:
-            return converter[query_field]
-        else:
-            return query_field.replace('.', '__')
+        return field_converter.get(query_field, query_field).replace('.', '__')
