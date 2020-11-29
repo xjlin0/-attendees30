@@ -24,19 +24,27 @@ class DatagridUserOrganizationAttendancesListView(ListView):
     template_name = 'occasions/datagrid_user_organization_attendances.html'
 
     def get_context_data(self, **kwargs):
+        attendee_id = self.kwargs.get('attendee_id')
+        attendee = self.request.user.attendee
+        user_organization = self.request.user.organization
+        if attendee_id is not None and self.request.user.belongs_to_groups_of(user_organization.infos.get('data_admins')):
+            other_user = Attendee.objects.filter(pk=attendee_id).first()
+            if other_user is not None:
+                attendee = other_user
         context = super().get_context_data(**kwargs)
-        # current_organization_slug = self.kwargs.get('organization_slug', None)
+
         available_meets = Meet.objects.filter(
-            Q(attendings__attendee=self.request.user.attendee)
+            Q(attendings__attendee=attendee)
             |
-            Q(attendings__attendee__in=self.request.user.attendee.related_ones.filter(
+            Q(attendings__attendee__in=attendee.related_ones.filter(
                 from_attendee__scheduler=True,
             ))
         ).order_by(
             'display_name',
-        )  # get all user's and user care receivers' joined meets, no time limit on the first load
+        ).distinct()  # get all user's and user care receivers' joined meets, no time limit on the first load
+
         context.update({
-            'current_organization_slug': self.request.user.organization.slug,
+            'current_organization_slug': user_organization.slug,
             'available_meets': available_meets,
         })
         return context

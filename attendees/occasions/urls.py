@@ -90,9 +90,15 @@ urlpatterns = [
         view=datagrid_coworker_organization_attendances_list_view,
         name='datagrid_coworker_organization_attendances',
     ),
-    path('datagrid_user_organization_attendances/',
-         view=datagrid_user_organization_attendances_list_view,
-         name='datagrid_user_organization_attendances',
+    path(
+        'datagrid_user_organization_attendances/',
+        kwargs={'attendee_id': None},
+        view=datagrid_user_organization_attendances_list_view,
+        name='datagrid_user_organization_attendances',
     ),
-
+    path(
+        'datagrid_user_organization_attendances/<str:attendee_id>',
+        view=datagrid_user_organization_attendances_list_view,
+        name='datagrid_user_organization_attendances',
+    ),
 ]
