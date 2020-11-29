@@ -179,8 +179,11 @@ def import_households(households, division1_slug, division2_slug):
                         fields__access_address_id=address_id,
                         defaults={
                             'display_name':  display_name,
-                            'phone1': Utility.presence(household.get('HouseholdPhone')),
-                            'phone2': Utility.presence(household.get('HouseholdFax')),
+                            'fields': {
+                                'access_address_id': address_id,
+                                'phone1': Utility.presence(household.get('HouseholdPhone')),
+                                'phone2': Utility.presence(household.get('HouseholdFax')),
+                            },
                         }
                     )
                     FamilyAddress.objects.update_or_create(
@@ -429,8 +432,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                 if families_address:
                     hushand_email = husband.infos.get('access_people_values', {}).get('E-mail')
                     wife_email = wife.infos.get('access_people_values', {}).get('E-mail')
-                    families_address.email1 = Utility.presence(hushand_email)
-                    families_address.email2 = Utility.presence(wife_email)
+                    families_address.fields['email1'] = Utility.presence(hushand_email)
+                    families_address.fields['email2'] = Utility.presence(wife_email)
                     families_address.save()
 
                 Relationship.objects.update_or_create(
@@ -471,7 +474,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
                 if families_address and househead_single:
                     self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
-                    families_address.email1 = Utility.presence(self_email)
+                    families_address.fields['email1'] = Utility.presence(self_email)
                     families_address.save()
                 else:
                     if Attendee.objects.filter(infos__access_people_household_id=family.infos['access_household_id']):
