@@ -14,6 +14,8 @@ Attendees.userAttendances = {
     Attendees.utilities.alterCheckBoxAndValidations(document.querySelector('select.filter-meets'), 'input.select-all');
   },
 
+  viewingAttendeeId: null,
+
   triggerFetching: (event) => {
     Attendees.userAttendances.fetchAttendances(event.currentTarget, event.delegateTarget);
   },
@@ -34,6 +36,9 @@ Attendees.userAttendances = {
       const url = $('div.organization-attendances').data('attendances-endpoint');
       const searchParams = new URLSearchParams({start: start, finish: finish});
       meets.forEach(meet => { searchParams.append('meets[]', meet)});
+      if (Attendees.userAttendances.viewingAttendeeId) {
+        searchParams.append('attendee', Attendees.userAttendances.viewingAttendeeId);
+      }
       finalUrl = `${url}?${searchParams.toString()}`
     }
 
@@ -96,9 +101,13 @@ Attendees.userAttendances = {
                 store: new DevExpress.data.CustomStore({
                     key: "id",
                     load: () => {
-                      meets = $('select.filter-meets').val();
+                      const meets = $('select.filter-meets').val();
                       if (meets.length > 0) {
-                        return $.getJSON($('div.organization-attendances').data('attendings-endpoint'), {meets: meets});
+                        const data = {meets: meets};
+                        if (Attendees.userAttendances.viewingAttendeeId) {
+                          data['attendee'] = Attendees.userAttendances.viewingAttendeeId;
+                        }
+                        return $.getJSON($('div.organization-attendances').data('attendings-endpoint'), data);
                       }
                     },
                 }),
@@ -154,6 +163,7 @@ Attendees.userAttendances = {
   },
 
   setDefaults: () => {
+    Attendees.userAttendances.viewingAttendeeId = window.location.pathname.split('/').pop();
     const locale = "en-us"
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
     const timeOptions = { hour12: true, hour: '2-digit', minute:'2-digit' };

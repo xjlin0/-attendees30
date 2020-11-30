@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
+
+from attendees.persons.models import Attendee
 from attendees.persons.services import AttendingService
 from attendees.persons.serializers import AttendingSerializer
 
@@ -23,9 +25,17 @@ class ApiFamilyOrganizationAttendingsViewSet(viewsets.ModelViewSet):
         :return: all Attendings with participating meets(group) and character(role)
         """
         current_user = self.request.user
-        if current_user.organization:
+        current_user_organization = current_user.organization
+        attendee = current_user.attendee
+        attendee_id = self.request.query_params.get('attendee')
+        if attendee_id is not None and current_user.belongs_to_groups_of(current_user_organization.infos.get('data_admins')):
+            other_user = Attendee.objects.filter(pk=attendee_id).first()
+            if other_user is not None:
+                attendee = other_user
+        if current_user_organization:
             return AttendingService.by_family_organization_attendings(
-                current_user=current_user,
+                attendee=attendee,
+                current_user_organization=current_user_organization,
                 meet_slugs=self.request.query_params.getlist('meets[]', [])
             )  # Todo: probably need to check if the meets belongs to the organization?
 

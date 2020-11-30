@@ -52,11 +52,12 @@ class AttendanceService:
                 )
 
     @staticmethod
-    def by_family_meets_gathering_intervals(user, meet_slugs, gathering_start, gathering_finish):
+    def by_family_meets_gathering_intervals(attendee, current_user_organization, meet_slugs, gathering_start, gathering_finish):
         """
         :query: Find all gatherings of all Attendances of the current user and their kid/care receiver,
                 , so all their "family" Attendances will show up.
-        :param current_user:
+        :param attendee:
+        :param current_user_organization:
         :param meet_slugs:
         :param gathering_start:
         :param gathering_finish:
@@ -70,14 +71,14 @@ class AttendanceService:
                     'gathering',
                     'attending__attendee',
                 ).filter(
-                    Q(attending__attendee=user.attendee)
+                    Q(attending__attendee=attendee)
                     |
                     Q(attending__attendee__in=Relationship.objects.filter(
-                        to_attendee=user.attendee,
+                        to_attendee=attendee,
                         scheduler=True
                     ).values_list('from_attendee')),
                     gathering__meet__shown_audience=True,
-                    gathering__meet__assembly__division__organization__slug=user.organization.slug,
+                    gathering__meet__assembly__division__organization=current_user_organization,
                     gathering__meet__slug__in=meet_slugs,
                     gathering__start__gte=gathering_start,
                     gathering__finish__lte=gathering_finish,

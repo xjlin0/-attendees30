@@ -28,22 +28,23 @@ class AttendingService:
                 ).distinct()
 
     @staticmethod
-    def by_family_organization_attendings(current_user, meet_slugs):
+    def by_family_organization_attendings(attendee, current_user_organization, meet_slugs):
         """
         :query: Find all gatherings of the current user and their kids/care-receivers, then list all attendings of the
                 found gatherings. So if the current user didn't participate(attending), no info will be shown.
-        :param current_user: logged in user object, need to associate to an attendee
+        :param attendee: logged in user's attendee or attendee to be checked by data_admins
+        :param current_user_organization current_user_organization
         :param meet_slugs: slugs of the meets to be filtered
         :return: all Attendings with participating meets(group) and character(role)
         """
         return Attending.objects.select_related().prefetch_related().filter(
-                    Q(attendee=current_user.attendee)
+                    Q(attendee=attendee)
                     |
-                    Q(attendee__in=current_user.attendee.related_ones.filter(
+                    Q(attendee__in=attendee.related_ones.filter(
                         from_attendee__scheduler=True,
                     )),
                     meets__slug__in=meet_slugs,
-                    meets__assembly__division__organization__slug=current_user.organization.slug,
+                    meets__assembly__division__organization=current_user_organization,
                 ).annotate(
                     meet=F('attendingmeet__meet__display_name'),
                     character=F('attendingmeet__character__display_name'),
