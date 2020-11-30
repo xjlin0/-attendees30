@@ -42,6 +42,7 @@ class DatagridUserOrganizationAttendancesListView(ListView):
         ).distinct()  # get all user's and user care receivers' joined meets, no time limit on the first load
 
         context.update({
+            'attendee_name': attendee.display_label,
             'current_organization_slug': user_organization.slug,
             'available_meets': available_meets,
         })
