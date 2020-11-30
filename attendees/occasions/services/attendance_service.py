@@ -52,10 +52,11 @@ class AttendanceService:
                 )
 
     @staticmethod
-    def by_family_meets_gathering_intervals(attendee, current_user_organization, meet_slugs, gathering_start, gathering_finish):
+    def by_family_meets_gathering_intervals(admin_checking, attendee, current_user_organization, meet_slugs, gathering_start, gathering_finish):
         """
         :query: Find all gatherings of all Attendances of the current user and their kid/care receiver,
                 , so all their "family" Attendances will show up.
+        :param admin_checking:
         :param attendee:
         :param current_user_organization:
         :param meet_slugs:
@@ -64,6 +65,16 @@ class AttendanceService:
 
         :return:  Attendances of the logged in user and their kids/care receivers
         """
+        extra_filters = {
+            'gathering__meet__assembly__division__organization': current_user_organization,
+            'gathering__meet__slug__in': meet_slugs,
+            'gathering__start__lte': gathering_finish,
+            'gathering__finish__gte': gathering_start,
+        }
+
+        if not admin_checking:
+            extra_filters['gathering__meet__shown_audience'] = True
+
         return Attendance.objects.select_related(
                     'character',
                     'team',
@@ -77,11 +88,7 @@ class AttendanceService:
                         to_attendee=attendee,
                         scheduler=True
                     ).values_list('from_attendee')),
-                    gathering__meet__shown_audience=True,
-                    gathering__meet__assembly__division__organization=current_user_organization,
-                    gathering__meet__slug__in=meet_slugs,
-                    gathering__start__gte=gathering_start,
-                    gathering__finish__lte=gathering_finish,
+                    **extra_filters
                 ).order_by(
                     'gathering__meet',
                     '-gathering__start',

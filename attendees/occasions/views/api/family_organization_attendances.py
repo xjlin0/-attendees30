@@ -34,13 +34,16 @@ class ApiFamilyOrganizationAttendancesViewSet(viewsets.ModelViewSet):
         current_user = self.request.user
         current_user_organization = current_user.organization
         attendee = current_user.attendee
+        admin_checking = False
         attendee_id = self.request.query_params.get('attendee')
         if attendee_id is not None and current_user.belongs_to_groups_of(current_user_organization.infos.get('data_admins')):
             other_user = Attendee.objects.filter(pk=attendee_id).first()
             if other_user is not None:
                 attendee = other_user
+                admin_checking = True
         if current_user_organization:
             return AttendanceService.by_family_meets_gathering_intervals(
+                admin_checking=admin_checking,
                 attendee=attendee,
                 current_user_organization=current_user_organization,
                 meet_slugs=self.request.query_params.getlist('meets[]', []),
