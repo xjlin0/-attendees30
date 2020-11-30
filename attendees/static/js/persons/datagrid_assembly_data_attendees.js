@@ -6,6 +6,8 @@ Attendees.dataAttendees = {
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
+  familyAttendancesUrn: document.querySelector('div.dataAttendees').dataset.familyAttendancesUrn,
+
   startDataGrid: () => {
     Attendees.dataAttendees.dataGridOpts['dataSource'] = Attendees.dataAttendees.customStore;
     $("div.dataAttendees").dxDataGrid(Attendees.dataAttendees.dataGridOpts).dxDataGrid("instance");
@@ -129,6 +131,15 @@ Attendees.dataAttendees = {
   ],
 
   otherAttendeesColumns: [
+    {
+      caption: "出席狀況",
+      allowSorting: false,
+      cellTemplate: (container, rowData) => {
+        $($("<a>", {"text": "Attendances", "href": Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id }))
+          .appendTo(container);
+      },
+    },
+
     {
       caption: "Phone",
       dataField: "self_phone_numbers",

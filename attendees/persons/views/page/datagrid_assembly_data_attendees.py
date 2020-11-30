@@ -11,6 +11,7 @@ from attendees.occasions.models import Meet, Character
 from attendees.users.authorization import RouteGuard
 import logging
 
+from attendees.users.models import Menu
 
 logger = logging.getLogger(__name__)
 
@@ -26,12 +27,14 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
+        family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
         available_meets = Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
         available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
         context.update({
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
+            'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,
             'available_meets': available_meets,
             'available_meets_json': dumps([model_to_dict(m, fields=('id', 'slug', 'display_name')) for m in available_meets]),
             'available_characters': available_characters,
