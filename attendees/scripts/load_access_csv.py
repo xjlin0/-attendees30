@@ -175,14 +175,16 @@ def import_households(households, division1_slug, division2_slug):
                 )
 
                 if address_id:
+                    phone1 = Utility.presence(household.get('HouseholdPhone'))
+                    phone2 = Utility.presence(household.get('HouseholdFax'))
                     address, address_created = Address.objects.update_or_create(
                         fields__access_address_id=address_id,
                         defaults={
                             'display_name':  display_name,
                             'fields': {
                                 'access_address_id': address_id,
-                                'phone1': Utility.presence(household.get('HouseholdPhone')),
-                                'phone2': Utility.presence(household.get('HouseholdFax')),
+                                'phone1': '+1' + phone1 if phone1 else None,
+                                'phone2': '+1' + phone2 if phone2 else None,
                             },
                         }
                     )
