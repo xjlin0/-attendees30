@@ -8,6 +8,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from attendees.persons.models import Attendee
 from attendees.persons.services import AttendingService
 from attendees.persons.serializers import AttendingSerializer
+from attendees.users.authorization import PeekOther
 
 
 @method_decorator([login_required], name='dispatch')
@@ -26,12 +27,8 @@ class ApiFamilyOrganizationAttendingsViewSet(viewsets.ModelViewSet):
         """
         current_user = self.request.user
         current_user_organization = current_user.organization
-        attendee = current_user.attendee
         attendee_id = self.request.query_params.get('attendee')
-        if attendee_id is not None and current_user.belongs_to_groups_of(current_user_organization.infos.get('data_admins')):
-            other_user = Attendee.objects.filter(pk=attendee_id).first()
-            if other_user is not None:
-                attendee = other_user
+        attendee = PeekOther.get_attendee_or_self(current_user, attendee_id)
         if current_user_organization:
             return AttendingService.by_family_organization_attendings(
                 attendee=attendee,

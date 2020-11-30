@@ -14,6 +14,7 @@ from attendees.persons.models import Attendee
 
 import logging
 
+from attendees.users.authorization import PeekOther
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +26,9 @@ class DatagridUserOrganizationAttendancesListView(ListView):
 
     def get_context_data(self, **kwargs):
         attendee_id = self.kwargs.get('attendee_id')
-        attendee = self.request.user.attendee
-        user_organization = self.request.user.organization
-        if attendee_id is not None and self.request.user.belongs_to_groups_of(user_organization.infos.get('data_admins')):
-            other_user = Attendee.objects.filter(pk=attendee_id).first()
-            if other_user is not None:
-                attendee = other_user
+        current_user = self.request.user
+        user_organization = current_user.organization
+        attendee = PeekOther.get_attendee_or_self(current_user, attendee_id)
         context = super().get_context_data(**kwargs)
 
         available_meets = Meet.objects.filter(
