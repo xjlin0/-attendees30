@@ -415,8 +415,7 @@
         "id": 1,
         "email1": "haywardchurch@yahoo.com",
         "email2": "church.office@cfcchayward.org",
-        "phone1": "510-581-1630",
-        "phone2": "111-111-1111",
+        "phone1": "+15105811630",
         "url": "https://chineseforchristchurch.org/"
       }
     }
@@ -440,8 +439,8 @@
         "id": 2,
         "email1": null,
         "email2": null,
-        "phone1": "222-222-2222",
-        "phone2": "+1-222-222-2222",
+        "phone1": "+12222222222",
+        "phone2": "+22222222222",
         "url": "https://www.thecrossing.website/"
       }
     }
@@ -465,8 +464,8 @@
         "id": 3,
         "email1": "3prettya@email.com",
         "email2": "3prettyb@email.com",
-        "phone1": "333-333-3333",
-        "phone2": "+1-333-333-3333",
+        "phone1": "+13333333333",
+        "phone2": "+23333333333",
         "url": null
       }
     }
@@ -490,8 +489,8 @@
         "id": 4,
         "email1": "4gooda@email.com",
         "email2": "4goodb@email.com",
-        "phone1": "444-444-4444",
-        "phone2": "+1-444-444-4444",
+        "phone1": "+14444444444",
+        "phone2": "+24444444444",
         "url": null
       }
     }
@@ -515,8 +514,8 @@
         "id": 5,
         "email1": "5greata@email.com",
         "email2": "5greatb@email.com",
-        "phone1": "555-555-5555",
-        "phone2": "+1-555-555-5555",
+        "phone1": "+15555555555",
+        "phone2": "+25555555555",
         "url": null
       }
     }
@@ -540,8 +539,8 @@
         "id": 6,
         "email1": "6coola@email.com",
         "email2": "6coolb@email.com",
-        "phone1": "666-666-6666",
-        "phone2": "+1-666-666-6666",
+        "phone1": "+16666666666",
+        "phone2": "+26666666666",
         "url": null
       }
     }
@@ -565,8 +564,8 @@
         "id": 7,
         "email1": "7excellenta@email.com",
         "email2": "7excellentb@email.com",
-        "phone1": "777-777-7777",
-        "phone2": "+1-777-777-7777",
+        "phone1": "+17777777777",
+        "phone2": "+27777777777",
         "url": null
       }
     }
@@ -590,8 +589,8 @@
         "id": 8,
         "email1": "8beautifula@email.com",
         "email2": "8beautifulb@email.com",
-        "phone1": "888-888-8888",
-        "phone2": "+1-888-888-8888",
+        "phone1": "+18888888888",
+        "phone2": "+28888888888",
         "url": null
       }
     }
@@ -615,8 +614,8 @@
         "id": 9,
         "email1": "9thronea@email.com",
         "email2": "9throneb@email.com",
-        "phone1": "999-999-9999",
-        "phone2": "+1-999-999-9999",
+        "phone1": "+19999999999",
+        "phone2": "+29999999999",
         "url": null
       }
     }
@@ -4492,7 +4491,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:35Z",
       "finish": "2099-05-12T15:54:36Z",
-      "display_name": "\u95dc\u61f7\u4ea4\u901a",
+      "display_name": "\u95dc\u61f7\u4ea4\u901a care",
       "slug": "d7c8Fd_cfcc_congregation_care",
       "infos": {},
       "site_type": 29,
