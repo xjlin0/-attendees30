@@ -87,7 +87,9 @@ Attendees.dataAttendees = {
     },
     onCellPrepared: e => e.rowType === "header" && e.column.dataHtmlTitle && e.cellElement.attr("title", e.column.dataHtmlTitle),
 
-
+    headerFilter: {
+      visible: true
+    },
     showBorders: false,
     remoteOperations: true,
     paging: {
@@ -110,6 +112,7 @@ Attendees.dataAttendees = {
       caption: "Full name",
       dataField: "full_name",
       dataType: "string",
+      allowHeaderFiltering: false,
     },
     {
       dataHtmlTitle: "showing only divisions of current user organization",
@@ -134,6 +137,7 @@ Attendees.dataAttendees = {
     {
       caption: "出席狀況",
       allowSorting: false,
+      allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
         $($("<a>", {"text": "Attendances", "href": Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id }))
           .appendTo(container);
@@ -145,12 +149,14 @@ Attendees.dataAttendees = {
       dataField: "self_phone_numbers",
       allowSorting: false,
       dataType: "string",
+      allowHeaderFiltering: false,
     },
     {
       caption: "Email",
       dataField: "self_email_addresses",
       allowSorting: false,
       dataType: "string",
+      allowHeaderFiltering: false,
     },
   ],
 
@@ -235,6 +241,7 @@ Attendees.dataAttendees = {
         visible: meet.id > 0,
         caption: meet.display_name,
         dataField: '',  // Not supporting order by meet yet: it needs both annotation and order_by in Django query
+        allowHeaderFiltering: false,
         calculateCellValue: (rowData) => {
           if (rowData.joined_meets.includes(meet.slug)) {
             return meet.display_name;
