@@ -4153,16 +4153,37 @@
   },
   {
     "model": "occasions.meet",
+    "pk": -1,
+    "fields": {
+      "created": "2020-04-11T18:47:42.792Z",
+      "modified": "2020-05-27T14:54:06.742Z",
+      "is_removed": false,
+      "assembly": 5,
+      "shown_audience": false,
+      "audience_editable": false,
+      "start": "2020-05-12T14:53:44Z",
+      "finish": "2999-05-12T15:53:45Z",
+      "display_name": "封存 archived",
+      "slug": "d7c8Fd_cfcc_congregation_archived",
+      "infos": {
+        "notice": "the finish date of attending_meets of 'archived' is always forever to show all attendees."
+      },
+      "site_type": 35,
+      "site_id": 1
+    }
+  },
+  {
+    "model": "occasions.meet",
     "pk": 0,
     "fields": {
       "created": "2020-04-11T18:47:42.792Z",
       "modified": "2020-05-27T14:54:06.742Z",
       "is_removed": false,
       "assembly": 5,
-      "shown_audience": true,
-      "audience_editable": true,
+      "shown_audience": false,
+      "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
-      "finish": "2299-05-12T15:53:45Z",
+      "finish": "2999-05-12T15:53:45Z",
       "display_name": "訪客 visitor",
       "slug": "d7c8Fd_cfcc_congregation_visitor",
       "infos": {
@@ -4295,10 +4316,10 @@
       "is_removed": false,
       "assembly": 5,
       "shown_audience": true,
-      "audience_editable": true,
+      "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
       "finish": "2099-05-12T15:54:46Z",
-      "display_name": "\u4e3b\u65e5\u5d07\u62dc",
+      "display_name": "\u4e3b\u65e5\u5d07\u62dc roaster",
       "slug": "d7c8Fd_cfcc_congregation_roaster",
       "infos": {
         "extending_attending_days": 90
@@ -4319,7 +4340,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:35Z",
       "finish": "2099-05-12T15:54:36Z",
-      "display_name": "\u901a\u8a0a\u9304",
+      "display_name": "\u901a\u8a0a\u9304 directory",
       "slug": "d7c8Fd_cfcc_congregation_directory",
       "infos": {},
       "site_type": 29,
@@ -4338,7 +4359,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:24Z",
       "finish": "2099-05-12T15:54:26Z",
-      "display_name": "\u6703\u54e1",
+      "display_name": "\u6703\u54e1 member",
       "slug": "d7c8Fd_cfcc_congregation_member",
       "infos": {},
       "site_type": 29,

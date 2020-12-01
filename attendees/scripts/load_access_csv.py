@@ -243,7 +243,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     default_division = Division.objects.first()
     division3 = Division.objects.get(slug=division3_slug)  # kid
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
-    visitor_meet = Meet.objects.first()
+    visitor_meet = Meet.objects.get(pk=0)
     member_meet = Meet.objects.get(slug=member_meet_slug)
     member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
