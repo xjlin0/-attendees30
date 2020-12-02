@@ -34,22 +34,20 @@ class AttendeeService:
 
         init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
                       Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
-        # need filter on attending_meet finish_date
+        # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
 
-        annotation_conditions = AttendeeService.annotation_parser(orderby_string)
-
         return Attendee.objects.select_related().prefetch_related().annotate(
-                **annotation_conditions
+                joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
                 ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
     def orderby_parser(orderby_string):
         """
-        Not supporting order by meet yet: it needs both annotation and order_by
+        generates sorter (column or OrderBy Func) based on user's choice
         :param orderby_string: JSON fetched from search params, will convert attendee.division to attendee__division
-        :return: a List of string for order_by()
+        :return: a List of sorter for order_by()
         """
         meet_sorter = {
             'd7c8Fd_cfcc_congregation_roaster': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_roaster'=ANY"),
@@ -60,26 +58,12 @@ class AttendeeService:
         for orderby_dict in json.loads(orderby_string):
             field = orderby_dict.get('selector', 'id').replace('.', '__')
             if field in meet_sorter:
-                orderby_list.append(meet_sorter[field])
+                sorter = OrderBy(meet_sorter[field], descending=orderby_dict.get('desc', False))
+                orderby_list.append(sorter)
             else:
                 direction = '-' if orderby_dict.get('desc', False) else ''
                 orderby_list.append(direction + field)
         return orderby_list
-
-    @staticmethod
-    def annotation_parser(orderby_string):
-        """
-        Not supporting order by meet yet: it needs both annotation and order_by,
-        (annotation create a new column, such as counting by conditions, for order by later)
-        :param orderby_string: orderby_string: JSON fetched from search params
-        :return: a dictionary of annotations
-        """
-        return {
-            'joined_meets': ArrayAgg('attendings__meets__slug', distinct=True),  # , order='slug')
-            # 'roaster_count': Count(Case(When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster', then=1)))
-            # 'joined_roaster': Count('attendings__meets__slug', filter=Q(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster'), distinct=True),
-            # 'joined_roaster': Count(Case(When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster', then=1), output_field=IntegerField())),
-        }
 
     @staticmethod
     def filter_parser(filters_list):
