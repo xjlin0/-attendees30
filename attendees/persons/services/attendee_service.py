@@ -1,6 +1,6 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
-from django.db.models import Q, Count, IntegerField
-from django.db.models.expressions import Case, When
+from django.db.models import Q, F, Func, Value
+from django.db.models.expressions import OrderBy
 
 from rest_framework.utils import json
 
@@ -51,11 +51,19 @@ class AttendeeService:
         :param orderby_string: JSON fetched from search params, will convert attendee.division to attendee__division
         :return: a List of string for order_by()
         """
+        meet_sorter = {
+            'd7c8Fd_cfcc_congregation_roaster': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_roaster'=ANY"),
+            'd7c8Fd_cfcc_congregation_member': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_member'=ANY"),
+            'd7c8Fd_cfcc_congregation_directory': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_directory'=ANY"),
+        }
         orderby_list = []  # sort joined_meets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
         for orderby_dict in json.loads(orderby_string):
-            direction = '-' if orderby_dict.get('desc', False) else ''
             field = orderby_dict.get('selector', 'id').replace('.', '__')
-            orderby_list.append(direction + field)
+            if field in meet_sorter:
+                orderby_list.append(meet_sorter[field])
+            else:
+                direction = '-' if orderby_dict.get('desc', False) else ''
+                orderby_list.append(direction + field)
         return orderby_list
 
     @staticmethod
@@ -67,7 +75,7 @@ class AttendeeService:
         :return: a dictionary of annotations
         """
         return {
-            'joined_meets': ArrayAgg('attendings__meets__slug', distinct=True)  # , order='slug')
+            'joined_meets': ArrayAgg('attendings__meets__slug', distinct=True),  # , order='slug')
             # 'roaster_count': Count(Case(When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster', then=1)))
             # 'joined_roaster': Count('attendings__meets__slug', filter=Q(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster'), distinct=True),
             # 'joined_roaster': Count(Case(When(attendings__meets__slug='d7c8Fd_cfcc_congregation_roaster', then=1), output_field=IntegerField())),

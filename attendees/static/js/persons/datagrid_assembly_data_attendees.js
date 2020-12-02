@@ -240,7 +240,7 @@ Attendees.dataAttendees = {
       meetColumns.push({
         visible: meet.id > 0,
         caption: meet.display_name,
-        dataField: '',  // Not supporting order by meet yet: it needs both annotation and order_by in Django query
+        dataField: meet.slug,
         allowHeaderFiltering: false,
         calculateCellValue: (rowData) => {
           if (rowData.joined_meets.includes(meet.slug)) {
