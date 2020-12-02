@@ -4,6 +4,7 @@ from django.db.models.expressions import OrderBy
 
 from rest_framework.utils import json
 
+from attendees.occasions.models import Meet
 from attendees.persons.models import Attendee
 
 
@@ -30,7 +31,7 @@ class AttendeeService:
         :param filters_list:
         :return:
         """
-        orderby_list = AttendeeService.orderby_parser(orderby_string)
+        orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slug)
 
         init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
                       Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
@@ -43,22 +44,20 @@ class AttendeeService:
                 ).filter(final_query).order_by(*orderby_list)
 
     @staticmethod
-    def orderby_parser(orderby_string):
+    def orderby_parser(orderby_string, assembly_slug):
         """
         generates sorter (column or OrderBy Func) based on user's choice
         :param orderby_string: JSON fetched from search params, will convert attendee.division to attendee__division
+        :param assembly_slug: assembly_slug
         :return: a List of sorter for order_by()
         """
-        meet_sorter = {
-            'd7c8Fd_cfcc_congregation_roaster': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_roaster'=ANY"),
-            'd7c8Fd_cfcc_congregation_member': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_member'=ANY"),
-            'd7c8Fd_cfcc_congregation_directory': Func(F('joined_meets'), function="'d7c8Fd_cfcc_congregation_directory'=ANY"),
-        }
+        meet_sorters = {meet.slug: Func(F('joined_meets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(assembly__slug=assembly_slug)}
+
         orderby_list = []  # sort joined_meets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
         for orderby_dict in json.loads(orderby_string):
             field = orderby_dict.get('selector', 'id').replace('.', '__')
-            if field in meet_sorter:
-                sorter = OrderBy(meet_sorter[field], descending=orderby_dict.get('desc', False))
+            if field in meet_sorters:
+                sorter = OrderBy(meet_sorters[field], descending=orderby_dict.get('desc', False))
                 orderby_list.append(sorter)
             else:
                 direction = '-' if orderby_dict.get('desc', False) else ''
