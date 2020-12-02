@@ -37,7 +37,7 @@ class AttendeeService:
                       Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
         # Todo: need filter on attending_meet finish_date
 
-        final_query = init_query.add(AttendeeService.filter_parser(filters_list), Q.AND)
+        final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slug), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                 joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
@@ -65,10 +65,11 @@ class AttendeeService:
         return orderby_list
 
     @staticmethod
-    def filter_parser(filters_list):
+    def filter_parser(filters_list, assembly_slug):
         """
         A recursive method return Q function based on multi-level filter conditions
         :param filters_list: a string of multi-level list of filter conditions
+        :param assembly_slug: assembly_slug
         :return: Q function, could be an empty Q()
         """
         and_string = Q.AND.lower()
@@ -79,23 +80,23 @@ class AttendeeService:
                 raise Exception("Can't process both 'or'/'and' at the same level! please wrap them in separated lists.")
             elif filters_list[1] == and_string:
                 and_list = [element for element in filters_list if element != and_string]
-                and_query = AttendeeService.filter_parser(and_list[0])
+                and_query = AttendeeService.filter_parser(and_list[0], assembly_slug)
                 for and_element in and_list[1:]:
-                    and_query.add(AttendeeService.filter_parser(and_element), Q.AND)
+                    and_query.add(AttendeeService.filter_parser(and_element, assembly_slug), Q.AND)
                 return and_query
             elif filters_list[1] == or_string:
                 or_list = [element for element in filters_list if element != or_string]
-                or_query = AttendeeService.filter_parser(or_list[0])
+                or_query = AttendeeService.filter_parser(or_list[0], assembly_slug)
                 for or_element in or_list[1:]:
-                    or_query.add(AttendeeService.filter_parser(or_element), Q.OR)
+                    or_query.add(AttendeeService.filter_parser(or_element, assembly_slug), Q.OR)
                 return or_query
             elif filters_list[1] == '=':
                 return Q(**{filters_list[0].replace('.', '__'): filters_list[2]})
             elif filters_list[1] == 'contains':
-                return Q(**{AttendeeService.field_convert(filters_list[0]) + '__icontains': filters_list[2]})
+                return Q(**{AttendeeService.field_convert(filters_list[0], assembly_slug) + '__icontains': filters_list[2]})
         return Q()
 
-    def field_convert(query_field):
+    def field_convert(query_field, assembly_slug):
         """
         some of the values are calculated cell values, and need to convert back to db field for search
         :return: string of fields in database
@@ -104,5 +105,8 @@ class AttendeeService:
             'self_phone_numbers': 'addresses__fields',
             'self_email_addresses': 'addresses__fields',
         }
+
+        for meet in Meet.objects.filter(assembly__slug=assembly_slug):
+            field_converter[meet.slug] = 'attendings__meets__display_name'
 
         return field_converter.get(query_field, query_field).replace('.', '__')

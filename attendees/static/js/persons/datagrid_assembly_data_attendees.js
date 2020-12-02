@@ -97,7 +97,7 @@ Attendees.dataAttendees = {
     },
     pager: {
         showPageSizeSelector: true,
-        allowedPageSizes: [10, 20, 5000]
+        allowedPageSizes: [10, 30, 5000]
     },
     columns: null,  // will be initialized later.
     },
