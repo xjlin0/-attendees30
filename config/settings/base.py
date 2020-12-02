@@ -325,7 +325,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': (
     #         'persons.renderers.ODataRenderer',
     #     ),
-    'DEFAULT_PAGINATION_CLASS': 'persons.paginators.CustomStorePagination',
+    'DEFAULT_PAGINATION_CLASS': 'attendees.persons.paginators.CustomStorePagination',
     'PAGE_SIZE': 20,
 }
 # Your stuff...

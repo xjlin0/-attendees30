@@ -96,6 +96,7 @@ class AttendeeService:
                 return Q(**{AttendeeService.field_convert(filters_list[0], assembly_slug) + '__icontains': filters_list[2]})
         return Q()
 
+    @staticmethod
     def field_convert(query_field, assembly_slug):
         """
         some of the values are calculated cell values, and need to convert back to db field for search
