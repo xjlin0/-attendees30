@@ -49,7 +49,7 @@
       "urn": "#",
       "url_name": "My_Info",
       "display_name": "My Info \u76f8\u95dc\u884c\u7a0b",
-      "display_order": 1000,
+      "display_order": 100,
       "infos": {
         "role": "tab",
         "class": "nav-link dropdown-toggle",
@@ -58,7 +58,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 10,
+      "rght": 12,
       "tree_id": 1,
       "level": 0
     }
@@ -82,8 +82,8 @@
         "class": "dropdown-item",
         "title": "Coworkers attendance"
       },
-      "lft": 8,
-      "rght": 9,
+      "lft": 10,
+      "rght": 11,
       "tree_id": 1,
       "level": 1
     }
@@ -107,8 +107,8 @@
         "class": "dropdown-item",
         "title": "My (families) attendance"
       },
-      "lft": 6,
-      "rght": 7,
+      "lft": 8,
+      "rght": 9,
       "tree_id": 1,
       "level": 1
     }
@@ -159,8 +159,8 @@
       "infos": {
         "class": "dropdown-item"
       },
-      "lft": 2,
-      "rght": 3,
+      "lft": 4,
+      "rght": 5,
       "tree_id": 1,
       "level": 1
     }
@@ -233,8 +233,8 @@
       "infos": {
         "class": "dropdown-divider"
       },
-      "lft": 4,
-      "rght": 5,
+      "lft": 6,
+      "rght": 7,
       "tree_id": 1,
       "level": 1
     }
@@ -354,7 +354,7 @@
       "html_type": "a",
       "urn": "/persons/cfcc_data_management/cfcc_congregation_data/datagrid_assembly_data_attendees/",
       "url_name": "datagrid_assembly_data_attendees",
-      "display_name": "會員資料 attendee",
+      "display_name": "\u6703\u54e1\u8cc7\u6599 attendee",
       "display_order": 3100,
       "infos": {
         "class": "dropdown-item",
@@ -363,6 +363,31 @@
       "lft": 2,
       "rght": 3,
       "tree_id": 3,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 16,
+    "fields": {
+      "created": "2020-12-03T06:10:03.963Z",
+      "modified": "2020-12-03T06:10:03.963Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 1,
+      "html_type": "a",
+      "urn": "/persons/attendee_and_associations/",
+      "url_name": "attendee_and_associations",
+      "display_name": "Basic Info \u57fa\u672c\u8cc7\u6599",
+      "display_order": 500,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "My basic info"
+      },
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 1,
       "level": 1
     }
   },
@@ -378,7 +403,9 @@
       "infos": {
         "hostname": "192.168.99.100",
         "counselor": "d7c8Fd_cfcc_data_counselor",
-        "data_admins" : ["d7c8Fd_cfcc_data_organizer"]
+        "data_admins": [
+          "d7c8Fd_cfcc_data_organizer"
+        ]
       }
     }
   },
@@ -413,10 +440,10 @@
       "country": "N/A",
       "fields": {
         "id": 1,
+        "url": "https://chineseforchristchurch.org/",
         "email1": "haywardchurch@yahoo.com",
         "email2": "church.office@cfcchayward.org",
-        "phone1": "+15105811630",
-        "url": "https://chineseforchristchurch.org/"
+        "phone1": "+15105811630"
       }
     }
   },
@@ -437,11 +464,11 @@
       "country": "N/A",
       "fields": {
         "id": 2,
+        "url": "https://www.thecrossing.website/",
         "email1": null,
         "email2": null,
         "phone1": "+12222222222",
-        "phone2": "+22222222222",
-        "url": "https://www.thecrossing.website/"
+        "phone2": "+22222222222"
       }
     }
   },
@@ -462,11 +489,11 @@
       "country": "N/A",
       "fields": {
         "id": 3,
+        "url": null,
         "email1": "3prettya@email.com",
         "email2": "3prettyb@email.com",
         "phone1": "+13333333333",
-        "phone2": "+23333333333",
-        "url": null
+        "phone2": "+23333333333"
       }
     }
   },
@@ -487,11 +514,11 @@
       "country": "N/A",
       "fields": {
         "id": 4,
+        "url": null,
         "email1": "4gooda@email.com",
         "email2": "4goodb@email.com",
         "phone1": "+14444444444",
-        "phone2": "+24444444444",
-        "url": null
+        "phone2": "+24444444444"
       }
     }
   },
@@ -512,11 +539,11 @@
       "country": "N/A",
       "fields": {
         "id": 5,
+        "url": null,
         "email1": "5greata@email.com",
         "email2": "5greatb@email.com",
         "phone1": "+15555555555",
-        "phone2": "+25555555555",
-        "url": null
+        "phone2": "+25555555555"
       }
     }
   },
@@ -537,11 +564,11 @@
       "country": "N/A",
       "fields": {
         "id": 6,
+        "url": null,
         "email1": "6coola@email.com",
         "email2": "6coolb@email.com",
         "phone1": "+16666666666",
-        "phone2": "+26666666666",
-        "url": null
+        "phone2": "+26666666666"
       }
     }
   },
@@ -562,11 +589,11 @@
       "country": "N/A",
       "fields": {
         "id": 7,
+        "url": null,
         "email1": "7excellenta@email.com",
         "email2": "7excellentb@email.com",
         "phone1": "+17777777777",
-        "phone2": "+27777777777",
-        "url": null
+        "phone2": "+27777777777"
       }
     }
   },
@@ -587,11 +614,11 @@
       "country": "N/A",
       "fields": {
         "id": 8,
+        "url": null,
         "email1": "8beautifula@email.com",
         "email2": "8beautifulb@email.com",
         "phone1": "+18888888888",
-        "phone2": "+28888888888",
-        "url": null
+        "phone2": "+28888888888"
       }
     }
   },
@@ -612,11 +639,11 @@
       "country": "N/A",
       "fields": {
         "id": 9,
+        "url": null,
         "email1": "9thronea@email.com",
         "email2": "9throneb@email.com",
         "phone1": "+19999999999",
-        "phone2": "+29999999999",
-        "url": null
+        "phone2": "+29999999999"
       }
     }
   },
@@ -637,11 +664,11 @@
       "country": "N/A",
       "fields": {
         "id": 10,
+        "url": null,
         "email1": null,
         "email2": null,
         "phone1": null,
-        "phone2": null,
-        "url": null
+        "phone2": null
       }
     }
   },
@@ -662,11 +689,11 @@
       "country": "N/A",
       "fields": {
         "id": 11,
+        "url": null,
         "email1": null,
         "email2": null,
         "phone1": "+17076642880",
-        "phone2": null,
-        "url": null
+        "phone2": null
       }
     }
   },
@@ -4162,7 +4189,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
       "finish": "2999-05-12T15:53:45Z",
-      "display_name": "封存 archived",
+      "display_name": "\u5c01\u5b58 archived",
       "slug": "d7c8Fd_cfcc_congregation_archived",
       "infos": {
         "notice": "the finish date of attending_meets of 'archived' is always forever to show all attendees."
@@ -4183,7 +4210,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
       "finish": "2999-05-12T15:53:45Z",
-      "display_name": "訪客 visitor",
+      "display_name": "\u8a2a\u5ba2 visitor",
       "slug": "d7c8Fd_cfcc_congregation_visitor",
       "infos": {
         "notice": "the finish date of attending_meets of visitor is always forever to show all attendees."
@@ -6551,6 +6578,84 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 31,
+    "fields": {
+      "created": "2020-12-03T06:10:03.974Z",
+      "modified": "2020-12-03T06:10:03.974Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 32,
+    "fields": {
+      "created": "2020-12-03T06:10:03.975Z",
+      "modified": "2020-12-03T06:10:03.975Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 33,
+    "fields": {
+      "created": "2020-12-03T06:10:03.975Z",
+      "modified": "2020-12-03T06:10:03.975Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 34,
+    "fields": {
+      "created": "2020-12-03T06:10:03.976Z",
+      "modified": "2020-12-03T06:10:03.976Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 35,
+    "fields": {
+      "created": "2020-12-03T06:10:03.977Z",
+      "modified": "2020-12-03T06:10:03.977Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 36,
+    "fields": {
+      "created": "2020-12-03T06:10:03.978Z",
+      "modified": "2020-12-03T06:10:03.978Z",
+      "is_removed": false,
+      "auth_group": 3,
+      "read": true,
+      "write": true,
+      "menu": 16
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -6654,6 +6759,7 @@
       "last_name": "\u5927\u885b",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "David \u5927\u885b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6676,6 +6782,7 @@
       "last_name": "Hagar",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "\u590f\u7532 Hagar",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6700,6 +6807,7 @@
       "last_name": "Samson",
       "first_name2": "\u53c3\u5b6b",
       "last_name2": null,
+      "full_name": "\u53c3\u5b6b Samson \u53c3\u5b6b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6724,6 +6832,7 @@
       "last_name": "\u4ee5\u5229\u6c99\u4f2f",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Elizabeth \u4ee5\u5229\u6c99\u4f2f",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6748,6 +6857,7 @@
       "last_name": "Abigail",
       "first_name2": "\u4e9e\u6bd4\u8a72",
       "last_name2": null,
+      "full_name": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6772,6 +6882,7 @@
       "last_name": "Deborah",
       "first_name2": "\u5e95\u6ce2\u62c9",
       "last_name2": null,
+      "full_name": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6796,6 +6907,7 @@
       "last_name": "Esau",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "\u4ee5\u6383 Esau",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6818,6 +6930,7 @@
       "last_name": "\u57fa\u5229\u62bc",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Chileab \u57fa\u5229\u62bc",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6840,6 +6953,7 @@
       "last_name": "Ishmael",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "\u4ee5\u5be6\u746a\u5229 Ishmael",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": "2010-02-04",
@@ -6867,6 +6981,7 @@
       "last_name": "\u5229\u767e\u52a0",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Rebecca \u5229\u767e\u52a0",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6889,6 +7004,7 @@
       "last_name": "\u62ff\u516b",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Nabal \u62ff\u516b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6911,6 +7027,7 @@
       "last_name": "system admin1",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "superuser1 system admin1",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6942,6 +7059,7 @@
       "last_name": "\u4e9e\u4f2f\u62c9\u7f55",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Abraham \u4e9e\u4f2f\u62c9\u7f55",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6964,6 +7082,7 @@
       "last_name": "\u96c5\u5404",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "James \u96c5\u5404",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -6986,6 +7105,7 @@
       "last_name": "\u5442\u5e95\u4e9e",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Lydia \u5442\u5e95\u4e9e",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -7012,6 +7132,7 @@
       "last_name": "\u7d04\u7ff0",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "John \u7d04\u7ff0",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -7036,6 +7157,7 @@
       "last_name": "\u4ee5\u6492",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Isaac \u4ee5\u6492",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -7058,6 +7180,7 @@
       "last_name": "Esther",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "\u4ee5\u65af\u5e16 Esther",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -7082,6 +7205,7 @@
       "last_name": "\u6492\u62c9",
       "first_name2": null,
       "last_name2": null,
+      "full_name": "Sarah \u6492\u62c9",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
