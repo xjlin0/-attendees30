@@ -21,11 +21,11 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
+                ('content_type', models.ForeignKey(on_delete=models.SET(0), to='contenttypes.ContentType')),
+                ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
                 ('object_id', models.CharField(max_length=36)),
                 ('category', models.CharField(default='normal', help_text='normal, for-address, etc', max_length=20, blank=False, null=False, db_index=True)),
-                ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
                 ('body', models.TextField()),
-                ('content_type', models.ForeignKey(on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"owner": "John"}. Please keep {} here even no data', null=True)),
             ],
             options={

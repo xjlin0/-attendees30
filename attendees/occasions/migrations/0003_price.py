@@ -25,10 +25,10 @@ class Migration(migrations.Migration):
                 ('start', models.DateTimeField(blank=False, null=False)),
                 ('finish', models.DateTimeField(blank=False, null=False)),
                 ('is_removed', models.BooleanField(default=False)),
-                ('display_name', models.CharField(max_length=50)),
-                ('price_type', models.CharField(db_index=True, max_length=20)),
-                ('price_value', models.DecimalField(decimal_places=2, default=999999, max_digits=8, validators=[django.core.validators.MinValueValidator(0)])),
                 ('assembly', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='occasions.Assembly')),
+                ('price_value', models.DecimalField(decimal_places=2, default=999999, max_digits=8, validators=[django.core.validators.MinValueValidator(0)])),
+                ('price_type', models.CharField(db_index=True, max_length=20)),
+                ('display_name', models.CharField(max_length=50)),
             ],
             options={
                 'db_table': 'occasions_prices',

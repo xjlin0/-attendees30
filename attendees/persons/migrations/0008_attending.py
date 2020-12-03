@@ -21,9 +21,9 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('category', models.CharField(max_length=20, null=False, blank=False, default="normal", help_text="normal, not_going, coworker, etc")),
                 ('attendee', models.ForeignKey(null=False, blank=False, on_delete=models.CASCADE, to='persons.Attendee', related_name="attendings")),
                 ('registration', models.ForeignKey(null=True, on_delete=models.deletion.SET_NULL, to='persons.Registration')),
+                ('category', models.CharField(max_length=20, null=False, blank=False, default="normal", help_text="normal, not_going, coworker, etc")),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"grade": 5, "age": 11, "bed_needs": 1, "mobility": 300}. Please keep {} here even no data', null=True)),
             ],
             options={

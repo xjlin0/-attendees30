@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
+                ('display_order', models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)),
                 ('slug', models.SlugField(help_text='uniq key', blank=False, null=False, unique=True)),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
-                ('display_order', models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)),
                 ('description', models.CharField(blank=True, max_length=50, null=True)),
             ],
             options={

@@ -22,9 +22,9 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('category', models.CharField(default='main', help_text='main, resident, etc (main will be displayed first)', max_length=20)),
                 ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='whereabouts.Address')),
                 ('family', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='persons.Family')),
+                ('category', models.CharField(default='main', help_text='main, resident, etc (main will be displayed first)', max_length=20)),
             ],
             options={
                 'db_table': 'persons_family_addresses',

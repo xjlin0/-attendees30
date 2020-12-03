@@ -20,10 +20,10 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('display_name', models.CharField(max_length=50)),
-                ('slug', models.SlugField(max_length=50, unique=True)),
                 ('organization', models.ForeignKey(on_delete=models.SET(0), to='whereabouts.Organization')),
                 ('audience_auth_group', models.ForeignKey(on_delete=models.SET(0), to='auth.Group', null=False, blank=False, help_text='which auth group does the joining general participant belong to?')),
+                ('display_name', models.CharField(max_length=50)),
+                ('slug', models.SlugField(max_length=50, unique=True)),
             ],
             options={
                 'db_table': 'whereabouts_divisions',

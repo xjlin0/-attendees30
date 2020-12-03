@@ -21,10 +21,10 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('display_name', models.CharField(db_index=True, max_length=50)),
-                ('slug', models.SlugField(max_length=50, unique=True)),
                 ('address', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='whereabouts.Address')),
                 ('campus', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='whereabouts.Campus')),
+                ('display_name', models.CharField(db_index=True, max_length=50)),
+                ('slug', models.SlugField(max_length=50, unique=True)),
             ],
             options={
                 'db_table': 'whereabouts_properties',
