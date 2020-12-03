@@ -50,9 +50,21 @@
 
 {% block content %}
 
-  <h3>
-    All attendees of the organization
-  </h3>
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <h3>
+        All attendees of the organization
+      </h3>
+    </div>
+    <div class="d-flex">
+      <a class="add-attendee d-flex align-items-center btn btn-primary btn-xs"
+         role="button"
+         href="#">
+        +Add Attendee
+      </a>
+    </div>
+
+    </div>
 
   <form class="d-flex flex-wrap attendees-filter"
         data-url="{{request.get_full_path}}">
