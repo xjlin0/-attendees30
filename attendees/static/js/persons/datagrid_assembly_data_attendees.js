@@ -57,8 +57,9 @@ Attendees.dataAttendees = {
 
   dataGridOpts: {
     dataSource: null, // set later in startDataGrid()
-
-
+    sorting: {
+      mode: "multiple",
+    },
     filterRow: { visible: true },  //filter doesn't work with fields with calculateDisplayValue yet
     searchPanel: { visible: true },   //search doesn't work with fields with calculateDisplayValue yet
     allowColumnReordering: true,
