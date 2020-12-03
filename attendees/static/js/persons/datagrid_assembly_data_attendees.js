@@ -140,8 +140,12 @@ Attendees.dataAttendees = {
       allowSorting: false,
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
-        $($("<a>", {"text": "Attendances", "href": Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id }))
-          .appendTo(container);
+        const attrs = {
+          "class": "text-info",
+          "text": "Attendances",
+          "href": Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id,
+        };
+        $($('<a>', attrs)).appendTo(container);
       },
     },
 
