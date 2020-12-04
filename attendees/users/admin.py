@@ -34,7 +34,7 @@ class MenuAdmin(MPTTModelAdmin):
     }
     mptt_level_indent = 20
     prepopulated_fields = {"url_name": ("display_name",)}
-    list_display = ('display_name', 'organization_slug', 'category', 'urn', 'display_order')
+    list_display = ('display_name', 'organization_slug', 'category', 'display_order', 'urn')
     inlines = (MenuAuthGroupInline,)
     list_display_links = ('display_name',)
 

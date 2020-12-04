@@ -9,6 +9,7 @@ from attendees.persons.views import (
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
+    info_of_attendee_create_view,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
 )
@@ -73,5 +74,11 @@ urlpatterns = [
         "<slug:division_slug>/<slug:assembly_slug>/datagrid_assembly_data_attendings/",
         view=datagrid_assembly_data_attendings_list_view,
         name="datagrid_assembly_data_attendings",
+    ),
+
+    path(
+        "info_of_attendee/",
+        view=info_of_attendee_create_view,
+        name="info_of_attendee",
     ),
 ]

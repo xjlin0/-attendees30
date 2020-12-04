@@ -377,8 +377,8 @@
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/attendee_and_associations/",
-      "url_name": "attendee_and_associations",
+      "urn": "/persons/info_of_attendee/",
+      "url_name": "info_of_attendee",
       "display_name": "Basic Info \u57fa\u672c\u8cc7\u6599",
       "display_order": 500,
       "infos": {
