@@ -37,7 +37,8 @@ class AttendeeDetailView(RouteGuard, DetailView):
 
         try:
             user_attendee = self.request.user.attendee
-            user_allowed_qs = attendee_queryset.filter(
+            is_data_admin = self.request.user.belongs_to_groups_of(self.request.user.organization.infos.get('data_admins'))
+            user_allowed_qs = attendee_queryset if is_data_admin else attendee_queryset.filter(
                 Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
                 |
                 Q(id=user_attendee.id)
