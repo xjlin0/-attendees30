@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}
+  Attendee Detail
+{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_head %}
+
+{% endblock extra_head %}
+
+{% block content %}
+
+<h1>Attendee's details</h1>
+<p> id {{ object.id }}.</p>
+<p> full_name {{ object.full_name }}.</p>
+<p> created {{ object.created }}.</p>
+{% endblock content %}

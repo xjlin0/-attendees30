@@ -10,6 +10,7 @@ from attendees.persons.views import (
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
     info_of_attendee_create_view,
+    attendee_detail_view,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
 )
@@ -76,9 +77,28 @@ urlpatterns = [
         name="datagrid_assembly_data_attendings",
     ),
 
+    # path(
+    #     "info_of_attendee/",
+    #     view=info_of_attendee_create_view,
+    #     name="info_of_attendee",
+    # ),
+
     path(
         "info_of_attendee/",
-        view=info_of_attendee_create_view,
+        kwargs={'attendee_id': None},
+        view=attendee_detail_view,
         name="info_of_attendee",
     ),
+
+    # path(
+    #     'datagrid_user_organization_attendances/',
+    #     kwargs={'attendee_id': None},
+    #     view=datagrid_user_organization_attendances_list_view,
+    #     name='datagrid_user_organization_attendances',
+    # ),
+    # path(
+    #     'datagrid_user_organization_attendances/<str:attendee_id>',
+    #     view=datagrid_user_organization_attendances_list_view,
+    #     name='datagrid_user_organization_attendances',
+    # ),
 ]
