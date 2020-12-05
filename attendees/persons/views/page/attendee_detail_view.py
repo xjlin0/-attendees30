@@ -1,13 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
+from django.http import Http404
+
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.edit import CreateView, UpdateView
 from django.forms.models import inlineformset_factory
 # ChildFormset = inlineformset_factory(
 #     Parent, Child, fields=('name',)
 # )
+from attendees.utils.view_helpers import get_object_or_delayed_403
 from attendees.persons.models import Attendee
 from attendees.users.authorization import RouteGuard
 
@@ -22,15 +25,29 @@ class AttendeeDetailView(RouteGuard, DetailView):
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset() if queryset is None else queryset
-        attendee_id = self.kwargs.get('attendee_id')
-        if attendee_id:  # Todo: need to check if user allowed to see
-            return get_object_or_404(queryset, id=attendee_id)
-        else:
-            return get_object_or_404(queryset, user=self.request.user)
+        return get_object_or_delayed_403(queryset)
 
-    # def get_queryset(self):
-    #     attendee_queryset = super(AttendeeDetailView, self).get_queryset()
-    #     return attendee_queryset
+    def get_queryset(self):
+        """
+        data admin can check all attendee. User can check other attendee if user is that attendee's scheduler
+        :param queryset: attendee id may not be provided in the path params
+        :return: user's attendee if no attendee id provided, or the requested attendee if by scheduler, or empty set.
+        """
+        attendee_queryset = super(AttendeeDetailView, self).get_queryset()
+
+        try:
+            user_attendee = self.request.user.attendee
+            user_allowed_qs = attendee_queryset.filter(
+                Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
+                |
+                Q(id=user_attendee.id)
+            ).distinct()
+            user_checking_id = self.kwargs.get('attendee_id', user_attendee.id)
+            return user_allowed_qs.filter(id=user_checking_id)
+
+        except ObjectDoesNotExist:
+            raise Http404('Your profile does not have attendee')
+
 
     # def get_context_data(self, **kwargs):
         # we need to overwrite get_context_data to make sure that our formset is rendered

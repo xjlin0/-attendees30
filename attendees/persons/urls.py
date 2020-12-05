@@ -85,7 +85,6 @@ urlpatterns = [
 
     path(
         "info_of_attendee/",
-        kwargs={'attendee_id': None},
         view=attendee_detail_view,
         name="info_of_attendee",
     ),
