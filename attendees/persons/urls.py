@@ -77,11 +77,11 @@ urlpatterns = [
         name="datagrid_assembly_data_attendings",
     ),
 
-    # path(
-    #     "info_of_attendee/",
-    #     view=info_of_attendee_create_view,
-    #     name="info_of_attendee",
-    # ),
+    path(
+        "info_of_attendee/<str:attendee_id>",
+        view=attendee_detail_view,
+        name="info_of_attendee",
+    ),
 
     path(
         "info_of_attendee/",

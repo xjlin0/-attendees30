@@ -22,11 +22,15 @@ class AttendeeDetailView(RouteGuard, DetailView):
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset() if queryset is None else queryset
-        return get_object_or_404(queryset, user=self.request.user)
+        attendee_id = self.kwargs.get('attendee_id')
+        if attendee_id:  # Todo: need to check if user allowed to see
+            return get_object_or_404(queryset, id=attendee_id)
+        else:
+            return get_object_or_404(queryset, user=self.request.user)
 
-    def get_queryset(self):
-        attendee_queryset = super(AttendeeDetailView, self).get_queryset()
-        return attendee_queryset
+    # def get_queryset(self):
+    #     attendee_queryset = super(AttendeeDetailView, self).get_queryset()
+    #     return attendee_queryset
 
     # def get_context_data(self, **kwargs):
         # we need to overwrite get_context_data to make sure that our formset is rendered
