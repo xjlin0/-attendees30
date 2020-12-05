@@ -25,6 +25,20 @@ class User(AbstractUser):
         else:
             return self.organization and self.organization.slug == organization_slug
 
+    def privileged(self):
+        """
+        check if user allowed to see other's data without relationships, currently are data_admins or counselor group
+        :return: boolean
+        """
+        if self.organization:
+            privileged_groups = self.organization.infos.get('data_admins', []) + self.organization.infos.get('counselor', [])
+            return self.belongs_to_groups_of(privileged_groups)
+        return False
+
+    def is_data_admin(self):
+        organization_data_admin_group = self.organization.infos.get('data_admins', []) if self.organization else None
+        return self.belongs_to_groups_of(organization_data_admin_group)
+
     def is_counselor(self):
         organization_counselor_group = self.organization.infos['counselor'] if self.organization else None
         return self.belongs_to_groups_of([organization_counselor_group])

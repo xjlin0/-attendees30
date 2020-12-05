@@ -34,11 +34,11 @@ class AttendeeDetailView(RouteGuard, DetailView):
         :return: user's attendee if no attendee id provided, or the requested attendee if by scheduler, or empty set.
         """
         attendee_queryset = super(AttendeeDetailView, self).get_queryset()
+        current_user = self.request.user
+        user_attendee = Attendee.objects.filter(user=current_user).first()
 
-        try:
-            user_attendee = self.request.user.attendee
-            is_data_admin = self.request.user.belongs_to_groups_of(self.request.user.organization.infos.get('data_admins'))
-            user_allowed_qs = attendee_queryset if is_data_admin else attendee_queryset.filter(
+        if user_attendee:
+            user_allowed_qs = attendee_queryset if current_user.privileged else attendee_queryset.filter(
                 Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
                 |
                 Q(id=user_attendee.id)
@@ -46,7 +46,7 @@ class AttendeeDetailView(RouteGuard, DetailView):
             user_checking_id = self.kwargs.get('attendee_id', user_attendee.id)
             return user_allowed_qs.filter(id=user_checking_id)
 
-        except ObjectDoesNotExist:
+        else:
             raise Http404('Your profile does not have attendee')
 
 
