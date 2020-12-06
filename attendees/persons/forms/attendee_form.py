@@ -1,6 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Field, Row, Column
+from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column
 
 from attendees.persons.models import Attendee
 
@@ -35,11 +35,13 @@ class AttendeeForm(forms.ModelForm):
             Row(
                 Column('first_name'),
                 Column('last_name'),
+                title="In English please",
             ),
 
             Row(
                 Column('first_name2'),
                 Column('last_name2'),
+                title="Can be in a different language",
             ),
 
             ButtonHolder(
