@@ -7,5 +7,6 @@ from .page.datagrid_assembly_data_attendees import datagrid_assembly_data_attend
 from .page.datagrid_assembly_data_attendings import datagrid_assembly_data_attendings_list_view
 from .page.info_of_attendee_create_view import info_of_attendee_create_view
 from .page.attendee_detail_view import attendee_detail_view
+from .page.attendee_update_view import attendee_update_view
 from .api.user_meet_attendings import api_user_meet_attendings_viewset
 from .api.family_organization_attendings import api_family_organization_attendings_viewset
