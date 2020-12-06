@@ -14,11 +14,16 @@
 
 {% block content %}
 
+{% load crispy_forms_tags %}
+
 <h1>Attendee test</h1>
 
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
+<form method="post">
+  {% csrf_token %}
+    {{ form|crispy }}
 
-    <input type="submit" value="Save">
+    <input type="submit"
+           class="btn btn-success"
+           value="Save">
 </form>
 {% endblock content %}
