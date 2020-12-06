@@ -8,6 +8,7 @@ from django.forms.models import inlineformset_factory
 # ChildFormset = inlineformset_factory(
 #     Parent, Child, fields=('name',)
 # )
+from attendees.persons.forms import AttendeeForm
 from attendees.persons.models import Attendee
 from attendees.users.authorization import RouteGuard
 
@@ -20,7 +21,7 @@ class AttendeeUpdateView(RouteGuard, UpdateView):
 
     model = Attendee
     # context_object_name = 'attendee'
-    fields = '__all__'
+    form_class = AttendeeForm
     template_name = 'persons/attendee_update_view.html'
 
     # def get_context_data(self, **kwargs):

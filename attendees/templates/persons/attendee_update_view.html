@@ -20,32 +20,5 @@
 
 <form method="post">
   {% csrf_token %}
-    <div class="row">
-      <div class="col-6">
-        {{ form.gender|as_crispy_field }}
-      </div>
-      <div class="col-6">
-        {{ form.division|as_crispy_field }}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        {{ form.first_name|as_crispy_field }}
-      </div>
-      <div class="col-6">
-        {{ form.last_name|as_crispy_field }}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        {{ form.first_name2|as_crispy_field }}
-      </div>
-      <div class="col-6">
-        {{ form.last_name2|as_crispy_field }}
-      </div>
-    </div>
-    <input type="submit"
-           class="btn btn-success"
-           value="Save">
-</form>
+  {% crispy form %}
 {% endblock content %}
