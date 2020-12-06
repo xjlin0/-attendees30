@@ -79,15 +79,27 @@ urlpatterns = [
     ),
 
     path(
-        "info_of_attendee/<str:attendee_id>",
-        view=attendee_update_view,
-        name="info_of_attendee",
+        "attendee_detail_view/<str:attendee_id>",
+        view=attendee_detail_view,
+        name="attendee_detail_view",
     ),
 
     path(
-        "info_of_attendee/",
+        "attendee_detail_view/",
+        view=attendee_detail_view,
+        name="attendee_detail_view",
+    ),
+
+    path(
+        "attendee_update_view/<str:attendee_id>",
         view=attendee_update_view,
-        name="info_of_attendee",
+        name="attendee_update_view",
+    ),
+
+    path(
+        "attendee_update_view/",
+        view=attendee_update_view,
+        name="attendee_update_view",
     ),
 
     # path(

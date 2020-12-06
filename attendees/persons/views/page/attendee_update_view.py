@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import Http404
+from django.urls import reverse
 
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import UpdateView
@@ -53,6 +54,9 @@ class AttendeeUpdateView(RouteGuard, UpdateView):
 
         else:
             raise Http404('Your profile does not have attendee')
+
+    def get_success_url(self):
+        return reverse("persons:attendee_detail_view")
 
 
 attendee_update_view = AttendeeUpdateView.as_view()
