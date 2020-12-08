@@ -17,8 +17,9 @@
 {% load crispy_forms_tags %}
 
 <h1>Attendee test</h1>
-<p>attendee_update_view.html</p>
+<p>attendees_update_view.html</p>
 <form method="post">
-  {% crispy form %}
+    {{ form.as_p }}
+    <input type="submit" value="Add">
 </form>
 {% endblock content %}

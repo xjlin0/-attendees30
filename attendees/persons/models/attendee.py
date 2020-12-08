@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
+from django.urls import reverse
 from django.utils.functional import cached_property
 from datetime import datetime, timezone, date, timedelta
 from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
@@ -118,6 +119,9 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def clean(self):
         if not (self.last_name or self.last_name2):
             raise ValidationError("You must specify a last_name")
+
+    def get_absolute_url(self):
+        return reverse('/persons/attendee_detail_view/', kwargs={'pk': self.pk})
 
     class Meta:
         db_table = 'persons_attendees'
