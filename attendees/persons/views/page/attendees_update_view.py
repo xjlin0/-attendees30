@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from attendees.persons.forms import AttendeeForm, AttendeeFormSet
+from attendees.persons.forms import AttendeeForm, AttendeeFormSet, AttendeesFormSet
 from attendees.persons.models import Attendee
 from django.views.generic.edit import FormView
 from django.db.models import Q
@@ -13,6 +13,8 @@ from django.http import Http404
 class AttendeesUpdateView(FormView):
     template_name = 'persons/attendees_update_view.html'
     form_class = AttendeeFormSet
+    # formset = AttendeesFormSet()
+    # form_class = AttendeesFormSet
     success_url = '/'
 
     def get_initial(self):

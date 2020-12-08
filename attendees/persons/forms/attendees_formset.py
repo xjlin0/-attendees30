@@ -2,6 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column
 
+# from attendees.persons.forms import AttendeesFormSetHelper
 from attendees.persons.models import Attendee
 from django.forms.models import formset_factory
 
@@ -51,11 +52,11 @@ class AttendeesForm(forms.Form):
         )
 
 
-AttendeesFormSet = formset_factory(
+AttendeesFormSet = formset_factory(  # modelformset_factory ??
     AttendeesForm,
     extra=2,
     max_num=2,
     min_num=1
 )
-formset = AttendeesFormSet()
+
 

@@ -18,8 +18,5 @@
 
 <h1>Attendee test</h1>
 <p>attendees_update_view.html</p>
-<form method="post">
-    {{ form.as_p }}
-    <input type="submit" value="Add">
-</form>
+{{ form|crispy }}}
 {% endblock content %}
