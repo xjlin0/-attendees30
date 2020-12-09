@@ -9,7 +9,7 @@ class AttendeesFormSetHelper(FormHelper):
         self.layout = Layout(
 
             Fieldset(
-                'some explaining text or other addition fields, such as id: {{id}}',
+                "some explaining text or other addition fields, such as counter: {{ forloop.counter }}",
             ),
 
             Row(
