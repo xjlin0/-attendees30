@@ -1,3 +1,4 @@
+from crispy_forms.layout import Submit
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -14,13 +15,14 @@ class AttendeesUpdateView(FormView):
     template_name = 'persons/attendees_update_view.html'
     form_class = AttendeeFormSet
     formset = AttendeesFormSet()
-    # form_class = AttendeesFormSet
     success_url = '/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data["formset"] = AttendeesFormSet(initial=self.get_initial())
-        data["helper"] = AttendeesFormSetHelper()
+        data['formset'] = AttendeesFormSet(initial=self.get_initial())
+        helper = AttendeesFormSetHelper()
+        helper.add_input(Submit("submit", "Save here"))
+        data['helper'] = helper
         return data
 
     def get_initial(self):

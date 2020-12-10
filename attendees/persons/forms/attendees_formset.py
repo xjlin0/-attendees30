@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column
 
 # from attendees.persons.forms import AttendeesFormSetHelper
+from attendees.persons.forms import AttendeesFormSetHelper
 from attendees.persons.models import Attendee
 from django.forms.models import formset_factory
 
@@ -20,9 +21,9 @@ class AttendeesForm(forms.ModelForm):
         #     'last_name2',
         # )
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-        # self.helper = FormHelper()
+#    def __init__(self, *args, **kwargs):
+#        super().__init__(*args, **kwargs)
+#        self.helper = AttendeesFormSetHelper()
         # self.helper.form_method = 'post'
         # self.helper.layout = Layout(
         #

@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Row, Column, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Fieldset, Row, Column, ButtonHolder, Submit, HTML
 
 
 class AttendeesFormSetHelper(FormHelper):
@@ -7,9 +7,9 @@ class AttendeesFormSetHelper(FormHelper):
         super().__init__(*args, **kwargs)
         self.form_method = 'post'
         self.layout = Layout(
-
+            HTML('<hr />'),
             Fieldset(
-                "some explaining text or other addition fields, such as counter: {{ forloop.counter }}",
+                "Attendee {{ forloop.counter }} ({{id}}):",
             ),
 
             Row(
@@ -29,8 +29,8 @@ class AttendeesFormSetHelper(FormHelper):
                 title="Can be in a different language",
             ),
 
-            ButtonHolder(
-                Submit('submit', 'Save All', css_class='btn btn-success')
-            ),
+            # ButtonHolder(
+            #     Submit('submit', 'Save All', css_class='btn btn-success')
+            # ),
         )
         self.render_required_fields = True
