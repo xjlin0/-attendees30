@@ -13,13 +13,14 @@ from django.http import Http404
 @method_decorator([login_required], name='dispatch')
 class AttendeesUpdateView(FormView):
     template_name = 'persons/attendees_update_view.html'
-    form_class = AttendeeFormSet
+    form_class = AttendeesFormSet
     formset = AttendeesFormSet()
     success_url = '/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['formset'] = AttendeesFormSet(initial=self.get_initial())
+        formset = AttendeesFormSet(initial=self.get_initial())
+        data['formset'] = formset
         helper = AttendeesFormSetHelper()
         helper.add_input(Submit("submit", "Save here"))
         data['helper'] = helper
