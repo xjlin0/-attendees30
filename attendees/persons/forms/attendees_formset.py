@@ -46,13 +46,12 @@ class AttendeesForm(forms.ModelForm):
                        Column('last_name2'),
                        title="Can be in a different language",
                     ),
-                    Row(
-                       Column('related_ones'),
-                       Column('families'),
-                    ),
+
                     Row(
                        Column('addresses'),
+                       Column('families'),
                     ),
+
                     css_id='attendee_' + str(instance.id),
                 )
             )
