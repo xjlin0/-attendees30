@@ -14,12 +14,6 @@ class AttendeesUpdateView(FormView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-
-        print("hi jack 24 here is self.request.user: ")
-        print(self.request.user)
-        print("hi jack 26 here is self.kwargs: ")
-        print(self.kwargs)
-
         data['formset'] = AttendeesFormSet(
             queryset=AttendeeService.get_related_ones_by_permission(self.request.user, self.kwargs.get('attendee_id'))
         )
