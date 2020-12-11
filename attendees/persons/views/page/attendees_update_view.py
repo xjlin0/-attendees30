@@ -27,7 +27,8 @@ class AttendeesUpdateView(FormView):
         formset = AttendeesFormSet(queryset=self.get_initial())
         data['formset'] = formset
         helper = AttendeesFormSetHelper()
-        helper.add_input(Submit("submit", "Save here"))
+        helper.layout[0][0].name = 'hithere'  # this changes ALL AccordionGroup's label rather than single label
+        helper.add_input(Submit("submit", "Save here"))  # Todo: move to top by layout.insert() https://django-crispy-forms.readthedocs.io/en/latest/dynamic_layouts.html
         data['helper'] = helper
         return data
 
