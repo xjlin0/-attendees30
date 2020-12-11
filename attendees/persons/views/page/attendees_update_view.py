@@ -1,63 +1,30 @@
-from crispy_forms.layout import Submit
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
 from django.utils.decorators import method_decorator
-
-from attendees.persons.forms import AttendeesFormSetHelper, AttendeesForm, AttendeesFormSet
-from attendees.persons.models import Attendee
 from django.views.generic.edit import FormView
-from django.db.models import Q
-from django.http import Http404
 
-# AttendeesFormSet = modelformset_factory(
-#     Attendee,
-#     exclude=('related_ones', 'addresses', 'families')
-# )
+from attendees.persons.forms import AttendeesFormSet
+from attendees.persons.services import AttendeeService
 
-# Todo: check attendee.user is current user or managers
+
 @method_decorator([login_required], name='dispatch')
 class AttendeesUpdateView(FormView):
     template_name = 'persons/attendees_update_view.html'
     form_class = AttendeesFormSet
-    # formset = AttendeesFormSet()
     success_url = '/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        formset = AttendeesFormSet(queryset=self.get_initial())
-        data['formset'] = formset
-        # helper = AttendeesFormSetHelper()
-        # helper.layout[0][0].name = 'hithere'  # this changes ALL AccordionGroup's label rather than single label
-        # helper.add_input(Submit("submit", "Save here"))  # Todo: move to top by layout.insert() https://django-crispy-forms.readthedocs.io/en/latest/dynamic_layouts.html
-        # data['helper'] = helper
+
+        print("hi jack 24 here is self.request.user: ")
+        print(self.request.user)
+        print("hi jack 26 here is self.kwargs: ")
+        print(self.kwargs)
+
+        data['formset'] = AttendeesFormSet(
+            queryset=AttendeeService.get_related_ones_by_permission(self.request.user, self.kwargs.get('attendee_id'))
+        )
         return data
 
-    def get_initial(self):
-        """
-        data admin can check all attendee. User can check other attendee if user is that attendee's scheduler
-        :param queryset: attendee id may not be provided in the path params
-        :return: user's attendee if no attendee id provided, or the requested attendee if by scheduler, or empty set.
-        """
-        current_user = self.request.user
-        user_attendee = Attendee.objects.filter(user=current_user).first()
-
-        if user_attendee:
-            user_checking_id = self.kwargs.get('attendee_id', user_attendee.id)
-            if current_user.privileged:
-                return Attendee.objects.filter(
-                    Q(id=user_checking_id)
-                    |
-                    Q(from_attendee__to_attendee__id=user_checking_id, from_attendee__scheduler=True)
-                ).distinct()
-            else:
-                return Attendee.objects.filter(
-                    Q(id=user_attendee.id)
-                    |
-                    Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
-                ).distinct()
-
-        else:
-            raise Http404('Your profile does not have attendee')
 #
 #     # def get_success_url(self):
 #     #     return reverse("persons:attendee_detail_view")

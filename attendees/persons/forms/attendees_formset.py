@@ -61,8 +61,8 @@ class AttendeesForm(forms.ModelForm):
 AttendeesFormSet = modelformset_factory(
     Attendee,
     form=AttendeesForm,
-    extra=1,
-    max_num=2,
+    # extra=1,
+    # max_num=2,
     min_num=1
 )
 

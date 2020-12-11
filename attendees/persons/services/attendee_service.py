@@ -1,6 +1,7 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
 from django.db.models import Q, F, Func, Value
 from django.db.models.expressions import OrderBy
+from django.http import Http404
 
 from rest_framework.utils import json
 
@@ -21,6 +22,41 @@ class AttendeeService:
                     'first_name',
                     'first_name2'
                 )
+
+    @staticmethod
+    def get_related_ones_by_permission(current_user, checking_attendee_id):
+        """
+        data admin can check all attendee and their related_ones. User can check other attendee if user is that attendee's scheduler
+        :param current_user: current_user
+        :param checking_attendee_id: the attendee_id requested
+        :return: user's related attendees if no attendee id provided, or the requested related attendees if by scheduler, or empty set.
+        """
+        user_attendee = Attendee.objects.filter(user=current_user).first()
+
+        if user_attendee:
+            user_checking_id = checking_attendee_id or user_attendee.id
+            if current_user.privileged:
+                return Attendee.objects.filter(
+                    Q(id=user_checking_id)
+                    |
+                    Q(from_attendee__to_attendee__id=user_checking_id, from_attendee__scheduler=True)
+                    # Todo: add all families for data managers
+                ).distinct().order_by(
+                    OrderBy(Func(F('id'), function="'{}'=".format(user_checking_id)), descending=True),
+                    'full_name',
+                )
+            else:
+                return Attendee.objects.filter(
+                    Q(id=user_attendee.id)
+                    |
+                    Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
+                ).distinct().order_by(
+                    OrderBy(Func(F('id'), function="'{}'=".format(user_attendee.id)), descending=True),
+                    'full_name',
+                )
+
+        else:
+            raise Http404('Your profile does not have attendee')
 
     @staticmethod
     def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
