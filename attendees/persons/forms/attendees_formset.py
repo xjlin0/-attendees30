@@ -12,21 +12,18 @@ from django.forms.models import formset_factory, inlineformset_factory, modelfor
 class AttendeesForm(forms.ModelForm):
     class Meta:
         model = Attendee
-        fields = (
-
-            'gender',
-            'division',
-            'first_name',
-            'last_name',
-            'first_name2',
-            'last_name2',
-        )
+        fields = '__all__'
+        help_texts = {
+            "full_name": None,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = AttendeesFormSetHelper(self)
         self.render_hidden_fields = True  # https://django-crispy-forms.readthedocs.io/en/latest/form_helper.html
         self.render_required_fields = True
+        self.helper.form_id = kwargs.get('prefix')
+
         # self.helper.form_method = 'post'
         # self.helper.layout = Layout(
         #     Accordion(

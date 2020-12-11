@@ -1,4 +1,4 @@
-from crispy_forms.bootstrap import AccordionGroup, Accordion
+from crispy_forms.bootstrap import AccordionGroup, Accordion, UneditableField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Row, Column, ButtonHolder, Submit, HTML, Div
 
@@ -10,8 +10,9 @@ class AttendeesFormSetHelper(FormHelper):
         self.form_method = 'post'
         self.layout = Layout(
             Accordion(
-                AccordionGroup("{{ first_name }}"+" {{forloop.counter}}",
-
+                AccordionGroup("{{formset_form.full_name}} ",
+                    HTML(" form {{forloop.counter}}"),
+                    UneditableField("full_name", css_class="form-control-plaintext"),
                     Row(
                         Column('gender'),
                         Column('division'),
@@ -27,6 +28,13 @@ class AttendeesFormSetHelper(FormHelper):
                         Column('first_name2'),
                         Column('last_name2'),
                         title="Can be in a different language",
+                    ),
+                    Row(
+                        Column('related_ones'),
+                        Column('families'),
+                    ),
+                    Row(
+                        Column('addresses'),
                     ),
                 )
             )
