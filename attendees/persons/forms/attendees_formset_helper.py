@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import AccordionGroup, Accordion
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Row, Column, ButtonHolder, Submit, HTML
+from crispy_forms.layout import Layout, Fieldset, Row, Column, ButtonHolder, Submit, HTML, Div
 
 
 class AttendeesFormSetHelper(FormHelper):

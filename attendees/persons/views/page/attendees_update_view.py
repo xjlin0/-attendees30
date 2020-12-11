@@ -1,25 +1,30 @@
 from crispy_forms.layout import Submit
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from django.utils.decorators import method_decorator
 
-from attendees.persons.forms import AttendeeForm, AttendeeFormSet, AttendeesFormSet, AttendeesFormSetHelper
+from attendees.persons.forms import AttendeesFormSetHelper, AttendeesForm, AttendeesFormSet
 from attendees.persons.models import Attendee
 from django.views.generic.edit import FormView
 from django.db.models import Q
 from django.http import Http404
 
+# AttendeesFormSet = modelformset_factory(
+#     Attendee,
+#     exclude=('related_ones', 'addresses', 'families')
+# )
 
 # Todo: check attendee.user is current user or managers
 @method_decorator([login_required], name='dispatch')
 class AttendeesUpdateView(FormView):
     template_name = 'persons/attendees_update_view.html'
     form_class = AttendeesFormSet
-    formset = AttendeesFormSet()
+    # formset = AttendeesFormSet()
     success_url = '/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        formset = AttendeesFormSet(initial=self.get_initial())
+        formset = AttendeesFormSet(queryset=self.get_initial())
         data['formset'] = formset
         helper = AttendeesFormSetHelper()
         helper.add_input(Submit("submit", "Save here"))
@@ -42,13 +47,13 @@ class AttendeesUpdateView(FormView):
                     Q(id=user_checking_id)
                     |
                     Q(from_attendee__to_attendee__id=user_checking_id, from_attendee__scheduler=True)
-                ).distinct().values()
+                ).distinct()
             else:
                 return Attendee.objects.filter(
                     Q(id=user_attendee.id)
                     |
                     Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
-                ).distinct().values()
+                ).distinct()
 
         else:
             raise Http404('Your profile does not have attendee')
