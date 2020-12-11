@@ -53,7 +53,7 @@ class AttendeesForm(forms.ModelForm):
                     Row(
                        Column('addresses'),
                     ),
-                    # css_id=instance.id,
+                    css_id='attendee_' + str(instance.id),
                 )
             )
         )
