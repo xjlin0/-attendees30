@@ -1,7 +1,7 @@
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column
+from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column, Div
 
 # from attendees.persons.forms import AttendeesFormSetHelper
 from attendees.persons.forms import AttendeesFormSetHelper
