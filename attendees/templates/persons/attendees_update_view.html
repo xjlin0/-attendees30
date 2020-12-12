@@ -21,7 +21,8 @@
 
 
 
-<form method="POST">
+<form class="attendees-formset"
+      method="POST">
   {% csrf_token %}
 
   <div class="d-flex justify-content-between">
@@ -46,13 +47,6 @@
              value="Cancel"
              title="lost all your changes and leave edit mode"
              id="reset-id-cancel">
-      <input class="d-none submit submit-formset btn btn-xs btn-outline-success"
-             type="submit"
-             name="submit"
-             value="Save All"
-             title="Save and submit all your changes"
-             onclick="return confirm('Are you sure to save and submit all your changes?')"
-             id="submit-save">
       <input class="d-none reset-editing btn btn-xs btn-outline-warning"
              type="reset"
              name="reset"
@@ -60,6 +54,13 @@
              title="lost all your changes and start over the editing again"
              value="Reset"
              id="reset-id-reset">
+      <input class="d-none submit submit-formset btn btn-xs btn-outline-success"
+             type="submit"
+             name="submit"
+             value="Save All"
+             title="Save and submit all your changes"
+             onclick="return confirm('Are you sure to save and submit all your changes?')"
+             id="submit-save">
     </div>
   </div>
 
