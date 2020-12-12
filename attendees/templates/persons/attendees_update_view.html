@@ -29,12 +29,35 @@
       </h1>
     </div>
     <div class="d-flex form-actions align-items-center">
-      <input type="submit"
+      <button class="enable-edit btn btn-xs btn-outline-primary"
+              type="button"
+              onclick="return confirm('Do you want to enter edit mode and change something?')"
+              disabled="disabled"
+              aria-disabled="true"
+              title="Enable edit mode">
+        Edit
+      </button>
+      <input class="d-none cancel-edit-reset btn btn-xs btn-outline-danger"
+             type="reset"
+             name="cancel-edit-reset"
+             onclick="return confirm('Are you sure to cancel, lost all your changes and leave edit mode?')"
+             value="Cancel"
+             title="lost all your changes and leave edit mode"
+             id="reset-id-cancel">
+      <input class="d-none submit btn btn-xs btn-outline-success"
+             type="submit"
              name="submit"
              value="Save All"
-             onclick="return confirm('Are you sure?')"
-             class="btn btn-xs btn-outline-primary"
+             title="Save and submit all your changes"
+             onclick="return confirm('Are you sure to save and submit all your changes?')"
              id="submit-save">
+      <input class="d-none btn btn-xs btn-outline-warning"
+             type="reset"
+             name="reset"
+             onclick="return confirm('Are you sure to reset and lost all your changes?')"
+             title="lost all your changes and start over again"
+             value="Reset"
+             id="reset-id-reset">
     </div>
   </div>
 
