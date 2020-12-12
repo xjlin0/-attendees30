@@ -51,7 +51,7 @@ class AttendeesForm(forms.ModelForm):
                        Column('addresses'),
                        Column('families'),
                     ),
-
+                    active=False,
                     css_id='attendee_' + str(instance.id),
                 )
             )

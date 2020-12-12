@@ -9,7 +9,10 @@
 {% endblock extra_css %}
 
 {% block extra_head %}
-
+  <script defer
+          type="text/javascript"
+          src="{% static 'js/persons/attendees_update_view.js' %}">
+  </script>
 {% endblock extra_head %}
 
 {% block content %}
@@ -18,8 +21,7 @@
 
 
 
-<form action="/"
-      method="POST">
+<form method="POST">
   {% csrf_token %}
 
   <div class="d-flex justify-content-between">
