@@ -1,12 +1,10 @@
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Row, Column, Div
+from crispy_forms.layout import Layout, Row, Column, Field
 
-# from attendees.persons.forms import AttendeesFormSetHelper
-from attendees.persons.forms import AttendeesFormSetHelper
 from attendees.persons.models import Attendee
-from django.forms.models import formset_factory, inlineformset_factory, modelformset_factory
+from django.forms.models import modelformset_factory
 
 
 class AttendeesForm(forms.ModelForm):
@@ -31,25 +29,41 @@ class AttendeesForm(forms.ModelForm):
             Accordion(
                 AccordionGroup(instance.full_name,
                     Row(
-                       Column('gender'),
-                       Column('division'),
+                        Column(
+                            Field('gender', css_class='form-control changeable', disabled=True),
+                        ),
+                        Column(
+                            Field('division', css_class='form-control changeable', disabled=True),
+                        ),
                     ),
 
                     Row(
-                       Column('first_name'),
-                       Column('last_name'),
-                       title="In English please",
+                        Column(
+                            Field('first_name', css_class='form-control changeable', disabled=True),
+                        ),
+                        Column(
+                            Field('last_name', css_class='form-control changeable', disabled=True),
+                        ),
+                        title="In English please",
                     ),
 
                     Row(
-                       Column('first_name2'),
-                       Column('last_name2'),
-                       title="Can be in a different language",
+                        Column(
+                            Field('first_name2', css_class='changeable', disabled=True),
+                        ),
+                        Column(
+                            Field('last_name2', css_class='changeable', disabled=True),
+                        ),
+                        title="Can be in a different language",
                     ),
 
                     Row(
-                       Column('addresses'),
-                       Column('families'),
+                        Column(
+                            Field('addresses', css_class='changeable', disabled=True),
+                        ),
+                        Column(
+                            Field('families', css_class='changeable', disabled=True),
+                        ),
                     ),
                     active=False,
                     css_id='attendee_' + str(instance.id),
