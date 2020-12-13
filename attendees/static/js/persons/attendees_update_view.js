@@ -2,7 +2,7 @@ Attendees.formsetUpdate = {
   init: () => {
     console.log("/static/js/persons/attendees_update_view.js");
     document.querySelector('a[data-toggle="collapse"]').click(); // open the first Accordion.
-    Attendees.formsetUpdate.enableEditButtonSwitching();
+//    Attendees.formsetUpdate.enableEditButtonSwitching();
   },
 
   enableEditButtonSwitching: ()=>{

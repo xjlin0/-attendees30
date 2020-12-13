@@ -30,39 +30,39 @@ class AttendeesForm(forms.ModelForm):
                 AccordionGroup(instance.full_name,
                     Row(
                         Column(
-                            Field('gender', css_class='form-control changeable', disabled=True),
+                            Field('gender')#, css_class='form-control changeable', disabled=True),
                         ),
                         Column(
-                            Field('division', css_class='form-control changeable', disabled=True),
+                            Field('division')#, css_class='form-control changeable', disabled=True),
                         ),
                     ),
 
                     Row(
                         Column(
-                            Field('first_name', css_class='form-control changeable', disabled=True),
+                            Field('first_name')#, css_class='form-control changeable', disabled=True),
                         ),
                         Column(
-                            Field('last_name', css_class='form-control changeable', disabled=True),
+                            Field('last_name')#, css_class='form-control changeable', disabled=True),
                         ),
                         title="In English please",
                     ),
 
                     Row(
                         Column(
-                            Field('first_name2', css_class='changeable', disabled=True),
+                            Field('first_name2')#, css_class='changeable', disabled=True),
                         ),
                         Column(
-                            Field('last_name2', css_class='changeable', disabled=True),
+                            Field('last_name2')#, css_class='changeable', disabled=True),
                         ),
                         title="Can be in a different language",
                     ),
 
                     Row(
                         Column(
-                            Field('addresses', css_class='changeable', disabled=True),
+                            Field('addresses')#, css_class='changeable', disabled=True),
                         ),
                         Column(
-                            Field('families', css_class='changeable', disabled=True),
+                            Field('families')#, css_class='changeable', disabled=True),
                         ),
                     ),
                     active=False,
