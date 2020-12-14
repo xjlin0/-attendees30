@@ -1,0 +1,49 @@
+import time
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
+from django.shortcuts import render
+from django.views.generic import DetailView
+
+from attendees.persons.models import Attendee
+from attendees.users.authorization import RouteGuard
+from attendees.utils.view_helpers import get_object_or_delayed_403
+
+
+class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
+    model = Attendee
+    template_name = 'persons/datagrid_attendee_update_view.html'
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset() if queryset is None else queryset
+        return get_object_or_delayed_403(queryset)
+
+    def get_queryset(self):
+        return Attendee.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_division_slug = self.kwargs.get('division_slug', None)
+        current_organization_slug = self.kwargs.get('organization_slug', None)
+        current_assembly_slug = self.kwargs.get('assembly_slug', None)
+        context.update({
+            'current_organization_slug': current_organization_slug,
+            'current_division_slug': current_division_slug,
+            'current_assembly_slug': current_assembly_slug,
+        })
+        return context
+
+    def render_to_response(self, context, **kwargs):
+        if self.request.user.belongs_to_divisions_of([context['current_division_slug']]):
+            if self.request.is_ajax():
+                pass
+
+            else:
+                return render(self.request, self.get_template_names()[0], context)
+        else:
+            time.sleep(2)
+            raise Http404('Have you registered any events of the organization?')
+
+
+datagrid_attendee_update_view = DatagridAttendeeUpdateView.as_view()
+

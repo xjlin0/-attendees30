@@ -452,13 +452,13 @@
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/datagrid_attendee_update_view/",
+      "urn": "/persons/cfcc_data_management/cfcc_congregation_data/datagrid_attendee_update_view/",
       "url_name": "datagrid_attendee_update_view",
       "display_name": "update attendee \u66f4\u65b0\u8cc7\u6599",
       "display_order": 725,
       "infos": {
         "class": "dropdown-item",
-        "title": "Update my info"
+        "title": "Update attendee info"
       },
       "lft": 6,
       "rght": 7,

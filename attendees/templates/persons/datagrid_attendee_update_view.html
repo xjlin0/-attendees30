@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}
+  Attendee Update
+{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_head %}
+  <script defer
+          type="text/javascript"
+          src="{% static 'js/persons/datagrid_attendee_update_view.js' %}">
+  </script>
+{% endblock extra_head %}
+
+{% block content %}
+<h1>
+  Update attendee details
+</h1>
+{% endblock content %}
