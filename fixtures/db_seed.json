@@ -58,7 +58,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 14,
+      "rght": 18,
       "tree_id": 1,
       "level": 0
     }
@@ -82,8 +82,8 @@
         "class": "dropdown-item",
         "title": "Coworkers attendance"
       },
-      "lft": 12,
-      "rght": 13,
+      "lft": 16,
+      "rght": 17,
       "tree_id": 1,
       "level": 1
     }
@@ -107,8 +107,8 @@
         "class": "dropdown-item",
         "title": "My (families) attendance"
       },
-      "lft": 10,
-      "rght": 11,
+      "lft": 14,
+      "rght": 15,
       "tree_id": 1,
       "level": 1
     }
@@ -159,8 +159,8 @@
       "infos": {
         "class": "dropdown-item"
       },
-      "lft": 6,
-      "rght": 7,
+      "lft": 10,
+      "rght": 11,
       "tree_id": 1,
       "level": 1
     }
@@ -233,8 +233,8 @@
       "infos": {
         "class": "dropdown-divider"
       },
-      "lft": 8,
-      "rght": 9,
+      "lft": 12,
+      "rght": 13,
       "tree_id": 1,
       "level": 1
     }
@@ -396,7 +396,7 @@
     "pk": 17,
     "fields": {
       "created": "2020-12-06T16:32:31.311Z",
-      "modified": "2020-12-06T16:32:31.311Z",
+      "modified": "2020-12-14T04:44:01.786Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
@@ -404,7 +404,7 @@
       "html_type": "a",
       "urn": "/persons/attendee_update_view/",
       "url_name": "attendee_update_view",
-      "display_name": "Update Info \u66f4\u65b0\u8cc7\u6599",
+      "display_name": "Update Info \u66f4\u65b0\u8cc7\u6599formset",
       "display_order": 700,
       "infos": {
         "class": "dropdown-item",
@@ -412,6 +412,56 @@
       },
       "lft": 4,
       "rght": 5,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 18,
+    "fields": {
+      "created": "2020-12-07T15:32:43.894Z",
+      "modified": "2020-12-07T15:32:43.894Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 1,
+      "html_type": "a",
+      "urn": "/persons/attendees_update_view/",
+      "url_name": "attendees_update_view",
+      "display_name": "Update family \u5bb6\u4eba\u8cc7\u6599\u66f4\u65b0",
+      "display_order": 750,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "Update my info"
+      },
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 19,
+    "fields": {
+      "created": "2020-12-14T04:43:29.000Z",
+      "modified": "2020-12-14T04:43:29.000Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 1,
+      "html_type": "a",
+      "urn": "/persons/datagrid_attendees_update_view/",
+      "url_name": "datagrid_attendees_update_view",
+      "display_name": "update attendee \u66f4\u65b0\u8cc7\u6599",
+      "display_order": 725,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "Update my info"
+      },
+      "lft": 6,
+      "rght": 7,
       "tree_id": 1,
       "level": 1
     }
@@ -2157,7 +2207,7 @@
     "pk": 31,
     "fields": {
       "created": "2020-12-05T17:58:26.523Z",
-      "modified": "2020-12-05T17:58:26.523Z",
+      "modified": "2020-12-10T01:44:55.934Z",
       "is_removed": false,
       "from_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
       "to_attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
@@ -6775,6 +6825,162 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 43,
+    "fields": {
+      "created": "2020-12-07T15:32:43.904Z",
+      "modified": "2020-12-07T15:32:43.904Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 44,
+    "fields": {
+      "created": "2020-12-07T15:32:43.905Z",
+      "modified": "2020-12-07T15:32:43.905Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 45,
+    "fields": {
+      "created": "2020-12-07T15:32:43.906Z",
+      "modified": "2020-12-07T15:32:43.906Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 46,
+    "fields": {
+      "created": "2020-12-07T15:32:43.907Z",
+      "modified": "2020-12-07T15:32:43.907Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 47,
+    "fields": {
+      "created": "2020-12-07T15:32:43.908Z",
+      "modified": "2020-12-07T15:32:43.908Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 48,
+    "fields": {
+      "created": "2020-12-07T15:32:43.909Z",
+      "modified": "2020-12-07T15:32:43.909Z",
+      "is_removed": false,
+      "auth_group": 3,
+      "read": true,
+      "write": true,
+      "menu": 18
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 49,
+    "fields": {
+      "created": "2020-12-14T04:43:29.009Z",
+      "modified": "2020-12-14T04:43:29.009Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 50,
+    "fields": {
+      "created": "2020-12-14T04:43:29.009Z",
+      "modified": "2020-12-14T04:43:29.009Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 51,
+    "fields": {
+      "created": "2020-12-14T04:43:29.010Z",
+      "modified": "2020-12-14T04:43:29.010Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 52,
+    "fields": {
+      "created": "2020-12-14T04:43:29.010Z",
+      "modified": "2020-12-14T04:43:29.010Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 53,
+    "fields": {
+      "created": "2020-12-14T04:43:29.011Z",
+      "modified": "2020-12-14T04:43:29.011Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 54,
+    "fields": {
+      "created": "2020-12-14T04:43:29.012Z",
+      "modified": "2020-12-14T04:43:29.012Z",
+      "is_removed": false,
+      "auth_group": 3,
+      "read": true,
+      "write": true,
+      "menu": 19
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -7138,15 +7344,15 @@
     "pk": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
     "fields": {
       "created": "1999-04-11T19:31:50.659Z",
-      "modified": "2020-11-16T16:03:11.265Z",
+      "modified": "2020-12-10T21:29:11.306Z",
       "is_removed": false,
       "division": 1,
       "user": 1,
       "first_name": "superuser1",
       "last_name": "system admin1",
-      "first_name2": null,
-      "last_name2": null,
-      "full_name": "superuser1 system admin1",
+      "first_name2": "superuser2",
+      "last_name2": "Lastnam2",
+      "full_name": "superuser1 system admin1 Lastnam2superuser2",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
