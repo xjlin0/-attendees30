@@ -1,5 +1,7 @@
 import time
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import HttpResponse
+
 from attendees.users.models import Menu
 
 
@@ -15,3 +17,7 @@ class RouteGuard(UserPassesTestMixin):
             time.sleep(2)
 
         return whether_user_allowed_to_read_the_page
+
+    def handle_no_permission(self):
+        """ Show warning info so user can know what happened """
+        return HttpResponse('Is menu.url_name correct? You groups does not have permissions to visit such route!')
