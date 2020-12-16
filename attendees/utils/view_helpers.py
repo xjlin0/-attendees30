@@ -12,6 +12,6 @@ def get_object_or_delayed_403(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except ObjectDoesNotExist:
         time.sleep(2)
-        raise PermissionDenied
+        raise ObjectDoesNotExist
     except MultipleObjectsReturned:
-        raise PermissionDenied
+        raise MultipleObjectsReturned

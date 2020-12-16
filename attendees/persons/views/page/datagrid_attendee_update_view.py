@@ -15,11 +15,10 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
     template_name = 'persons/datagrid_attendee_update_view.html'
 
     def get_object(self, queryset=None):
-        queryset = self.get_queryset() if queryset is None else queryset
-        return get_object_or_delayed_403(queryset)
-
-    def get_queryset(self):
-        return Attendee.objects.filter(user=self.request.user)
+        if queryset:
+            return get_object_or_delayed_403(queryset)
+        else:
+            return None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

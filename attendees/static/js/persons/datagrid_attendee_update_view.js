@@ -8,7 +8,7 @@ Attendees.datagridUpdate = {
 
     formData: {
       id: "a123",
-      name: "John Heart",
+      first_name: "John",
       hireDate: new Date(2012, 4, 13),
       picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
       phone: "+1(360)684-1334",
@@ -16,7 +16,7 @@ Attendees.datagridUpdate = {
     },
     items: [
       {
-          dataField: "name",
+          dataField: "first_name",
           isRequired: true
       },
       {
