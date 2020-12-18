@@ -7,18 +7,14 @@ Attendees.datagridUpdate = {
   formConfigs: {
 
     formData: null, // will be fetched
-//    {
-//      id: "a123",
-//      first_name: "John",
-//      hireDate: new Date(2012, 4, 13),
-//      picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
-//      phone: "+1(360)684-1334",
-//      notes: "John is ......",
-//    },
     items: [
       {
           dataField: "first_name",
           isRequired: true
+      },
+      {
+          dataField: "full_name",
+//          isRequired: true
       },
       {
           dataField: "picture",
@@ -27,11 +23,11 @@ Attendees.datagridUpdate = {
           }
       },
       {
-        dataField: "hireDate",
+        dataField: "actual_birthday",
         editorType: "dxDateBox",
       },
       {
-          dataField: "phone",
+          dataField: "self_phone_numbers",
           helpText: "Example: +1(111)111-1111"
       },
       {
@@ -51,18 +47,16 @@ Attendees.datagridUpdate = {
     const attendeeEndpoint = attendeeAttrs.dataset.attendeeEndpoint + attendeeId;
     const form = $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs).dxForm("instance");
 
-    console.log("initForms called");
+    $.ajax
+      ({
+        url      : attendeeAttrs.dataset.attendeeEndpoint + attendeeId,
+        success  : (response) => {
+                      form.option("formData", response.data[0]);
+                   },
+//        error    : (response) => {
+//                   },
+      });
 
-    form.option("formData",
-      {
-        id: "a123",
-        first_name: "John",
-        hireDate: new Date(2012, 4, 13),
-        picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
-        phone: "+1(360)684-1334",
-        notes: "John is ......",
-      }
-    );
   },
 }
 
