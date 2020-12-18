@@ -15,6 +15,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
     template_name = 'persons/datagrid_attendee_update_view.html'
 
     def get_object(self, queryset=None):
+        # queryset = self.get_queryset() if queryset is None else queryset
         if queryset:
             return get_object_or_delayed_403(queryset)
         else:
@@ -25,7 +26,9 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
+        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
         context.update({
+            'current_attendee_id': current_attendee_id,
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
@@ -38,6 +41,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
                 pass
 
             else:
+                # context.update({'hi': 5})
                 return render(self.request, self.get_template_names()[0], context)
         else:
             time.sleep(2)
