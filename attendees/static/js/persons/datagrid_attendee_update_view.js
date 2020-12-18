@@ -6,14 +6,15 @@ Attendees.datagridUpdate = {
 
   formConfigs: {
 
-    formData: {
-      id: "a123",
-      first_name: "John",
-      hireDate: new Date(2012, 4, 13),
-      picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
-      phone: "+1(360)684-1334",
-      notes: "John is ......",
-    },
+    formData: null, // will be fetched
+//    {
+//      id: "a123",
+//      first_name: "John",
+//      hireDate: new Date(2012, 4, 13),
+//      picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
+//      phone: "+1(360)684-1334",
+//      notes: "John is ......",
+//    },
     items: [
       {
           dataField: "first_name",
@@ -45,8 +46,23 @@ Attendees.datagridUpdate = {
   },
 
   initForms: () => {
-    $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs);
+    const attendeeAttrs = document.querySelector('div.datagrid-update')
+    const attendeeId = attendeeAttrs.id.replace("attendee_", "");
+    const attendeeEndpoint = attendeeAttrs.dataset.attendeeEndpoint + attendeeId;
+    const form = $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs).dxForm("instance");
+
     console.log("initForms called");
+
+    form.option("formData",
+      {
+        id: "a123",
+        first_name: "John",
+        hireDate: new Date(2012, 4, 13),
+        picture: "https://js.devexpress.com/Content/images/doc/20_2/PhoneJS/person2.png",
+        phone: "+1(360)684-1334",
+        notes: "John is ......",
+      }
+    );
   },
 }
 

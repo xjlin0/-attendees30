@@ -59,6 +59,11 @@ class AttendeeService:
             raise Http404('Your profile does not have attendee')
 
     @staticmethod
+    def details(current_user, attendee_id):
+
+        return []
+
+    @staticmethod
     def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
         """
         :param current_user_organization:

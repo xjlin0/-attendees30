@@ -41,7 +41,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
                 pass
 
             else:
-                # context.update({'hi': 5})
+                context.update({'attendee_endpoint': "/persons/api/datagrid_data_attendee/"})
                 return render(self.request, self.get_template_names()[0], context)
         else:
             time.sleep(2)

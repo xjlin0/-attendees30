@@ -5,6 +5,7 @@ from attendees.persons.views import (
     api_assembly_meet_attendings_viewset,
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
+    api_datagrid_data_attendee_viewset,
     api_assembly_meet_attendees_viewset,
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
@@ -55,6 +56,11 @@ router.register(
     'api/family_organization_attendings',
     api_family_organization_attendings_viewset,
     basename='attending',
+)
+router.register(
+    'api/datagrid_data_attendee/(?P<attendee_id>.+)',
+    api_datagrid_data_attendee_viewset,
+    basename='attendee',
 )
 
 urlpatterns = [
