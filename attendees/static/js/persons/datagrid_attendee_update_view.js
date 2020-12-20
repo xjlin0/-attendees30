@@ -20,7 +20,7 @@ Attendees.datagridUpdate = {
           dataField: "photo",
           template: function (data, itemElement) {
             if (data.editorOptions && data.editorOptions.value){
-              itemElement.append("<img src='" + data.editorOptions.value + "'>");
+              $("<img>").attr({src: data.editorOptions.value, class: "photo"}).appendTo(itemElement);
             }
           },
       },
