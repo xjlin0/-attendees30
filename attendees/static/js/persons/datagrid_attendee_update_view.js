@@ -14,13 +14,15 @@ Attendees.datagridUpdate = {
       },
       {
           dataField: "full_name",
-//          isRequired: true
+          disabled: true
       },
       {
-          dataField: "picture",
+          dataField: "photo",
           template: function (data, itemElement) {
+            if (data.editorOptions && data.editorOptions.value){
               itemElement.append("<img src='" + data.editorOptions.value + "'>");
-          }
+            }
+          },
       },
       {
         dataField: "actual_birthday",
@@ -31,7 +33,7 @@ Attendees.datagridUpdate = {
           helpText: "Example: +1(111)111-1111"
       },
       {
-        dataField: "notes",
+        dataField: "progressions",
         editorType: "dxTextArea",
         editorOptions: {
           placeholder: "Add notes...",
@@ -41,17 +43,20 @@ Attendees.datagridUpdate = {
 
   },
 
+  dxForm: null, // will be assigned later
+  attendeeAttrs: null, // will be assigned later
+  attendeeId: null, // will be assigned later
+
   initForms: () => {
-    const attendeeAttrs = document.querySelector('div.datagrid-update')
-    const attendeeId = attendeeAttrs.id.replace("attendee_", "");
-    const attendeeEndpoint = attendeeAttrs.dataset.attendeeEndpoint + attendeeId;
-    const form = $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs).dxForm("instance");
+    Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-update');
+    Attendees.datagridUpdate.attendeeId = Attendees.datagridUpdate.attendeeAttrs.id.replace("attendee_", "");
 
     $.ajax
       ({
-        url      : attendeeAttrs.dataset.attendeeEndpoint + attendeeId,
+        url      : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
         success  : (response) => {
-                      form.option("formData", response.data[0]);
+                      Attendees.datagridUpdate.formConfigs.formData = response.data[0];
+                      Attendees.datagridUpdate.dxForm = $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs).dxForm("instance");
                    },
 //        error    : (response) => {
 //                   },
