@@ -11,7 +11,7 @@ import django.utils.timezone
 import model_utils.fields
 
 from attendees.persons.models.enum import GenderEnum
-from attendees.persons.models import utility
+from attendees.persons.models import utility, Utility
 
 
 class Migration(migrations.Migration):
@@ -43,13 +43,13 @@ class Migration(migrations.Migration):
                 ('gender', models.CharField(choices=GenderEnum.choices(), default=GenderEnum.UNSPECIFIED, max_length=11)),
                 ('photo', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='attendee_portrait', verbose_name='Photo')),
                 ('progressions', JSONField(blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data', null=True)),
-                ('infos', JSONField(blank=True, default=dict, help_text='Example: {"food allergy": "peanuts", "public_name": "John", "other_name": "Apostle"}. Please keep {} here even no data', null=True)),
+                ('infos', JSONField(blank=True, null=True, default=Utility.default_infos, help_text='Example: {"exposed": {"food allergy": "peanuts", "public_name": "John", "other_name": "Apostle"}}. Please keep {} here even no data')),
             ],
             options={
                 'db_table': 'persons_attendees',
                 'ordering': ['last_name', 'first_name'],
             },
-            bases=(utility.Utility, models.Model),
+            bases=(Utility, models.Model),
         ),
         migrations.RunSQL(
             sql="""

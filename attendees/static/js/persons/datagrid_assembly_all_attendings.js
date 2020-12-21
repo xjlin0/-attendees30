@@ -195,8 +195,8 @@ Attendees.attendings = {
     },
     {
       caption: 'allergy',
-      dataField: "attendee.infos.allergy",
-      calculateCellValue: rowData => rowData.attendee.infos.allergy,
+      dataField: "attendee.infos.exposed.allergy",
+      calculateCellValue: rowData => rowData.attendee.infos.exposed.allergy,
     },
   ],
 
