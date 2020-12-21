@@ -274,8 +274,11 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
                     'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                     'infos': {
-                        'access_people_household_id': household_id,
-                        'access_people_values': people,
+                        'system': {
+                            'access_people_household_id': household_id,
+                            'access_people_values': people,
+                        },
+                        'exposed': {}
                     }
                 }
 
@@ -296,7 +299,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     'last_name': attendee_values['last_name'],
                     'first_name2': attendee_values['first_name2'],
                     'last_name2': attendee_values['last_name2'],
-                    'infos__access_people_household_id': household_id,
+                    'infos__system__access_people_household_id': household_id,
                 }
 
                 attendee, attendee_created = Attendee.objects.update_or_create(
@@ -330,8 +333,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                                 attendee.division = division3
                             display_order = 10
 
-                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('access_household_values', {}).get(access_header)) is not None}
-                        attendee.infos = {**attendee.infos, **some_household_values}
+                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('system', {}).get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('system', {}).get('access_household_values', {}).get(access_header)) is not None}
+                        attendee.infos = {'system': {**attendee.infos.get('system', {}), **some_household_values}, 'exposed': {}}
 
                         attendee.save()
                         FamilyAttendee.objects.update_or_create(
@@ -548,7 +551,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
 
 def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering):
-    access_household_id = attendee.infos.get('access_people_household_id')
+    access_household_id = attendee.infos.get('system', {}).get('access_people_household_id')
     data_registration, data_registration_created = Registration.objects.update_or_create(
         assembly=data_assembly,
         main_attendee=attendee,
@@ -585,7 +588,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
         },
     )
 
-    if attendee.infos.get('attendance_count'):
+    if attendee.infos.get('system', {}).get('attendance_count'):
         AttendingMeet.objects.update_or_create(
             attending=data_attending,
             meet=roaster_meet,
@@ -619,7 +622,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
 
 def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering):
     if attendee.progressions.get('cfcc_member'):
-        access_household_id = attendee.infos.get('access_people_household_id')
+        access_household_id = attendee.infos.get('system', {}).get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
             assembly=data_assembly,
             main_attendee=attendee,

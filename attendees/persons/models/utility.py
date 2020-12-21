@@ -14,6 +14,10 @@ class Utility:
         return self.notes.all()
 
     @staticmethod
+    def default_infos():
+        return {"exposed": {}, "system": {}}
+
+    @staticmethod
     def forever():  # 1923 years from now
         return datetime.now(timezone.utc)+timedelta(weeks=99999)
 
