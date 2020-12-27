@@ -15,7 +15,7 @@ class Utility:
 
     @staticmethod
     def default_infos():
-        return {"exposed": {}, "system": {}}
+        return {"flexible": {}, "fixed": {}}
 
     @staticmethod
     def forever():  # 1923 years from now
