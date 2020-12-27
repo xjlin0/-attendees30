@@ -7099,7 +7099,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7124,7 +7124,7 @@
       "progressions": {
         "belief": "believer"
       },
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7148,10 +7148,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "exposed": {
+        "fixed": {
           "public_name": "\u5f1f\u5144"
         },
-        "system": {}
+        "flexible": {}
       }
     }
   },
@@ -7177,7 +7177,7 @@
       "progressions": {
         "belief": "judge"
       },
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7201,7 +7201,7 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "exposed": {"public_name": "\u8001\u59ca"}, "system": {}
+        "fixed": {"public_name": "\u8001\u59ca"}, "flexible": {}
       }
     }
   },
@@ -7226,7 +7226,7 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "exposed": {"public_name": "\u6230\u795e\u4e48\u4e48"}, "system": {}
+        "fixed": {"public_name": "\u6230\u795e\u4e48\u4e48"}, "flexible": {}
       }
     }
   },
@@ -7250,7 +7250,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7273,7 +7273,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7299,10 +7299,11 @@
         "belief": "not sure"
       },
       "infos": {
-        "exposed": {
+        "fixed": {
           "allergy": "peanuts",
           "public_name": "\u5927\u5bf6"
-        }, "system": {}
+        },
+        "flexible": {}
       }
     }
   },
@@ -7326,7 +7327,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7349,7 +7350,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7379,10 +7380,11 @@
         }
       },
       "infos": {
-        "exposed": {
+        "fixed": {
           "public_name": "root",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        }, "system": {}
+        },
+        "flexible": {}
       }
     }
   },
@@ -7406,7 +7408,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7429,7 +7431,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7455,7 +7457,8 @@
         "belief": "baptized"
       },
       "infos": {
-        "exposed": {"other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"}, "system": {}
+        "fixed": {"other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"},
+        "flexible": {}
       }
     }
   },
@@ -7480,7 +7483,8 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "exposed": {"public_name": "\u4f7f\u5f92\u7d04\u7ff0"}, "system": {}
+        "fixed": {"public_name": "\u4f7f\u5f92\u7d04\u7ff0"},
+        "flexible": {}
       }
     }
   },
@@ -7504,7 +7508,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
@@ -7528,7 +7532,7 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "exposed": {"public_name": "\u7687\u540e"}, "system": {}
+        "fixed": {"public_name": "\u7687\u540e"}, "flexible": {}
       }
     }
   },
@@ -7552,7 +7556,7 @@
       "deathday": null,
       "photo": "",
       "progressions": {},
-      "infos": {"exposed": {}, "system": {}}
+      "infos": {"flexible": {}, "fixed": {}}
     }
   },
   {
