@@ -22,7 +22,9 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('address', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Address')),
                 ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
-                ('category', models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
+                # ('category', models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
+                ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
+                ('display_name', models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
             ],
             options={
                 'db_table': 'persons_attendee_addresses',

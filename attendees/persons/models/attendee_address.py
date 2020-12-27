@@ -7,9 +7,10 @@ class AttendeeAddress(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     attendee = models.ForeignKey('Attendee', on_delete=models.CASCADE, null=False, blank=False)
     address = models.ForeignKey('whereabouts.Address', on_delete=models.CASCADE, null=False, blank=False)
-    category = models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')
-
-    #need to validate there only one 'main' for category
+    # category = models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')
+    display_name = models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')
+    display_order = models.SmallIntegerField(default=0, blank=False, null=False)
+    #need to validate there only one 'main' for display_name
 
     class Meta:
         db_table = 'persons_attendee_addresses'
