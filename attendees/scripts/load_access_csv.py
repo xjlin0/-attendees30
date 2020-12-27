@@ -349,7 +349,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             AttendeeAddress.objects.update_or_create(
                                 address=address,
                                 attendee=attendee,
-                                defaults={'category': 'from FamilyAddress'}
+                                defaults={'display_name': 'main', 'display_order': 0}
                             )
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
