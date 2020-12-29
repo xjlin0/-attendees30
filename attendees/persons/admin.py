@@ -11,8 +11,8 @@ from .models import *
 # Register your models here.
 
 
-class AttendeeAddressInline(admin.StackedInline):
-    model = AttendeeAddress
+class AttendeeContactInline(admin.StackedInline):
+    model = AttendeeContact
     extra = 0
 
 
@@ -72,7 +72,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     }
     search_fields = ('full_name',)
     readonly_fields = ['id', 'created', 'modified', 'full_name']
-    inlines = (AttendeeAddressInline, RelationshipInline)
+    inlines = (AttendeeContactInline, RelationshipInline)
     list_display_links = ('id',)
     list_display = ('id', 'division', 'full_name', 'progressions', 'infos')
 
@@ -151,9 +151,9 @@ class AttendingMeetAdmin(admin.ModelAdmin):
     list_display = ('id', 'attending', 'meet', 'character', 'category', 'finish', 'modified')
 
 
-class FamilyAddressAdmin(admin.ModelAdmin):
+class FamilyContactAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'family', 'address', 'created', 'modified')
+    list_display = ('id', 'family', 'contact', 'created', 'modified')
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -166,4 +166,4 @@ admin.site.register(Attending, AttendingAdmin)
 admin.site.register(Relation, RelationAdmin)
 admin.site.register(Relationship, RelationshipAdmin)
 admin.site.register(AttendingMeet, AttendingMeetAdmin)
-admin.site.register(FamilyAddress, FamilyAddressAdmin)
+admin.site.register(FamilyContact, FamilyContactAdmin)

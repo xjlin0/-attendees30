@@ -13,7 +13,7 @@ class Campus(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=False, null=False, db_index=True)
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True)
-    address = models.ForeignKey('Address', null=True, on_delete=models.SET_NULL)
+    contact = models.ForeignKey('Contact', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = 'whereabouts_campus'

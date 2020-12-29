@@ -19,7 +19,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
-    addresses = models.ManyToManyField('whereabouts.Address', through='AttendeeAddress', related_name='addresses')
+    contacts = models.ManyToManyField('whereabouts.Contact', through='AttendeeContact', related_name='contacts')
     user = models.OneToOneField('users.User', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
@@ -56,7 +56,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         return self.self_addresses_for_fields_of(['fields__email1', 'fields__email2'])
 
     def self_addresses_for_fields_of(self, fields):
-        items = sum(self.addresses.values_list(*fields), ())
+        items = sum(self.contacts.values_list(*fields), ())
         return ', '.join(
             item for item in items if item
         )
