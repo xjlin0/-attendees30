@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
     "django_json_widget",
     "private_storage",
     "django_readonly_field",
+    "address",
     # "reversion",
 ]
 

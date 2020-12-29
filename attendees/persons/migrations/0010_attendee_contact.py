@@ -14,30 +14,30 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='AttendeeAddress',
+            name='AttendeeContact',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('address', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Address')),
+                ('contact', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Contact')),
                 ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
                 # ('category', models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
                 ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
                 ('display_name', models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
             ],
             options={
-                'db_table': 'persons_attendee_addresses',
+                'db_table': 'persons_attendee_contacts',
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
         migrations.AddField(
             model_name='attendee',
-            name='addresses',
-            field=models.ManyToManyField(through='persons.AttendeeAddress', to='whereabouts.Address', related_name='addresses'),
+            name='contacts',
+            field=models.ManyToManyField(through='persons.AttendeeContact', to='whereabouts.Contact', related_name='contacts'),
         ),
         migrations.AddConstraint(
-            model_name='attendeeaddress',
-            constraint=models.UniqueConstraint(fields=('attendee', 'address'), name='attendee_address'),
+            model_name='attendeecontact',
+            constraint=models.UniqueConstraint(fields=('attendee', 'contact'), name='attendee_contact'),
         ),
     ]

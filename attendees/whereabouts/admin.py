@@ -6,17 +6,17 @@ from attendees.persons.models import *
 from .models import *
 
 
-class AssemblyAddressInline(admin.TabularInline):
-    model = AssemblyAddress
+class AssemblyContactInline(admin.TabularInline):
+    model = AssemblyContact
     extra = 0
 
 
-class AddressAdmin(admin.ModelAdmin):
-    inlines = (AssemblyAddressInline,)
-    search_fields = ('display_name', 'street1', 'street2', 'city', 'zip_code', 'fields')
-    list_display_links = ('street',)
+class ContactAdmin(admin.ModelAdmin):
+    inlines = (AssemblyContactInline,)
+    search_fields = ('display_name', 'fields')
+    list_display_links = ('display_name',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'street', 'city', 'zip_code', 'phone1', 'email1')
+    list_display = ('display_name', 'address', 'phone1', 'email1')
 
     def phone1(self, instance):
         return instance.fields.get('phone1')
@@ -41,7 +41,7 @@ class PropertyAdmin(admin.ModelAdmin):
 class CampusAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug', 'address', 'modified')
+    list_display = ('display_name', 'slug', 'contact', 'modified')
 
 
 class SuiteAdmin(admin.ModelAdmin):
@@ -65,7 +65,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'slug', 'infos', 'modified')
 
 
-admin.site.register(Address, AddressAdmin)
+admin.site.register(Contact, ContactAdmin)
 admin.site.register(Campus, CampusAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(Suite, SuiteAdmin)

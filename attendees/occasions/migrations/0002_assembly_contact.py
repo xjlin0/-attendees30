@@ -9,35 +9,35 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0003_address'),
+        ('whereabouts', '0003_contact'),
         ('occasions', '0001_assembly'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AssemblyAddress',
+            name='AssemblyContact',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('address', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Address')),
+                ('contact', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Contact')),
                 ('assembly', models.ForeignKey(on_delete=models.SET(0), to='occasions.Assembly')),
                 ('category', models.CharField(default='normal', help_text='primary, backup, etc', max_length=20, null=True)),
             ],
             options={
-                'db_table': 'occasions_assembly_addresses',
-                'verbose_name_plural': 'Assembly Addresses',
+                'db_table': 'occasions_assembly_contacts',
+                'verbose_name_plural': 'Assembly Contacts',
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
         migrations.AddField(
             model_name='assembly',
-            name='addresses',
-            field=models.ManyToManyField(through='occasions.AssemblyAddress', to='whereabouts.Address'),
+            name='contacts',
+            field=models.ManyToManyField(through='occasions.AssemblyContact', to='whereabouts.Contact'),
         ),
         migrations.AddConstraint(
-            model_name='assemblyaddress',
-            constraint=models.UniqueConstraint(fields=('assembly', 'address'), name='assembly_address'),
+            model_name='assemblycontact',
+            constraint=models.UniqueConstraint(fields=('assembly', 'contact'), name='assembly_contact'),
         ),
     ]

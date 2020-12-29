@@ -10,29 +10,29 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0009_attendee_address_m2m'),
+        ('whereabouts', '0009_attendee_contact_m2m'),
         ('persons', '0012_family_attendee_m2m'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FamilyAddress',
+            name='FamilyContact',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='whereabouts.Address')),
+                ('contact', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='whereabouts.Contact')),
                 ('family', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='persons.Family')),
                 ('category', models.CharField(default='main', help_text='main, resident, etc (main will be displayed first)', max_length=20)),
             ],
             options={
-                'db_table': 'persons_family_addresses',
+                'db_table': 'persons_family_contacts',
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
         migrations.AddConstraint(
-            model_name='familyaddress',
-            constraint=models.UniqueConstraint(fields=('family', 'address'), name='family_address'),
+            model_name='familycontact',
+            constraint=models.UniqueConstraint(fields=('family', 'contact'), name='family_contact'),
         ),
     ]
