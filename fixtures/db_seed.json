@@ -39,7 +39,7 @@
     "model": "address.country",
     "pk": 1,
     "fields": {
-      "name": "United Sates of America",
+      "name": "United States of America",
       "code": "US"
     }
   },
@@ -66,6 +66,7 @@
     "pk": 1,
     "fields": {
       "street_number": "22416",
+      "extra": "",
       "route": "Meekland Avenue",
       "locality": 1,
       "raw": "22416 Meekland Ave. Hayward, CA 94541",
@@ -79,6 +80,7 @@
     "pk": 2,
     "fields": {
       "street_number": "222",
+      "extra": "",
       "route": "Burbank Street",
       "locality": 1,
       "raw": "222 Burbank St. Hayward, CA 94541",
@@ -92,6 +94,7 @@
     "pk": 3,
     "fields": {
       "street_number": "1",
+      "extra": "",
       "route": "pretty street",
       "locality": null,
       "raw": "1 pretty st. pretty place, CA 11111",
@@ -105,6 +108,7 @@
     "pk": 4,
     "fields": {
       "street_number": "2",
+      "extra": "",
       "route": "good street",
       "locality": null,
       "raw": "2 good street, god town, CA 22222",
@@ -118,6 +122,7 @@
     "pk": 5,
     "fields": {
       "street_number": "3",
+      "extra": "",
       "route": "great road",
       "locality": null,
       "raw": "3 great rd, great town, CA 33333",
@@ -131,6 +136,7 @@
     "pk": 6,
     "fields": {
       "street_number": "4",
+      "extra": "",
       "route": "cool lane",
       "locality": null,
       "raw": "4 cool lane, cool city, CA 44444",
@@ -144,6 +150,7 @@
     "pk": 7,
     "fields": {
       "street_number": "5",
+      "extra": "",
       "route": "excellent court",
       "locality": null,
       "raw": "5 excellent ct, excellent village, CA 55555",
@@ -157,6 +164,7 @@
     "pk": 8,
     "fields": {
       "street_number": "6",
+      "extra": "",
       "route": "beautiful drive",
       "locality": null,
       "raw": "6 beautiful dr, beautiful view, CA 66666",
@@ -170,6 +178,7 @@
     "pk": 9,
     "fields": {
       "street_number": "7",
+      "extra": "",
       "route": "throne way",
       "locality": null,
       "raw": "7 throne way, heaven, GG 99999",
@@ -183,6 +192,7 @@
     "pk": 10,
     "fields": {
       "street_number": "8",
+      "extra": "",
       "route": "Ketagalan Boulevard",
       "locality": null,
       "raw": "8 Ketagalan Boulevard, Pescadores Islands, TW 88049",
@@ -196,6 +206,7 @@
     "pk": 11,
     "fields": {
       "street_number": "1801",
+      "extra": "",
       "route": "East Cotati Avenue",
       "locality": null,
       "raw": "1801 E Cotati Ave. Rohnert Park, CA 94928",

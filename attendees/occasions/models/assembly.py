@@ -32,8 +32,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
         return '%s' % self.display_name
 
     def get_addresses(self):
-        # return "\n".join([a.street1 or '' + a.city or '' for a in self.addresses.all()])
-        return "need patch"
+        return "\n".join([a.address.raw for a in self.contacts.all() if a is not None])
 
 
 # from rest_framework import serializers

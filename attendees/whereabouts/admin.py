@@ -15,7 +15,7 @@ class ContactAdmin(admin.ModelAdmin):
     inlines = (AssemblyContactInline,)
     search_fields = ('display_name', 'fields')
     list_display_links = ('display_name',)
-    readonly_fields = ['id', 'created', 'modified']
+    readonly_fields = ['id', 'created', 'modified', 'street']
     list_display = ('display_name', 'address', 'phone1', 'email1')
 
     def phone1(self, instance):
