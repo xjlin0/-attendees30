@@ -50,9 +50,10 @@ class Contact(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
             GinIndex(fields=['fields'], name='contact_fields_gin', ),
         ]
 
-    # @property
-    # def street(self):
-    #     return '{street1} {street2}'.format(street1=self.street1, street2=self.street2 or '').strip()
+    @property
+    def street(self):
+        # return '{street1} {street2}'.format(street1=self.street1, street2=self.street2 or '').strip()
+        return self.address.raw
 
     def __str__(self):
         return '%s, %s' % (self.display_name or self.attendees.first() or '', self.address or '')

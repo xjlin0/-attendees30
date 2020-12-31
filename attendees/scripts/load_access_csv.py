@@ -1,14 +1,16 @@
-import csv, os, pytz, dateparser
+import csv, os, pytz, re
 from datetime import datetime
 from itertools import permutations
 from glob import glob
 from pathlib import Path
 from django.core.files import File
 
+from address.models import Locality, State, Address
+
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
-from attendees.persons.models import Utility, GenderEnum, Family, FamilyAddress, Relation, Attendee, FamilyAttendee, \
-    AttendeeAddress, Relationship, Registration, Attending, AttendingMeet
-from attendees.whereabouts.models import Address, Division
+from attendees.persons.models import Utility, GenderEnum, Family, FamilyContact, Relation, Attendee, FamilyAttendee, \
+    AttendeeContact, Relationship, Registration, Attending, AttendingMeet
+from attendees.whereabouts.models import Contact, Division
 
 
 def import_household_people_address(
@@ -51,7 +53,7 @@ def import_household_people_address(
 
     try:
         initial_time = datetime.utcnow()
-        initial_address_count = Address.objects.count()
+        initial_contact_count = Contact.objects.count()
         initial_family_count = Family.objects.count()
         initial_attendee_count = Attendee.objects.count()
         initial_relationship_count = Relationship.objects.count()
@@ -63,7 +65,7 @@ def import_household_people_address(
             upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug)
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
-            print('Initial address count: ', initial_address_count, '. final address count: ', Address.objects.count(), end="\n")
+            print('Initial contact count: ', initial_contact_count, '. final contact count: ', Contact.objects.count(), end="\n")
 
             print('Number of households successfully imported/updated: ', upserted_household_id_count)
             print('Initial family count: ', initial_family_count, '. final family count: ', Family.objects.count(), end="\n")
@@ -80,6 +82,7 @@ def import_household_people_address(
 
             time_taken = (datetime.utcnow() - initial_time).total_seconds()
             print('Importing/updating Access CSV is now done, seconds taken: ', time_taken)
+            print('Please manually fix the address not in USA!')
         else:
             print('Importing/updating address or household or attendee error, result count does not exist!')
     except Exception as e:
@@ -97,32 +100,50 @@ def import_addresses(addresses):
     """
 
     print("\n\nRunning import_addresses:\n")
+    california = State.objects.first()
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
-    for address in addresses:
+    for address_dict in addresses:
         try:
             print('.', end='')
-            address_id = Utility.presence(address.get('AddressID'))
+            address_id = Utility.presence(address_dict.get('AddressID'))
+            state = Utility.presence(address_dict.get('State'))
+            street = Utility.presence(address_dict.get('Street'))
+            city = Utility.presence(address_dict.get('City'))
+            zip_code = Utility.presence(address_dict.get('Zip'))
+            if address_id and street and state == california.code:
+                locality, locality_created = Locality.objects.update_or_create(
+                    name=city,
+                    postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
+                    state=california
+                )
 
-            if address_id:
-                address_values = {
-                    'street1': Utility.presence(address.get('Street')),
-                    'city': Utility.presence(address.get('City')),
-                    'state': Utility.presence(address.get('State')),
-                    'zip_code': Utility.presence(address.get('Zip')),
-                    'country': Utility.presence(address.get('Country')),
+                possible_extras = re.findall('((?i)(apt|unit|#| \w+\d+).+)$', street)  # Get extra info such as Apt#
+                extra = possible_extras[0][0].strip() if possible_extras else ''
+                street_strs = street.replace(extra, '').strip().strip(',').split(' ')
+
+                address_model, address_model_created = Address.objects.update_or_create(
+                    street_number=street_strs[0],
+                    extra=extra,
+                    route=' '.join(street_strs[1:]),
+                    locality=locality,
+                    raw=f"{street}, {city}, {state} {zip_code}",
+                )
+
+                contact_values = {
+                    'address': address_model,
                     'fields': {
                         'access_address_id': address_id,
-                        'access_address_values': address,
+                        'access_address_values': address_dict,
                     }
                 }
-                Address.objects.update_or_create(
+                Contact.objects.update_or_create(
                     fields__access_address_id=address_id,
-                    defaults=address_values
+                    defaults=contact_values
                 )
             successfully_processed_count += 1
 
         except Exception as e:
-            print('While importing/updating address: ', address)
+            print('While importing/updating address: ', address_dict)
             print('An error occurred and cannot proceed import_addresses(), reason: ', e)
     print('done!')
     return successfully_processed_count
@@ -130,7 +151,7 @@ def import_addresses(addresses):
 
 def import_households(households, division1_slug, division2_slug):
     """
-    Importer of households from MS Access.
+    Importer of households from MS Access, also update display name and telephone number of Contact.
     :param households: file content of households accessible by headers, from MS Access
     :param division1_slug: slug of division 1  # ch
     :param division2_slug: slug of division 2  # en
@@ -177,10 +198,14 @@ def import_households(households, division1_slug, division2_slug):
                 if address_id:
                     phone1 = Utility.presence(household.get('HouseholdPhone'))
                     phone2 = Utility.presence(household.get('HouseholdFax'))
-                    address, address_created = Address.objects.update_or_create(
+                    old_contact = Contact.objects.filter(fields__access_address_id=address_id).first()
+                    address = old_contact.address if old_contact else None
+                    contact, contact_created = Contact.objects.update_or_create(
                         fields__access_address_id=address_id,
+                        address=address,
                         defaults={
                             'display_name':  display_name,
+                            'address': address,
                             'fields': {
                                 'access_address_id': address_id,
                                 'phone1': '+1' + phone1 if phone1 else None,
@@ -188,9 +213,9 @@ def import_households(households, division1_slug, division2_slug):
                             },
                         }
                     )
-                    FamilyAddress.objects.update_or_create(
+                    FamilyContact.objects.update_or_create(
                         family=family,
-                        address=address
+                        contact=contact
                     )
             successfully_processed_count += 1
 
@@ -344,10 +369,10 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        address = Address.objects.filter(fields__access_address_id=address_id).first()
-                        if address:
-                            AttendeeAddress.objects.update_or_create(
-                                address=address,
+                        contact = Contact.objects.filter(fields__access_address_id=address_id).first()
+                        if contact:
+                            AttendeeContact.objects.update_or_create(
+                                contact=contact,
                                 attendee=attendee,
                                 defaults={'display_name': 'main', 'display_order': 0}
                             )
@@ -394,7 +419,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
-            families_address = Address.objects.filter(pk=family.addresses.first().id).first()
+            families_contact = family.contacts.first() # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
 
             if len(parents) > 1:  # skip for singles
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
@@ -434,12 +459,12 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                 husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
                 wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
 
-                if families_address:
+                if families_contact:
                     hushand_email = husband.infos.get('access_people_values', {}).get('E-mail')
                     wife_email = wife.infos.get('access_people_values', {}).get('E-mail')
-                    families_address.fields['email1'] = Utility.presence(hushand_email)
-                    families_address.fields['email2'] = Utility.presence(wife_email)
-                    families_address.save()
+                    families_contact.fields['email1'] = Utility.presence(hushand_email)
+                    families_contact.fields['email2'] = Utility.presence(wife_email)
+                    families_contact.save()
 
                 Relationship.objects.update_or_create(
                     from_attendee=wife,
@@ -477,13 +502,13 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         family_attendee.role = wife_role
                         family_attendee.save()
 
-                if families_address and househead_single:
+                if families_contact and househead_single:
                     self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
-                    families_address.fields['email1'] = Utility.presence(self_email)
-                    families_address.save()
+                    families_contact.fields['email1'] = Utility.presence(self_email)
+                    families_contact.save()
                 else:
                     if Attendee.objects.filter(infos__access_people_household_id=family.infos['access_household_id']):
-                        print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_address, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
+                        print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_contact, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
                     else:
                         pass  # skipping since there is no such people with the household id in the original access data.
 
