@@ -11,7 +11,7 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   # intall git for pip install by github
-  && apt-get install -y git \
+  && apt-get install -y git less \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
