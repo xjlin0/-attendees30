@@ -45,6 +45,9 @@ def import_household_people_address(
     :param data_general_character_slug: key of data_general_character_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
+    california = State.objects.first()
+    if not california:
+        raise Exception("Sorry, no state imported, did db_seed.json loaded?")
 
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
@@ -57,7 +60,7 @@ def import_household_people_address(
         initial_family_count = Family.objects.count()
         initial_attendee_count = Attendee.objects.count()
         initial_relationship_count = Relationship.objects.count()
-        upserted_address_count = import_addresses(addresses)
+        upserted_address_count = import_addresses(addresses, california)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
         upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug)
 
@@ -92,15 +95,15 @@ def import_household_people_address(
 
 
 # Todo: Add created by notes in every instance in notes/infos
-def import_addresses(addresses):
+def import_addresses(addresses, california):
     """
     Importer of addresses from MS Access.
     :param addresses: file content of address accessible by headers, from MS Access
+    :param california: Californis is the default state
     :return: successfully processed address count, also print out importing status and write to Attendees db (create or update)
     """
 
     print("\n\nRunning import_addresses:\n")
-    california = State.objects.first()
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
     for address_dict in addresses:
         try:
@@ -117,20 +120,24 @@ def import_addresses(addresses):
                     state=california
                 )
 
-                possible_extras = re.findall('((?i)(apt|unit|#| \w+\d+).+)$', street)  # Get extra info such as Apt#
-                extra = possible_extras[0][0].strip() if possible_extras else ''
-                street_strs = street.replace(extra, '').strip().strip(',').split(' ')
+                possible_extras = re.findall('((?i)(apt|unit|#| \D{1}\d+).+)$', street)  # Get extra info such as Apt#
+                address_extra = possible_extras[0][0].strip() if possible_extras else ''
+                street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
 
-                address_model, address_model_created = Address.objects.update_or_create(
-                    street_number=street_strs[0],
-                    extra=extra,
-                    route=' '.join(street_strs[1:]),
-                    locality=locality,
-                    raw=f"{street}, {city}, {state} {zip_code}",
-                )
+                # address_model, address_model_created = Address.objects.update_or_create(
+                #     street_number=street_strs[0],
+                #     extra=extra,
+                #     route=' '.join(street_strs[1:]),
+                #     locality=locality,
+                #     raw=f"{street}, {city}, {state} {zip_code}",
+                # )
 
                 contact_values = {
-                    'address': address_model,
+                    'street_number': street_strs[0],
+                    'route': ' '.join(street_strs[1:]),
+                    'locality': locality,
+                    'raw': f"{street}, {city}, {state} {zip_code}",
+                    'address_extra': address_extra,
                     'fields': {
                         'access_address_id': address_id,
                         'access_address_values': address_dict,
@@ -140,6 +147,8 @@ def import_addresses(addresses):
                     fields__access_address_id=address_id,
                     defaults=contact_values
                 )
+            else:
+                print('Is the address completed or in California? address not good for processing: ', address_dict)
             successfully_processed_count += 1
 
         except Exception as e:
@@ -198,17 +207,17 @@ def import_households(households, division1_slug, division2_slug):
                 if address_id:
                     phone1 = Utility.presence(household.get('HouseholdPhone'))
                     phone2 = Utility.presence(household.get('HouseholdFax'))
-                    old_contact = Contact.objects.filter(fields__access_address_id=address_id).first()
-                    address = old_contact.address if old_contact else None
+                    # old_contact = Contact.objects.filter(fields__access_address_id=address_id).first()
+                    # address = old_contact.address if old_contact else None
                     contact, contact_created = Contact.objects.update_or_create(
                         fields__access_address_id=address_id,
-                        address=address,
+                        # address=address,
                         defaults={
                             'display_name':  display_name,
-                            'address': address,
+                            # 'address': address,
                             'fields': {
                                 'access_address_id': address_id,
-                                'phone1': '+1' + phone1 if phone1 else None,
+                                'phone1': '+1' + phone1 if phone1 else None,  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
                                 'phone2': '+1' + phone2 if phone2 else None,
                             },
                         }

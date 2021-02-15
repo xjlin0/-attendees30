@@ -16,7 +16,7 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ('display_name', 'fields')
     list_display_links = ('display_name',)
     readonly_fields = ['id', 'created', 'modified', 'street']
-    list_display = ('display_name', 'address', 'phone1', 'email1')
+    list_display = ('display_name', 'street', 'phone1', 'email1')
 
     def phone1(self, instance):
         return instance.fields.get('phone1')
