@@ -144,8 +144,8 @@ class AttendeeService:
         :return: string of fields in database
         """
         field_converter = {
-            'self_phone_numbers': 'addresses__fields',
-            'self_email_addresses': 'addresses__fields',
+            'self_phone_numbers': 'contacts__fields',
+            'self_email_addresses': 'contacts__fields',
         }
 
         for meet in Meet.objects.filter(assembly__slug=assembly_slug):
