@@ -7,9 +7,9 @@ whitenoise==5.1.0  # https://github.com/evansd/whitenoise
 redis==3.5.0  # https://github.com/andymccurdy/redis-py
 hiredis==1.0.1  # https://github.com/redis/hiredis-py
 celery==4.4.2  # pyup: < 5.0  # https://github.com/celery/celery
-django-celery-beat==2.0.0  # https://github.com/celery/django-celery-beat
+django-celery-beat==2.2.0  # https://github.com/celery/django-celery-beat
 flower==0.9.4  # https://github.com/mher/flower
-uvicorn==0.12.3  # https://github.com/encode/uvicorn
+uvicorn==0.13.4  # https://github.com/encode/uvicorn needs watchgod
 # django-filter==2.4.0  # https://github.com/carltongibson/django-filter
 django-readonly-field==1.0.5  # https://github.com/peopledoc/django-readonly-field
 django-address==0.2.5  # https://github.com/furious-luke/django-address
@@ -17,7 +17,7 @@ django-address==0.2.5  # https://github.com/furious-luke/django-address
 
 django-summernote==0.8.11.6 # https://github.com/summernote/django-summernote
 -e git+https://github.com/llazzaro/django-scheduler.git@develop#egg=django-scheduler
-django-mptt==0.11.0 # https://github.com/django-mptt/django-mptt
+django-mptt==0.12.0 # https://github.com/django-mptt/django-mptt
 django-json-widget==1.0.1  # https://github.com/jmrivas86/django-json-widget
 django-private-storage==2.2.2 # https://github.com/edoburu/django-private-storage
 django-reversion==3.0.7 # https://github.com/etianen/django-reversion
@@ -25,7 +25,7 @@ dateparser==0.7.6 # https://github.com/scrapinghub/dateparser
 
 # Django
 # ------------------------------------------------------------------------------
-django==3.0.6  # pyup: < 3.1  # https://www.djangoproject.com/
+django==3.0.13  # pyup: < 3.1  # https://www.djangoproject.com/
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
 django-model-utils==4.0.0  # https://github.com/jazzband/django-model-utils
 django-allauth==0.41.0  # https://github.com/pennersr/django-allauth
@@ -33,4 +33,4 @@ django-crispy-forms==1.9.0  # https://github.com/django-crispy-forms/django-cris
 django-compressor==2.4  # https://github.com/django-compressor/django-compressor
 django-redis==4.11.0  # https://github.com/jazzband/django-redis
 # Django REST Framework
-djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
+djangorestframework==3.12.2  # https://github.com/encode/django-rest-framework
