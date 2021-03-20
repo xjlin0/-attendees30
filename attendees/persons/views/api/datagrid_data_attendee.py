@@ -1,6 +1,7 @@
-from django.contrib.postgres.aggregates.general import ArrayAgg
+from django.contrib.postgres.aggregates.general import ArrayAgg, JSONBAgg
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Func, Value
 from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
@@ -22,7 +23,14 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         attendee_id = self.request.query_params.get('attendee_id')
         print("entering retrieve ... ")
         attendee = Attendee.objects.annotate(
-                    joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
+            joined_meets=JSONBAgg(
+                Func(
+                    Value('slug'), 'attendings__meets__slug',
+                    Value('display_name'), 'attendings__meets__display_name',
+                    function='jsonb_build_object'
+                ),
+            )
+                    # joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
                    ).filter(pk=attendee_id).first()
         # attendee = get_object_or_404(queryset)
         serializer = AttendeeMinimalSerializer(attendee)
@@ -40,7 +48,14 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         # )
 
         return Attendee.objects.annotate(
-                    joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
+                    joined_meets=JSONBAgg(
+                        Func(
+                            Value('slug'), 'attendings__meets__slug',
+                            Value('display_name'), 'attendings__meets__display_name',
+                            function='jsonb_build_object'
+                        ),
+                    )
+                    # joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
                ).filter(pk=querying_attendee_id)
 
 
