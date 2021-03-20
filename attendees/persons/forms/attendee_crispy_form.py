@@ -45,6 +45,6 @@ class AttendeeCrispyForm(forms.ModelForm):
             ),
 
             ButtonHolder(
-                Submit('submit', 'Save', css_class='btn btn-success')
+                Submit('submit', 'Save', css_class='btn btn-success', onclick="return confirm('Are you sure to save and submit all your changes?')")
             ),
         )

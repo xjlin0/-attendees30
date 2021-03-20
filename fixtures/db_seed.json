@@ -7509,7 +7509,7 @@
       "last_name2": "Lastnam2",
       "full_name": "superuser1 system admin1 Lastnam2superuser2",
       "gender": "MALE",
-      "actual_birthday": null,
+      "actual_birthday": "1980-01-01",
       "estimated_birthday": null,
       "deathday": null,
       "photo": "",
