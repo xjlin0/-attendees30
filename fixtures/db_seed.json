@@ -2333,6 +2333,22 @@
     }
   },
   {
+    "model": "persons.relationship",
+    "pk": 32,
+    "fields": {
+      "created": "2020-12-05T17:58:26.523Z",
+      "modified": "2020-12-10T01:44:55.934Z",
+      "is_removed": false,
+      "from_attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
+      "to_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
+      "relation": 18,
+      "emergency_contact": false,
+      "scheduler": false,
+      "in_family": null,
+      "finish": "3937-06-12T17:58:04Z"
+    }
+  },
+  {
     "model": "persons.registration",
     "pk": 1,
     "fields": {

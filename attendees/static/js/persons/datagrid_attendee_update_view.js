@@ -20,7 +20,7 @@ Attendees.datagridUpdate = {
           dataField: "photo",
           template: function (data, itemElement) {
             if (data.editorOptions && data.editorOptions.value){
-              $("<img>").attr({src: data.editorOptions.value, class: "photo"}).appendTo(itemElement);
+              $("<img>").attr({src: data.editorOptions.value, class: "photo " + Attendees.datagridUpdate.attendeeAttrs.id}).appendTo(itemElement);
             }
           },
       },
@@ -33,7 +33,7 @@ Attendees.datagridUpdate = {
           helpText: "Example: +1(111)111-1111"
       },
       {
-        dataField: "progressions",
+        dataField: "progressions.belief",
         editorType: "dxTextArea",
         editorOptions: {
           placeholder: "Add notes...",
