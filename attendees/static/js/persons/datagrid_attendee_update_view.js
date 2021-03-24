@@ -38,7 +38,34 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: "Add notes...",
         }
-      }
+      },
+      {
+        dataField: "joined_meets",
+        template: (data, itemElement) => {
+            $joinedMeetUl = $("<ul>").attr({class: "joined-meets-labels"}); // .text('attended:')
+            if (data.editorOptions && data.editorOptions.value){
+              data.editorOptions.value.forEach(meet => {
+                  $("<li>").attr({class: "joined-meet-"+meet.slug}).text(meet.display_name).appendTo($joinedMeetUl);
+              });
+            }
+            $("<li>").attr({class: "joined-meet-new"}).text("+ Attend a new meet").appendTo($joinedMeetUl);
+            $joinedMeetUl.appendTo(itemElement);
+          }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702/how-submit-a-dxform-in-a-popup-that-s-called-from-another-dxform-and-return
+      },
+      {
+        template: $("<button>").attr({class: 'btn button btn-primary btn-sm'}).text('blah'),
+      },
+      {
+        itemType: "button",
+        buttonOptions: {
+            text: "meet!",
+            horizontalAlignment: "left", // doesn't work
+            type: "primary",
+            onClick: function () {
+                console.log('blah');
+            }
+        }
+      },
     ]
 
   },
