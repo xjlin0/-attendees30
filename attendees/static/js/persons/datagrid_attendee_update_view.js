@@ -1,10 +1,10 @@
 Attendees.datagridUpdate = {
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
-    Attendees.datagridUpdate.initForms();
+    Attendees.datagridUpdate.initAttendeeForm();
   },
 
-  formConfigs: {
+  attendeeFormConfigs: {
 
     formData: null, // will be fetched
     items: [
@@ -42,15 +42,15 @@ Attendees.datagridUpdate = {
       {
         dataField: "joined_meets",
         template: (data, itemElement) => {
-            $joinedMeetUl = $("<ul>").attr({class: "joined-meets-labels"}); // .text('attended:')
+            $attendingInfos = $("<ul>").attr({class: "attending-infos"}); // .text('attended:')
             if (data.editorOptions && data.editorOptions.value){
-              data.editorOptions.value.forEach(meet => {
-                  $("<li>").attr({class: "joined-meet-"+meet.slug}).text(meet.display_name).appendTo($joinedMeetUl);
+              data.editorOptions.value.forEach(attending => {
+                  $("<li>").attr({class: "joined-meet-"+attending.meet_slug}).text(attending.meet_name).appendTo($attendingInfos);
               });
             }
-            $("<li>").attr({class: "joined-meet-new"}).text("+ Attend a new meet").appendTo($joinedMeetUl);
-            $joinedMeetUl.appendTo(itemElement);
-          }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702/how-submit-a-dxform-in-a-popup-that-s-called-from-another-dxform-and-return
+            $("<li>").attr({class: "joined-meet-new"}).text("+ Attend a new meet").appendTo($attendingInfos);
+            $attendingInfos.appendTo(itemElement);
+          }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
       },
       {
         template: $("<button>").attr({class: 'btn button btn-primary btn-sm'}).text('blah'),
@@ -59,7 +59,7 @@ Attendees.datagridUpdate = {
         itemType: "button",
         buttonOptions: {
             text: "meet!",
-            horizontalAlignment: "left", // doesn't work
+            horizontalAlignment: "left", // doesn't align to left
             type: "primary",
             onClick: function () {
                 console.log('blah');
@@ -74,7 +74,7 @@ Attendees.datagridUpdate = {
   attendeeAttrs: null, // will be assigned later
   attendeeId: null, // will be assigned later
 
-  initForms: () => {
+  initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-update');
     Attendees.datagridUpdate.attendeeId = Attendees.datagridUpdate.attendeeAttrs.id.replace("attendee_", "");
 
@@ -82,8 +82,8 @@ Attendees.datagridUpdate = {
       ({
         url      : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
         success  : (response) => {
-                      Attendees.datagridUpdate.formConfigs.formData = response.data[0];
-                      Attendees.datagridUpdate.dxForm = $(".datagrid-update").dxForm(Attendees.datagridUpdate.formConfigs).dxForm("instance");
+                      Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                      Attendees.datagridUpdate.dxForm = $(".datagrid-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                    },
 //        error    : (response) => {
 //                   },
