@@ -1,4 +1,10 @@
 Attendees.datagridUpdate = {
+  attendeeMainDxForm: null,  // will be assigned later
+  attendeeAttrs: null,  // will be assigned later
+  attendeeId: null,  // will be assigned later
+  attendingmeetPopupDxForm: null,  // will be assigned later
+  attendingmeetPopup: null,  // will be assigned later
+
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
     Attendees.datagridUpdate.initAttendeeForm();
@@ -65,18 +71,27 @@ Attendees.datagridUpdate = {
           type: "success",
           useSubmitBehavior: true,
         },
-        onClick: () => {
-          console.log('mainAttendeeFormSubmit clicked!');
+        onClick: (e) => {
+          console.log('mainAttendeeFormSubmit clicked! here is : e.component.option("formData")', Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
         }
       },
+//      { // https://supportcenter.devexpress.com/ticket/details/t681806
+//        itemType: "button",
+//        name: "mainAttendeeFormReset",
+//        horizontalAlignment: "left",
+//        buttonOptions: {
+//          text: "Cancel/Reset",
+//          type: "reset",
+//          useSubmitBehavior: false,
+//          onClick: () => {
+//            console.log('mainAttendeeFormReset clicked!');
+//            Attendees.datagridUpdate.attendeeMainDxForm.resetValues();
+//          },
+//        },
+//      },
     ]
 
   },
-
-  attendeeMainDxForm: null, // will be assigned later
-  attendeeAttrs: null, // will be assigned later
-  attendeeId: null, // will be assigned later
-  attendingmeetPopupDxForm: null,
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
@@ -100,7 +115,7 @@ Attendees.datagridUpdate = {
     const meetButton = event.target;
     console.log("hi 96 clicked! here is meetButton.value: ", meetButton.value);
 
-    $("div.popup-attendingmeet-update").dxPopup({
+    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup({
       visible: true,
       title: meetButton.innerText,
       minwidth: "30%",
@@ -114,6 +129,7 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $("<div class='attendingMeetForm'>");
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
+          formData: {customer_name: 'hi there 132'},
           readOnly: false,
           showColonAfterLabel: false,
           labelLocation: "top",
@@ -123,6 +139,7 @@ Attendees.datagridUpdate = {
 //              "hi there",
             {
               dataField: "customer_name",
+              name: 'hithere141',
               label: { text: "Name" },
               editorOptions: {
               },
@@ -139,10 +156,14 @@ Attendees.datagridUpdate = {
                 text: "Save",
                 type: "success",
                 useSubmitBehavior: false,
-                onClick: function() {
+                onClick: (e) => {
                   console.log("attending meet popup submit button clicked!");
-                  Attendees.datagridUpdate.attendeeMainDxForm.getEditor("mainAttendeeFormSubmit").option("useSubmitBehavior", false);
-                  $("form#attendingmeet-update-popup-form").submit();
+                  if(confirm('are you sure to submit the popup attendingMeetForm?')){
+                    // Attendees.datagridUpdate.attendingmeetPopupDxForm.formData() not a function
+                    console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formdata: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData')
+);
+                    Attendees.datagridUpdate.attendingmeetPopup.hide();
+                  }
                 }
               },
             },
@@ -156,7 +177,7 @@ Attendees.datagridUpdate = {
 //                useSubmitBehavior: false,
 //                onClick: () => {
 //                  console.log('attendingmeetPopupDxFormCancel clicked!');
-////                  Attendees.datagridUpdate.attendingmeetPopupDxForm.cancelEditData();
+//                  Attendees.datagridUpdate.attendingmeetPopupDxForm.resetValues();
 //                },
 //              },
 //            },
@@ -167,7 +188,7 @@ Attendees.datagridUpdate = {
 //          alert('#popupForm submit pressed');
 //        });
       }
-    });
+    }).dxPopup("instance");
 
   },
 
