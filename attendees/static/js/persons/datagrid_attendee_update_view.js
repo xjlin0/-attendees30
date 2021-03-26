@@ -42,15 +42,13 @@ Attendees.datagridUpdate = {
       {
         dataField: "joined_meets",
         template: (data, itemElement) => {
-            $attendingInfos = $("<ul>").attr({class: "attending-infos"}); // .text('attended:')
-            if (data.editorOptions && data.editorOptions.value){
-              data.editorOptions.value.forEach(attending => {
-                  $("<li>").attr({class: "joined-meet-"+attending.meet_slug}).text(attending.meet_name).appendTo($attendingInfos);
-              });
-            }
-            $("<li>").attr({class: "joined-meet-new"}).text("+ Attend a new meet").appendTo($attendingInfos);
-            $attendingInfos.appendTo(itemElement);
-          }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
+          if (data.editorOptions && data.editorOptions.value){
+            data.editorOptions.value.forEach(attending => {
+              const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
+              $("<button>").attr({type: 'button', class: buttonClass + " btn button btn-sm ", value: attending.attendingmeet_id}).text(attending.meet_name).appendTo(itemElement);
+            });
+          }
+        }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
       },
       {
         template: $("<button>").attr({class: 'btn button btn-primary btn-sm'}).text('blah'),

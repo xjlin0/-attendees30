@@ -50,12 +50,8 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         return Attendee.objects.annotate(
                     joined_meets=JSONBAgg(
                         Func(
-                            Value('attending_id'), 'attendings__id',
-                            Value('reggistration_id'), 'attendings__registration__id',
                             Value('attendingmeet_id'), 'attendings__attendingmeet__id',
-                            Value('attending_start'), 'attendings__attendingmeet__start',
                             Value('attending_finish'), 'attendings__attendingmeet__finish',
-                            Value('meet_slug'), 'attendings__meets__slug',
                             Value('meet_name'), 'attendings__meets__display_name',
                             function='jsonb_build_object'
                         ),
