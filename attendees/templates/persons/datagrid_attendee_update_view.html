@@ -48,10 +48,15 @@
 
   </div>
 
-<div id="attendee_{{ current_attendee_id }}"
-     class="datagrid-update"
-     data-attendee-endpoint="{{attendee_endpoint}}"
-     data-assembly="{{current_assembly_slug}}">
-</div>
-
+<form method="post">
+  <div class="datagrid-attendee-update"
+       data-attendee-id="{{ current_attendee_id }}"
+       data-attendee-endpoint="{{attendee_endpoint}}"
+       data-assembly="{{current_assembly_slug}}">
+  </div>
+</form>
+<form method="post">
+  <div class="popup-attendingmeet-update">
+  </div>
+</form>
 {% endblock content %}

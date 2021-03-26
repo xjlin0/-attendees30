@@ -74,15 +74,15 @@ Attendees.datagridUpdate = {
   attendeeId: null, // will be assigned later
 
   initAttendeeForm: () => {
-    Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-update');
-    Attendees.datagridUpdate.attendeeId = Attendees.datagridUpdate.attendeeAttrs.id.replace("attendee_", "");
+    Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
+    Attendees.datagridUpdate.attendeeId = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeId;
 
     $.ajax
       ({
         url      : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
         success  : (response) => {
                       Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
-                      Attendees.datagridUpdate.dxForm = $(".datagrid-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                      Attendees.datagridUpdate.dxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                    },
 //        error    : (response) => {
 //                   },
