@@ -52,6 +52,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
                         Func(
                             Value('attendingmeet_id'), 'attendings__attendingmeet__id',
                             Value('attending_finish'), 'attendings__attendingmeet__finish',
+                            Value('attending_start'), 'attendings__attendingmeet__start',
                             Value('meet_name'), 'attendings__meets__display_name',
                             function='jsonb_build_object'
                         ),

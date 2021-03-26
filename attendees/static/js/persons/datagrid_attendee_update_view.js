@@ -42,10 +42,11 @@ Attendees.datagridUpdate = {
       {
         dataField: "joined_meets",
         template: (data, itemElement) => {
+          $("<button>").attr({title: "Attending a new meet", type: 'button', class: "btn-outline-primary btn button btn-sm "}).text("+ Attend new").appendTo(itemElement);
           if (data.editorOptions && data.editorOptions.value){
             data.editorOptions.value.forEach(attending => {
               const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-              $("<button>").attr({type: 'button', class: buttonClass + " btn button btn-sm ", value: attending.attendingmeet_id}).text(attending.meet_name).appendTo(itemElement);
+              $("<button>").attr({title: "since " + attending.attending_start, type: 'button', class: buttonClass + " btn button btn-sm ", value: attending.attendingmeet_id}).text(attending.meet_name).appendTo(itemElement);
             });
           }
         }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
