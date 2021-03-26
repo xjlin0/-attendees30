@@ -46,32 +46,37 @@ Attendees.datagridUpdate = {
           if (data.editorOptions && data.editorOptions.value){
             data.editorOptions.value.forEach(attending => {
               const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-              $("<button>").attr({title: "since " + attending.attending_start, type: 'button', class: buttonClass + " attendingmeet btn button btn-sm ", value: attending.attendingmeet_id}).text(attending.meet_name).appendTo(itemElement);
+              const buttonAttrs = {
+                title: "since " + attending.attending_start,
+                type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
+                value: attending.attendingmeet_id
+              }
+              $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
             });
           }
         }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
       },
-      {
-        template: $("<button>").attr({class: 'btn button btn-primary btn-sm'}).text('blah'),
-      },
-      {
+      { // https://supportcenter.devexpress.com/ticket/details/t681806
         itemType: "button",
+        name: "mainAttendeeFormSubmit",
+        horizontalAlignment: "left",
         buttonOptions: {
-            text: "meet!",
-            horizontalAlignment: "left", // doesn't align to left
-            type: "primary",
-            onClick: function () {
-                console.log('blah');
-            }
+          text: "Save",
+          type: "success",
+          useSubmitBehavior: true,
+        },
+        onClick: () => {
+          console.log('mainAttendeeFormSubmit clicked!');
         }
       },
     ]
 
   },
 
-  dxForm: null, // will be assigned later
+  attendeeMainDxForm: null, // will be assigned later
   attendeeAttrs: null, // will be assigned later
   attendeeId: null, // will be assigned later
+  attendingmeetPopupDxForm: null,
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
@@ -82,7 +87,7 @@ Attendees.datagridUpdate = {
         url      : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
         success  : (response) => {
                       Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
-                      Attendees.datagridUpdate.dxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                       Attendees.datagridUpdate.initListeners();
                    },
 //        error    : (response) => {
@@ -107,38 +112,54 @@ Attendees.datagridUpdate = {
       },
       dragEnabled: true,
       contentTemplate: (e) => {
-        var formContainer = $("<div id='attendingMeetForm'>");
-        myNewCustomerForm = formContainer.dxForm({
+        const formContainer = $("<div class='attendingMeetForm'>");
+        Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
           readOnly: false,
           showColonAfterLabel: false,
           labelLocation: "top",
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-              "hi there",
-//            {
-//              dataField: "customer_name",
-//              label: { text: "Name" },
-//              editorOptions: {
-//              },
-//              validationRules: [{
-//                type: "required",
-//                message: "Customer Name is required"
-//              }]
-//            }, {
+//              "hi there",
+            {
+              dataField: "customer_name",
+              label: { text: "Name" },
+              editorOptions: {
+              },
+              validationRules: [{
+                type: "required",
+                message: "Customer Name is required"
+              }]
+            },
+            {
+              itemType: "button",
+              horizontalAlignment: "left",
+              colSpan: 2,
+              buttonOptions: {
+                text: "Save",
+                type: "success",
+                useSubmitBehavior: false,
+                onClick: function() {
+                  console.log("attending meet popup submit button clicked!");
+                  Attendees.datagridUpdate.attendeeMainDxForm.getEditor("mainAttendeeFormSubmit").option("useSubmitBehavior", false);
+                  $("form#attendingmeet-update-popup-form").submit();
+                }
+              },
+            },
+//            { // https://supportcenter.devexpress.com/ticket/details/t681806
 //              itemType: "button",
+//              name: "attendingmeetPopupDxFormCancel",
 //              horizontalAlignment: "left",
-//              colSpan: 2,
 //              buttonOptions: {
-//                text: "Save",
-//                type: "success",
-//                useSubmitBehavior: true,
-//                onClick: function() {
-//                  mainForm.getEditor("mainFormSubmit").option("useSubmitBehavior",false);
-//                  $("#popupForm").submit();
-//                }
+//                text: "Cancel/Reset",
+//                type: "reset",
+//                useSubmitBehavior: false,
+//                onClick: () => {
+//                  console.log('attendingmeetPopupDxFormCancel clicked!');
+////                  Attendees.datagridUpdate.attendingmeetPopupDxForm.cancelEditData();
+//                },
 //              },
-//            }
+//            },
           ]
         }).dxForm("instance");
         e.append(formContainer);
@@ -151,7 +172,7 @@ Attendees.datagridUpdate = {
   },
 
   initListeners: () => {
-    $("div.main-container").on("click", "button.attendingmeet",  e => Attendees.datagridUpdate.initAttendingmeetUpdate(e))
+    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetUpdate(e))
     // add listeners for Contact, etc.
   },
 }
