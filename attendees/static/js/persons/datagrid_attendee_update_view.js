@@ -69,11 +69,15 @@ Attendees.datagridUpdate = {
         buttonOptions: {
           text: "Save",
           type: "success",
-          useSubmitBehavior: true,
+          useSubmitBehavior: false,
+          onClick: (e) => {
+            console.log("mainAttendeeFormSubmit clicked! here is : Attendees.datagridUpdate.attendeeMainDxForm.option('formData'): ", Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
+            if (confirm("Are you sure?")){
+              console.log("user confirmed");
+              $("form#attendee-update-form").submit();
+            }
+          }
         },
-        onClick: (e) => {
-          console.log('mainAttendeeFormSubmit clicked! here is : e.component.option("formData")', Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
-        }
       },
 //      { // https://supportcenter.devexpress.com/ticket/details/t681806
 //        itemType: "button",
@@ -95,19 +99,19 @@ Attendees.datagridUpdate = {
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
-    Attendees.datagridUpdate.attendeeId = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeId;
+    Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
 
-    $.ajax
-      ({
-        url      : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
-        success  : (response) => {
-                      Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
-                      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
-                      Attendees.datagridUpdate.initListeners();
-                   },
-//        error    : (response) => {
-//                   },
-      });
+    $.ajax({
+      url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
+      success: (response) => {
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                 Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                 Attendees.datagridUpdate.initListeners();
+               },
+      error  : (response) => {
+                 console.log("Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ", response);
+               },
+    });
 
   },
 
@@ -127,7 +131,7 @@ Attendees.datagridUpdate = {
       },
       dragEnabled: true,
       contentTemplate: (e) => {
-        const formContainer = $("<div class='attendingMeetForm'>");
+        const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
           formData: {customer_name: 'hi there 132'},
           readOnly: false,
@@ -139,7 +143,7 @@ Attendees.datagridUpdate = {
 //              "hi there",
             {
               dataField: "customer_name",
-              name: 'hithere141',
+//              name: 'hithere141',
               label: { text: "Name" },
               editorOptions: {
               },
@@ -156,12 +160,12 @@ Attendees.datagridUpdate = {
                 text: "Save",
                 type: "success",
                 useSubmitBehavior: false,
-                onClick: (e) => {
+                onClick: (clickEvent) => {
                   console.log("attending meet popup submit button clicked!");
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
-                    // Attendees.datagridUpdate.attendingmeetPopupDxForm.formData() not a function
-                    console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formdata: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData')
-);
+                    console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData'));  // clickEvent.component is the clicked button parent object, don't have form data
+                    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value;
+                    console.log("submitting to ajaxUrl: ", ajaxUrl);
                     Attendees.datagridUpdate.attendingmeetPopup.hide();
                   }
                 }

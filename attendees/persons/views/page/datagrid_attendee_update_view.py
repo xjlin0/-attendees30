@@ -28,7 +28,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
         current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
         context.update({
-            'current_attendee_id': current_attendee_id,
+            'targeting_attendee_id': current_attendee_id,
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,

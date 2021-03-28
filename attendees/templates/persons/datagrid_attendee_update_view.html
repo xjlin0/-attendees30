@@ -59,16 +59,21 @@
 <div class="main-container container">
   <form id="attendee-update-form"
         method="post">
+    <input type="hidden"
+           name="attendee-id"
+           value="{{ targeting_attendee_id}}">
     {% csrf_token %}
     <div class="datagrid-attendee-update"
-         data-attendee-id="{{ current_attendee_id }}"
          data-attendee-endpoint="{{attendee_endpoint}}"
          data-assembly="{{current_assembly_slug}}">
     </div>
   </form>
   <form id="attendingmeet-update-popup-form"
-        action="hithere70"
+        action="/persons/api/datagrid_data_attendingmeet/"
         method="post">
+    <input type="hidden"
+           name="attendee-id"
+           value="{{ targeting_attendee_id}}">
     {% csrf_token %}
     <div class="popup-attendingmeet-update">
     </div>
