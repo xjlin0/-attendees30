@@ -48,7 +48,7 @@ Attendees.datagridUpdate = {
       {
         dataField: "joined_meets",
         template: (data, itemElement) => {
-          $("<button>").attr({title: "+ Add a new meet", type: 'button', class: "attendingmeet btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
+          $("<button>").attr({title: "+ Add a new meet", type: 'button', class: "attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
           if (data.editorOptions && data.editorOptions.value){
             data.editorOptions.value.forEach(attending => {
               const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
@@ -117,17 +117,23 @@ Attendees.datagridUpdate = {
 
   initAttendingmeetPopupDxForm: (event) => {
     const meetButton = event.target;
-    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
 
-    $.ajax({
-      url    : ajaxUrl,
-      success: (response) => {
-                 Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(response.data[0], meetButton, ajaxUrl)).dxPopup("instance");
-               },
-      error  : (response) => {
-                 console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
-               },
-    });
+    if (meetButton.value){
+      const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
+      $.ajax({
+        url    : ajaxUrl,
+        success: (response) => {
+                   Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(response.data[0], meetButton, ajaxUrl)).dxPopup("instance");
+                 },
+        error  : (response) => {
+                   console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
+                 },
+      });
+    }else{
+      const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action');
+      Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig({}, meetButton, ajaxUrl)).dxPopup("instance");
+    }
+
   },
 
   attendingmeetPopupDxFormConfig: (attendingmeetFormData, meetButton, ajaxUrl) => {
