@@ -169,8 +169,10 @@ Attendees.datagridUpdate = {
 //              }]
 //            },
             {
+              dataField: "assembly_name",
+            },
+            {
               dataField: "character_name",
-              label: { text: "character_name" },
             },
             {
               dataField: "start",
