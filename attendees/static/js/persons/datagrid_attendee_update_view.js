@@ -115,10 +115,23 @@ Attendees.datagridUpdate = {
 
   },
 
-  initAttendingmeetUpdate: (event) => {
+  detchDataForAttendingmeetForm: (event) => {
     const meetButton = event.target;
-    console.log("hi 96 clicked! here is meetButton.value: ", meetButton.value);
+    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
 
+    $.ajax({
+      url    : ajaxUrl,
+      success: (response) => {
+                 console.log("ajax for AttendingmeetForm success, here is the response: ", response);
+                 Attendees.datagridUpdate.initAttendingmeetUpdate(response.data[0], meetButton, ajaxUrl);
+               },
+      error  : (response) => {
+                 console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
+               },
+    });
+  },
+
+  initAttendingmeetUpdate: (attendingmeetFormData, meetButton, ajaxUrl) => {
     Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup({
       visible: true,
       title: meetButton.innerText,
@@ -133,24 +146,40 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
-          formData: {customer_name: 'hi there 132'},
+          formData: attendingmeetFormData,
           readOnly: false,
           showColonAfterLabel: false,
           labelLocation: "top",
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-//              "hi there",
+//            {
+//              dataField: "customer_name",
+//              label: { text: "Name" },
+//              editorOptions: {
+//              },
+//              validationRules: [{
+//                type: "required",
+//                message: "Customer Name is required"
+//              }]
+//            },
             {
-              dataField: "customer_name",
-//              name: 'hithere141',
-              label: { text: "Name" },
+              dataField: "character_name",
+              label: { text: "character_name" },
+            },
+            {
+              dataField: "start",
+              editorType: "dxDateBox",
               editorOptions: {
+                type: "datetime",
               },
-              validationRules: [{
-                type: "required",
-                message: "Customer Name is required"
-              }]
+            },
+            {
+              dataField: "finish",
+              editorType: "dxDateBox",
+              editorOptions: {
+                type: "datetime",
+              },
             },
             {
               itemType: "button",
@@ -164,7 +193,6 @@ Attendees.datagridUpdate = {
                   console.log("attending meet popup submit button clicked!");
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
                     console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData'));  // clickEvent.component is the clicked button parent object, don't have form data
-                    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value;
                     console.log("submitting to ajaxUrl: ", ajaxUrl);
                     Attendees.datagridUpdate.attendingmeetPopup.hide();
                   }
@@ -188,17 +216,14 @@ Attendees.datagridUpdate = {
           ]
         }).dxForm("instance");
         e.append(formContainer);
-//        $("#popupForm").on("submit", function(e) {
-//          alert('#popupForm submit pressed');
-//        });
       }
     }).dxPopup("instance");
 
   },
 
   initListeners: () => {
-    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetUpdate(e))
-    // add listeners for Contact, etc.
+    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.detchDataForAttendingmeetForm(e))
+    // add listeners for Contact, counselling, etc.
   },
 }
 

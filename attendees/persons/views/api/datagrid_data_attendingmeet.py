@@ -2,6 +2,7 @@ from django.contrib.postgres.aggregates.general import JSONBAgg
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Func, Value
+from django.db.models.expressions import F
 from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
@@ -45,7 +46,10 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
         #     current_user=current_user,
         #     attendee_id=querying_attendee_id,
         # )
-        return AttendingMeet.objects.find(pk=querying_attendingmeet_id)
+        return AttendingMeet.objects.annotate(
+                    # meet=F('attendingmeet__meet__display_name'),
+                    character_name=F('character__display_name'),
+                ).filter(pk=querying_attendingmeet_id)
         # return Attendee.objects.annotate(
         #             joined_meets=JSONBAgg(
         #                 Func(
