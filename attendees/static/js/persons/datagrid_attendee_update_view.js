@@ -115,15 +115,14 @@ Attendees.datagridUpdate = {
 
   },
 
-  detchDataForAttendingmeetForm: (event) => {
+  initAttendingmeetPopupDxForm: (event) => {
     const meetButton = event.target;
     const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
 
     $.ajax({
       url    : ajaxUrl,
       success: (response) => {
-                 console.log("ajax for AttendingmeetForm success, here is the response: ", response);
-                 Attendees.datagridUpdate.initAttendingmeetUpdate(response.data[0], meetButton, ajaxUrl);
+                 Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(response.data[0], meetButton, ajaxUrl)).dxPopup("instance");
                },
       error  : (response) => {
                  console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
@@ -131,8 +130,8 @@ Attendees.datagridUpdate = {
     });
   },
 
-  initAttendingmeetUpdate: (attendingmeetFormData, meetButton, ajaxUrl) => {
-    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup({
+  attendingmeetPopupDxFormConfig: (attendingmeetFormData, meetButton, ajaxUrl) => {
+    return {
       visible: true,
       title: meetButton.innerText,
       minwidth: "30%",
@@ -217,12 +216,12 @@ Attendees.datagridUpdate = {
         }).dxForm("instance");
         e.append(formContainer);
       }
-    }).dxPopup("instance");
+    };
 
   },
 
   initListeners: () => {
-    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.detchDataForAttendingmeetForm(e))
+    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e))
     // add listeners for Contact, counselling, etc.
   },
 }
