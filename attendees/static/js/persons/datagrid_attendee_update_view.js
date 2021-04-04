@@ -1,9 +1,9 @@
 Attendees.datagridUpdate = {
-  attendeeMainDxForm: null,  // will be assigned later
+  attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
   attendeeAttrs: null,  // will be assigned later
-  attendeeId: null,  // will be assigned later
-  attendingmeetPopupDxForm: null,  // will be assigned later
-  attendingmeetPopup: null,  // will be assigned later
+  attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
+  attendingmeetPopupDxForm: null,  // for getting formData
+  attendingmeetPopup: null,  // for show/hide popup
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -26,7 +26,7 @@ Attendees.datagridUpdate = {
           dataField: "photo",
           template: function (data, itemElement) {
             if (data.editorOptions && data.editorOptions.value){
-              $("<img>").attr({src: data.editorOptions.value, class: "photo " + Attendees.datagridUpdate.attendeeAttrs.id}).appendTo(itemElement);
+              $("<img>").attr({src: data.editorOptions.value, class: "attendee-photo"}).appendTo(itemElement);
             }
           },
       },
@@ -169,10 +169,16 @@ Attendees.datagridUpdate = {
 //              }]
 //            },
             {
+              dataField: "division_name",
+              disabled: true,
+            },
+            {
               dataField: "assembly_name",
+              disabled: true,
             },
             {
               dataField: "character_name",
+              disabled: true,
             },
             {
               dataField: "start",
@@ -197,7 +203,6 @@ Attendees.datagridUpdate = {
                 type: "success",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  console.log("attending meet popup submit button clicked!");
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
                     console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData'));  // clickEvent.component is the clicked button parent object, don't have form data
                     console.log("submitting to ajaxUrl: ", ajaxUrl);

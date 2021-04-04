@@ -47,7 +47,7 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
         #     attendee_id=querying_attendee_id,
         # )
         return AttendingMeet.objects.annotate(
-                    # attendee_id=F('attending__attendee__id'),
+                    division_name=F('meet__assembly__division__display_name'),
                     assembly_name=F('meet__assembly__display_name'),
                     character_name=F('character__display_name'),
                 ).filter(pk=querying_attendingmeet_id)

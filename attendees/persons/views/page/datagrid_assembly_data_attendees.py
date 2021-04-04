@@ -53,6 +53,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
                 context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
                 context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
                 context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
+                context.update({'attendee_urn': f"/persons/{context['current_division_slug']}/{context['current_assembly_slug']}/datagrid_attendee_update_view/"})
                 context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
                 context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
                 context.update({'attendings_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})

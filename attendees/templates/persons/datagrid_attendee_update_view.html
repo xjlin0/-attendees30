@@ -71,9 +71,6 @@
   <form id="attendingmeet-update-popup-form"
         action="/persons/api/datagrid_data_attendingmeet/"
         method="post">
-    <input type="hidden"
-           name="attendee-id"
-           value="{{ targeting_attendee_id}}">
     {% csrf_token %}
     <div class="popup-attendingmeet-update">
     </div>

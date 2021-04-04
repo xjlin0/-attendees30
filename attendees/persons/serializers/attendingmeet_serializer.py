@@ -5,7 +5,7 @@ from rest_framework import serializers
 class AttendingMeetSerializer(serializers.ModelSerializer):
     character_name = serializers.CharField()
     assembly_name = serializers.CharField()
-    # attendee_id = serializers.CharField()
+    division_name = serializers.CharField()
 
     class Meta:
         model = AttendingMeet
@@ -13,6 +13,6 @@ class AttendingMeetSerializer(serializers.ModelSerializer):
         fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
             'character_name',
             'assembly_name',
-            # 'attendee_id',
+            'division_name',
         ]
 
