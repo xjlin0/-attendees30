@@ -117,26 +117,28 @@ Attendees.datagridUpdate = {
 
   initAttendingmeetPopupDxForm: (event) => {
     const meetButton = event.target;
-
-    if (meetButton.value){
-      const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
-      $.ajax({
-        url    : ajaxUrl,
-        success: (response) => {
-                   Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(response.data[0], meetButton, ajaxUrl)).dxPopup("instance");
-                 },
-        error  : (response) => {
-                   console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
-                 },
-      });
-    }else{
-      const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action');
-      Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig({}, meetButton, ajaxUrl)).dxPopup("instance");
-    }
-
+    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(meetButton)).dxPopup("instance");
+    Attendees.datagridUpdate.attendingmeetFormDataSource(meetButton).load();
   },
 
-  attendingmeetPopupDxFormConfig: (attendingmeetFormData, meetButton, ajaxUrl) => {
+  attendingmeetFormDataSource: (meetButton) => {
+    return new DevExpress.data.CustomStore({
+      loadMode: "raw",
+      key: "id",
+      load: () => {
+        if (meetButton.value){
+          $.ajax({
+            url    : $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
+            success: (response) => Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]),
+            error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
+          });
+        }
+      }
+    });
+  },
+
+  attendingmeetPopupDxFormConfig: (meetButton) => {
+    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
     return {
       visible: true,
       title: meetButton.innerText,
@@ -151,7 +153,7 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
-          formData: attendingmeetFormData,
+          formData: {},
           readOnly: false,
           showColonAfterLabel: false,
           labelLocation: "top",
@@ -176,9 +178,18 @@ Attendees.datagridUpdate = {
               dataField: "assembly_name",
               disabled: true,
             },
+//            {
+//              dataField: "character_name",
+//              disabled: true,
+//            },
             {
-              dataField: "character_name",
-              disabled: true,
+              dataField: "character",
+              editorType: "dxDropDownBox",
+              editorOptions: {
+                valueExpr: "id",
+                placeholder: "Select a value...",
+                dataSource: null,
+              },
             },
             {
               dataField: "start",
@@ -205,7 +216,7 @@ Attendees.datagridUpdate = {
                 onClick: (clickEvent) => {
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
                     console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData'));  // clickEvent.component is the clicked button parent object, don't have form data
-                    console.log("submitting to ajaxUrl: ", ajaxUrl);
+                    console.log("pretend submitting to ajaxUrl: ", ajaxUrl);
                     Attendees.datagridUpdate.attendingmeetPopup.hide();
                   }
                 }
