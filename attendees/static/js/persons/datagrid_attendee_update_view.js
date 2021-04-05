@@ -118,23 +118,17 @@ Attendees.datagridUpdate = {
   initAttendingmeetPopupDxForm: (event) => {
     const meetButton = event.target;
     Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingmeetPopupDxFormConfig(meetButton)).dxPopup("instance");
-    Attendees.datagridUpdate.attendingmeetFormDataSource(meetButton).load();
+    Attendees.datagridUpdate.fetchAttendingmeetFormData(meetButton);
   },
 
-  attendingmeetFormDataSource: (meetButton) => {
-    return new DevExpress.data.CustomStore({
-      loadMode: "raw",
-      key: "id",
-      load: () => {
-        if (meetButton.value){
-          $.ajax({
-            url    : $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
-            success: (response) => Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]),
-            error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
-          });
-        }
-      }
-    });
+  fetchAttendingmeetFormData: (meetButton) => {
+    if (meetButton.value){
+      $.ajax({
+        url    : $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
+        success: (response) => Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]),
+        error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
+      });
+    }
   },
 
   attendingmeetPopupDxFormConfig: (meetButton) => {
