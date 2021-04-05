@@ -3,6 +3,7 @@ Attendees.datagridUpdate = {
   attendeeAttrs: null,  // will be assigned later
   attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendingmeetPopupDxForm: null,  // for getting formData
+  attendingmeetPopupDxFormData: {},  // for storing formData
   attendingmeetPopup: null,  // for show/hide popup
 
   init: () => {
@@ -125,7 +126,10 @@ Attendees.datagridUpdate = {
     if (meetButton.value){
       $.ajax({
         url    : $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
-        success: (response) => Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]),
+        success: (response) => {
+                   Attendees.datagridUpdate.attendingmeetPopupDxFormData = response.data[0];
+                   Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]);
+                 },
         error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
       });
     }
@@ -165,8 +169,33 @@ Attendees.datagridUpdate = {
 //              }]
 //            },
             {
-              dataField: "division_name",
-              disabled: true,
+              dataField: "division",
+              editorType: "dxDropDownBox",
+//              disabled: true,
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "display_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                    loadMode: "raw",
+                    key: "id",
+                    load: () => {
+                      console.log("hi 183 start loading ...");
+//                      const divisions = $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
+//                      console.log("hi 185 here is divisions: ", divisions);
+//                      console.log("hi 186 here is divisions.data: ", divisions.data);
+//                      return divisions.data;
+                      var d = $.Deferred();
+                      $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                          console.log("hi 190 here is response: ", response);
+                          d.resolve(response.data)
+                          console.log("hi 192 here is response.data: ", response.data);
+                      });
+                      return d.promise();
+                    },
+                  }),
+
+              },
             },
             {
               dataField: "assembly_name",
@@ -183,6 +212,21 @@ Attendees.datagridUpdate = {
                 valueExpr: "id",
                 placeholder: "Select a value...",
                 dataSource: null,
+
+
+//                {
+//                  store: new DevExpress.data.CustomStore({
+//                      key: "id",
+//                      load: () => {
+//                        return $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
+//                      },
+//                  }),
+//                }
+
+
+
+
+
               },
             },
             {
