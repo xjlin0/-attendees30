@@ -170,31 +170,25 @@ Attendees.datagridUpdate = {
 //            },
             {
               dataField: "division",
-              editorType: "dxDropDownBox",
+              editorType: "dxSelectBox",
 //              disabled: true,
               editorOptions: {
                 valueExpr: "id",
                 displayExpr: "display_name",
                 placeholder: "Select a value...",
                 dataSource: new DevExpress.data.DataSource({
-                    loadMode: "raw",
-                    key: "id",
-                    load: () => {
-                      console.log("hi 183 start loading ...");
-//                      const divisions = $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
-//                      console.log("hi 185 here is divisions: ", divisions);
-//                      console.log("hi 186 here is divisions.data: ", divisions.data);
-//                      return divisions.data;
-                      var d = $.Deferred();
-                      $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
-                          console.log("hi 190 here is response: ", response);
-                          d.resolve(response.data)
-                          console.log("hi 192 here is response.data: ", response.data);
-                      });
-                      return d.promise();
-                    },
-                  }),
-
+                    store: new DevExpress.data.CustomStore({
+                        key: "id",
+                        loadMode: "raw",
+                        load: () => {
+                          const d = $.Deferred();
+                          $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                              d.resolve(response.data)
+                          });
+                          return d.promise();
+                        }
+                    })
+                }),
               },
             },
             {
