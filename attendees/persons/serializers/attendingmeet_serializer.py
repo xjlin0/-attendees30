@@ -4,10 +4,10 @@ from rest_framework import serializers
 
 class AttendingMeetSerializer(serializers.ModelSerializer):
     character_name = serializers.CharField()
-    assembly_name = serializers.CharField()
-    division_name = serializers.CharField()
+    # assembly_name = serializers.CharField()
+    # division_name = serializers.CharField()
     assembly = serializers.IntegerField()
-    division = serializers.IntegerField()
+    # division = serializers.IntegerField()
 
     class Meta:
         model = AttendingMeet

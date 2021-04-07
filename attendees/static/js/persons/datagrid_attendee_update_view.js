@@ -154,6 +154,7 @@ Attendees.datagridUpdate = {
           formData: {},
           readOnly: false,
           showColonAfterLabel: false,
+          requiredMark: "*",
           labelLocation: "top",
           minColWidth: "20%",
           showValidationSummary: true,
@@ -168,13 +169,41 @@ Attendees.datagridUpdate = {
 //                message: "Customer Name is required"
 //              }]
 //            },
+//            {
+//              dataField: "division",
+//              editorType: "dxSelectBox",
+//              disabled: true,
+//              editorOptions: {
+//                valueExpr: "id",
+//                displayExpr: "display_name",
+//                placeholder: "Select a value...",
+//                dataSource: new DevExpress.data.DataSource({
+//                    store: new DevExpress.data.CustomStore({
+//                        key: "id",
+//                        loadMode: "raw",
+//                        load: () => {
+//                          const d = $.Deferred();
+//                          $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+//                              d.resolve(response.data)
+//                          });
+//                          return d.promise();
+//                        }
+//                    })
+//                }),
+//              },
+//            },
             {
-              dataField: "division",
+              dataField: "assembly",
               editorType: "dxSelectBox",
 //              disabled: true,
+              isRequired: true,
+              label: {
+                text: 'Joined Group / Assembly',
+                showColon: true,
+              },
               editorOptions: {
                 valueExpr: "id",
-                displayExpr: "display_name",
+                displayExpr: "division_assembly_name",
                 placeholder: "Select a value...",
                 dataSource: new DevExpress.data.DataSource({
                     store: new DevExpress.data.CustomStore({
@@ -182,7 +211,7 @@ Attendees.datagridUpdate = {
                         loadMode: "raw",
                         load: () => {
                           const d = $.Deferred();
-                          $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                          $.get($('div.datagrid-attendee-update').data('assemblies-endpoint')).done((response) => {
                               d.resolve(response.data)
                           });
                           return d.promise();
@@ -190,10 +219,6 @@ Attendees.datagridUpdate = {
                     })
                 }),
               },
-            },
-            {
-              dataField: "assembly_name",
-              disabled: true,
             },
 //            {
 //              dataField: "character_name",
