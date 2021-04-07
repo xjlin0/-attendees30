@@ -139,8 +139,8 @@ Attendees.datagridUpdate = {
     const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
     return {
       visible: true,
-      title: meetButton.innerText,
-      minwidth: "30%",
+      title: 'Activity: ' + meetButton.innerText,
+      minwidth: "20%",
       minheight: "30%",
       position: {
         my: 'center',
@@ -198,7 +198,7 @@ Attendees.datagridUpdate = {
 //              disabled: true,
               isRequired: true,
               label: {
-                text: 'Joined Group / Assembly',
+                text: 'Belonging Group (Assembly)',
                 showColon: true,
               },
               editorOptions: {
@@ -224,6 +224,40 @@ Attendees.datagridUpdate = {
 //              dataField: "character_name",
 //              disabled: true,
 //            },
+
+
+            {
+              dataField: "character",
+              editorType: "dxSelectBox",
+//              disabled: true,
+              label: {
+                text: 'Participating character',
+                showColon: true,
+              },
+              editorOptions: {
+                showClearButton: true,
+                valueExpr: "id",
+                displayExpr: "display_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                    store: new DevExpress.data.CustomStore({
+                        key: "id",
+                        loadMode: "raw",
+                        load: () => {
+                          const d = $.Deferred();
+                          const data = {'assemblies[]': Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly};
+                          $.get($('div.datagrid-attendee-update').data('characters-endpoint'), data).done((response) => {
+                              d.resolve(response.data)
+                          });
+                          return d.promise();
+                        }
+                    })
+                }),
+              },
+            },
+
+
+
             {
               dataField: "character",
               editorType: "dxDropDownBox",

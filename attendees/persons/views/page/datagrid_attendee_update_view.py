@@ -28,7 +28,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
         current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
         context.update({
-            'divisions_endpoint': '/whereabouts/api/user_divisions/',
+            'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'assemblies_endpoint': '/occasions/api/user_assemblies/',
             'targeting_attendee_id': current_attendee_id,
             'current_organization_slug': current_organization_slug,
@@ -38,7 +38,8 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        if self.request.user.belongs_to_divisions_of([context['current_division_slug']]):
+        # Todo: Double check if the editor's admin or editor and editing target are scheduling-allowed, because belongs_to_divisions_of() will wrongly let admin pass unconditionally
+        if self.request.user.belongs_to_divisions_of([context['current_division_slug']]):  # should NOT use belongs_to_divisions_of() since it allows cross organization access !!
             if self.request.is_ajax():
                 pass
 
