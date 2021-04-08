@@ -4,6 +4,7 @@ Attendees.datagridUpdate = {
   attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendingmeetPopupDxForm: null,  // for getting formData
   attendingmeetPopupDxFormData: {},  // for storing formData
+  attendingmeetPopupDxFormCharacterSelect: null,
   attendingmeetPopup: null,  // for show/hide popup
 
   init: () => {
@@ -215,12 +216,20 @@ Attendees.datagridUpdate = {
                     load: () => {
                       const d = $.Deferred();
                       $.get($('div.datagrid-attendee-update').data('assemblies-endpoint')).done((response) => {
-                          d.resolve(response.data)
+                        d.resolve(response.data);
                       });
                       return d.promise();
                     }
                   })
                 }),
+                onValueChanged: (e) => {
+                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
+                  const meetSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("meet");
+                  meetSelectBox.getDataSource().reload();
+                  meetSelectBox.reset();
+                  characterSelectBox.getDataSource().reload();
+                  characterSelectBox.reset();
+                },
               },
             },
             {
@@ -247,7 +256,7 @@ Attendees.datagridUpdate = {
                         const d = $.Deferred();
                         const data = {'assemblies[]': selectedAssemblyId};
                         $.get($('div.datagrid-attendee-update').data('meets-endpoint'), data).done((response) => {
-                            d.resolve(response.data)
+                          d.resolve(response.data);
                         });
                         return d.promise();
                       }
@@ -279,7 +288,7 @@ Attendees.datagridUpdate = {
                         const d = $.Deferred();
                         const data = {'assemblies[]': selectedAssemblyId};
                         $.get($('div.datagrid-attendee-update').data('characters-endpoint'), data).done((response) => {
-                            d.resolve(response.data)
+                          d.resolve(response.data);
                         });
                         return d.promise();
                       }
