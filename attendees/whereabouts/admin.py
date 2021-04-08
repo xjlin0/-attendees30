@@ -35,7 +35,7 @@ class DivisionAdmin(admin.ModelAdmin):
 class PropertyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug', 'campus', 'modified')
+    list_display = ('id', 'display_name', 'slug', 'campus', 'modified')
 
 
 class CampusAdmin(admin.ModelAdmin):
@@ -47,7 +47,7 @@ class CampusAdmin(admin.ModelAdmin):
 class SuiteAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug',  'site', 'modified')
+    list_display = ('id', 'display_name', 'slug',  'site', 'modified')
 
 
 class RoomAdmin(admin.ModelAdmin):

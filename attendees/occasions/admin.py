@@ -50,6 +50,10 @@ class AttendanceAdmin(admin.ModelAdmin):
     get_attendee.admin_order_field = 'attendee'  #Allows column order sorting
     get_attendee.short_description = 'attendee'  #Rename
 
+    class Media:
+        css = {"all": ("css/admin.css",)}
+        js = ['js/admin/list_filter_collapse.js']
+
 
 class AttendanceInline(admin.StackedInline):
     model = Attendance
@@ -68,15 +72,20 @@ class AttendanceInline(admin.StackedInline):
 
 class CharacterAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
-    list_filter = ('assembly',)
+    list_filter = ('assembly', 'type')
     readonly_fields = ['id', 'created', 'modified']
     list_display_links = ('display_name',)
     list_display = ('id', 'assembly', 'display_name', 'slug', 'display_order', 'type')
+
+    class Media:
+        css = {"all": ("css/admin.css",)}
+        js = ['js/admin/list_filter_collapse.js']
 
 
 class TeamAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
+    list_display_links = ('display_name',)
     list_display = ('id', 'display_name', 'slug', 'meet', 'display_order', 'modified')
 
 
@@ -95,8 +104,14 @@ class MeetAdmin(admin.ModelAdmin):
                            tuple(['display_name', 'infos', 'shown_audience', 'audience_editable']),
                            tuple(['site_type', 'assembly', 'site_id']),
                            tuple(['id', 'created', 'modified']),
-                           ), }),
+                           ),
+                'classes': ['hijack', ],
+                }),
     )
+
+    class Media:
+        css = {"all": ("css/admin.css",)}
+        js = ['js/admin/list_filter_collapse.js']
 
 
 class GatheringAdmin(admin.ModelAdmin):
@@ -116,6 +131,10 @@ class GatheringAdmin(admin.ModelAdmin):
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )
+
+    class Media:
+        css = {"all": ("css/admin.css",)}
+        js = ['js/admin/list_filter_collapse.js']
 
 
 admin.site.register(AssemblyContact, AssemblyContactAdmin)
