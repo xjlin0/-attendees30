@@ -14,3 +14,4 @@ from .api.organization_meet_gatherings import api_organization_meet_gatherings_v
 from .api.user_assembly_characters import api_user_assembly_characters_viewset
 from .api.coworker_organization_attendances import api_coworker_organization_attendances_viewset
 from .api.user_assemblies import api_user_assembly_viewset
+from .api.user_assembly_meets import api_user_assembly_meets_viewset

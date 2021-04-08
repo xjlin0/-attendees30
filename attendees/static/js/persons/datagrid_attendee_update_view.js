@@ -48,6 +48,9 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "joined_meets",
+        label: {
+          text: 'Participation (joined meets)',
+        },
         template: (data, itemElement) => {
           $("<button>").attr({title: "+ Add a new meet", type: 'button', class: "attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
           if (data.editorOptions && data.editorOptions.value){
@@ -139,7 +142,7 @@ Attendees.datagridUpdate = {
     const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
     return {
       visible: true,
-      title: 'Activity: ' + meetButton.innerText,
+      title: meetButton.value ? 'Viewing participation' : 'Creating participation',
       minwidth: "20%",
       minheight: "30%",
       position: {
@@ -206,32 +209,27 @@ Attendees.datagridUpdate = {
                 displayExpr: "division_assembly_name",
                 placeholder: "Select a value...",
                 dataSource: new DevExpress.data.DataSource({
-                    store: new DevExpress.data.CustomStore({
-                        key: "id",
-                        loadMode: "raw",
-                        load: () => {
-                          const d = $.Deferred();
-                          $.get($('div.datagrid-attendee-update').data('assemblies-endpoint')).done((response) => {
-                              d.resolve(response.data)
-                          });
-                          return d.promise();
-                        }
-                    })
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      $.get($('div.datagrid-attendee-update').data('assemblies-endpoint')).done((response) => {
+                          d.resolve(response.data)
+                      });
+                      return d.promise();
+                    }
+                  })
                 }),
               },
             },
-//            {
-//              dataField: "character_name",
-//              disabled: true,
-//            },
-
-
             {
-              dataField: "character",
+              dataField: "meet",
               editorType: "dxSelectBox",
 //              disabled: true,
+              isRequired: true,
               label: {
-                text: 'Participating character',
+                text: 'Participating activity',
                 showColon: true,
               },
               editorOptions: {
@@ -240,46 +238,54 @@ Attendees.datagridUpdate = {
                 displayExpr: "display_name",
                 placeholder: "Select a value...",
                 dataSource: new DevExpress.data.DataSource({
-                    store: new DevExpress.data.CustomStore({
-                        key: "id",
-                        loadMode: "raw",
-                        load: () => {
-                          const d = $.Deferred();
-                          const data = {'assemblies[]': Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly};
-                          $.get($('div.datagrid-attendee-update').data('characters-endpoint'), data).done((response) => {
-                              d.resolve(response.data)
-                          });
-                          return d.promise();
-                        }
-                    })
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
+                      if (selectedAssemblyId){
+                        const d = $.Deferred();
+                        const data = {'assemblies[]': selectedAssemblyId};
+                        $.get($('div.datagrid-attendee-update').data('meets-endpoint'), data).done((response) => {
+                            d.resolve(response.data)
+                        });
+                        return d.promise();
+                      }
+                    }
+                  })
                 }),
               },
             },
-
-
-
             {
               dataField: "character",
-              editorType: "dxDropDownBox",
+              editorType: "dxSelectBox",
+//              disabled: true,
+              label: {
+                text: '(Optional) Participating character',
+                showColon: true,
+              },
               editorOptions: {
+                showClearButton: true,
                 valueExpr: "id",
+                displayExpr: "display_name",
                 placeholder: "Select a value...",
-                dataSource: null,
-
-
-//                {
-//                  store: new DevExpress.data.CustomStore({
-//                      key: "id",
-//                      load: () => {
-//                        return $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
-//                      },
-//                  }),
-//                }
-
-
-
-
-
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
+                      if (selectedAssemblyId){
+                        const d = $.Deferred();
+                        const data = {'assemblies[]': selectedAssemblyId};
+                        $.get($('div.datagrid-attendee-update').data('characters-endpoint'), data).done((response) => {
+                            d.resolve(response.data)
+                        });
+                        return d.promise();
+                      }
+                    }
+                  })
+                }),
               },
             },
             {
