@@ -263,6 +263,11 @@ Attendees.datagridUpdate = {
                     }
                   })
                 }),
+                onValueChanged: (e) => {
+                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
+                  characterSelectBox.getDataSource().reload();
+                  characterSelectBox.reset();
+                },
               },
             },
             {
