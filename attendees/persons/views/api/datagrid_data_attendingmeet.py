@@ -9,14 +9,14 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from attendees.persons.models import AttendingMeet
-from attendees.persons.serializers import AttendingMeetSerializer
+from attendees.persons.serializers import AttendingMeetEtcSerializer
 
 
 class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
     """
-    API endpoint that allows single attendee to be viewed or edited.
+    API endpoint that allows AttendingMeet & Meet to be viewed or edited.
     """
-    serializer_class = AttendingMeetSerializer
+    serializer_class = AttendingMeetEtcSerializer
     # queryset = AttendingMeet.objects.all()
 
     def retrieve(self, request, *args, **kwargs):

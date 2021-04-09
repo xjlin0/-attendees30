@@ -6,6 +6,11 @@ Attendees.datagridUpdate = {
   attendingmeetPopupDxFormData: {},  // for storing formData
   attendingmeetPopupDxFormCharacterSelect: null,
   attendingmeetPopup: null,  // for show/hide popup
+  attendingmeetDefaults: {
+    category: 'primary',
+    start: new Date(),
+    finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
+  },
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -18,11 +23,11 @@ Attendees.datagridUpdate = {
     items: [
       {
           dataField: "first_name",
-          isRequired: true
+          isRequired: true,
       },
       {
           dataField: "full_name",
-          disabled: true
+          disabled: true,
       },
       {
           dataField: "photo",
@@ -155,7 +160,7 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
-          formData: {},
+          formData: Attendees.datagridUpdate.attendingmeetDefaults,
           readOnly: false,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -301,6 +306,11 @@ Attendees.datagridUpdate = {
                   })
                 }),
               },
+            },
+            {
+                dataField: "category",
+                helpText: 'primary, secondary, etc (primary will be displayed first)',
+                isRequired: true,
             },
             {
               dataField: "start",

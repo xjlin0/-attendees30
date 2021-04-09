@@ -2,5 +2,5 @@
 from .attending import AttendingSerializer
 from .attendee_minimal_serializer import AttendeeMinimalSerializer
 from .attending_minimal_serializer import AttendingMinimalSerializer
-from .attendingmeet_serializer import AttendingMeetSerializer
+from .attendingmeet_etc_serializer import AttendingMeetEtcSerializer
 from .attendee import AttendeeSerializer
