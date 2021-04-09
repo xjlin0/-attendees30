@@ -13,7 +13,7 @@ from attendees.persons.serializers import AttendingSerializer
 @method_decorator([login_required], name='dispatch')
 class ApiAssemblyMeetAttendingsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Attending to be viewed or edited.
+    API endpoint that allows Attending to be viewed or edited. Filtered by assembly, meet & characters
     """
     serializer_class = AttendingSerializer
 
