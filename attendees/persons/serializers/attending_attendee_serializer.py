@@ -4,7 +4,7 @@ from attendees.persons.serializers import AttendeeMinimalSerializer
 from rest_framework import serializers
 
 
-class AttendingMinimalSerializer(serializers.ModelSerializer):
+class AttendingAttendeeSerializer(serializers.ModelSerializer):
     # meets_info = serializers.SerializerMethodField()
     attendee = AttendeeMinimalSerializer(many=False, read_only=True)
 
