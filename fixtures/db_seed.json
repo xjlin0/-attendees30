@@ -646,7 +646,9 @@
       "display_name": "Chinese for Christ Church of Hayward",
       "infos": {
         "hostname": "192.168.99.100",
-        "counselor": "d7c8Fd_cfcch_data_counselor",
+        "counselor": [
+          "d7c8Fd_cfcch_data_counselor"
+        ],
         "data_admins": [
           "d7c8Fd_cfcch_data_organizer"
         ]

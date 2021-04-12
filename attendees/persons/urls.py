@@ -13,6 +13,7 @@ from attendees.persons.views import (
     datagrid_assembly_data_attendings_list_view,
     datagrid_attendee_update_view,
     info_of_attendee_create_view,
+    api_attendee_attendings_viewset,
     attendee_update_view,
     attendees_update_view,
     attendee_detail_view,
@@ -33,11 +34,11 @@ router.register(
     api_assembly_meet_attendings_viewset,
     basename='attending',
 )
-# router.register(
-#     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/test_attendings',
-#     api_data_attendings_viewset,
-#     basename='attending',
-# )
+router.register(
+    'api/attendee_attendings',
+    api_attendee_attendings_viewset,
+    basename='attending',
+)
 router.register(
     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/data_attendings',
     api_data_attendings_viewset,

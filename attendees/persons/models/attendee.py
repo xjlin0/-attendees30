@@ -82,6 +82,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
                     to_attendee__finish__gte=datetime.now(timezone.utc),
                 )
 
+    def under_same_org_with(self, other_attendee_id):
+        if other_attendee_id:
+            return Attendee.objects.filter(pk=other_attendee_id, division__organization=self.division.organization).exists()
+        return False
+
     @cached_property
     def parents_notifiers_names(self):
         """

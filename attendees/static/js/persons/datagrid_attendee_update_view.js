@@ -178,29 +178,30 @@ Attendees.datagridUpdate = {
 //                message: "Customer Name is required"
 //              }]
 //            },
-//            {
-//              dataField: "division",
-//              editorType: "dxSelectBox",
+            {
+              dataField: "attending",
+              editorType: "dxSelectBox",
 //              disabled: true,
-//              editorOptions: {
-//                valueExpr: "id",
-//                displayExpr: "display_name",
-//                placeholder: "Select a value...",
-//                dataSource: new DevExpress.data.DataSource({
-//                    store: new DevExpress.data.CustomStore({
-//                        key: "id",
-//                        loadMode: "raw",
-//                        load: () => {
-//                          const d = $.Deferred();
-//                          $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
-//                              d.resolve(response.data)
-//                          });
-//                          return d.promise();
-//                        }
-//                    })
-//                }),
-//              },
-//            },
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "attending_label",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                    store: new DevExpress.data.CustomStore({
+                        key: "id",
+                        loadMode: "raw",
+                        load: () => {
+                          const d = $.Deferred();
+                          const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId};
+                          $.get($('div.datagrid-attendee-update').data('attendings-endpoint'), attendeeData).done((response) => {
+                              d.resolve(response.data)
+                          });
+                          return d.promise();
+                        }
+                    })
+                }),
+              },
+            },
             {
               dataField: "assembly",
               editorType: "dxSelectBox",

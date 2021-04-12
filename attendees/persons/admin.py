@@ -112,6 +112,10 @@ class AttendingAdmin(admin.ModelAdmin):
     inlines = (AttendingMeetInline,) # add AttendanceInline when creating new Attending will fails on meet_names
     list_display = ('id', 'registration', 'attendee', 'meet_names')
 
+    class Media:
+        css = {"all": ("css/admin.css",)}
+        js = ['js/admin/list_filter_collapse.js']
+
 
 class NoteAdmin(SummernoteModelAdmin):
     formfield_overrides = {

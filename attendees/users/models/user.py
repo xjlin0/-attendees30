@@ -27,7 +27,8 @@ class User(AbstractUser):
 
     def privileged(self):
         """
-        check if user allowed to see other's data without relationships, currently are data_admins or counselor group
+        check if user's in correct groups to see other's data without relationships, currently are data_admins or counselor group
+        Does NOT check if current user and targeting user are in the same organization!!
         :return: boolean
         """
         if self.organization:
@@ -35,13 +36,24 @@ class User(AbstractUser):
             return self.belongs_to_groups_of(privileged_groups)
         return False
 
+    def privileged_to_edit(self, other_attendee_id):
+        """
+        check if user's in correct groups to see other attendee data (under same organization) without relationships, currently are data_admins or counselor group
+        :return: boolean
+        """
+        if other_attendee_id and self.organization:
+
+            privileged_groups = self.organization.infos.get('data_admins', []) + self.organization.infos.get('counselor', [])
+            return self.belongs_to_groups_of(privileged_groups) and self.attendee.under_same_org_with(other_attendee_id)
+        return False
+
     def is_data_admin(self):
         organization_data_admin_group = self.organization.infos.get('data_admins', []) if self.organization else None
         return self.belongs_to_groups_of(organization_data_admin_group)
 
     def is_counselor(self):
-        organization_counselor_group = self.organization.infos['counselor'] if self.organization else None
-        return self.belongs_to_groups_of([organization_counselor_group])
+        organization_counselor_groups = self.organization.infos.get('counselor', []) if self.organization else None
+        return self.belongs_to_groups_of(organization_counselor_groups)
 
     def attendee_uuid_str(self):
         return str(self.attendee.id) if self.attendee else ''
