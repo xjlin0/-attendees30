@@ -19,21 +19,21 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
     serializer_class = AttendingMeetEtcSerializer
     # queryset = AttendingMeet.objects.annotate(assembly=F('meet__assembly'))
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     attendingmeet_id = self.request.query_params.get('attendingmeet_id')
-    #     print("entering retrieve 24 here is query_params:")
-    #     print(self.request.query_params)
-    #     attendee = AttendingMeet.objects.annotate(
-    #         joined_meets=JSONBAgg(
-    #             Func(
-    #                 Value('slug'), 'attendings__meets__slug',
-    #                 Value('display_name'), 'attendings__meets__display_name',
-    #                 function='jsonb_build_object'
-    #             ),
-    #         )
-    #                ).filter(pk=attendingmeet_id).first()
-    #     serializer = AttendingMeetEtcSerializer(attendee)
-    #     return Response(serializer.data)
+    def retrieve(self, request, *args, **kwargs):
+        attendingmeet_id = self.request.query_params.get('attendingmeet_id')
+        print("entering retrieve 24 here is query_params:")
+        print(self.request.query_params)
+        attendee = AttendingMeet.objects.annotate(
+            joined_meets=JSONBAgg(
+                Func(
+                    Value('slug'), 'attendings__meets__slug',
+                    Value('display_name'), 'attendings__meets__display_name',
+                    function='jsonb_build_object'
+                ),
+            )
+                   ).filter(pk=attendingmeet_id).first()
+        serializer = AttendingMeetEtcSerializer(attendee)
+        return Response(serializer.data)
 
 
 
