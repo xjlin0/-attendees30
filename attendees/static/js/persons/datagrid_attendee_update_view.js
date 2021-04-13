@@ -110,7 +110,7 @@ Attendees.datagridUpdate = {
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
-    // $.ajaxSetup({headers: {"X-attendee-Header": Attendees.datagridUpdate.attendeeId}})
+    $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
       success: (response) => {
@@ -338,9 +338,27 @@ Attendees.datagridUpdate = {
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
-                    console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData'));  // clickEvent.component is the clicked button parent object, don't have form data
+                    const userData = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData');
+                    userData._method = userData.id ? 'PUT' : 'POST';
+                    console.log('user confirmed. Pretending Submitting popup attendingMeetForm by AJAX of formData: ', userData);  // clickEvent.component is the clicked button parent object, don't have form data
                     console.log("pretend submitting to ajaxUrl: ", ajaxUrl);
-                    Attendees.datagridUpdate.attendingmeetPopup.hide();
+
+                    $.ajax({
+                      url    : ajaxUrl,
+                      data   : userData,
+                      method : 'POST', // userData.id ? 'PUT' : 'POST',
+                      success: (response) => {
+                                 console.log("success! here is response: ", response);
+                                 Attendees.datagridUpdate.attendingmeetPopup.hide();
+                                 DevExpress.ui.notify("saving attendingmeet success", "success", 2000);
+                               },
+                      error  : (response) => {
+                                 console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response);
+                                 DevExpress.ui.notify("saving attendingmeet error", "error", 4000);
+                      },
+                    });
+
+
                   }
                 }
               },

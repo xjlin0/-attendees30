@@ -23,7 +23,7 @@ from attendees.persons.views import (
 
 app_name = "persons"
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter()  # (trailing_slash=False)
 router.register(
     'api/datagrid_data_attendees',
     api_datagrid_data_attendees_viewset,
