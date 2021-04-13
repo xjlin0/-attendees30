@@ -3,7 +3,6 @@ from rest_framework import serializers
 
 
 class AttendingMeetEtcSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
     assembly = serializers.IntegerField()
 
     class Meta:
