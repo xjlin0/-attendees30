@@ -21,8 +21,6 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
 
     def retrieve(self, request, *args, **kwargs):
         attendingmeet_id = self.request.query_params.get('attendingmeet_id')
-        print("entering retrieve 24 here is query_params:")
-        print(self.request.query_params)
         attendee = AttendingMeet.objects.annotate(
             joined_meets=JSONBAgg(
                 Func(
@@ -48,10 +46,6 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
         """
 
         querying_attendingmeet_id = self.kwargs.get('attendingmeet_id')
-        print("entering get_queryset 51 here is self.kwargs:")
-        print(self.kwargs)
-        print("in get_queryset 53 here is self.request.POST:")
-        print(self.request.POST)
         return AttendingMeet.objects.annotate(
                     assembly=F('meet__assembly'),
                 ).filter(pk=querying_attendingmeet_id)

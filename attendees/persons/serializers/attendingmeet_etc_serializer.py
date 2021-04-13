@@ -16,7 +16,6 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
         """
 
         attendingmeet_id = self._kwargs['data'].get('id')
-        assembly_id = validated_data.pop('assembly', None)
 
         obj, created = AttendingMeet.objects.update_or_create(
             id=attendingmeet_id,
@@ -29,10 +28,6 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
         Update and return an existing `AttendingMeet` instance, given the validated data.
 
         """
-        print("hi 38 here is AttendingMeetEtcSerializer.update, here is validated_data: ")
-        print(validated_data)
-        print("hi 40 here is AttendingMeetEtcSerializer.update, here is instance: ")
-        print(instance)
 
         # instance.title = validated_data.get('title', instance.title)
         # instance.code = validated_data.get('code', instance.code)
