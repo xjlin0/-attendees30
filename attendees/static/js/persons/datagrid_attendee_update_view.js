@@ -110,7 +110,7 @@ Attendees.datagridUpdate = {
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
-
+    // $.ajaxSetup({headers: {"X-attendee-Header": Attendees.datagridUpdate.attendeeId}})
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
       success: (response) => {
@@ -161,6 +161,7 @@ Attendees.datagridUpdate = {
         const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
           formData: Attendees.datagridUpdate.attendingmeetDefaults,
+          scrollingEnabled: true,
           readOnly: false,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -192,7 +193,7 @@ Attendees.datagridUpdate = {
                         loadMode: "raw",
                         load: () => {
                           const d = $.Deferred();
-                          const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId};
+                          const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
                           $.get($('div.datagrid-attendee-update').data('attendings-endpoint'), attendeeData).done((response) => {
                               d.resolve(response.data)
                           });

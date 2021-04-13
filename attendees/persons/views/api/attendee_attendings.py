@@ -17,7 +17,9 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     def get_queryset(self):
         attendee_id = self.request.query_params.get('attendee-id', None)
         current_user_organization = self.request.user.organization
-        if attendee_id and current_user_organization and self.request.user.privileged():  # Todo: scheduler should be able to do it too
+        is_self = current_user_organization and self.request.user.attendee and self.request.user.attendee.id == attendee_id
+        is_privileged = current_user_organization and self.request.user.privileged()
+        if attendee_id and (is_self or is_privileged):  # Todo: scheduler should be able to do it too
             return Attending.objects.filter(
                 attendee=attendee_id,
                 attendee__division__organization=current_user_organization
