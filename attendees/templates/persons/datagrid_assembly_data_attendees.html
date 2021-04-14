@@ -1,19 +1,10 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% block title %}
-  leader list
+  All attendees
 {% endblock title %}
 
 {% block extra_css %}
-  <link rel="preload"
-        as="style"
-        href="{% static '/admin/css/vendor/select2/select2.min.css' %}"
-        onload="this.rel='stylesheet'">
-
-  <link rel="preload"
-        as="style"
-        href="{% static 'select2-bootstrap4-theme/select2-bootstrap4.min.css' %}"
-        onload="this.rel='stylesheet'">
 
   <link rel="preload"
         as="style"
@@ -31,13 +22,6 @@
           type="text/javascript"
           src="{% static 'devextreme/dx.all.js' %}"
           integrity="sha384-cnNGdFpQw8wkyU1GB8McOr3QflVl8UeaRXUucUCnBL3FR61457ll67FTDYh/yQ5O sha512-7rH3hw5MKHmtN515LKVdNefqss0exGarCbF8fffYfioGwUZQ/yaTlHn+XNTAJ3fkIPsbzY+Wi9CKP1f/PVImhw=="
-          crossorigin="anonymous">
-  </script>
-
-  <script defer
-          type="text/javascript"
-          src="{% static '/admin/js/vendor/select2/select2.full.min.js' %}"
-          integrity="sha256-/IUDRcglIrROpUfaxqKxg4kthVduVKB0mvd7PwtlmAk="
           crossorigin="anonymous">
   </script>
 
@@ -65,7 +49,7 @@
       </a>
     </div>
 
-    </div>
+  </div>
 
   <form class="d-flex flex-wrap attendees-filter"
         data-url="{{request.get_full_path}}">
@@ -90,6 +74,7 @@
       data-characters-endpoint="{{characters_endpoint}}"
       data-attendings-endpoint="{{attendings_endpoint}}"
       data-attendees-endpoint="{{attendees_endpoint}}"
+      data-attendee-urn="{{attendee_urn}}"
       data-attendances-endpoint="{{attendances_endpoint}}">
   </div>
 {% endblock content %}

@@ -10,6 +10,7 @@ class AttendingMeet(TimeStampedModel, SoftDeletableModel, Utility):
     meet = models.ForeignKey('occasions.Meet', on_delete=models.SET(0), null=False, blank=False)
     start = models.DateTimeField(null=False, blank=False, db_index=True, default=Utility.now_with_timezone)
     finish = models.DateTimeField(null=False, blank=False, db_index=True, help_text="Required for user to filter by time")
+    #  Todo: team = models.ForeignKey('Team', default=None, null=True, blank=True, on_delete=models.SET_NULL, help_text="empty for main meet")
     character = models.ForeignKey('occasions.Character', null=False, blank=False, on_delete=models.SET(0))
     category = models.CharField(max_length=20, default='primary', blank=False, null=False, help_text='primary, secondary, etc (primary will be displayed first)')
 

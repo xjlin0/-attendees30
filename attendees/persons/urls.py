@@ -5,11 +5,17 @@ from attendees.persons.views import (
     api_assembly_meet_attendings_viewset,
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
+    api_datagrid_data_attendee_viewset,
+    api_datagrid_data_attendingmeet_viewset,
     api_assembly_meet_attendees_viewset,
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
+    datagrid_attendee_update_view,
     info_of_attendee_create_view,
+    api_attendee_attendings_viewset,
+    attendee_update_view,
+    attendees_update_view,
     attendee_detail_view,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
@@ -17,7 +23,7 @@ from attendees.persons.views import (
 
 app_name = "persons"
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter()  # (trailing_slash=False)
 router.register(
     'api/datagrid_data_attendees',
     api_datagrid_data_attendees_viewset,
@@ -28,11 +34,11 @@ router.register(
     api_assembly_meet_attendings_viewset,
     basename='attending',
 )
-# router.register(
-#     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/test_attendings',
-#     api_data_attendings_viewset,
-#     basename='attending',
-# )
+router.register(
+    'api/attendee_attendings',
+    api_attendee_attendings_viewset,
+    basename='attending',
+)
 router.register(
     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/data_attendings',
     api_data_attendings_viewset,
@@ -53,6 +59,17 @@ router.register(
     api_family_organization_attendings_viewset,
     basename='attending',
 )
+router.register(
+    'api/datagrid_data_attendee/(?P<attendee_id>.+)',
+    api_datagrid_data_attendee_viewset,
+    basename='attendee',
+)
+router.register(
+    'api/datagrid_data_attendingmeet/(?P<attendingmeet_id>.+)',
+    api_datagrid_data_attendingmeet_viewset,
+    basename='attendingmeet',
+)
+
 
 urlpatterns = [
     path('',
@@ -78,26 +95,49 @@ urlpatterns = [
     ),
 
     path(
-        "info_of_attendee/<str:attendee_id>",
+        "attendee_detail_view/<str:attendee_id>",
         view=attendee_detail_view,
-        name="info_of_attendee",
+        name="attendee_detail_view",
     ),
 
     path(
-        "info_of_attendee/",
+        "attendee_detail_view/",
         view=attendee_detail_view,
-        name="info_of_attendee",
+        name="attendee_detail_view",
     ),
 
-    # path(
-    #     'datagrid_user_organization_attendances/',
-    #     kwargs={'attendee_id': None},
-    #     view=datagrid_user_organization_attendances_list_view,
-    #     name='datagrid_user_organization_attendances',
-    # ),
-    # path(
-    #     'datagrid_user_organization_attendances/<str:attendee_id>',
-    #     view=datagrid_user_organization_attendances_list_view,
-    #     name='datagrid_user_organization_attendances',
-    # ),
+    path(
+        "attendee_update_view/<str:attendee_id>",
+        view=attendee_update_view,
+        name="attendee_update_view",
+    ),
+
+    path(
+        "attendee_update_view/",
+        view=attendee_update_view,
+        name="attendee_update_view",
+    ),
+
+    path(
+        "attendees_update_view/<str:attendee_id>",
+        view=attendees_update_view,
+        name="attendees_update_view",
+    ),
+
+    path(
+        "attendees_update_view/",
+        view=attendees_update_view,
+        name="attendees_update_view",
+    ),
+
+    path(
+        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/',
+        view=datagrid_attendee_update_view,
+        name='datagrid_attendee_update_view',
+    ),
+    path(
+        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/<str:attendee_id>',
+        view=datagrid_attendee_update_view,
+        name='datagrid_attendee_update_view',
+    ),
 ]

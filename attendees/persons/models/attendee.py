@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
+from django.urls import reverse
 from django.utils.functional import cached_property
 from datetime import datetime, timezone, date, timedelta
 from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
@@ -81,6 +82,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
                     to_attendee__finish__gte=datetime.now(timezone.utc),
                 )
 
+    def under_same_org_with(self, other_attendee_id):
+        if other_attendee_id:
+            return Attendee.objects.filter(pk=other_attendee_id, division__organization=self.division.organization).exists()
+        return False
+
     @cached_property
     def parents_notifiers_names(self):
         """
@@ -118,6 +124,9 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def clean(self):
         if not (self.last_name or self.last_name2):
             raise ValidationError("You must specify a last_name")
+
+    def get_absolute_url(self):
+        return reverse('/persons/attendee_detail_view/', kwargs={'pk': self.pk})
 
     class Meta:
         db_table = 'persons_attendees'

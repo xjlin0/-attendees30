@@ -14,4 +14,8 @@
 
 div.bootstrap-datetimepicker-widget.dropdown-menu {
 	width: auto;
-}
+}  /* for datetime picker */
+
+div.dx-box-item-content {
+  max-width: 98%;
+}  /* for editor items in dxform in dxpopup of attendingmeet to avoid scroll bar */

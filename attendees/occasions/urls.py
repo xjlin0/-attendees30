@@ -15,6 +15,8 @@ from attendees.occasions.views import (
     api_organization_meet_team_viewset,
     api_organization_meet_gatherings_viewset,
     api_user_assembly_characters_viewset,
+    api_user_assembly_meets_viewset,
+    api_user_assembly_viewset,
     api_coworker_organization_attendances_viewset,
 )
 
@@ -58,6 +60,11 @@ router.register(
     basename='character',
 )
 router.register(
+    'api/user_assembly_meets',
+    api_user_assembly_meets_viewset,
+    basename='meet',
+)
+router.register(
     'api/coworker_organization_attendances',
     api_coworker_organization_attendances_viewset,
     basename='attendance',
@@ -77,6 +84,12 @@ router.register(
     api_family_organization_gatherings_viewset,
     basename='gathering',
 )
+router.register(
+    'api/user_assemblies',
+    api_user_assembly_viewset,
+    basename='assembly',
+)
+
 
 urlpatterns = [
     path('', include(router.urls)),

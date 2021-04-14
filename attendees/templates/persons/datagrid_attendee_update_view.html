@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}
+  Attendee Update
+{% endblock title %}
+
+{% block extra_css %}
+  <link rel="preload"
+        as="style"
+        href="{% static 'devextreme/dx.common.css' %}"
+        onload="this.rel='stylesheet'">
+
+  <link rel="preload"
+        as="style"
+        href="{% static 'devextreme/dx.light.compact.css' %}"
+        onload="this.rel='stylesheet'">
+{% endblock extra_css %}
+
+{% block extra_head %}
+  <script defer
+          type="text/javascript"
+          src="{% static 'devextreme/dx.all.js' %}"
+          integrity="sha384-cnNGdFpQw8wkyU1GB8McOr3QflVl8UeaRXUucUCnBL3FR61457ll67FTDYh/yQ5O sha512-7rH3hw5MKHmtN515LKVdNefqss0exGarCbF8fffYfioGwUZQ/yaTlHn+XNTAJ3fkIPsbzY+Wi9CKP1f/PVImhw=="
+          crossorigin="anonymous">
+  </script>
+
+  <script defer
+          type="text/javascript"
+          src="{% static 'js/persons/datagrid_attendee_update_view.js' %}">
+  </script>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <h3>
+        Update attendee details
+      </h3>
+      <h6>Cross-org access is possible by passing in attendee id</h6>
+    </div>
+    <div class="d-flex align-items-center form-actions">
+      <a class="add-attendee btn btn-outline-success btn-xs"
+         title="add a new attendee"
+         role="button"
+         href="#">
+        +Add Attendee
+      </a>
+      <button class="enable-edit btn btn-xs btn-outline-primary"
+              type="button"
+              onclick="return confirm('Do you want to enter the edit mode and ready to change something?')"
+{#             disabled="disabled" #}
+{#             aria-disabled="true" #}
+              title="Enable edit mode">
+        Edit
+      </button>
+    </div>
+
+  </div>
+
+<div class="main-container container">
+  <form id="attendee-update-form"
+        method="post">
+    <input type="hidden"
+           name="attendee-id"
+           value="{{ targeting_attendee_id}}">
+    {% csrf_token %}
+    <div class="datagrid-attendee-update"
+         data-meets-endpoint="{{meets_endpoint}}"
+         data-characters-endpoint="{{characters_endpoint}}"
+         data-attendings-endpoint="{{attendings_endpoint}}"
+         data-assemblies-endpoint="{{assemblies_endpoint}}"
+         data-attendee-endpoint="{{attendee_endpoint}}"
+         data-assembly="{{current_assembly_slug}}">
+    </div>
+  </form>
+  <form id="attendingmeet-update-popup-form"
+        action="/persons/api/datagrid_data_attendingmeet/"
+        method="post">
+    <input type="hidden"
+           name="attendee-id"
+           value="{{ targeting_attendee_id}}">
+    <div class="popup-attendingmeet-update">
+    </div>
+  </form>
+</div>
+{% endblock content %}

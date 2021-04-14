@@ -34,10 +34,20 @@ class CharacterService:
                 )  # another way is to get assemblys from registration, but it relies on attendingmeet validations
 
     @staticmethod
-    def by_organization_assemblys(organization_slug, assembly_slugs):
+    def by_organization_assemblies(organization, assemblies):
         return Character.objects.filter(
-                    assembly__division__organization__slug=organization_slug,
-                    assembly__slug__in=assembly_slugs,
+                    assembly__division__organization=organization,
+                    assembly__in=assemblies,
                 ).order_by(
                     'display_order',
                 )
+
+    # @staticmethod
+    # def by_user_and_assembly(organization, assembly):
+    #     filter_dict = dict(assembly__division__organization=organization)
+    #     if assembly:
+    #         filter_dict['assembly'] = assembly
+    #
+    #     return Character.objects.filter(**filter_dict).order_by(
+    #         'display_order',
+    #     )

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% block title %}
-  Attendee Detail
+  Attendee Info
 {% endblock title %}
 
 {% block extra_css %}
@@ -14,9 +14,11 @@
 
 {% block content %}
 
-<h1>Attendee's details</h1>
-<p>attendee_detail_view.html</p>
-<p> id {{ object.id }}.</p>
-<p> full_name {{ object.full_name }}.</p>
-<p> created {{ object.created }}.</p>
+{% load crispy_forms_tags %}
+
+<h1>Attendee test</h1>
+<p>attendee_update_view.html</p>
+<form method="post">
+  {% crispy form %}
+</form>
 {% endblock content %}

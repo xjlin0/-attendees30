@@ -1,12 +1,20 @@
 Attendees.dataAttendees = {
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
+    Attendees.dataAttendees.setDataAttrs();
     Attendees.dataAttendees.setMeetsColumns();
     Attendees.dataAttendees.startDataGrid();
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
-  familyAttendancesUrn: document.querySelector('div.dataAttendees').dataset.familyAttendancesUrn,
+  attendeeUrn: null,
+  familyAttendancesUrn: null,
+
+  setDataAttrs: () => {
+    const $AttendeeAttrs = document.querySelector('div.dataAttendees').dataset;
+    Attendees.dataAttendees.familyAttendancesUrn = $AttendeeAttrs.familyAttendancesUrn;
+    Attendees.dataAttendees.attendeeUrn = $AttendeeAttrs.attendeeUrn;
+  },
 
   startDataGrid: () => {
     Attendees.dataAttendees.dataGridOpts['dataSource'] = Attendees.dataAttendees.customStore;
@@ -111,9 +119,17 @@ Attendees.dataAttendees = {
 //    },
     {
       caption: "Full name",
+      allowSorting: false,
       dataField: "full_name",
-      dataType: "string",
       allowHeaderFiltering: false,
+      cellTemplate: (container, rowData) => {
+        const attrs = {
+          "class": "text-info",
+          "text": rowData.data.full_name,
+          "href": Attendees.dataAttendees.attendeeUrn + rowData.data.id,
+        };
+        $($('<a>', attrs)).appendTo(container);
+      },
     },
     {
       dataHtmlTitle: "showing only divisions of current user organization",
