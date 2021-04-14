@@ -78,7 +78,8 @@ Attendees.datagridUpdate = {
         horizontalAlignment: "left",
         buttonOptions: {
           text: "Save",
-          icon: "check",
+          icon: "save",
+          hint: "save attendee data in the page",
           type: "default",
           useSubmitBehavior: false,
           onClick: (e) => {
@@ -155,7 +156,7 @@ Attendees.datagridUpdate = {
       position: {
         my: 'center',
         at: 'center',
-        of: window
+        of: window,
       },
       dragEnabled: true,
       contentTemplate: (e) => {
@@ -335,7 +336,8 @@ Attendees.datagridUpdate = {
               colSpan: 2,
               buttonOptions: {
                 text: "Save",
-                icon: "check",
+                icon: "save",
+                hint: "save attendingmeet data in the popup",
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
@@ -349,12 +351,30 @@ Attendees.datagridUpdate = {
                       method : 'POST',
                       success: (response) => {
                                  Attendees.datagridUpdate.attendingmeetPopup.hide();
-                                 DevExpress.ui.notify("saving attendingmeet success", "success", 3000);
+                                 DevExpress.ui.notify(
+                                   {
+                                     message: "saving attendingmeet success",
+                                     width: 500,
+                                     position: {
+                                      my: 'center',
+                                      at: 'center',
+                                      of: window,
+                                     }
+                                    }, "success", 2500);
                                },
                       error  : (response) => {
                                  console.log('Failed to fetch data for AttendingmeetForm in Popup, error: ', response);
                                  console.log('formData: ', userData);
-                                 DevExpress.ui.notify("saving attendingmeet error", "error", 5000);
+                                 DevExpress.ui.notify(
+                                   {
+                                     message: "saving attendingmeet error",
+                                     width: 500,
+                                     position: {
+                                      my: 'center',
+                                      at: 'center',
+                                      of: window,
+                                     }
+                                    }, "error", 5000);
                       },
                     });
 
