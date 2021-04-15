@@ -18,8 +18,14 @@ Attendees.datagridUpdate = {
   },
 
   initListeners: () => {
-    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e))
+    $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
+    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
     // add listeners for Contact, counselling, etc.
+  },
+
+  toggleEditing: (enabled) => {
+    $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('button.attendingmeet-button-new').prop('disabled', !enabled);
   },
 
   initAttendeeForm: () => {
@@ -81,7 +87,7 @@ Attendees.datagridUpdate = {
           text: 'Participation (joined meets)',
         },
         template: (data, itemElement) => {
-          $("<button>").attr({title: "+ Add a new meet", type: 'button', class: "attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
+          $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
           if (data.editorOptions && data.editorOptions.value){
             data.editorOptions.value.forEach(attending => {
               const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
@@ -100,6 +106,10 @@ Attendees.datagridUpdate = {
         name: "mainAttendeeFormSubmit",
         horizontalAlignment: "left",
         buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-submits',
+          },
+          disabled: !Attendees.utilities.editingEnabled,
           text: "Save",
           icon: "save",
           hint: "save attendee data in the page",
@@ -340,6 +350,10 @@ Attendees.datagridUpdate = {
               horizontalAlignment: "left",
               colSpan: 2,
               buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',
+                },
+                disabled: !Attendees.utilities.editingEnabled,
                 text: "Save",
                 icon: "save",
                 hint: "save attendingmeet data in the popup",

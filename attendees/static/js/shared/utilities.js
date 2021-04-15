@@ -1,6 +1,17 @@
 Attendees.utilities = {
+  editingEnabled: false,
+
   init: () => {
     console.log("attendees/static/js/shared/utilities.js");
+  },
+
+  toggleEditingAndReturnStatus: (event) => {
+    if (confirm('Are you sure to toggle editing mode?')){
+      Attendees.utilities.editingEnabled = event.currentTarget.checked;
+    } else {
+      event.preventDefault();  // stop checkbox from being changed.
+    }
+    return Attendees.utilities.editingEnabled;
   },
 
   isNotEmpty: (value) => {
