@@ -88,4 +88,5 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 * use browser to open http://192.168.99.100:8000/ and http://192.168.99.100:8025/
 * Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
+* remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 

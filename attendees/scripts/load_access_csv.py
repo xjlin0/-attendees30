@@ -421,7 +421,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     directory_meet = Meet.objects.get(slug=directory_meet_slug)
     directory_gathering = Gathering.objects.filter(meet=directory_meet).last()
     directory_character = Character.objects.get(slug=directory_character_slug)
-    imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')
+    imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')  # excludes seed data
     successfully_processed_count = 0
     for family in imported_families:
         try:
@@ -430,7 +430,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
             families_contact = family.contacts.first() # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
 
-            if len(parents) > 1:  # skip for singles
+            if len(parents) > 1:  # family role modification skipped for singles
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
                     print("\n Parents genders are mislabelled, trying to reassign them: ", parents)
 
@@ -469,8 +469,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                 wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
 
                 if families_contact:
-                    hushand_email = husband.infos.get('access_people_values', {}).get('E-mail')
-                    wife_email = wife.infos.get('access_people_values', {}).get('E-mail')
+                    hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
+                    wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
                     families_contact.fields['email1'] = Utility.presence(hushand_email)
                     families_contact.fields['email2'] = Utility.presence(wife_email)
                     families_contact.save()
@@ -502,8 +502,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
             else:
                 househead_single = parents.first()
-                if househead_single:  # update gender by family role since family role records are better updated.
-                    original_household_role = househead_single.infos.get('access_people_values', {}).get('HouseholdRole')
+                if househead_single:  # update gender by family role since some access_family role records are incorrect.
+                    original_household_role = househead_single.infos.get('fixed', {}).get('access_people_values', {}).get('HouseholdRole')
                     if original_household_role == 'B(Spouse)':  # 'Chloris', 'Yvone' are parents > 1
                         househead_single.gender = GenderEnum.FEMALE.name
                         househead_single.save()
@@ -512,11 +512,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         family_attendee.save()
 
                 if families_contact and househead_single:
-                    self_email = househead_single.infos.get('access_people_values', {}).get('E-mail')
+                    self_email = househead_single.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
                     families_contact.fields['email1'] = Utility.presence(self_email)
                     families_contact.save()
                 else:
-                    if Attendee.objects.filter(infos__access_people_household_id=family.infos['access_household_id']):
+                    if Attendee.objects.filter(infos__fixed__access_people_household_id=family.infos['access_household_id']):
                         print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_contact, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
                     else:
                         pass  # skipping since there is no such people with the household id in the original access data.
