@@ -17,6 +17,29 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.initAttendeeForm();
   },
 
+  initListeners: () => {
+    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e))
+    // add listeners for Contact, counselling, etc.
+  },
+
+  initAttendeeForm: () => {
+    Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
+    Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
+    $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
+    $.ajax({
+      url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
+      success: (response) => {
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                 Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                 Attendees.datagridUpdate.initListeners();
+               },
+      error  : (response) => {
+                 console.log("Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ", response);
+               },
+    });
+
+  },
+
   attendeeFormConfigs: {
 
     formData: null, // will be fetched
@@ -106,24 +129,6 @@ Attendees.datagridUpdate = {
 //        },
 //      },
     ]
-
-  },
-
-  initAttendeeForm: () => {
-    Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
-    Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
-    $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
-    $.ajax({
-      url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
-      success: (response) => {
-                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
-                 Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
-                 Attendees.datagridUpdate.initListeners();
-               },
-      error  : (response) => {
-                 console.log("Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ", response);
-               },
-    });
 
   },
 
@@ -403,11 +408,6 @@ Attendees.datagridUpdate = {
       }
     };
 
-  },
-
-  initListeners: () => {
-    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e))
-    // add listeners for Contact, counselling, etc.
   },
 }
 
