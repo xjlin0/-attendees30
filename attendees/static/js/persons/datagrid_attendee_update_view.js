@@ -51,6 +51,34 @@ Attendees.datagridUpdate = {
     formData: null, // will be fetched
     items: [
       {
+        dataField: "division",
+        editorType: "dxSelectBox",
+  //              disabled: true,
+        isRequired: true,
+        label: {
+          text: 'Major Division',
+          showColon: true,
+        },
+        editorOptions: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          placeholder: "Select a value...",
+          dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              loadMode: "raw",
+              load: () => {
+                const d = $.Deferred();
+                $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                  d.resolve(response.data);
+                });
+                return d.promise();
+              }
+            })
+          }),
+        },
+      },
+      {
           dataField: "first_name",
           isRequired: true,
       },
@@ -348,7 +376,7 @@ Attendees.datagridUpdate = {
             {
               itemType: "button",
               horizontalAlignment: "left",
-              colSpan: 2,
+//              colSpan: 2,
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',
@@ -396,24 +424,23 @@ Attendees.datagridUpdate = {
                                     }, "error", 5000);
                       },
                     });
-
-
                   }
                 }
               },
             },
-//            { // https://supportcenter.devexpress.com/ticket/details/t681806
+//            {
 //              itemType: "button",
-//              name: "attendingmeetPopupDxFormCancel",
 //              horizontalAlignment: "left",
 //              buttonOptions: {
-//                text: "Cancel/Reset",
-//                type: "reset",
-//                useSubmitBehavior: false,
-//                onClick: () => {
-//                  console.log('attendingmeetPopupDxFormCancel clicked!');
-//                  Attendees.datagridUpdate.attendingmeetPopupDxForm.resetValues();
-//                },
+//                text: "Cancel",
+//                icon: "close",
+//                hint: "don't save and close the pop up",
+//                type: "normal",
+//                onClick: (clickEvent) => {
+//                  if(confirm('are you sure to cancel your change and close the popup?')){
+//                    Attendees.datagridUpdate.attendingmeetPopup.hide();
+//                  }
+//                }
 //              },
 //            },
           ]

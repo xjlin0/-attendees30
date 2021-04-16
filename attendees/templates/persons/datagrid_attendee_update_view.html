@@ -46,8 +46,8 @@
          href="#">
         +Add Attendee
       </a>
-      <div class="custom-switch border border-primary rounded"
-           title="Toggle editing mode of the entire page">
+      <div class="custom-switch button btn btn-outline-primary"
+           title="Click toogle to switch editing modes of the entire page">
         <input type="checkbox"
                class="custom-control-input"
                id="custom-control-edit-checkbox">
@@ -56,14 +56,6 @@
           Editing
         </label>
       </div>
-      <button class="enable-edit btn btn-xs btn-outline-primary"
-              type="button"
-              onclick="return confirm('Do you want to enter the edit mode and ready to change something?')"
-{#             disabled="disabled" #}
-{#             aria-disabled="true" #}
-              title="Enable edit mode">
-        Edit
-      </button>
   </div>
 </div>
 
@@ -77,6 +69,7 @@
     <div class="datagrid-attendee-update"
          data-meets-endpoint="{{meets_endpoint}}"
          data-characters-endpoint="{{characters_endpoint}}"
+         data-divisions-endpoint="{{divisions_endpoint}}"
          data-attendings-endpoint="{{attendings_endpoint}}"
          data-assemblies-endpoint="{{assemblies_endpoint}}"
          data-attendee-endpoint="{{attendee_endpoint}}"
