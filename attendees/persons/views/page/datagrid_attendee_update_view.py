@@ -6,11 +6,11 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 
 from attendees.persons.models import Attendee
-from attendees.users.authorization import RouteGuard
+from attendees.users.authorization import RouteAndSpyGuard
 from attendees.utils.view_helpers import get_object_or_delayed_403
 
 
-class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteGuard, DetailView):
+class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, DetailView):
     model = Attendee
     template_name = 'persons/datagrid_attendee_update_view.html'
 
