@@ -19,7 +19,7 @@ Attendees.datagridUpdate = {
 
   initListeners: () => {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
-    $("div.main-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
+    $("div.form-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
     // add listeners for Contact, counselling, etc.
   },
 
@@ -36,6 +36,7 @@ Attendees.datagridUpdate = {
       url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
       success: (response) => {
                  Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                 $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                  Attendees.datagridUpdate.initListeners();
                },
@@ -47,85 +48,106 @@ Attendees.datagridUpdate = {
   },
 
   attendeeFormConfigs: {
-//    colCount: 3,
+    colCount: 12,
     formData: null, // will be fetched
     items: [
       {
-        dataField: "division",
-        editorType: "dxSelectBox",
-  //              disabled: true,
-        isRequired: true,
-        label: {
-          text: 'Major Division',
-          showColon: true,
-        },
-        editorOptions: {
-          valueExpr: "id",
-          displayExpr: "display_name",
-          placeholder: "Select a value...",
-          dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-              key: "id",
-              loadMode: "raw",
-              load: () => {
-                const d = $.Deferred();
-                $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
-                  d.resolve(response.data);
-                });
-                return d.promise();
-              }
-            })
-          }),
-        },
-      },
-      {
-          dataField: "full_name",
-          disabled: true,
-      },
-      {
-          dataField: "photo",
-          template: function (data, itemElement) {
-            if (data.editorOptions && data.editorOptions.value){
-              $("<a>", {href: data.editorOptions.value, target: '_blank'})
-              .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
-              .appendTo(itemElement);
-            }
+        colSpan: 5,
+        itemType: "group",
+//        caption: "group 1",
+        items: [
+          {
+            dataField: "division",
+            editorType: "dxSelectBox",
+            isRequired: true,
+            label: {
+              text: 'Major Division',
+//              showColon: true,
+            },
+            editorOptions: {
+              valueExpr: "id",
+              displayExpr: "display_name",
+              placeholder: "Select a value...",
+              dataSource: new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                  key: "id",
+                  loadMode: "raw",
+                  load: () => {
+                    const d = $.Deferred();
+                    $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                      d.resolve(response.data);
+                    });
+                    return d.promise();
+                  }
+                })
+              }),
+            },
           },
+          {
+              dataField: "first_name",
+              editorOptions: {
+                placeholder: "English first name",
+              },
+          },
+          {
+              dataField: "last_name2",
+          },
+        ],
       },
       {
-          dataField: "first_name",
+        colSpan: 5,
+        itemType: "group",
+//        caption: "group 2",
+        items: [
+          {
+            dataField: "actual_birthday",
+            editorType: "dxDateBox",
+            editorOptions: {
+              placeholder: "click calendar icon to add/change",
+            },
+          },
+          {
+              dataField: "last_name",
+              editorOptions: {
+                placeholder: "English last name",
+              },
+          },
+          {
+              dataField: "first_name2",
+          },
+        ],
       },
       {
-          dataField: "last_name",
+        colSpan: 2,
+        itemType: "group",
+//        caption: "group 3",
+        items: [
+          {
+              dataField: "photo",
+              label: {
+//                location: "top",
+                text: " ",
+                showColon: false,
+              },
+              template: function (data, itemElement) {
+                if (data.editorOptions && data.editorOptions.value){
+                  $("<a>", {href: data.editorOptions.value, target: '_blank'})
+                  .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
+                  .appendTo(itemElement);
+                }
+              },
+          },
+
+        ],
       },
       {
-          dataField: "last_name2",
-      },
-      {
-          dataField: "first_name2",
-      },
-      {
-        dataField: "actual_birthday",
-        editorType: "dxDateBox",
-      },
-      {
-          dataField: "self_phone_numbers",
-          helpText: "Example: +1(111)111-1111"
-      },
-      {
-        dataField: "progressions.belief",
-        editorType: "dxTextArea",
-        editorOptions: {
-          placeholder: "Add notes...",
-        }
-      },
-      {
+        colSpan: 12,
         dataField: "joined_meets",
         label: {
-          text: 'Participation (joined meets)',
+          text: 'attends',
         },
         template: (data, itemElement) => {
-          $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new meet").appendTo(itemElement);
+          $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
           if (data.editorOptions && data.editorOptions.value){
             data.editorOptions.value.forEach(attending => {
               const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
@@ -148,7 +170,7 @@ Attendees.datagridUpdate = {
             class: 'attendee-form-submits',
           },
           disabled: !Attendees.utilities.editingEnabled,
-          text: "Save",
+          text: "Save Attendee details",
           icon: "save",
           hint: "save attendee data in the page",
           type: "default",
@@ -162,22 +184,7 @@ Attendees.datagridUpdate = {
           }
         },
       },
-//      { // https://supportcenter.devexpress.com/ticket/details/t681806
-//        itemType: "button",
-//        name: "mainAttendeeFormReset",
-//        horizontalAlignment: "left",
-//        buttonOptions: {
-//          text: "Cancel/Reset",
-//          type: "reset",
-//          useSubmitBehavior: false,
-//          onClick: () => {
-//            console.log('mainAttendeeFormReset clicked!');
-//            Attendees.datagridUpdate.attendeeMainDxForm.resetValues();
-//          },
-//        },
-//      },
     ]
-
   },
 
   initAttendingmeetPopupDxForm: (event) => {
@@ -393,7 +400,7 @@ Attendees.datagridUpdate = {
                   class: 'attendee-form-submits',
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save",
+                text: "Save Participation",
                 icon: "save",
                 hint: "save attendingmeet data in the popup",
                 type: "default",
