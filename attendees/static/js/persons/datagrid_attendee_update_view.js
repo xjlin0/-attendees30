@@ -47,7 +47,7 @@ Attendees.datagridUpdate = {
   },
 
   attendeeFormConfigs: {
-
+//    colCount: 3,
     formData: null, // will be fetched
     items: [
       {
@@ -79,10 +79,6 @@ Attendees.datagridUpdate = {
         },
       },
       {
-          dataField: "first_name",
-          isRequired: true,
-      },
-      {
           dataField: "full_name",
           disabled: true,
       },
@@ -90,9 +86,23 @@ Attendees.datagridUpdate = {
           dataField: "photo",
           template: function (data, itemElement) {
             if (data.editorOptions && data.editorOptions.value){
-              $("<img>").attr({src: data.editorOptions.value, class: "attendee-photo"}).appendTo(itemElement);
+              $("<a>", {href: data.editorOptions.value, target: '_blank'})
+              .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
+              .appendTo(itemElement);
             }
           },
+      },
+      {
+          dataField: "first_name",
+      },
+      {
+          dataField: "last_name",
+      },
+      {
+          dataField: "last_name2",
+      },
+      {
+          dataField: "first_name2",
       },
       {
         dataField: "actual_birthday",
@@ -287,6 +297,7 @@ Attendees.datagridUpdate = {
             {
               dataField: "meet",
               editorType: "dxSelectBox",
+              colSpan: 3,
 //              disabled: true,
               isRequired: true,
               label: {
