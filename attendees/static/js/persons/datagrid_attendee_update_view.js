@@ -2,6 +2,7 @@ Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
   attendeeAttrs: null,  // will be assigned later
   attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
+  attendeeAjaxUrl: null,
   attendingmeetPopupDxForm: null,  // for getting formData
   attendingmeetPopupDxFormData: {},  // for storing formData
   attendingmeetPopupDxFormCharacterSelect: null,
@@ -31,9 +32,10 @@ Attendees.datagridUpdate = {
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
+    Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
     $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
     $.ajax({
-      url    : Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/',
+      url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
                  Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
@@ -178,8 +180,44 @@ Attendees.datagridUpdate = {
           onClick: (e) => {
             console.log("mainAttendeeFormSubmit clicked! here is : Attendees.datagridUpdate.attendeeMainDxForm.option('formData'): ", Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
             if (confirm("Are you sure?")){
-              console.log("user confirmed");
-              $("form#attendee-update-form").submit();
+
+
+              const userData = Attendees.datagridUpdate.attendeeMainDxForm.option('formData');
+              userData._method = userData.id ? 'PUT' : 'POST';
+
+              $.ajax({
+                url    : Attendees.datagridUpdate.attendeeAjaxUrl,
+                data   : userData,
+                method : 'POST',
+                success: (response) => {
+                           DevExpress.ui.notify(
+                             {
+                               message: "saving attendee success",
+                               width: 500,
+                               position: {
+                                my: 'center',
+                                at: 'center',
+                                of: window,
+                               }
+                              }, "success", 2500);
+                         },
+                error  : (response) => {
+                           console.log('Failed to save data for main AttendeeForm, error: ', response);
+                           console.log('formData: ', userData);
+                           DevExpress.ui.notify(
+                             {
+                               message: "saving attendee error",
+                               width: 500,
+                               position: {
+                                my: 'center',
+                                at: 'center',
+                                of: window,
+                               }
+                              }, "error", 5000);
+                },
+              });
+
+
             }
           }
         },
@@ -428,7 +466,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('Failed to fetch data for AttendingmeetForm in Popup, error: ', response);
+                                 console.log('Failed to save data for AttendingmeetForm in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -446,21 +484,6 @@ Attendees.datagridUpdate = {
                 }
               },
             },
-//            {
-//              itemType: "button",
-//              horizontalAlignment: "left",
-//              buttonOptions: {
-//                text: "Cancel",
-//                icon: "close",
-//                hint: "don't save and close the pop up",
-//                type: "normal",
-//                onClick: (clickEvent) => {
-//                  if(confirm('are you sure to cancel your change and close the popup?')){
-//                    Attendees.datagridUpdate.attendingmeetPopup.hide();
-//                  }
-//                }
-//              },
-//            },
           ]
         }).dxForm("instance");
         e.append(formContainer);

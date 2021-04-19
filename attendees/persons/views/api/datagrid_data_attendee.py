@@ -60,5 +60,8 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
                     # joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
                ).filter(pk=querying_attendee_id)
 
+    # def update(self, request, *args, **kwargs):
+    #     print("65 entering ApiDatagridDataAttendeeViewSet.update ... ")
+
 
 api_datagrid_data_attendee_viewset = ApiDatagridDataAttendeeViewSet

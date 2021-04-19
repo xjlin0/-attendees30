@@ -3,15 +3,16 @@ import time
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 
 from attendees.persons.models import Attendee
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.utils.view_helpers import get_object_or_delayed_403
 
 
-class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, DetailView):
+class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
     model = Attendee
+    fields = '__all__'
     template_name = 'persons/datagrid_attendee_update_view.html'
 
     def get_object(self, queryset=None):

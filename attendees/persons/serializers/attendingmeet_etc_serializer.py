@@ -11,7 +11,7 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Create and return a new `AttendingMeet` instance, given the validated data.
+        Create or update `AttendingMeet` instance, given the validated data.
         """
 
         attendingmeet_id = self._kwargs['data'].get('id')
