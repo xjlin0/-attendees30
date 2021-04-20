@@ -18,6 +18,11 @@ Attendees.utilities = {
       return value !== undefined && value !== null && value !== "";
   },
 
+  convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
+            formData.append(key, object[key]);
+            return formData;   // https://stackoverflow.com/a/62936649/4257237
+        }, new FormData()),
+
   setAjaxLoaderOnDevExtreme: () => {
     $(document).ajaxStop(function(){
       $('div.dx-loadpanel').dxLoadPanel('hide');

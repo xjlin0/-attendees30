@@ -220,11 +220,10 @@ Attendees.datagridUpdate = {
 
               $.ajax({
                 url    : Attendees.datagridUpdate.attendeeAjaxUrl,
-//                contentType: false,
+                contentType: false,
                 processData: false,
-                contentType: 'multipart/form-data',
                 dataType: 'json',
-                data   : userData,
+                data   : Attendees.utilities.convertObjectToFormData(userData),
                 method : 'POST',
                 success: (response) => {
                            DevExpress.ui.notify(
