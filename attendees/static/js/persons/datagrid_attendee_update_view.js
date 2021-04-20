@@ -139,7 +139,40 @@ Attendees.datagridUpdate = {
                 }
               },
           },
+          {
+//            editorType: "dxFileUploader",
+//            editorOptions: {
+//              selectButtonText: "Select one",
+//              labelText: "hi5",
+//              accept: "image/*",
+//              uploadMode: "useForm",
+//            },
 
+            dataField: "uploader",
+            template: function(data, itemElement) {
+                itemElement.append($("<div>").attr("id", "dxfu1").dxFileUploader(
+                {
+                  selectButtonText: "Select photo",
+//                  labelText: "hi5",
+                  accept: "image/*",
+                  multiple: false,
+                  uploadMode: "useForm",
+                  onValueChanged: (e) => {
+                    if (e.value.length) {
+                      $('img.attendee-photo')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
+                      Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
+                    }
+                  },
+                }));
+            },
+            name: "uploader",
+
+
+
+//            label: {
+//                text: "Two"
+//            },
+          },
         ],
       },
       {
@@ -187,6 +220,10 @@ Attendees.datagridUpdate = {
 
               $.ajax({
                 url    : Attendees.datagridUpdate.attendeeAjaxUrl,
+//                contentType: false,
+                processData: false,
+                contentType: 'multipart/form-data',
+                dataType: 'json',
                 data   : userData,
                 method : 'POST',
                 success: (response) => {
