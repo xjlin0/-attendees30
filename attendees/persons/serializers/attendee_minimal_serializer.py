@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from attendees.persons.models import Attendee
 from rest_framework import serializers
 
@@ -33,12 +35,28 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         """
 
         attendee_id = self._kwargs['data'].get('attendee-id')
+        deleting_photo = self._kwargs['data'].get('photo-clear', None)
 
-        obj, created = Attendee.objects.update_or_create(
-            id=attendee_id,
-            defaults=validated_data,
-        )
-        return obj
+        instance = Attendee.objects.get(pk=attendee_id)
+        if instance:
+            old_photo = instance.photo
+
+            if deleting_photo or validated_data.get('photo', None):
+                if old_photo:
+                    old_file = Path(old_photo.path)
+                    old_file.unlink(missing_ok=True)
+                if deleting_photo:
+                    validated_data['photo'] = None
+
+            obj, created = Attendee.objects.update_or_create(
+                id=attendee_id,
+                defaults=validated_data,
+            )
+
+
+            return obj
+        else:
+            return None
 
     def update(self, instance, validated_data):
         """

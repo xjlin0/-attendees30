@@ -141,7 +141,7 @@ Attendees.datagridUpdate = {
           },
           {
             template: (data, itemElement) => {
-              $("<input>", {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure to remove the photo?')"}).appendTo(itemElement);
+              $("<input>", {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure?')"}).appendTo(itemElement);
               $("<label>", {for: 'photo-clear', text: 'remove photo', class: 'form-check-label'}).appendTo(itemElement);
             },
           },
@@ -205,7 +205,6 @@ Attendees.datagridUpdate = {
             console.log("mainAttendeeFormSubmit clicked! here is : Attendees.datagridUpdate.attendeeMainDxForm.option('formData'): ", Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
             if (confirm("Are you sure?")){
 
-
               const userData = new FormData($('form#attendee-update-form')[0]);
               if(!$('input[name="photo"]')[0].value){userData.delete("photo")};
 
@@ -218,7 +217,8 @@ Attendees.datagridUpdate = {
                 dataType: 'json',
                 data   : userData,
                 method : 'POST',
-                success: (response) => {
+                success: (response) => {  // Todo: update photo link
+                           console.log("success here is response: ", response);
                            DevExpress.ui.notify(
                              {
                                message: "saving attendee success",
