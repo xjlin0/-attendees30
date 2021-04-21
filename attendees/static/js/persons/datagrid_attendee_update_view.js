@@ -50,6 +50,9 @@ Attendees.datagridUpdate = {
   },
 
   attendeeFormConfigs: {
+    onContentReady: () => {
+      $('div.spinner-border').hide();
+    },
     colCount: 12,
     formData: null, // will be fetched
     items: [
@@ -136,7 +139,7 @@ Attendees.datagridUpdate = {
                 const $img = $('<img>', {src: data.editorOptions.value, class: 'attendee-photo-img'});
                 const $imgLink = $('<a>', {href: data.editorOptions.value, target: '_blank'});
                 itemElement.append($imgLink.append($img));
-
+                // Todo: add check/uncheck photo-clear feature, store img link in data attributes when marking deleted
                 const $inputDiv = $('<div>', {class: 'form-check', title: "If checked, it'll be deleted when you save"});
                 const $clearInput = $('<input>', {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure?')"});
                 const $clearInputLabel = $('<label>', {for: 'photo-clear', text: 'delete photo', class: 'form-check-label'});
@@ -199,7 +202,7 @@ Attendees.datagridUpdate = {
             class: 'attendee-form-submits',
           },
           disabled: !Attendees.utilities.editingEnabled,
-          text: "Save Attendee details",
+          text: "Save Attendee details and photo",
           icon: "save",
           hint: "save attendee data in the page",
           type: "default",
