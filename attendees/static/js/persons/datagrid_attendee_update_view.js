@@ -148,10 +148,11 @@ Attendees.datagridUpdate = {
 //              uploadMode: "useForm",
 //            },
 
-            dataField: "uploader",
+//            dataField: "uploader",
             template: function(data, itemElement) {
                 itemElement.append($("<div>").attr("id", "dxfu1").dxFileUploader(
                 {
+                  name: 'photo',
                   selectButtonText: "Select photo",
 //                  labelText: "hi5",
                   accept: "image/*",
@@ -215,7 +216,7 @@ Attendees.datagridUpdate = {
             if (confirm("Are you sure?")){
 
 
-              const userData = Attendees.datagridUpdate.attendeeMainDxForm.option('formData');
+              const userData = new FormData($('form#attendee-update-form')[0]);
               userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
@@ -223,7 +224,7 @@ Attendees.datagridUpdate = {
                 contentType: false,
                 processData: false,
                 dataType: 'json',
-                data   : Attendees.utilities.convertObjectToFormData(userData),
+                data   : userData,
                 method : 'POST',
                 success: (response) => {
                            DevExpress.ui.notify(

@@ -9,8 +9,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
     # self_phone_numbers = serializers.CharField(read_only=True)
     # caregiver_phone_numbers = serializers.CharField()
     # joined_roaster = serializers.IntegerField()
-    # photo = serializers.CharField(read_only=True)  # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
-    photo = serializers.ImageField(use_url=True, read_only=True)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
+    photo = serializers.ImageField(use_url=True)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
     joined_meets = serializers.JSONField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)  # For MVP, Admin UI can handle this use case. Todo: when non admins start to use app, admin need to edit this on UI
 
@@ -32,9 +31,8 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         """
         Create and return a new `Attendee` instance, given the validated data.
         """
-        print("hi AttendeeMinimalSerializer.create() 32 here is self._kwargs['data']: ")
-        print(self._kwargs['data'])
-        attendee_id = self._kwargs['data'].get('id')
+
+        attendee_id = self._kwargs['data'].get('attendee-id')
 
         obj, created = Attendee.objects.update_or_create(
             id=attendee_id,
