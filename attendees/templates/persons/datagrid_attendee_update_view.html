@@ -66,6 +66,7 @@
            value="{{ targeting_attendee_id}}">
     {% csrf_token %}
     <div class="datagrid-attendee-update"
+         data-empty-image-link="{{empty_image_link}}"
          data-meets-endpoint="{{meets_endpoint}}"
          data-characters-endpoint="{{characters_endpoint}}"
          data-divisions-endpoint="{{divisions_endpoint}}"

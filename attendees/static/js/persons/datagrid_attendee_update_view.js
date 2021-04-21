@@ -125,24 +125,27 @@ Attendees.datagridUpdate = {
 //        caption: "group 3",
         items: [
           {
-            dataField: "photo",
+            dataField: 'photo',
             label: {
-//                location: "top",
-              text: " ",
+              // location: 'top',
+              text: ' ',  // empty space required for removing label
               showColon: false,
             },
-            template: function (data, itemElement) {
-              if (data.editorOptions && data.editorOptions.value){
-                $("<a>", {href: data.editorOptions.value, target: '_blank'})
-                .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
-                .appendTo(itemElement);
-              }
-            },
-          },
-          {
             template: (data, itemElement) => {
-              $("<input>", {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure?')"}).appendTo(itemElement);
-              $("<label>", {for: 'photo-clear', text: 'remove photo', class: 'form-check-label'}).appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                const $img = $('<img>', {src: data.editorOptions.value, class: 'attendee-photo-img'});
+                const $imgLink = $('<a>', {href: data.editorOptions.value, target: '_blank'});
+                itemElement.append($imgLink.append($img));
+
+                const $inputDiv = $('<div>', {class: 'form-check', title: "If checked, it'll be deleted when you save"});
+                const $clearInput = $('<input>', {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure?')"});
+                const $clearInputLabel = $('<label>', {for: 'photo-clear', text: 'delete photo', class: 'form-check-label'});
+                $inputDiv.append($clearInput);
+                $inputDiv.append($clearInputLabel);
+                itemElement.append($inputDiv);
+              } else {
+                $('<img>', {src: $('div.datagrid-attendee-update').data('empty-image-link'), class: 'attendee-photo-img'}).appendTo(itemElement);
+              }
             },
           },
           {
@@ -157,7 +160,7 @@ Attendees.datagridUpdate = {
                 uploadMode: "useForm",
                 onValueChanged: (e) => {
                   if (e.value.length) {
-                    $('img.attendee-photo')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
+                    $('img.attendee-photo-img')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
                     Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
                   }
                 },
@@ -202,7 +205,6 @@ Attendees.datagridUpdate = {
           type: "default",
           useSubmitBehavior: false,
           onClick: (e) => {
-            console.log("mainAttendeeFormSubmit clicked! here is : Attendees.datagridUpdate.attendeeMainDxForm.option('formData'): ", Attendees.datagridUpdate.attendeeMainDxForm.option('formData'));
             if (confirm("Are you sure?")){
 
               const userData = new FormData($('form#attendee-update-form')[0]);
@@ -232,7 +234,7 @@ Attendees.datagridUpdate = {
                          },
                 error  : (response) => {
                            console.log('Failed to save data for main AttendeeForm, error: ', response);
-                           console.log('formData: ', userData);
+                           console.log('formData: ', [...userData]);
                            DevExpress.ui.notify(
                              {
                                message: "saving attendee error",

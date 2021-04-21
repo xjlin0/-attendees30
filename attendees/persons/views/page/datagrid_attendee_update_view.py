@@ -1,5 +1,5 @@
 import time
-
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
@@ -29,6 +29,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
         current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
         context.update({
+            'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
             'assemblies_endpoint': '/occasions/api/user_assemblies/',
