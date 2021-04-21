@@ -125,54 +125,44 @@ Attendees.datagridUpdate = {
 //        caption: "group 3",
         items: [
           {
-              dataField: "photo",
-              label: {
+            dataField: "photo",
+            label: {
 //                location: "top",
-                text: " ",
-                showColon: false,
-              },
-              template: function (data, itemElement) {
-                if (data.editorOptions && data.editorOptions.value){
-                  $("<a>", {href: data.editorOptions.value, target: '_blank'})
-                  .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
-                  .appendTo(itemElement);
-                }
-              },
+              text: " ",
+              showColon: false,
+            },
+            template: function (data, itemElement) {
+              if (data.editorOptions && data.editorOptions.value){
+                $("<a>", {href: data.editorOptions.value, target: '_blank'})
+                .append($("<img>", {src: data.editorOptions.value, class: "attendee-photo"}))
+                .appendTo(itemElement);
+              }
+            },
           },
           {
-//            editorType: "dxFileUploader",
-//            editorOptions: {
-//              selectButtonText: "Select one",
-//              labelText: "hi5",
-//              accept: "image/*",
-//              uploadMode: "useForm",
-//            },
-
-//            dataField: "uploader",
-            template: function(data, itemElement) {
-                itemElement.append($("<div>").attr("id", "dxfu1").dxFileUploader(
-                {
-                  name: 'photo',
-                  selectButtonText: "Select photo",
-//                  labelText: "hi5",
-                  accept: "image/*",
-                  multiple: false,
-                  uploadMode: "useForm",
-                  onValueChanged: (e) => {
-                    if (e.value.length) {
-                      $('img.attendee-photo')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
-                      Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
-                    }
-                  },
-                }));
+            template: (data, itemElement) => {
+              $("<input>", {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure to remove the photo?')"}).appendTo(itemElement);
+              $("<label>", {for: 'photo-clear', text: 'remove photo', class: 'form-check-label'}).appendTo(itemElement);
             },
-            name: "uploader",
-
-
-
-//            label: {
-//                text: "Two"
-//            },
+          },
+          {
+            template: (data, itemElement) => {
+              itemElement.append($("<div>").attr("id", "dxfu1").dxFileUploader(
+              {
+                name: 'photo',
+                selectButtonText: "Select photo",
+//                  labelText: "hi5",
+                accept: "image/*",
+                multiple: false,
+                uploadMode: "useForm",
+                onValueChanged: (e) => {
+                  if (e.value.length) {
+                    $('img.attendee-photo')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
+                    Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
+                  }
+                },
+              }));
+            },
           },
         ],
       },
@@ -217,6 +207,8 @@ Attendees.datagridUpdate = {
 
 
               const userData = new FormData($('form#attendee-update-form')[0]);
+              if(!$('input[name="photo"]')[0].value){userData.delete("photo")};
+
               userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
