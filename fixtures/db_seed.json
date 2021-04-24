@@ -681,11 +681,14 @@
       "address_type": "street",
       "fields": {
         "id": 2,
-        "url": "https://www.thecrossing.website/",
-        "email1": null,
-        "email2": null,
-        "phone1": "+12222222222",
-        "phone2": "+22222222222"
+        "fixed": {
+          "url": "https://www.thecrossing.website/",
+          "email1": null,
+          "email2": null,
+          "phone1": "+12222222222",
+          "phone2": "+22222222222"
+        },
+        "flexible": {}
       }
     }
   },
@@ -701,10 +704,13 @@
       "address_type": "street",
       "fields": {
         "id": 1,
-        "url": "https://chineseforchristchurch.org/",
-        "email1": "haywardchurch@yahoo.com",
-        "email2": "church.office@cfcchayward.org",
-        "phone1": "+15105811630"
+        "fixed": {
+          "url": "https://chineseforchristchurch.org/",
+          "email1": "haywardchurch@yahoo.com",
+          "email2": "church.office@cfcchayward.org",
+          "phone1": "+15105811630"
+        },
+        "flexible": {}
       }
     }
   },
@@ -720,11 +726,14 @@
       "address_type": "street",
       "fields": {
         "id": 8,
-        "url": null,
-        "email1": "8beautifula@email.com",
-        "email2": "8beautifulb@email.com",
-        "phone1": "+18888888888",
-        "phone2": "+28888888888"
+        "fixed": {
+          "url": null,
+          "email1": "8beautifula@email.com",
+          "email2": "8beautifulb@email.com",
+          "phone1": "+18888888888",
+          "phone2": "+28888888888"
+        },
+        "flexible": {}
       }
     }
   },
@@ -740,11 +749,14 @@
       "address_type": "street",
       "fields": {
         "id": 6,
-        "url": null,
-        "email1": "6coola@email.com",
-        "email2": "6coolb@email.com",
-        "phone1": "+16666666666",
-        "phone2": "+26666666666"
+        "fixed": {
+          "url": null,
+          "email1": "6coola@email.com",
+          "email2": "6coolb@email.com",
+          "phone1": "+16666666666",
+          "phone2": "+26666666666"
+        },
+        "flexible": {}
       }
     }
   },
@@ -760,11 +772,14 @@
       "address_type": "street",
       "fields": {
         "id": 11,
-        "url": null,
-        "email1": null,
-        "email2": null,
-        "phone1": "+17076642880",
-        "phone2": null
+        "fixed": {
+          "url": null,
+          "email1": null,
+          "email2": null,
+          "phone1": "+17076642880",
+          "phone2": null
+        },
+        "flexible": {}
       }
     }
   },
@@ -780,11 +795,14 @@
       "address_type": "street",
       "fields": {
         "id": 7,
-        "url": null,
-        "email1": "7excellenta@email.com",
-        "email2": "7excellentb@email.com",
-        "phone1": "+17777777777",
-        "phone2": "+27777777777"
+        "fixed": {
+          "url": null,
+          "email1": "7excellenta@email.com",
+          "email2": "7excellentb@email.com",
+          "phone1": "+17777777777",
+          "phone2": "+27777777777"
+        },
+        "flexible": {}
       }
     }
   },
@@ -800,11 +818,14 @@
       "address_type": "street",
       "fields": {
         "id": 4,
-        "url": null,
-        "email1": "4gooda@email.com",
-        "email2": "4goodb@email.com",
-        "phone1": "+14444444444",
-        "phone2": "+24444444444"
+        "fixed": {
+          "url": null,
+          "email1": "4gooda@email.com",
+          "email2": "4goodb@email.com",
+          "phone1": "+14444444444",
+          "phone2": "+24444444444"
+        },
+        "flexible": {}
       }
     }
   },
@@ -820,11 +841,14 @@
       "address_type": "street",
       "fields": {
         "id": 5,
-        "url": null,
-        "email1": "5greata@email.com",
-        "email2": "5greatb@email.com",
-        "phone1": "+15555555555",
-        "phone2": "+25555555555"
+        "fixed": {
+          "url": null,
+          "email1": "5greata@email.com",
+          "email2": "5greatb@email.com",
+          "phone1": "+15555555555",
+          "phone2": "+25555555555"
+        },
+        "flexible": {}
       }
     }
   },
@@ -840,11 +864,14 @@
       "address_type": "street",
       "fields": {
         "id": 10,
-        "url": null,
-        "email1": null,
-        "email2": null,
-        "phone1": null,
-        "phone2": null
+        "fixed": {
+          "url": null,
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        },
+        "flexible": {}
       }
     }
   },
@@ -860,11 +887,14 @@
       "address_type": "street",
       "fields": {
         "id": 3,
-        "url": null,
-        "email1": "3prettya@email.com",
-        "email2": "3prettyb@email.com",
-        "phone1": "+13333333333",
-        "phone2": "+23333333333"
+        "fixed": {
+          "url": null,
+          "email1": "3prettya@email.com",
+          "email2": "3prettyb@email.com",
+          "phone1": "+13333333333",
+          "phone2": "+23333333333"
+        },
+        "flexible": {}
       }
     }
   },
@@ -880,11 +910,14 @@
       "address_type": "street",
       "fields": {
         "id": 9,
-        "url": null,
-        "email1": "9thronea@email.com",
-        "email2": "9throneb@email.com",
-        "phone1": "+19999999999",
-        "phone2": "+29999999999"
+        "fixed": {
+          "url": null,
+          "email1": "9thronea@email.com",
+          "email2": "9throneb@email.com",
+          "phone1": "+19999999999",
+          "phone2": "+29999999999"
+        },
+        "flexible": {}
       }
     }
   },

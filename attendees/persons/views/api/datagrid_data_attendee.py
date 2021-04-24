@@ -40,7 +40,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         """
 
         """
-        current_user = self.request.user
+        current_user = self.request.user  # Todo: guard this API so only admin or scheduler can call it.
         querying_attendee_id = self.kwargs.get('attendee_id')
         # return AttendeeService.single_record(
         #     current_user=current_user,
@@ -56,12 +56,9 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
                             Value('meet_name'), 'attendings__meets__display_name',
                             function='jsonb_build_object'
                         ),
-                    )
-                    # joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
+                    ),
+                    # contacts=ArrayAgg('attendings__meets__slug', distinct=True),
                ).filter(pk=querying_attendee_id)
-
-    # def update(self, request, *args, **kwargs):
-    #     print("65 entering ApiDatagridDataAttendeeViewSet.update ... ")
 
 
 api_datagrid_data_attendee_viewset = ApiDatagridDataAttendeeViewSet

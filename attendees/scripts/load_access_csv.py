@@ -137,7 +137,7 @@ def import_addresses(addresses, california):
                     'route': ' '.join(street_strs[1:]),
                     'locality': locality,
                     'raw': f"{street}, {city}, {state} {zip_code}",
-                    'address_extra': address_extra,
+                    'address_extra': Utility.presence(address_extra),
                     'fields': {
                         'access_address_id': address_id,
                         'access_address_values': address_dict,
@@ -217,8 +217,11 @@ def import_households(households, division1_slug, division2_slug):
                             # 'address': address,
                             'fields': {
                                 'access_address_id': address_id,
-                                'phone1': '+1' + phone1 if phone1 else None,  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
-                                'phone2': '+1' + phone2 if phone2 else None,
+                                'fixed': {
+                                    'phone1': '+1' + phone1 if phone1 else None,  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
+                                    'phone2': '+1' + phone2 if phone2 else None,
+                                },
+                                'flexible': {}
                             },
                         }
                     )
@@ -471,8 +474,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                 if families_contact:
                     hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
                     wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    families_contact.fields['email1'] = Utility.presence(hushand_email)
-                    families_contact.fields['email2'] = Utility.presence(wife_email)
+                    families_contact.fields['fixed']['email1'] = Utility.presence(hushand_email)
+                    families_contact.fields['fixed']['email2'] = Utility.presence(wife_email)
                     families_contact.save()
 
                 Relationship.objects.update_or_create(
@@ -513,7 +516,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
                 if families_contact and househead_single:
                     self_email = househead_single.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    families_contact.fields['email1'] = Utility.presence(self_email)
+                    families_contact.fields['fixed']['email1'] = Utility.presence(self_email)
                     families_contact.save()
                 else:
                     if Attendee.objects.filter(infos__fixed__access_people_household_id=family.infos['access_household_id']):

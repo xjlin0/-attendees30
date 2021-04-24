@@ -50,11 +50,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     @cached_property
     def self_phone_numbers(self):
-        return self.self_addresses_for_fields_of(['fields__phone1', 'fields__phone2'])
+        return self.self_addresses_for_fields_of(['fields__fixed__phone1', 'fields__fixed__phone2'])
 
     @cached_property
     def self_email_addresses(self):
-        return self.self_addresses_for_fields_of(['fields__email1', 'fields__email2'])
+        return self.self_addresses_for_fields_of(['fields__fixed__email1', 'fields__fixed__email2'])
 
     def self_addresses_for_fields_of(self, fields):
         items = sum(self.contacts.values_list(*fields), ())
@@ -64,11 +64,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     @cached_property
     def caregiver_email_addresses(self):
-        return self.caregiver_addresses_for_fields_of(['fields__email1', 'fields__email2'])
+        return self.caregiver_addresses_for_fields_of(['fields__fixed__email1', 'fields__fixed__email2'])
 
     @cached_property
     def caregiver_phone_numbers(self):
-        return self.caregiver_addresses_for_fields_of(['fields__phone1', 'fields__phone2'])
+        return self.caregiver_addresses_for_fields_of(['fields__fixed__phone1', 'fields__fixed__phone2'])
 
     def caregiver_addresses_for_fields_of(self, fields):
         return ', '.join(set(

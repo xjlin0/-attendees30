@@ -12,6 +12,10 @@ class AssemblyContactInline(admin.TabularInline):
 
 
 class ContactAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+
     inlines = (AssemblyContactInline,)
     search_fields = ('display_name', 'fields')
     list_display_links = ('display_name',)
@@ -19,10 +23,10 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'street', 'phone1', 'email1')
 
     def phone1(self, instance):
-        return instance.fields.get('phone1')
+        return instance.fields.get('fixed', {}).get('phone1')
 
     def email1(self, instance):
-        return instance.fields.get('email1')
+        return instance.fields.get('fixed', {}).get('email1')
 
 
 class DivisionAdmin(admin.ModelAdmin):
