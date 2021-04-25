@@ -56,91 +56,134 @@ Attendees.datagridUpdate = {
     colCount: 12,
     formData: null, // will be fetched
     items: [
+
       {
-        colSpan: 5,
+        colSpan: 10,
+        colCount: 10,
         itemType: "group",
-//        caption: "group 1",
+//        caption: "basic info",
         items: [
+
           {
-            dataField: "division",
-            editorType: "dxSelectBox",
-            isRequired: true,
-            label: {
-              text: 'Major Division',
-//              showColon: true,
-            },
-            editorOptions: {
-              valueExpr: "id",
-              displayExpr: "display_name",
-              placeholder: "Select a value...",
-              dataSource: new DevExpress.data.DataSource({
-                store: new DevExpress.data.CustomStore({
-                  key: "id",
-                  loadMode: "raw",
-                  load: () => {
-                    const d = $.Deferred();
-                    $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
-                      d.resolve(response.data);
-                    });
-                    return d.promise();
-                  }
-                })
-              }),
-            },
-          },
-          {
-              dataField: "deathday",
-              editorType: "dxDateBox",
-              editorOptions: {
-                placeholder: "click calendar icon to add/change",
+            colSpan: 5,
+//            caption: "colSpan: 5",
+            itemType: "group",
+            items: [
+              {
+                dataField: "division",
+                editorType: "dxSelectBox",
+                isRequired: true,
+                label: {
+                  text: 'Major Division',
+    //              showColon: true,
+                },
+                editorOptions: {
+                  valueExpr: "id",
+                  displayExpr: "display_name",
+                  placeholder: "Select a value...",
+                  dataSource: new DevExpress.data.DataSource({
+                    store: new DevExpress.data.CustomStore({
+                      key: "id",
+                      loadMode: "raw",
+                      load: () => {
+                        const d = $.Deferred();
+                        $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                          d.resolve(response.data);
+                        });
+                        return d.promise();
+                      }
+                    })
+                  }),
+                },
               },
-          },
-          {
-              dataField: "first_name",
-              editorOptions: {
-                placeholder: "English first name",
+              {
+                  dataField: "deathday",
+                  editorType: "dxDateBox",
+                  editorOptions: {
+                    placeholder: "click calendar icon to add/change",
+                  },
               },
-          },
-          {
-              dataField: "last_name2",
-          },
-        ],
-      },
-      {
-        colSpan: 5,
-        itemType: "group",
-//        caption: "group 2",
-        items: [
-          {
-            dataField: "actual_birthday",
-            editorType: "dxDateBox",
-            editorOptions: {
-              placeholder: "click calendar icon to add/change",
-            },
-          },
-          {
-            dataField: "estimated_birthday",
-            editorType: "dxDateBox",
-            editorOptions: {
-              placeholder: "pick any day of the best guess year",
-            },
-          },
-          {
-              dataField: "last_name",
-              editorOptions: {
-                placeholder: "English last name",
+              {
+                  dataField: "first_name",
+                  editorOptions: {
+                    placeholder: "English first name",
+                  },
               },
+            ],
           },
           {
-              dataField: "first_name2",
+            colSpan: 5,
+//            caption: "colSpan: 5",
+            itemType: "group",
+            items: [
+              {
+                dataField: "actual_birthday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "click calendar icon to add/change",
+                },
+              },
+              {
+                dataField: "estimated_birthday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "pick any day of the best guess year",
+                },
+              },
+              {
+                  dataField: "last_name",
+                  editorOptions: {
+                    placeholder: "English last name",
+                  },
+              },
+            ],
+          },
+
+          {
+            colSpan: 4,
+//            caption: "colSpan: 4",
+            itemType: "group",
+            items: [
+              {
+                  dataField: "gender",
+                  editorType: "dxSelectBox",
+                  isRequired: true,
+                  editorOptions: {
+                    dataSource: Attendees.utilities.genderEnums(),
+                    valueExpr: "name",
+                    displayExpr: "name",
+                  },
+              },
+            ],
+          },
+          {
+            colSpan: 3,
+//            caption: "colSpan: 3",
+            itemType: "group",
+            items: [
+              {
+                dataField: "last_name2",
+              },
+            ],
+          },
+          {
+            colSpan: 3,
+//            caption: "colSpan: 3",
+            itemType: "group",
+            items: [
+              {
+                dataField: "first_name2",
+              },
+            ],
           },
         ],
       },
       {
         colSpan: 2,
         itemType: "group",
-//        caption: "group 3",
+//        caption: "photo",
         items: [
+
           {
             dataField: 'photo',
             label: {
