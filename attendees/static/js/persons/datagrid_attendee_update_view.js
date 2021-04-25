@@ -89,13 +89,10 @@ Attendees.datagridUpdate = {
             },
           },
           {
-              dataField: "gender",
-              editorType: "dxSelectBox",
-              isRequired: true,
+              dataField: "deathday",
+              editorType: "dxDateBox",
               editorOptions: {
-                dataSource: Attendees.utilities.genderEnums(),
-                valueExpr: "name",
-                displayExpr: "name",
+                placeholder: "click calendar icon to add/change",
               },
           },
           {
@@ -122,11 +119,11 @@ Attendees.datagridUpdate = {
             },
           },
           {
-              dataField: "deathday",
-              editorType: "dxDateBox",
-              editorOptions: {
-                placeholder: "click calendar icon to add/change",
-              },
+            dataField: "estimated_birthday",
+            editorType: "dxDateBox",
+            editorOptions: {
+              placeholder: "pick any day of the best guess year",
+            },
           },
           {
               dataField: "last_name",
