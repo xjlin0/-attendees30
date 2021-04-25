@@ -53,20 +53,20 @@ Attendees.datagridUpdate = {
     onContentReady: () => {
       $('div.spinner-border').hide();
     },
-    colCount: 12,
+    colCount: 24,
     formData: null, // will be fetched
     items: [
 
       {
-        colSpan: 10,
-        colCount: 10,
+        colSpan: 20,
+        colCount: 20,
         itemType: "group",
 //        caption: "basic info",
         items: [
 
           {
-            colSpan: 5,
-//            caption: "colSpan: 5",
+            colSpan: 10,
+//            caption: "colSpan: 10",
             itemType: "group",
             items: [
               {
@@ -100,47 +100,53 @@ Attendees.datagridUpdate = {
                   dataField: "deathday",
                   editorType: "dxDateBox",
                   editorOptions: {
-                    placeholder: "click calendar icon to add/change",
+                    placeholder: "click calendar",
                   },
               },
               {
                   dataField: "first_name",
                   editorOptions: {
-                    placeholder: "English first name",
+                    placeholder: "English",
                   },
               },
             ],
           },
           {
-            colSpan: 5,
-//            caption: "colSpan: 5",
+            colSpan: 10,
+//            caption: "colSpan: 10",
             itemType: "group",
             items: [
               {
                 dataField: "actual_birthday",
                 editorType: "dxDateBox",
                 editorOptions: {
-                  placeholder: "click calendar icon to add/change",
+                  placeholder: "click calendar",
+                  elementAttr: {
+                    title: 'month, day and year are all required',
+                  },
                 },
               },
               {
                 dataField: "estimated_birthday",
                 editorType: "dxDateBox",
                 editorOptions: {
-                  placeholder: "pick any day of the best guess year",
+                  placeholder: "click calendar",
+                  elementAttr: {
+                    title: 'pick any day of your best guess year for the age estimation',
+                  },
                 },
               },
               {
                   dataField: "last_name",
                   editorOptions: {
-                    placeholder: "English last name",
+                    placeholder: "English",
                   },
               },
             ],
           },
 
           {
-            colSpan: 4,
+            colSpan: 8,
 //            caption: "colSpan: 4",
             itemType: "group",
             items: [
@@ -157,7 +163,7 @@ Attendees.datagridUpdate = {
             ],
           },
           {
-            colSpan: 3,
+            colSpan: 6,
 //            caption: "colSpan: 3",
             itemType: "group",
             items: [
@@ -167,7 +173,7 @@ Attendees.datagridUpdate = {
             ],
           },
           {
-            colSpan: 3,
+            colSpan: 6,
 //            caption: "colSpan: 3",
             itemType: "group",
             items: [
@@ -179,7 +185,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        colSpan: 2,
+        colSpan: 4,
         itemType: "group",
 //        caption: "photo",
         items: [
@@ -230,7 +236,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        colSpan: 12,
+        colSpan: 24,
         dataField: "joined_meets",
         label: {
           text: 'attends',
