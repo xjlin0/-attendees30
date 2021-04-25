@@ -77,6 +77,14 @@ Attendees.utilities = {
       $checkAllBox.prop('checked', Attendees.utilities.testArraysEqualAfterSort(chosenOptions, allOptions));
     }
   },
+
+  genderEnums: () => {
+    return [
+      {name: 'MALE'},
+      {name: 'FEMALE'},
+      {name: 'UNSPECIFIED'},
+    ];
+  },
 }
 
 $(document).ready(() => {

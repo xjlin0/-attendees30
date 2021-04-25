@@ -89,6 +89,16 @@ Attendees.datagridUpdate = {
             },
           },
           {
+              dataField: "gender",
+              editorType: "dxSelectBox",
+              isRequired: true,
+              editorOptions: {
+                dataSource: Attendees.utilities.genderEnums(),
+                valueExpr: "name",
+                displayExpr: "name",
+              },
+          },
+          {
               dataField: "first_name",
               editorOptions: {
                 placeholder: "English first name",
@@ -110,6 +120,13 @@ Attendees.datagridUpdate = {
             editorOptions: {
               placeholder: "click calendar icon to add/change",
             },
+          },
+          {
+              dataField: "deathday",
+              editorType: "dxDateBox",
+              editorOptions: {
+                placeholder: "click calendar icon to add/change",
+              },
           },
           {
               dataField: "last_name",
