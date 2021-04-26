@@ -3,6 +3,7 @@ Attendees.datagridUpdate = {
   attendeeAttrs: null,  // will be assigned later
   attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
+  attendeePhotoFileUploader: null,
   attendingmeetPopupDxForm: null,  // for getting formData
   attendingmeetPopupDxFormData: {},  // for storing formData
   attendingmeetPopupDxFormCharacterSelect: null,
@@ -26,7 +27,10 @@ Attendees.datagridUpdate = {
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
-    $('button.attendingmeet-button-new, button.family-button-new, button.contact-button-new').prop('disabled', !enabled);
+    $('button.attendingmeet-button-new, button.family-button-new, button.contact-button-new, input.form-check-input').prop('disabled', !enabled);
+    Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
+    Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
+    Attendees.datagridUpdate.attendingmeetPopupDxForm && Attendees.datagridUpdate.attendingmeetPopupDxForm.option("readOnly", !enabled);
   },
 
   initAttendeeForm: () => {
@@ -50,6 +54,7 @@ Attendees.datagridUpdate = {
   },
 
   attendeeFormConfigs: {
+    readOnly: !Attendees.utilities.editingEnabled,
     onContentReady: () => {
       $('div.spinner-border').hide();
     },
@@ -228,7 +233,14 @@ Attendees.datagridUpdate = {
                 itemElement.append($imgLink.append($img));
                 // Todo: add check/uncheck photo-clear feature, store img link in data attributes when marking deleted
                 const $inputDiv = $('<div>', {class: 'form-check', title: "If checked, it'll be deleted when you save"});
-                const $clearInput = $('<input>', {id: 'photo-clear', type: 'checkbox', name: 'photo-clear', class: 'form-check-input', onclick: "return confirm('Are you sure?')"});
+                const $clearInput = $('<input>', {
+                  id: 'photo-clear',
+                  disabled: !Attendees.utilities.editingEnabled,
+                  type: 'checkbox',
+                  name: 'photo-clear',
+                  class: 'form-check-input',
+                  onclick: "return confirm('Are you sure?')"
+                });
                 const $clearInputLabel = $('<label>', {for: 'photo-clear', text: 'delete photo', class: 'form-check-label'});
                 $inputDiv.append($clearInput);
                 $inputDiv.append($clearInputLabel);
@@ -240,9 +252,10 @@ Attendees.datagridUpdate = {
           },
           {
             template: (data, itemElement) => {
-              itemElement.append($("<div>").attr("id", "dxfu1").dxFileUploader(
+              photoFileUploader = $("<div>").attr("id", "dxfu1").dxFileUploader(
               {
                 name: 'photo',
+                disabled: !Attendees.utilities.editingEnabled,
                 selectButtonText: "Select photo",
 //                  labelText: "hi5",
                 accept: "image/*",
@@ -254,7 +267,9 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
                   }
                 },
-              }));
+              });
+              Attendees.datagridUpdate.attendeePhotoFileUploader = photoFileUploader.dxFileUploader("instance");
+              itemElement.append(photoFileUploader);
             },
           },
         ],
@@ -381,9 +396,9 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingMeetForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
+          readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.attendingmeetDefaults,
           scrollingEnabled: true,
-          readOnly: false,
           showColonAfterLabel: false,
           requiredMark: "*",
           labelLocation: "top",
