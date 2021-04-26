@@ -26,7 +26,7 @@ Attendees.datagridUpdate = {
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
-    $('button.attendingmeet-button-new').prop('disabled', !enabled);
+    $('button.attendingmeet-button-new, button.family-button-new, button.contact-button-new').prop('disabled', !enabled);
   },
 
   initAttendeeForm: () => {
@@ -193,7 +193,7 @@ Attendees.datagridUpdate = {
               text: 'address:',
             },
             template: (data, itemElement) => {
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Join new address+").appendTo(itemElement);
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value){
                 data.editorOptions.value.forEach(attendeeContact => {
                   const buttonAttrs = {
