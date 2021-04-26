@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from address.models import Address
 from django.db import models
 from django.urls import reverse
@@ -56,6 +58,9 @@ class Contact(Address, TimeStampedModel, SoftDeletableModel, Utility):
     # def street(self):
     #     # return '{street1} {street2}'.format(street1=self.street1, street2=self.street2 or '').strip()
     #     return self.address.raw
+    # @property
+    # def street_without_usa(self):
+    #     return self.street
 
     @property
     def street(self):

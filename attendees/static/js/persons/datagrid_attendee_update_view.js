@@ -177,11 +177,31 @@ Attendees.datagridUpdate = {
               if (data.editorOptions && data.editorOptions.value){
                 data.editorOptions.value.forEach(familyAttendee => {
                   const buttonAttrs = {
-//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish fields
+//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
                     type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
                     value: familyAttendee.family.id,
                   }
                   $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
+                });
+              }
+            },
+          },
+          {
+            colSpan: 20,
+            dataField: "attendeecontact_set",
+            label: {
+              text: 'address:',
+            },
+            template: (data, itemElement) => {
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Join new address+").appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(attendeeContact => {
+                  const buttonAttrs = {
+//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish fields
+                    type: 'button', class: "btn-outline-success contact-button btn button btn-sm ", // or use btn-block class
+                    value: attendeeContact.contact.id,
+                  }
+                  $("<button>").attr(buttonAttrs).text(attendeeContact.contact.street).appendTo(itemElement);
                 });
               }
             },
