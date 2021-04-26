@@ -3,6 +3,9 @@ from pathlib import Path
 from attendees.persons.models import Attendee
 from rest_framework import serializers
 
+from attendees.persons.serializers import FamilySerializer
+from attendees.whereabouts.serializers import ContactSerializer
+
 
 class AttendeeMinimalSerializer(serializers.ModelSerializer):
     # parents_notifiers_names = serializers.CharField()
@@ -11,6 +14,8 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
     # self_phone_numbers = serializers.CharField(read_only=True)
     # caregiver_phone_numbers = serializers.CharField()
     # joined_roaster = serializers.IntegerField()
+    contacts = ContactSerializer(read_only=True, many=True)
+    families = FamilySerializer(read_only=True, many=True)
     photo = serializers.ImageField(use_url=True, required=False)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
     joined_meets = serializers.JSONField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)  # For MVP, Admin UI can handle this use case. Todo: when non admins start to use app, admin need to edit this on UI
