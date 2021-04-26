@@ -166,6 +166,26 @@ Attendees.datagridUpdate = {
               },
             ],
           },
+          {
+            colSpan: 20,
+            dataField: "familyattendee_set",
+            label: {
+              text: 'families',
+            },
+            template: (data, itemElement) => {
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(familyAttendee => {
+                  const buttonAttrs = {
+//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish fields
+                    type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                    value: familyAttendee.family.id,
+                  }
+                  $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
+                });
+              }
+            },
+          },
         ],
       },
       {
@@ -223,7 +243,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         dataField: "joined_meets",
         label: {
-          text: 'attends',
+          text: 'joins',
         },
         template: (data, itemElement) => {
           $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
