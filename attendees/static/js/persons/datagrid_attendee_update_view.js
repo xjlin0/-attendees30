@@ -65,8 +65,8 @@ Attendees.datagridUpdate = {
         items: [
 
           {
-            colSpan: 10,
-//            caption: "colSpan: 10",
+            colSpan: 7,
+//            caption: "colSpan: 7",
             itemType: "group",
             items: [
               {
@@ -75,7 +75,6 @@ Attendees.datagridUpdate = {
                 isRequired: true,
                 label: {
                   text: 'Major Division',
-    //              showColon: true,
                 },
                 editorOptions: {
                   valueExpr: "id",
@@ -97,25 +96,15 @@ Attendees.datagridUpdate = {
                 },
               },
               {
-                  dataField: "deathday",
-                  editorType: "dxDateBox",
-                  editorOptions: {
-                    placeholder: "click calendar",
-                  },
+                dataField: "gender",
+                editorType: "dxSelectBox",
+                isRequired: true,
+                editorOptions: {
+                  dataSource: Attendees.utilities.genderEnums(),
+                  valueExpr: "name",
+                  displayExpr: "name",
+                },
               },
-              {
-                  dataField: "first_name",
-                  editorOptions: {
-                    placeholder: "English",
-                  },
-              },
-            ],
-          },
-          {
-            colSpan: 10,
-//            caption: "colSpan: 10",
-            itemType: "group",
-            items: [
               {
                 dataField: "actual_birthday",
                 editorType: "dxDateBox",
@@ -125,6 +114,22 @@ Attendees.datagridUpdate = {
                     title: 'month, day and year are all required',
                   },
                 },
+              },
+            ],
+          },
+          {
+            colSpan: 7,
+//            caption: "colSpan: 7",
+            itemType: "group",
+            items: [
+              {
+                dataField: "first_name",
+                editorOptions: {
+                  placeholder: "English",
+                },
+              },
+              {
+                dataField: "last_name2",
               },
               {
                 dataField: "estimated_birthday",
@@ -136,49 +141,28 @@ Attendees.datagridUpdate = {
                   },
                 },
               },
-              {
-                  dataField: "last_name",
-                  editorOptions: {
-                    placeholder: "English",
-                  },
-              },
-            ],
-          },
-
-          {
-            colSpan: 8,
-//            caption: "colSpan: 4",
-            itemType: "group",
-            items: [
-              {
-                  dataField: "gender",
-                  editorType: "dxSelectBox",
-                  isRequired: true,
-                  editorOptions: {
-                    dataSource: Attendees.utilities.genderEnums(),
-                    valueExpr: "name",
-                    displayExpr: "name",
-                  },
-              },
             ],
           },
           {
             colSpan: 6,
-//            caption: "colSpan: 3",
+//            caption: "colSpan: 6",
             itemType: "group",
             items: [
               {
-                dataField: "last_name2",
+                dataField: "last_name",
+                editorOptions: {
+                  placeholder: "English",
+                },
               },
-            ],
-          },
-          {
-            colSpan: 6,
-//            caption: "colSpan: 3",
-            itemType: "group",
-            items: [
               {
                 dataField: "first_name2",
+              },
+              {
+                dataField: "deathday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "click calendar",
+                },
               },
             ],
           },
