@@ -16,6 +16,7 @@ Attendees.datagridUpdate = {
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
+    Attendees.datagridUpdate.displayNotifiers();
     Attendees.datagridUpdate.initAttendeeForm();
   },
 
@@ -31,6 +32,24 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
     Attendees.datagridUpdate.attendingmeetPopupDxForm && Attendees.datagridUpdate.attendingmeetPopupDxForm.option("readOnly", !enabled);
+  },
+
+  displayNotifiers: ()=> {
+    const params = new URLSearchParams(location.search);
+    if (params.has('success')) {
+      DevExpress.ui.notify(
+        {
+          message: params.get('success'),
+          width: 500,
+          position: {
+            my: 'center',
+            at: 'center',
+            of: window,
+          }
+        }, "success", 2500);
+    }
+    params.delete('success');
+    history.replaceState(null, '', '?' + params + location.hash);
   },
 
   initAttendeeForm: () => {
@@ -324,18 +343,11 @@ Attendees.datagridUpdate = {
                 dataType: 'json',
                 data   : userData,
                 method : 'POST',
-                success: (response) => {  // Todo: update photo link
+                success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
                            console.log("success here is response: ", response);
-                           DevExpress.ui.notify(
-                             {
-                               message: "saving attendee success",
-                               width: 500,
-                               position: {
-                                my: 'center',
-                                at: 'center',
-                                of: window,
-                               }
-                              }, "success", 2500);
+                           const parser = new URL(window.location);
+                           parser.searchParams.set('success', 'Saving attendee success');
+                           window.location = parser.href;
                          },
                 error  : (response) => {
                            console.log('Failed to save data for main AttendeeForm, error: ', response);
@@ -398,6 +410,7 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.attendingmeetDefaults,
+          colCount: 2,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -416,6 +429,7 @@ Attendees.datagridUpdate = {
 //              }]
 //            },
             {
+              colSpan: 2,
               dataField: "attending",
               editorType: "dxSelectBox",
 //              disabled: true,
@@ -548,7 +562,7 @@ Attendees.datagridUpdate = {
             },
             {
                 dataField: "category",
-                helpText: 'help text can be changed in /static/js/persons/datagrid_attendee_update_view.js',
+                helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
                 isRequired: true,
             },
             {
