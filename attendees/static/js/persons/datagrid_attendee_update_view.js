@@ -47,9 +47,9 @@ Attendees.datagridUpdate = {
             of: window,
           }
         }, "success", 2500);
+      params.delete('success');
+      history.replaceState(null, '', '?' + params + location.hash);
     }
-    params.delete('success');
-    history.replaceState(null, '', '?' + params + location.hash);
   },
 
   initAttendeeForm: () => {
@@ -192,26 +192,6 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 20,
-            dataField: "familyattendee_set",
-            label: {
-              text: 'families',
-            },
-            template: (data, itemElement) => {
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
-                data.editorOptions.value.forEach(familyAttendee => {
-                  const buttonAttrs = {
-//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
-                    type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
-                    value: familyAttendee.family.id,
-                  }
-                  $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
-                });
-              }
-            },
-          },
-          {
-            colSpan: 20,
             dataField: "attendeecontact_set",
             label: {
               text: 'address:',
@@ -226,6 +206,26 @@ Attendees.datagridUpdate = {
                     value: attendeeContact.contact.id,
                   }
                   $("<button>").attr(buttonAttrs).text(attendeeContact.contact.street).appendTo(itemElement);
+                });
+              }
+            },
+          },
+          {
+            colSpan: 20,
+            dataField: "familyattendee_set",
+            label: {
+              text: 'families',
+            },
+            template: (data, itemElement) => {
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(familyAttendee => {
+                  const buttonAttrs = {
+//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
+                    type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                    value: familyAttendee.family.id,
+                  }
+                  $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
                 });
               }
             },
