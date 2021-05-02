@@ -198,7 +198,7 @@ Attendees.datagridUpdate = {
             },
             template: (data, itemElement) => {
               $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
+              if (data.editorOptions && data.editorOptions.value && data.editorOptions.value > 1){
                 data.editorOptions.value.forEach(attendeeContact => {
                   const $button = $('<button>', {
                     type: 'button',
@@ -220,7 +220,8 @@ Attendees.datagridUpdate = {
             items: [
               {
                 colSpan: 3,
-                dataField: "attendeecontact_set[0].display_name",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].display_name",
                 label: {
                   visible: false,
 //                  text: 'address type',
@@ -230,9 +231,9 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing type of the address",
-                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      class: "btn-light attendeecontact-display-name btn button btn-sm attendee-contact-set",
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.display_name,
                     });
                     itemElement.append($button);
                   }
@@ -241,7 +242,8 @@ Attendees.datagridUpdate = {
               {
                 colSpan: 17,
 //                caption: "colSpan: 17",
-                dataField: "attendeecontact_set[0].contact.street",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.street",
                 label: {
                   text: 'address',
                 },
@@ -249,10 +251,10 @@ Attendees.datagridUpdate = {
                   if (data.editorOptions && data.editorOptions.value){
                     const $button = $('<button>', {
                       type: 'button',
-                      title: "editing type of the address",
-                      class: "btn-outline-dark street btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      title: "editing street of the address",
+                      class: "btn-outline-dark street btn button btn-sm attendee-contact-set",
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.street,
                     });
                     itemElement.append($button);
                   }
@@ -260,7 +262,8 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 5,
-                dataField: "attendeecontact_set[0].contact.fields.fixed.phone1",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.phone1",
                 label: {
                   text: 'phone',
                 },
@@ -269,9 +272,9 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing phone1 in address",
-                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set",
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.phone1,
                     });
                     itemElement.append($button);
                   }
@@ -279,7 +282,8 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 5,
-                dataField: "attendeecontact_set[0].contact.fields.fixed.phone2",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.phone2",
                 label: {
                   visible: false,
                 },
@@ -289,8 +293,8 @@ Attendees.datagridUpdate = {
                       type: 'button',
                       title: "editing phone2 in address",
                       class: "btn-outline-dark phone2 btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.phone2,
                     });
                     itemElement.append($button);
                   }
@@ -298,7 +302,8 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 5,
-                dataField: "attendeecontact_set[0].contact.fields.fixed.email1",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.email1",
                 label: {
                   text: 'email',
                 },
@@ -308,8 +313,8 @@ Attendees.datagridUpdate = {
                       type: 'button',
                       title: "editing email1 in address",
                       class: "btn-outline-dark email1 btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.email1,
                     });
                     itemElement.append($button);
                   }
@@ -317,7 +322,8 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 5,
-                dataField: "attendeecontact_set[0].contact.fields.fixed.email2",
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.email2",
                 label: {
                   visible: false,
                 },
@@ -327,8 +333,8 @@ Attendees.datagridUpdate = {
                       type: 'button',
                       title: "editing email2 in address",
                       class: "btn-outline-dark email2 btn button btn-sm attendee-contact-set-first",
-                      value: null,
-                      text: data.editorOptions.value,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.email2,
                     });
                     itemElement.append($button);
                   }
