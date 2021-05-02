@@ -194,21 +194,147 @@ Attendees.datagridUpdate = {
             colSpan: 20,
             dataField: "attendeecontact_set",
             label: {
-              text: 'address:',
+              text: 'addresses',
             },
             template: (data, itemElement) => {
               $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value){
                 data.editorOptions.value.forEach(attendeeContact => {
-                  const buttonAttrs = {
-//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish fields
-                    type: 'button', class: "btn-outline-success contact-button btn button btn-sm ", // or use btn-block class
-                    value: attendeeContact.contact.id,
-                  }
-                  $("<button>").attr(buttonAttrs).text(attendeeContact.contact.street).appendTo(itemElement);
+                  const $button = $('<button>', {
+                    type: 'button',
+                    class: "btn-outline-success contact-button btn button btn-sm attendee-contact-set", // or use btn-block class
+                    value: attendeeContact.id,
+                    text: attendeeContact.contact.street,
+//                    'data-attendeecontact-id': attendeeContact.id,
+                  });
+                  itemElement.append($button);
                 });
               }
             },
+          },
+          {
+            colSpan: 20,
+            colCount: 20,
+//            caption: "20",
+            itemType: "group",
+            items: [
+              {
+                colSpan: 3,
+                dataField: "attendeecontact_set[0].display_name",
+                label: {
+                  visible: false,
+//                  text: 'address type',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing type of the address",
+                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 17,
+//                caption: "colSpan: 17",
+                dataField: "attendeecontact_set[0].contact.street",
+                label: {
+                  text: 'address',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing type of the address",
+                      class: "btn-outline-dark street btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 5,
+                dataField: "attendeecontact_set[0].contact.fields.fixed.phone1",
+                label: {
+                  text: 'phone',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing phone1 in address",
+                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 5,
+                dataField: "attendeecontact_set[0].contact.fields.fixed.phone2",
+                label: {
+                  visible: false,
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing phone2 in address",
+                      class: "btn-outline-dark phone2 btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 5,
+                dataField: "attendeecontact_set[0].contact.fields.fixed.email1",
+                label: {
+                  text: 'email',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing email1 in address",
+                      class: "btn-outline-dark email1 btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 5,
+                dataField: "attendeecontact_set[0].contact.fields.fixed.email2",
+                label: {
+                  visible: false,
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing email2 in address",
+                      class: "btn-outline-dark email2 btn button btn-sm attendee-contact-set-first",
+                      value: null,
+                      text: data.editorOptions.value,
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+            ],
           },
           {
             colSpan: 20,
