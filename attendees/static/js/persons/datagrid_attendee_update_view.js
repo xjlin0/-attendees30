@@ -14,6 +14,11 @@ Attendees.datagridUpdate = {
     finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
   },
 
+  attendeecontactPopup: null, // for show/hide popup
+  attendeecontactPopupDxForm: null,  // for getting formData
+  attendeecontactPopupDxFormData: {},  // for storing formData
+  attendeecontactDefaults: {},
+
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
     Attendees.datagridUpdate.displayNotifiers();
@@ -23,7 +28,8 @@ Attendees.datagridUpdate = {
   initListeners: () => {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
     $("div.form-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
-    // add listeners for Contact, counselling, etc.
+    $("div.form-container").on("click", "button.attendee-contact-button",  e => Attendees.datagridUpdate.initAttendeecontactPopupDxForm(e));
+    // add listeners for Family, counselling, etc.
   },
 
   toggleEditing: (enabled) => {
@@ -202,7 +208,7 @@ Attendees.datagridUpdate = {
                 data.editorOptions.value.forEach(attendeeContact => {
                   const $button = $('<button>', {
                     type: 'button',
-                    class: "btn-outline-success contact-button btn button btn-sm attendee-contact-set", // or use btn-block class
+                    class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
                     value: attendeeContact.id,
                     text: attendeeContact.contact.street,
 //                    'data-attendeecontact-id': attendeeContact.id,
@@ -231,7 +237,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing type of the address",
-                      class: "btn-light attendeecontact-display-name btn button btn-sm attendee-contact-set",
+                      class: "btn-light attendeecontact-display-name btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.display_name,
                     });
@@ -252,7 +258,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing street of the address",
-                      class: "btn-outline-dark street btn button btn-sm attendee-contact-set",
+                      class: "btn-outline-dark street btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.contact.street,
                     });
@@ -272,7 +278,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing phone1 in address",
-                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-set",
+                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.contact.fields.fixed.phone1,
                     });
@@ -292,7 +298,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing phone2 in address",
-                      class: "btn-outline-dark phone2 btn button btn-sm attendee-contact-set-first",
+                      class: "btn-outline-dark phone2 btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.contact.fields.fixed.phone2,
                     });
@@ -312,7 +318,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing email1 in address",
-                      class: "btn-outline-dark email1 btn button btn-sm attendee-contact-set-first",
+                      class: "btn-outline-dark email1 btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.contact.fields.fixed.email1,
                     });
@@ -332,7 +338,7 @@ Attendees.datagridUpdate = {
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing email2 in address",
-                      class: "btn-outline-dark email2 btn button btn-sm attendee-contact-set-first",
+                      class: "btn-outline-dark email2 btn button btn-sm attendee-contact-button",
                       value: data.editorOptions.value.id,
                       text: data.editorOptions.value.contact.fields.fixed.email2,
                     });
@@ -772,6 +778,60 @@ Attendees.datagridUpdate = {
       }
     };
 
+  },
+
+  initAttendeecontactPopupDxForm: (event) => {
+    const contactButton = event.target;
+    Attendees.datagridUpdate.attendeecontactPopup = $("div.popup-attendeecontact-update").dxPopup(Attendees.datagridUpdate.AttendeeContactPopupDxFormConfig(contactButton)).dxPopup("instance");
+    Attendees.datagridUpdate.fetchAttendeecontactFormData(contactButton);
+  },
+
+  AttendeeContactPopupDxFormConfig: (contactButton) => {
+    const ajaxUrl=$('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/';
+    return {
+      visible: true,
+      title: contactButton.value ? 'Viewing Contact' : 'Creating Contact',
+      minwidth: "20%",
+      minheight: "30%",
+      position: {
+        my: 'center',
+        at: 'center',
+        of: window,
+      },
+      dragEnabled: true,
+      contentTemplate: (e) => {
+        const formContainer = $('<div class="attendeeContactForm">');
+        Attendees.datagridUpdate.attendeecontactPopupDxForm = formContainer.dxForm({
+        readOnly: !Attendees.utilities.editingEnabled,
+          formData: Attendees.datagridUpdate.attendeecontactDefaults,
+          colCount: 2,
+          scrollingEnabled: true,
+          showColonAfterLabel: false,
+          requiredMark: "*",
+          labelLocation: "top",
+          minColWidth: "20%",
+          showValidationSummary: true,
+          items: [
+            "id", "display_name"
+          ],
+        }).dxForm("instance");
+        e.append(formContainer);
+      },
+    };
+  },
+
+  fetchAttendeecontactFormData: (contactButton) => {
+    if (contactButton.value){
+      $.ajax({
+        url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
+        success: (response) => {
+                   console.log("hi 828 success here is response: ", response);
+                   Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
+                   Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
+                 },
+        error  : (response) => console.log("Failed to fetch data for Attendeecontact Form in Popup, error: ", response),
+      });
+    }
   },
 }
 
