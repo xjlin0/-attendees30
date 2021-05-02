@@ -19,16 +19,12 @@ class ApiDatagridDataAttendeeContactViewSet(LoginRequiredMixin, ModelViewSet):  
 
     def retrieve(self, request, *args, **kwargs):
         attendeecontact_id = self.request.query_params.get('attendeecontact_id')
-        print("hi 22 here is attendeecontact_id: ")
-        print(attendeecontact_id)
         attendee = AttendeeContact.objects.filter(pk=attendeecontact_id).first()
         serializer = AttendeeContactSerializer(attendee)
         return Response(serializer.data)
 
-    def get_queryset(self):
+    def get_queryset(self):  # Todo: check if current user are allowed to query this attendee's contact
         querying_attendeecontact_id = self.kwargs.get('attendeecontact_id')
-        print("hi 30 here is querying_attendeecontact_id: ")
-        print(querying_attendeecontact_id)
         return AttendeeContact.objects.filter(pk=querying_attendeecontact_id)
 
 

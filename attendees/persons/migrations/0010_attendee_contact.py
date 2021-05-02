@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'persons_attendee_contacts',
+                'ordering': ('display_order',),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),

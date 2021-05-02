@@ -14,6 +14,7 @@ class AttendeeContact(TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'persons_attendee_contacts'
+        ordering = ('display_order',)
         constraints = [
             models.UniqueConstraint(fields=['attendee', 'contact'], name="attendee_contact")
         ]

@@ -17,7 +17,10 @@ Attendees.datagridUpdate = {
   attendeecontactPopup: null, // for show/hide popup
   attendeecontactPopupDxForm: null,  // for getting formData
   attendeecontactPopupDxFormData: {},  // for storing formData
-  attendeecontactDefaults: {},
+  attendeecontactDefaults: {
+    display_order: 1,
+    display_name: 'other',
+  },
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -458,7 +461,7 @@ Attendees.datagridUpdate = {
         horizontalAlignment: "left",
         buttonOptions: {
           elementAttr: {
-            class: 'attendee-form-submits',
+            class: 'attendee-form-submits',  // for toggling editing mode
           },
           disabled: !Attendees.utilities.editingEnabled,
           text: "Save Attendee details and photo",
@@ -556,16 +559,6 @@ Attendees.datagridUpdate = {
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-//            {
-//              dataField: "customer_name",
-//              label: { text: "Name" },
-//              editorOptions: {
-//              },
-//              validationRules: [{
-//                type: "required",
-//                message: "Customer Name is required"
-//              }]
-//            },
             {
               colSpan: 2,
               dataField: "attending",
@@ -723,7 +716,7 @@ Attendees.datagridUpdate = {
 //              colSpan: 2,
               buttonOptions: {
                 elementAttr: {
-                  class: 'attendee-form-submits',
+                  class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
                 text: "Save Participation",
@@ -812,7 +805,93 @@ Attendees.datagridUpdate = {
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-            "id", "display_name"
+            {
+              dataField: "display_name",
+              label: {
+                text: 'Type',
+              },
+              helpText: 'what kind of address is this?',
+              isRequired: true,
+              editorOptions: {
+                placeholder: "Main/parent/past, etc",
+              },
+            },
+            {
+              dataField: "display_order",
+              helpText: 'The most important one will be 0',
+              isRequired: true,
+              editorOptions: {
+                placeholder: "0/1/2/3, etc",
+              },
+              validationRules: [
+                {
+                  type: "range",
+                  max: 32767,
+                  min: 0,
+                  message: "display_order should be between 0 and 32767"
+                },
+                {
+                  type: "required",
+                  message: "display_order is required"
+                },
+              ]
+            },
+            {
+              itemType: "button",
+              horizontalAlignment: "left",
+//              colSpan: 2,
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Save Contact",
+                icon: "save",
+                hint: "save attendeecontect data in the popup",
+                type: "default",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if(confirm('are you sure to submit the popup attendeeContact Form?')){
+                    const userData = Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData');
+                    userData._method = userData.id ? 'PUT' : 'POST';
+
+                    $.ajax({
+                      url    : ajaxUrl,
+                      data   : userData,
+                      method : 'POST',
+                      success: (response) => {
+                                 console.log("hi 854 saving success here is response: ", response);
+                                 Attendees.datagridUpdate.attendeecontactPopup.hide();
+                                 DevExpress.ui.notify(
+                                   {
+                                     message: "saving attendeecontact success",
+                                     width: 500,
+                                     position: {
+                                      my: 'center',
+                                      at: 'center',
+                                      of: window,
+                                     }
+                                    }, "success", 2500);
+                               },
+                      error  : (response) => {
+                                 console.log('Failed to save data for attendeeContact Form in Popup, error: ', response);
+                                 console.log('formData: ', userData);
+                                 DevExpress.ui.notify(
+                                   {
+                                     message: "saving attendeecontact error",
+                                     width: 500,
+                                     position: {
+                                      my: 'center',
+                                      at: 'center',
+                                      of: window,
+                                     }
+                                    }, "error", 5000);
+                      },
+                    });
+                  }
+                }
+              },
+            },
           ],
         }).dxForm("instance");
         e.append(formContainer);
@@ -828,6 +907,7 @@ Attendees.datagridUpdate = {
                    console.log("hi 828 success here is response: ", response);
                    Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
                    Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
+                   Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
                  },
         error  : (response) => console.log("Failed to fetch data for Attendeecontact Form in Popup, error: ", response),
       });
