@@ -821,9 +821,13 @@ Attendees.datagridUpdate = {
               },
               editorType: "dxLookup",
               editorOptions: {
+                elementAttr: {
+                  class: 'contact-lookup-search',  // for searching address
+                },
                 valueExpr: "id",
                 displayExpr: "street",
                 placeholder: "Select a value...",
+                searchExpr: ['street_number', 'raw'],
 //                searchMode: 'startswith',
                 searchPlaceholder: 'Type street number',
 //                minSearchLength: 3,  // cause values disappeared in drop down
@@ -832,19 +836,20 @@ Attendees.datagridUpdate = {
                   showTitle: false,
                   closeOnOutsideClick: true,
                 },
-                dataSource: new DevExpress.data.DataSource({
-                  store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
-                    load: () => {
-                      const d = $.Deferred();
-                      $.get($('div.datagrid-attendee-update').data('contacts-endpoint')).done((response) => {
-                          d.resolve(response.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]))
-                      });
-                      return d.promise();
-                    }
-                  })
-                }),
+                dataSource: Attendees.datagridUpdate.contactSource,
+//                dataSource: new DevExpress.data.DataSource({
+//                  store: new DevExpress.data.CustomStore({
+//                    key: "id",
+//                    loadMode: "raw",
+//                    load: () => {
+//                      const d = $.Deferred();
+//                      $.get($('div.datagrid-attendee-update').data('contacts-endpoint')).done((response) => {
+//                          d.resolve(response.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]))
+//                      });
+//                      return d.promise();
+//                    }
+//                  })
+//                }),
               },
             },
             {
@@ -902,7 +907,7 @@ Attendees.datagridUpdate = {
                       data   : userData,
                       method : 'POST',
                       success: (response) => {
-                                 console.log("hi 854 saving success here is response: ", response);
+                                 console.log("hi 910 saving success here is response: ", response);
                                  Attendees.datagridUpdate.attendeecontactPopup.hide();
                                  DevExpress.ui.notify(
                                    {
@@ -946,7 +951,7 @@ Attendees.datagridUpdate = {
       $.ajax({
         url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
         success: (response) => {
-                   console.log("hi 913 success here is response: ", response);
+                   console.log("hi 954 success here is response: ", response);
                    Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
                    Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
                    Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
@@ -955,6 +960,61 @@ Attendees.datagridUpdate = {
       });
     }
   },
+
+  contactSource: new DevExpress.data.CustomStore({
+//    loadMode: "raw",
+    key: 'id',
+    load: (loadOptions) => {
+      const deferred = $.Deferred();
+      const args = {};
+
+      [
+          "skip",
+          "take",
+          "sort",
+          "filter",
+          "searchExpr",
+          "searchOperation",
+          "searchValue",
+          "group",
+      ].forEach((i) => {
+          if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+              args[i] = loadOptions[i];
+      });
+
+      $.ajax({
+        url: $('div.datagrid-attendee-update').data('contacts-endpoint'),
+        dataType: "json",
+        data: args,
+        success: (result) => {
+          console.log('hi 990 ajax success here is result: ', result);
+          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]), {
+            totalCount: result.totalCount,
+            summary:    result.summary,
+            groupCount: result.groupCount
+          });
+        },
+        error: () => {
+          console.log('hi 998 ajax error');
+          deferred.reject("Data Loading Error, probably time out?");
+        },
+        timeout: 7000,
+      });
+
+      return deferred.promise();
+    },
+    byKey: (key) => {
+      console.log('1007 starting byKey with key: ', key);
+      const d = new $.Deferred();
+      $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
+          .done(function(result) {
+              console.log('hi 1011 ajax success here is result: ', result);
+              d.resolve(result.data);
+          });
+      return d.promise();
+    },
+  }),
+
 }
 
 $(document).ready(() => {
