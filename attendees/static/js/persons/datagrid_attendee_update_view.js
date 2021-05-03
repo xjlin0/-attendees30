@@ -814,7 +814,11 @@ Attendees.datagridUpdate = {
           items: [
             {
               colSpan: 2,
-              dataField: "contact",
+              dataField: "contact.id",
+              name: "contact",
+              label: {
+                text: 'address',
+              },
               editorType: "dxLookup",
               editorOptions: {
                 valueExpr: "id",
@@ -835,7 +839,7 @@ Attendees.datagridUpdate = {
                     load: () => {
                       const d = $.Deferred();
                       $.get($('div.datagrid-attendee-update').data('contacts-endpoint')).done((response) => {
-                          d.resolve(response.data)
+                          d.resolve(response.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]))
                       });
                       return d.promise();
                     }
