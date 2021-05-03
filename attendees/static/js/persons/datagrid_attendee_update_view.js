@@ -137,6 +137,12 @@ Attendees.datagridUpdate = {
                   valueExpr: "name",
                   displayExpr: "name",
                 },
+                validationRules: [
+                  {
+                    type: "required",
+                    message: "gender is required"
+                  },
+                ],
               },
               {
                 dataField: "actual_birthday",
@@ -527,6 +533,7 @@ Attendees.datagridUpdate = {
         success: (response) => {
                    Attendees.datagridUpdate.attendingmeetPopupDxFormData = response.data[0];
                    Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]);
+                   Attendees.datagridUpdate.attendingmeetPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
                  },
         error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
       });
@@ -806,6 +813,37 @@ Attendees.datagridUpdate = {
           showValidationSummary: true,
           items: [
             {
+              colSpan: 2,
+              dataField: "contact",
+              editorType: "dxLookup",
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "street",
+                placeholder: "Select a value...",
+//                searchMode: 'startswith',
+                searchPlaceholder: 'Type street number',
+//                minSearchLength: 3,  // cause values disappeared in drop down
+//                searchTimeout: 200,  // cause values disappeared in drop down
+                dropDownOptions: {
+                  showTitle: false,
+                  closeOnOutsideClick: true,
+                },
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      $.get($('div.datagrid-attendee-update').data('contacts-endpoint')).done((response) => {
+                          d.resolve(response.data)
+                      });
+                      return d.promise();
+                    }
+                  })
+                }),
+              },
+            },
+            {
               dataField: "display_name",
               label: {
                 text: 'Type',
@@ -904,7 +942,7 @@ Attendees.datagridUpdate = {
       $.ajax({
         url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
         success: (response) => {
-                   console.log("hi 828 success here is response: ", response);
+                   console.log("hi 913 success here is response: ", response);
                    Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
                    Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
                    Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
