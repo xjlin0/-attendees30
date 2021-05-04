@@ -94,7 +94,7 @@ Attendees.datagridUpdate = {
         colSpan: 20,
         colCount: 20,
         itemType: "group",
-//        caption: "basic info",
+        caption: "basic info",
         items: [
 
           {
@@ -207,74 +207,10 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 20,
-            dataField: "attendeecontact_set",
-            label: {
-              text: 'addresses',
-            },
-            template: (data, itemElement) => {
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value && data.editorOptions.value > 1){
-                data.editorOptions.value.forEach(attendeeContact => {
-                  const $button = $('<button>', {
-                    type: 'button',
-                    class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
-                    value: attendeeContact.id,
-                    text: attendeeContact.contact.street,
-//                    'data-attendeecontact-id': attendeeContact.id,
-                  });
-                  itemElement.append($button);
-                });
-              }
-            },
-          },
-          {
-            colSpan: 20,
             colCount: 20,
-//            caption: "20",
+            caption: "contacts",
             itemType: "group",
             items: [
-              {
-                colSpan: 3,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].display_name",
-                label: {
-                  visible: false,
-//                  text: 'address type',
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing type of the address",
-                      class: "btn-light attendeecontact-display-name btn button btn-sm attendee-contact-button",
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.display_name,
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
-              {
-                colSpan: 17,
-//                caption: "colSpan: 17",
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.street",
-                label: {
-                  text: 'address',
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing street of the address",
-                      class: "btn-outline-dark street btn button btn-sm attendee-contact-button",
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.street,
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
               {
                 colSpan: 5,
                 dataField: "attendeecontact_set[0]",
@@ -359,6 +295,32 @@ Attendees.datagridUpdate = {
                   }
                 },
               },
+              {
+                colSpan: 20,
+                dataField: "attendeecontact_set",
+                label: {
+                  text: 'contacts',
+                },
+                template: (data, itemElement) => {
+                  console.log('hi 216 here is data.editorOptions.value: ',  data.editorOptions.value);
+                  if (data.editorOptions && data.editorOptions.value){
+                    data.editorOptions.value.forEach(attendeeContact => {
+                      let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
+                      if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
+                      if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
+                      console.log("hi 220 here is button text: ", text);
+                      const $button = $('<button>', {
+                        type: 'button',
+                        class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
+                        value: attendeeContact.id,
+                        text: text,
+                      });
+                      itemElement.append($button);
+                    });
+                  }
+                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
+                },
+              },
             ],
           },
           {
@@ -386,7 +348,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 4,
         itemType: "group",
-//        caption: "photo",
+        caption: "photo",
         items: [
 
           {
