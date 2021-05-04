@@ -798,6 +798,9 @@ Attendees.datagridUpdate = {
         at: 'center',
         of: window,
       },
+      onHiding: () => {
+        $('div.contact-lookup-search').dxLookup('instance').close();
+      },
       dragEnabled: true,
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendeeContactForm">');
@@ -826,7 +829,7 @@ Attendees.datagridUpdate = {
                 },
                 valueExpr: "id",
                 displayExpr: (item) => {
-                  return '(' + item.display_name + ') ' + item.street;
+                  return item ? '(' + item.display_name + ') ' + item.street : '';
                 },
                 placeholder: "Select a value...",
                 searchExpr: ['street_number', 'raw'],
