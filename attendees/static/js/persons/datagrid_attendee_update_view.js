@@ -825,11 +825,11 @@ Attendees.datagridUpdate = {
               editorType: "dxLookup",
               editorOptions: {
                 elementAttr: {
-                  class: 'contact-lookup-search',  // for searching address
+                  class: 'contact-lookup-search',  // calling closing by the parent
                 },
                 valueExpr: "id",
                 displayExpr: (item) => {
-                  return item ? '(' + item.display_name + ') ' + item.street : '';
+                  return item ? '(' + (item.display_name || ' ') + ') ' + (item.street || 'null record contact_id: ' + item.id) : '';
                 },
                 placeholder: "Select a value...",
                 searchExpr: ['street_number', 'raw'],
@@ -899,7 +899,6 @@ Attendees.datagridUpdate = {
                       data   : userData,
                       method : 'POST',
                       success: (response) => {
-                                 console.log("hi 910 saving success here is response: ", response);
                                  Attendees.datagridUpdate.attendeecontactPopup.hide();
                                  DevExpress.ui.notify(
                                    {
@@ -913,7 +912,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('Failed to save data for attendeeContact Form in Popup, error: ', response);
+                                 console.log('915 Failed to save data for attendeeContact Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -940,23 +939,29 @@ Attendees.datagridUpdate = {
 
   fetchAttendeecontactFormData: (contactButton) => {
     if (contactButton.value){
-      $.ajax({
-        url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
-        success: (response) => {
-                   console.log("hi 954 success here is response: ", response);
-                   Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
-                   Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
-                   Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
-                 },
-        error  : (response) => console.log("Failed to fetch data for Attendeecontact Form in Popup, error: ", response),
-      });
+      const fetchedContact = Attendees.datagridUpdate.attendeeFormConfigs.formData.attendeecontact_set.find(x => x.id == contactButton.value); // button value is string
+      if (!Attendees.utilities.editingEnabled && fetchedContact) {
+        Attendees.datagridUpdate.attendeecontactPopupDxFormData = fetchedContact;
+        Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', fetchedContact);
+      }else{
+        $.ajax({
+          url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
+          success: (response) => {
+                     Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
+                     Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
+                     Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
+                   },
+          error  : (response) => console.log("Failed to fetch data for Attendeecontact Form in Popup, error: ", response),
+        });
+      }
     }
   },
 
   contactSource: new DevExpress.data.CustomStore({
-//    loadMode: "raw",
     key: 'id',
     load: (loadOptions) => {
+      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact];
+
       const deferred = $.Deferred();
       const args = {};
 
@@ -979,15 +984,14 @@ Attendees.datagridUpdate = {
         dataType: "json",
         data: args,
         success: (result) => {
-          console.log('hi 990 ajax success here is result: ', result);
           deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]), {
             totalCount: result.totalCount,
             summary:    result.summary,
             groupCount: result.groupCount
           });
         },
-        error: () => {
-          console.log('hi 998 ajax error');
+        error: (response) => {
+          console.log('hi 995 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -996,14 +1000,16 @@ Attendees.datagridUpdate = {
       return deferred.promise();
     },
     byKey: (key) => {
-      console.log('1007 starting byKey with key: ', key);
-      const d = new $.Deferred();
-      $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
-          .done(function(result) {
-              console.log('hi 1011 ajax success here is result: ', result);
-              d.resolve(result.data);
-          });
-      return d.promise();
+      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact){
+        return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact];
+      }else{
+        const d = new $.Deferred();
+        $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
+            .done(function(result) {
+                d.resolve(result.data);
+            });
+        return d.promise();
+      }
     },
   }),
 
