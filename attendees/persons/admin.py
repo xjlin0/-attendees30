@@ -11,9 +11,9 @@ from .models import *
 # Register your models here.
 
 
-class AttendeeContactInline(admin.StackedInline):
-    model = AttendeeContact
-    extra = 0
+# class AttendeeContactInline(admin.StackedInline):
+#     model = AttendeeContact
+#     extra = 0
 
 
 class AttendingMeetInline(admin.StackedInline):
@@ -72,7 +72,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     }
     search_fields = ('full_name',)
     readonly_fields = ['id', 'created', 'modified', 'full_name']
-    inlines = (AttendeeContactInline, RelationshipInline)
+    inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)
     list_display = ('id', 'division', 'full_name', 'progressions', 'infos')
 

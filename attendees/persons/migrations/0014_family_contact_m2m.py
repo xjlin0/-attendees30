@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0009_attendee_contact_m2m'),
+        # ('whereabouts', '0009_attendee_contact_m2m'),
         ('persons', '0013_family_contact'),
     ]
 
