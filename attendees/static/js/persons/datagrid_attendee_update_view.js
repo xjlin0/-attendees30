@@ -94,7 +94,7 @@ Attendees.datagridUpdate = {
         colSpan: 20,
         colCount: 20,
         itemType: "group",
-        caption: "basic info",
+        caption: "Basic info",
         items: [
 
           {
@@ -208,147 +208,40 @@ Attendees.datagridUpdate = {
           {
             colSpan: 20,
             colCount: 20,
-            caption: "contacts",
+            caption: "Families",
             itemType: "group",
             items: [
-              {
-                colSpan: 5,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.phone1",
-                label: {
-                  text: 'phone',
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const defaultClass = "phone1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone1 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing phone1 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone1 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
-              {
-                colSpan: 5,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.phone2",
-                label: {
-                  visible: false,
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const defaultClass = "phone2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone2 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing phone2 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone2 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
-              {
-                colSpan: 5,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.email1",
-                label: {
-                  text: 'email',
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const defaultClass = "email1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email1 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing email1 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email1 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
-              {
-                colSpan: 5,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.email2",
-                label: {
-                  visible: false,
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    const defaultClass = "email2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email2 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing email2 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email2 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
-              },
+
               {
                 colSpan: 20,
-                dataField: "attendeecontact_set",
+                dataField: "familyattendee_set",
                 label: {
-                  text: 'contacts',
+                  text: 'families',
                 },
                 template: (data, itemElement) => {
-                  console.log('hi 216 here is data.editorOptions.value: ',  data.editorOptions.value);
+                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
                   if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(attendeeContact => {
-                      let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
-                      if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
-                      if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
-                      console.log("hi 220 here is button text: ", text);
-                      const $button = $('<button>', {
-                        type: 'button',
-                        class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
-                        value: attendeeContact.id,
-                        text: text,
-                      });
-                      itemElement.append($button);
+                    data.editorOptions.value.forEach(familyAttendee => {
+                      const buttonAttrs = {
+    //                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
+                        type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                        value: familyAttendee.family.id,
+                      }
+                      $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
                     });
                   }
-                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
                 },
               },
+
+
             ],
-          },
-          {
-            colSpan: 20,
-            dataField: "familyattendee_set",
-            label: {
-              text: 'families',
-            },
-            template: (data, itemElement) => {
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
-                data.editorOptions.value.forEach(familyAttendee => {
-                  const buttonAttrs = {
-//                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
-                    type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
-                    value: familyAttendee.family.id,
-                  }
-                  $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
-                });
-              }
-            },
           },
         ],
       },
       {
         colSpan: 4,
         itemType: "group",
-        caption: "photo",
+        caption: "Photo",
         items: [
 
           {
@@ -406,26 +299,164 @@ Attendees.datagridUpdate = {
           },
         ],
       },
+
+
       {
         colSpan: 24,
-        dataField: "joined_meets",
-        label: {
-          text: 'joins',
-        },
-        template: (data, itemElement) => {
-          $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
-          if (data.editorOptions && data.editorOptions.value){
-            data.editorOptions.value.forEach(attending => {
-              const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-              const buttonAttrs = {
-                title: "since " + attending.attending_start,
-                type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
-                value: attending.attendingmeet_id
+        colCount: 24,
+        caption: "Contacts",
+        itemType: "group",
+        items: [
+
+
+              {
+                colSpan: 6,
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.phone1",
+                label: {
+                  text: 'phone',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "phone1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone1 ? "btn-outline-dark" : "btn-outline-secondary");
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing phone1 in address",
+                      class: defaultClass,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.phone1 || 'N/A',
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 6,
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.phone2",
+                label: {
+                  visible: false,
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "phone2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone2 ? "btn-outline-dark" : "btn-outline-secondary");
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing phone2 in address",
+                      class: defaultClass,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.phone2 || 'N/A',
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 6,
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.email1",
+                label: {
+                  text: 'email',
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "email1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email1 ? "btn-outline-dark" : "btn-outline-secondary");
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing email1 in address",
+                      class: defaultClass,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.email1 || 'N/A',
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 6,
+                dataField: "attendeecontact_set[0]",
+                name: "attendeecontact_set[0].contact.fields.fixed.email2",
+                label: {
+                  visible: false,
+                },
+                template: (data, itemElement) => {
+                  if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "email2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email2 ? "btn-outline-dark" : "btn-outline-secondary");
+                    const $button = $('<button>', {
+                      type: 'button',
+                      title: "editing email2 in address",
+                      class: defaultClass,
+                      value: data.editorOptions.value.id,
+                      text: data.editorOptions.value.contact.fields.fixed.email2 || 'N/A',
+                    });
+                    itemElement.append($button);
+                  }
+                },
+              },
+              {
+                colSpan: 24,
+                dataField: "attendeecontact_set",
+                label: {
+                  text: 'contacts',
+                },
+                template: (data, itemElement) => {
+                  console.log('hi 216 here is data.editorOptions.value: ',  data.editorOptions.value);
+                  if (data.editorOptions && data.editorOptions.value){
+                    data.editorOptions.value.forEach(attendeeContact => {
+                      let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
+                      if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
+                      if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
+                      console.log("hi 220 here is button text: ", text);
+                      const $button = $('<button>', {
+                        type: 'button',
+                        class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
+                        value: attendeeContact.id,
+                        text: text,
+                      });
+                      itemElement.append($button);
+                    });
+                  }
+                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
+                },
+              },
+
+
+
+
+        ],
+      },
+
+
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Groups",
+        itemType: "group",
+        items: [
+
+          {
+            colSpan: 24,
+            dataField: "joined_meets",
+            label: {
+              text: 'joins',
+            },
+            template: (data, itemElement) => {
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(attending => {
+                  const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
+                  const buttonAttrs = {
+                    title: "since " + attending.attending_start,
+                    type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
+                    value: attending.attendingmeet_id
+                  }
+                  $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
+                });
               }
-              $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
-            });
-          }
-        }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
+            }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
+          },
+
+        ],
       },
       { // https://supportcenter.devexpress.com/ticket/details/t681806
         itemType: "button",
