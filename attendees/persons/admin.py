@@ -155,11 +155,6 @@ class AttendingMeetAdmin(admin.ModelAdmin):
     list_display = ('id', 'attending', 'meet', 'character', 'category', 'finish', 'modified')
 
 
-class FamilyContactAdmin(admin.ModelAdmin):
-    readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'family', 'contact', 'created', 'modified')
-
-
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(Family, FamilyAdmin)
@@ -170,4 +165,3 @@ admin.site.register(Attending, AttendingAdmin)
 admin.site.register(Relation, RelationAdmin)
 admin.site.register(Relationship, RelationshipAdmin)
 admin.site.register(AttendingMeet, AttendingMeetAdmin)
-admin.site.register(FamilyContact, FamilyContactAdmin)
