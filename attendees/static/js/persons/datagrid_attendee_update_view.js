@@ -825,31 +825,20 @@ Attendees.datagridUpdate = {
                   class: 'contact-lookup-search',  // for searching address
                 },
                 valueExpr: "id",
-                displayExpr: "street",
+                displayExpr: (item) => {
+                  return '(' + item.display_name + ') ' + item.street;
+                },
                 placeholder: "Select a value...",
                 searchExpr: ['street_number', 'raw'],
 //                searchMode: 'startswith',
                 searchPlaceholder: 'Type street number',
-//                minSearchLength: 3,  // cause values disappeared in drop down
-//                searchTimeout: 200,  // cause values disappeared in drop down
+                minSearchLength: 3,  // cause values disappeared in drop down
+                searchTimeout: 200,  // cause values disappeared in drop down
                 dropDownOptions: {
                   showTitle: false,
                   closeOnOutsideClick: true,
                 },
                 dataSource: Attendees.datagridUpdate.contactSource,
-//                dataSource: new DevExpress.data.DataSource({
-//                  store: new DevExpress.data.CustomStore({
-//                    key: "id",
-//                    loadMode: "raw",
-//                    load: () => {
-//                      const d = $.Deferred();
-//                      $.get($('div.datagrid-attendee-update').data('contacts-endpoint')).done((response) => {
-//                          d.resolve(response.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]))
-//                      });
-//                      return d.promise();
-//                    }
-//                  })
-//                }),
               },
             },
             {

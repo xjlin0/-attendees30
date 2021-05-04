@@ -18,8 +18,8 @@ class ApiUserContactViewSet(LoginRequiredMixin, ModelViewSet):
         if self.request.user.organization:
             # Todo: 20210502 filter contacts the current user can see (for schedulers)
             contact_id = self.request.query_params.get('id', None)
-            keywords = self.request.query_params.get('searchValue', None),
-            keyword = ''.join(map(lambda x: str(x or ''), keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on browser does not help
+            keywords = self.request.query_params.get('searchValue', ''),
+            keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on browser does not help
             contacts = Contact.objects if self.request.user.privileged() else self.request.user.attendee.contacts
 
             if contact_id:
