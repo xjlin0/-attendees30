@@ -71,6 +71,7 @@ Attendees.datagridUpdate = {
       success: (response) => {
                  Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
+                 window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                  Attendees.datagridUpdate.initListeners();
                },
@@ -400,13 +401,11 @@ Attendees.datagridUpdate = {
                   text: 'contacts',
                 },
                 template: (data, itemElement) => {
-                  console.log('hi 216 here is data.editorOptions.value: ',  data.editorOptions.value);
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(attendeeContact => {
                       let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
                       if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
                       if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
-                      console.log("hi 220 here is button text: ", text);
                       const $button = $('<button>', {
                         type: 'button',
                         class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
@@ -813,9 +812,45 @@ Attendees.datagridUpdate = {
           showValidationSummary: true,
           items: [
             {
+              dataField: "contact.fields.fixed.phone1",
+              label: {
+                text: 'Phone 1',
+              },
+              editorOptions: {
+                placeholder: "format: +1-510-123-4567",
+              },
+            },
+            {
+              dataField: "contact.fields.fixed.phone2",
+              label: {
+                text: 'Phone 2',
+              },
+              editorOptions: {
+                placeholder: "format: +1-510-123-4567",
+              },
+            },
+            {
+              dataField: "contact.fields.fixed.email1",
+              label: {
+                text: 'Email 1',
+              },
+              editorOptions: {
+                placeholder: "format: name@domain.com",
+              },
+            },
+            {
+              dataField: "contact.fields.fixed.email2",
+              label: {
+                text: 'Email 2',
+              },
+              editorOptions: {
+                placeholder: "format: name@domain.com",
+              },
+            },
+            {
               dataField: "display_name",
               label: {
-                text: 'Type',
+                text: 'Contact Type',
               },
               helpText: 'what kind of address is this?',
               isRequired: true,
@@ -825,7 +860,10 @@ Attendees.datagridUpdate = {
             },
             {
               dataField: "display_order",
-              helpText: 'The most important one will be 0',
+              label: {
+                text: 'Contact Importance',
+              },
+              helpText: '0 will be shown ahead, others will be 1,2,3...',
               isRequired: true,
               editorOptions: {
                 placeholder: "0/1/2/3, etc",
@@ -848,7 +886,7 @@ Attendees.datagridUpdate = {
               dataField: "contact.id",
               name: "contact",
               label: {
-                text: 'address',
+                text: 'Address',
               },
               editorType: "dxLookup",
               editorOptions: {
