@@ -284,12 +284,13 @@ Attendees.datagridUpdate = {
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "phone1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone1 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing phone1 in address",
-                      class: "btn-outline-dark phone1 btn button btn-sm attendee-contact-button",
+                      class: defaultClass,
                       value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone1,
+                      text: data.editorOptions.value.contact.fields.fixed.phone1 || 'N/A',
                     });
                     itemElement.append($button);
                   }
@@ -304,12 +305,13 @@ Attendees.datagridUpdate = {
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "phone2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone2 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing phone2 in address",
-                      class: "btn-outline-dark phone2 btn button btn-sm attendee-contact-button",
+                      class: defaultClass,
                       value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone2,
+                      text: data.editorOptions.value.contact.fields.fixed.phone2 || 'N/A',
                     });
                     itemElement.append($button);
                   }
@@ -324,12 +326,13 @@ Attendees.datagridUpdate = {
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "email1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email1 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing email1 in address",
-                      class: "btn-outline-dark email1 btn button btn-sm attendee-contact-button",
+                      class: defaultClass,
                       value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email1,
+                      text: data.editorOptions.value.contact.fields.fixed.email1 || 'N/A',
                     });
                     itemElement.append($button);
                   }
@@ -344,12 +347,13 @@ Attendees.datagridUpdate = {
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
+                    const defaultClass = "email2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email2 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
                       title: "editing email2 in address",
-                      class: "btn-outline-dark email2 btn button btn-sm attendee-contact-button",
+                      class: defaultClass,
                       value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email2,
+                      text: data.editorOptions.value.contact.fields.fixed.email2 || 'N/A',
                     });
                     itemElement.append($button);
                   }
@@ -816,35 +820,6 @@ Attendees.datagridUpdate = {
           showValidationSummary: true,
           items: [
             {
-              colSpan: 2,
-              dataField: "contact.id",
-              name: "contact",
-              label: {
-                text: 'address',
-              },
-              editorType: "dxLookup",
-              editorOptions: {
-                elementAttr: {
-                  class: 'contact-lookup-search',  // calling closing by the parent
-                },
-                valueExpr: "id",
-                displayExpr: (item) => {
-                  return item ? '(' + (item.display_name || ' ') + ') ' + (item.street || 'null record contact_id: ' + item.id) : '';
-                },
-                placeholder: "Select a value...",
-                searchExpr: ['street_number', 'raw'],
-//                searchMode: 'startswith',
-                searchPlaceholder: 'Type street number',
-                minSearchLength: 3,  // cause values disappeared in drop down
-                searchTimeout: 200,  // cause values disappeared in drop down
-                dropDownOptions: {
-                  showTitle: false,
-                  closeOnOutsideClick: true,
-                },
-                dataSource: Attendees.datagridUpdate.contactSource,
-              },
-            },
-            {
               dataField: "display_name",
               label: {
                 text: 'Type',
@@ -874,6 +849,35 @@ Attendees.datagridUpdate = {
                   message: "display_order is required"
                 },
               ]
+            },
+            {
+              colSpan: 2,
+              dataField: "contact.id",
+              name: "contact",
+              label: {
+                text: 'address',
+              },
+              editorType: "dxLookup",
+              editorOptions: {
+                elementAttr: {
+                  class: 'contact-lookup-search',  // calling closing by the parent
+                },
+                valueExpr: "id",
+                displayExpr: (item) => {
+                  return item ? '(' + (item.display_name || ' ') + ') ' + (item.street || 'null record contact_id: ' + item.id) : '';
+                },
+                placeholder: "Select a value...",
+                searchExpr: ['street_number', 'raw'],
+//                searchMode: 'startswith',
+                searchPlaceholder: 'Search addresses',
+                minSearchLength: 3,  // cause values disappeared in drop down
+                searchTimeout: 200,  // cause values disappeared in drop down
+                dropDownOptions: {
+                  showTitle: false,
+                  closeOnOutsideClick: true,
+                },
+                dataSource: Attendees.datagridUpdate.contactSource,
+              },
             },
             {
               itemType: "button",
