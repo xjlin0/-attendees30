@@ -97,7 +97,7 @@ class MeetAdmin(admin.ModelAdmin):
     search_fields = ('display_name',)
     list_filter = ('assembly',)
     list_display_links = ('display_name',)
-    list_display = ('id', 'display_name', 'slug', 'assembly', 'location')
+    list_display = ('id', 'display_name', 'slug', 'assembly', 'site')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish', 'slug']),
@@ -122,7 +122,7 @@ class GatheringAdmin(admin.ModelAdmin):
     list_display_links = ('display_name',)
     search_fields = ('meet__display_name', 'display_name')
     list_filter = ('meet',)
-    list_display = ('id', 'meet', 'start', 'display_name', 'location', 'infos')
+    list_display = ('id', 'meet', 'start', 'display_name', 'site', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),

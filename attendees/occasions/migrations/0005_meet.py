@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('start', models.DateTimeField(null=False, blank=False, default=Utility.now_with_timezone)),
                 ('finish', models.DateTimeField(null=False, blank=False, help_text="Required for user to filter by time")),
                 ('is_removed', models.BooleanField(default=False)),
-                ('site_type', models.ForeignKey(help_text='location: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
+                ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('site_id', models.BigIntegerField()),
                 ('assembly', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='occasions.Assembly')),
                 ('slug', models.SlugField(max_length=50, unique=True)),

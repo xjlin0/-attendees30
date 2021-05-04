@@ -15,9 +15,9 @@ class Team(TimeStampedModel, SoftDeletableModel, Utility):
     display_name = models.CharField(max_length=50, blank=True, null=True)
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"link": "https://..."}. Please keep {} here even no data')
-    site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='location: django_content_type id for table name')
+    site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
     site_id = models.BigIntegerField()
-    location = GenericForeignKey('site_type', 'site_id')
+    site = GenericForeignKey('site_type', 'site_id')
 
     class Meta:
         db_table = 'occasions_teams'

@@ -6,27 +6,27 @@ from attendees.persons.models import *
 from .models import *
 
 
-class AssemblyContactInline(admin.TabularInline):
-    model = AssemblyContact
-    extra = 0
+# class AssemblyContactInline(admin.TabularInline):
+#     model = AssemblyContact
+#     extra = 0
 
 
 class ContactAdmin(admin.ModelAdmin):
-    formfield_overrides = {
-        fields.JSONField: {'widget': JSONEditorWidget},
-    }
+    # formfield_overrides = {
+    #     fields.JSONField: {'widget': JSONEditorWidget},
+    # }
 
-    inlines = (AssemblyContactInline,)
-    search_fields = ('display_name', 'fields')
+    # inlines = (AssemblyContactInline,)
+    search_fields = ('display_name', 'raw')
     list_display_links = ('display_name',)
     readonly_fields = ['id', 'created', 'modified', 'street']
-    list_display = ('id', 'display_name', 'street', 'phone1', 'email1')
-
-    def phone1(self, instance):
-        return instance.fields.get('fixed', {}).get('phone1')
-
-    def email1(self, instance):
-        return instance.fields.get('fixed', {}).get('email1')
+    list_display = ('id', 'display_name', 'street')
+    #
+    # def phone1(self, instance):
+    #     return instance.fields.get('fixed', {}).get('phone1')
+    #
+    # def email1(self, instance):
+    #     return instance.fields.get('fixed', {}).get('email1')
 
 
 class DivisionAdmin(admin.ModelAdmin):

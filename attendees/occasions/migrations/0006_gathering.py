@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('occurrence', models.ForeignKey(blank=True, null=True, on_delete=models.deletion.SET_NULL, to='schedule.Occurrence')),
                 ('site_id', models.BigIntegerField()),
                 ('meet', models.ForeignKey(on_delete=models.SET(0), to='occasions.Meet')),
-                ('site_type', models.ForeignKey(help_text='location: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
+                ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('display_name', models.CharField(blank=True, null=True, max_length=50, help_text="02/09/2020, etc")),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"LG_location": "F207", "link": "https://..."}. Please keep {} here even no data', null=True)),
             ],

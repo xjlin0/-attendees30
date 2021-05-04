@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 # ('zip_code', models.CharField(max_length=10, null=True, blank=True)),
                 # ('url', models.URLField(blank=True, null=True, max_length=255)),
                 # ('country', models.CharField(default='N/A', max_length=10, blank=True, null=True)),
-                ('fields', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
+                # ('fields', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={
                 'db_table': 'whereabouts_contacts',
@@ -50,8 +50,8 @@ class Migration(migrations.Migration):
         #     model_name='contact',
         #     name='id',
         # ),
-        migrations.AddIndex(
-            model_name='contact',
-            index=GinIndex(fields=['fields'], name='contact_fields_gin'),
-        ),
+        # migrations.AddIndex(
+        #     model_name='contact',
+        #     index=GinIndex(fields=['fields'], name='contact_fields_gin'),
+        # ),
     ]
