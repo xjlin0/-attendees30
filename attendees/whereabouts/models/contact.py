@@ -8,14 +8,14 @@ from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
 from attendees.persons.models import Utility, Note
-from attendees.occasions.models import Assembly, AssemblyContact
+from attendees.occasions.models import Assembly  #, AssemblyContact
 
 
 class Contact(Address, TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=True, null=True, db_index=True, help_text='optional label')
-    assemblies = models.ManyToManyField(Assembly, through=AssemblyContact)
+    # assemblies = models.ManyToManyField(Assembly, through=AssemblyContact)
     attendees = models.ManyToManyField('persons.Attendee', through='persons.AttendeeContact')
     # families = models.ManyToManyField('persons.Families', through='persons.FamilyAddress')
     # email1 = models.EmailField(blank=True, null=True, max_length=254, db_index=True)
@@ -32,7 +32,7 @@ class Contact(Address, TimeStampedModel, SoftDeletableModel, Utility):
     # zip_code = models.CharField(max_length=10, null=True, blank=True)
     # url = models.URLField(max_length=255, blank=True, null=True)
     # country = models.CharField(max_length=10, default='N/A', blank=True, null=True)
-    # fields = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
+    fields = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
 
     def get_absolute_url(self):
         return reverse('contact_detail', args=[str(self.id)])
@@ -48,9 +48,9 @@ class Contact(Address, TimeStampedModel, SoftDeletableModel, Utility):
         verbose_name_plural = 'Contacts'
         # ordering = ['created']
         ordering = ('locality', 'route', 'street_number', 'address_extra')
-        # indexes = [
-        #     GinIndex(fields=['fields'], name='contact_fields_gin', ),
-        # ]
+        indexes = [
+            GinIndex(fields=['fields'], name='contact_fields_gin', ),
+        ]
 
     # @property
     # def street(self):

@@ -12,9 +12,9 @@ from .models import *
 
 
 class ContactAdmin(admin.ModelAdmin):
-    # formfield_overrides = {
-    #     fields.JSONField: {'widget': JSONEditorWidget},
-    # }
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
 
     # inlines = (AssemblyContactInline,)
     search_fields = ('display_name', 'raw')

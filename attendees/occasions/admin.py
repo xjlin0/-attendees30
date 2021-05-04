@@ -8,19 +8,19 @@ from .models import *
 # Register your models here.
 
 
-class AssemblyContactAdmin(admin.ModelAdmin):
-    readonly_fields = ['id', 'created', 'modified']
-    list_display = ('assembly', 'contact', 'modified')
+# class AssemblyContactAdmin(admin.ModelAdmin):
+#     readonly_fields = ['id', 'created', 'modified']
+#     list_display = ('assembly', 'contact', 'modified')
 
 
-class AssemblyContactInline(admin.TabularInline):
-    model = AssemblyContact
-    extra = 0
+# class AssemblyContactInline(admin.TabularInline):
+#     model = AssemblyContact
+#     extra = 0
 
 
 class AssemblyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
-    inlines = (AssemblyContactInline,)
+    # inlines = (AssemblyContactInline,)
     list_display_links = ('display_name',)
     list_display = ('id', 'division', 'display_name', 'slug', 'get_addresses')
     readonly_fields = ['id', 'created', 'modified']
@@ -137,7 +137,7 @@ class GatheringAdmin(admin.ModelAdmin):
         js = ['js/admin/list_filter_collapse.js']
 
 
-admin.site.register(AssemblyContact, AssemblyContactAdmin)
+# admin.site.register(AssemblyContact, AssemblyContactAdmin)
 admin.site.register(Assembly, AssemblyAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Character, CharacterAdmin)

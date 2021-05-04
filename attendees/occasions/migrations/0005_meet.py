@@ -10,7 +10,6 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0004_assembly_contact_m2m'),
         ('occasions', '0004_character'),
     ]
 
