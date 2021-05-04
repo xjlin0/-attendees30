@@ -20,7 +20,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
-    contacts = models.ManyToManyField('whereabouts.Contact', through='AttendeeContact', related_name='contacts')
+    # contacts = models.ManyToManyField('whereabouts.Contact', through='AttendeeContact', related_name='contacts')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
