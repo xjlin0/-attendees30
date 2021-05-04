@@ -5,7 +5,7 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel
 from . import Utility
 
 
-class AttendeeContact(TimeStampedModel, SoftDeletableModel, Utility):
+class Locate(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     attendee = models.ForeignKey('Attendee', on_delete=models.CASCADE, null=False, blank=False)
     start = models.DateTimeField(null=True, blank=True, help_text='optional')
@@ -18,11 +18,11 @@ class AttendeeContact(TimeStampedModel, SoftDeletableModel, Utility):
     #need to validate there only one 'main' for display_name
 
     class Meta:
-        db_table = 'persons_attendee_contacts'
+        db_table = 'whereabouts_locates'
         ordering = ('display_order',)
-        constraints = [
-            models.UniqueConstraint(fields=['attendee', 'contact'], name="attendee_contact")
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(fields=['attendee', 'contact'], name="attendee_contact")
+        # ]
         indexes = [
             GinIndex(fields=['fields'], name='locate_fields_gin', ),
         ]

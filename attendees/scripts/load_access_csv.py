@@ -9,7 +9,7 @@ from address.models import Locality, State, Address
 
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyContact, Relation, Attendee, FamilyAttendee, \
-    AttendeeContact, Relationship, Registration, Attending, AttendingMeet
+    Locate, Relationship, Registration, Attending, AttendingMeet
 from attendees.whereabouts.models import Place, Division
 
 
@@ -383,7 +383,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
                         contact = Place.objects.filter(fields__access_address_id=address_id).first()
                         if contact:
-                            AttendeeContact.objects.update_or_create(
+                            Locate.objects.update_or_create(
                                 contact=contact,
                                 attendee=attendee,
                                 defaults={'display_name': 'main', 'display_order': 0}

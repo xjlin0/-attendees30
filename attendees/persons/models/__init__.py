@@ -10,4 +10,4 @@ from .relationship import Relationship
 from .registration import Registration
 from .attending import Attending
 from .attending_meet import AttendingMeet
-from .attendee_contact import AttendeeContact
+from .locate import Locate

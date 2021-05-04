@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from attendees.persons.models import AttendeeContact
+from attendees.persons.models import Locate
 from attendees.whereabouts.serializers import PlaceSerializer
 
 
@@ -8,7 +8,7 @@ class AttendeeContactSerializer(serializers.ModelSerializer):
     contact = PlaceSerializer(read_only=True)
 
     class Meta:
-        model = AttendeeContact
+        model = Locate
         # fields = '__all__'
         fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
             # 'contact',
@@ -22,7 +22,7 @@ class AttendeeContactSerializer(serializers.ModelSerializer):
         attendeecontact_id = self._kwargs['data'].get('id')
         print("hi 23 in AttendeeContactSerializer, here is validated_data: ")
         print(validated_data)
-        obj, created = AttendeeContact.objects.update_or_create(
+        obj, created = Locate.objects.update_or_create(
             id=attendeecontact_id,
             defaults=validated_data,
         )

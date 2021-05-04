@@ -16,7 +16,7 @@ class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
     # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=True, null=True, db_index=True, help_text='optional label')
     # assemblies = models.ManyToManyField(Assembly, through=AssemblyContact)
-    # attendees = models.ManyToManyField('persons.Attendee', through='persons.AttendeeContact')
+    # attendees = models.ManyToManyField('persons.Attendee', through='persons.Locate')
     # families = models.ManyToManyField('persons.Families', through='persons.FamilyAddress')
     # email1 = models.EmailField(blank=True, null=True, max_length=254, db_index=True)
     # email2 = models.EmailField(blank=True, null=True, max_length=254)

@@ -12,7 +12,7 @@ from .models import *
 
 
 # class AttendeeContactInline(admin.StackedInline):
-#     model = AttendeeContact
+#     model = Locate
 #     extra = 0
 
 

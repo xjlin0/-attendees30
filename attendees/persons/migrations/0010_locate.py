@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='AttendeeContact',
+            name='Locate',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('fields', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={
-                'db_table': 'persons_attendee_contacts',
+                'db_table': 'whereabouts_locates',
                 'ordering': ('display_order',),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
@@ -40,14 +40,14 @@ class Migration(migrations.Migration):
         # migrations.AddField(
         #     model_name='attendee',
         #     name='contacts',
-        #     field=models.ManyToManyField(through='persons.AttendeeContact', to='whereabouts.Place', related_name='contacts'),
+        #     field=models.ManyToManyField(through='persons.Locate', to='whereabouts.Place', related_name='contacts'),
         # ),
-        migrations.AddConstraint(
-            model_name='attendeecontact',
-            constraint=models.UniqueConstraint(fields=('attendee', 'contact'), name='attendee_contact'),
-        ),
+        # migrations.AddConstraint(
+        #     model_name='locate',
+        #     constraint=models.UniqueConstraint(fields=('attendee', 'contact'), name='attendee_contact'),
+        # ),
         migrations.AddIndex(
-            model_name='attendeecontact',
+            model_name='locate',
             index=GinIndex(fields=['fields'], name='locate_fields_gin'),
         ),
     ]
