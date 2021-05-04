@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
 from attendees.persons.models import AttendeeContact
-from attendees.whereabouts.serializers import ContactSerializer
+from attendees.whereabouts.serializers import PlaceSerializer
 
 
 class AttendeeContactSerializer(serializers.ModelSerializer):
-    contact = ContactSerializer(read_only=True)
+    contact = PlaceSerializer(read_only=True)
 
     class Meta:
         model = AttendeeContact

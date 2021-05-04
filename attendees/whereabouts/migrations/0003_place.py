@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Contact',
+            name='Place',
             fields=[
                 # ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
                 ('address_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='address.Address')),
@@ -40,8 +40,8 @@ class Migration(migrations.Migration):
                 ('fields', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={
-                'db_table': 'whereabouts_contacts',
-                'verbose_name_plural': 'Contacts',
+                'db_table': 'whereabouts_places',
+                # 'verbose_name_plural': 'Contacts',
                 'ordering': ('locality', 'route', 'street_number', 'address_extra'),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         #     name='id',
         # ),
         migrations.AddIndex(
-            model_name='contact',
-            index=GinIndex(fields=['fields'], name='contact_fields_gin'),
+            model_name='place',
+            index=GinIndex(fields=['fields'], name='place_fields_gin'),
         ),
     ]

@@ -10,7 +10,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0003_contact'),
+        ('whereabouts', '0003_place'),
         ('occasions', '0000_initial'),
     ]
 

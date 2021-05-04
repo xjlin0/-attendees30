@@ -10,7 +10,7 @@ from address.models import Locality, State, Address
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, FamilyContact, Relation, Attendee, FamilyAttendee, \
     AttendeeContact, Relationship, Registration, Attending, AttendingMeet
-from attendees.whereabouts.models import Contact, Division
+from attendees.whereabouts.models import Place, Division
 
 
 def import_household_people_address(
@@ -56,7 +56,7 @@ def import_household_people_address(
 
     try:
         initial_time = datetime.utcnow()
-        initial_contact_count = Contact.objects.count()
+        initial_contact_count = Place.objects.count()
         initial_family_count = Family.objects.count()
         initial_attendee_count = Attendee.objects.count()
         initial_relationship_count = Relationship.objects.count()
@@ -68,7 +68,7 @@ def import_household_people_address(
             upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug)
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
-            print('Initial contact count: ', initial_contact_count, '. final contact count: ', Contact.objects.count(), end="\n")
+            print('Initial contact count: ', initial_contact_count, '. final contact count: ', Place.objects.count(), end="\n")
 
             print('Number of households successfully imported/updated: ', upserted_household_id_count)
             print('Initial family count: ', initial_family_count, '. final family count: ', Family.objects.count(), end="\n")
@@ -143,7 +143,7 @@ def import_addresses(addresses, california):
                         'access_address_values': address_dict,
                     }
                 }
-                Contact.objects.update_or_create(
+                Place.objects.update_or_create(
                     fields__access_address_id=address_id,
                     defaults=contact_values
                 )
@@ -160,7 +160,7 @@ def import_addresses(addresses, california):
 
 def import_households(households, division1_slug, division2_slug):
     """
-    Importer of households from MS Access, also update display name and telephone number of Contact.
+    Importer of households from MS Access, also update display name and telephone number of Place.
     :param households: file content of households accessible by headers, from MS Access
     :param division1_slug: slug of division 1  # ch
     :param division2_slug: slug of division 2  # en
@@ -207,9 +207,9 @@ def import_households(households, division1_slug, division2_slug):
                 if address_id:
                     phone1 = Utility.presence(household.get('HouseholdPhone'))
                     phone2 = Utility.presence(household.get('HouseholdFax'))
-                    # old_contact = Contact.objects.filter(fields__access_address_id=address_id).first()
+                    # old_contact = Place.objects.filter(fields__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    contact, contact_created = Contact.objects.update_or_create(
+                    contact, contact_created = Place.objects.update_or_create(
                         fields__access_address_id=address_id,
                         # address=address,
                         defaults={
@@ -381,7 +381,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        contact = Contact.objects.filter(fields__access_address_id=address_id).first()
+                        contact = Place.objects.filter(fields__access_address_id=address_id).first()
                         if contact:
                             AttendeeContact.objects.update_or_create(
                                 contact=contact,

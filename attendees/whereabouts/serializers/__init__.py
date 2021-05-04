@@ -1,2 +1,2 @@
 from .division import DivisionSerializer
-from .contact_serializer import ContactSerializer
+from .place_serializer import PlaceSerializer

@@ -13,7 +13,7 @@ from attendees.persons.serializers import AttendeeContactSerializer
 
 class ApiDatagridDataAttendeeContactViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
     """
-    API endpoint that allows AttendeeContact & Contact to be viewed or edited.
+    API endpoint that allows AttendeeContact & Place to be viewed or edited.
     """
     serializer_class = AttendeeContactSerializer
 

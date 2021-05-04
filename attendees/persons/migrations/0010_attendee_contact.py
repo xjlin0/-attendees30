@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('start', models.DateTimeField(blank=True, null=True, help_text='optional')),
                 ('finish', models.DateTimeField(blank=True, null=True, help_text='optional')),
                 ('is_removed', models.BooleanField(default=False)),
-                # ('contact', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Contact')),
+                # ('contact', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Place')),
                 ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
                 # ('category', models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
                 ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         # migrations.AddField(
         #     model_name='attendee',
         #     name='contacts',
-        #     field=models.ManyToManyField(through='persons.AttendeeContact', to='whereabouts.Contact', related_name='contacts'),
+        #     field=models.ManyToManyField(through='persons.AttendeeContact', to='whereabouts.Place', related_name='contacts'),
         # ),
         migrations.AddConstraint(
             model_name='attendeecontact',

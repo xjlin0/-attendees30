@@ -45,7 +45,7 @@ class PropertyAdmin(admin.ModelAdmin):
 class CampusAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug', 'contact', 'modified')
+    list_display = ('display_name', 'slug', 'modified')
 
 
 class SuiteAdmin(admin.ModelAdmin):
@@ -69,7 +69,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'slug', 'infos', 'modified')
 
 
-admin.site.register(Contact, ContactAdmin)
+admin.site.register(Place, ContactAdmin)
 admin.site.register(Campus, CampusAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(Suite, SuiteAdmin)

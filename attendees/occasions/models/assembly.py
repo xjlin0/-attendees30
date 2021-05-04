@@ -12,7 +12,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     start = models.DateTimeField(null=True, blank=True, help_text='optional')
     finish = models.DateTimeField(null=True, blank=True, help_text='optional')
-    # contacts = models.ManyToManyField('whereabouts.Contact', through='AssemblyContact')
+    # contacts = models.ManyToManyField('whereabouts.Place', through='AssemblyContact')
     category = models.CharField(max_length=20, default='normal', blank=False, null=False, db_index=True, help_text="normal, no-display, etc")
     display_name = models.CharField(max_length=50, blank=False, null=False)
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
