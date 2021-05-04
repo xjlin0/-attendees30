@@ -318,7 +318,7 @@ Attendees.datagridUpdate = {
                   text: 'phone',
                 },
                 template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
+                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
                     const defaultClass = "phone1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone1 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
@@ -339,7 +339,7 @@ Attendees.datagridUpdate = {
                   visible: false,
                 },
                 template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
+                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
                     const defaultClass = "phone2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone2 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
@@ -360,7 +360,7 @@ Attendees.datagridUpdate = {
                   text: 'email',
                 },
                 template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
+                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
                     const defaultClass = "email1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email1 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
@@ -381,7 +381,7 @@ Attendees.datagridUpdate = {
                   visible: false,
                 },
                 template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
+                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
                     const defaultClass = "email2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email2 ? "btn-outline-dark" : "btn-outline-secondary");
                     const $button = $('<button>', {
                       type: 'button',
@@ -403,16 +403,18 @@ Attendees.datagridUpdate = {
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(attendeeContact => {
-                      let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
-                      if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
-                      if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
-                      const $button = $('<button>', {
-                        type: 'button',
-                        class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
-                        value: attendeeContact.id,
-                        text: text,
-                      });
-                      itemElement.append($button);
+                      if (attendeeContact.contact && typeof attendeeContact.contact === 'object'){
+                        let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
+                        if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
+                        if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
+                        const $button = $('<button>', {
+                          type: 'button',
+                          class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
+                          value: attendeeContact.id,
+                          text: text,
+                        });
+                        itemElement.append($button);
+                      }
                     });
                   }
                   $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "contact-button-new contact-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
@@ -443,13 +445,15 @@ Attendees.datagridUpdate = {
               $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value){
                 data.editorOptions.value.forEach(attending => {
-                  const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-                  const buttonAttrs = {
-                    title: "since " + attending.attending_start,
-                    type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
-                    value: attending.attendingmeet_id
+                  if (attending && attending.attendingmeet_id) {
+                    const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
+                    const buttonAttrs = {
+                      title: "since " + attending.attending_start,
+                      type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
+                      value: attending.attendingmeet_id
+                    }
+                    $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
                   }
-                  $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
                 });
               }
             }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
