@@ -645,6 +645,7 @@
       "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "Chinese for Christ Church of Hayward",
       "infos": {
+        "contacts": {},
         "hostname": "192.168.99.100",
         "counselor": [
           "d7c8Fd_cfcch_data_counselor"
@@ -665,12 +666,13 @@
       "slug": "faBd6C_heaven",
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
+        "contacts": {},
         "hostname": "heaven.heaven"
       }
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 2,
     "fields": {
       "created": "2020-04-11T18:21:36.525Z",
@@ -693,7 +695,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 1,
     "fields": {
       "created": "2020-04-11T18:20:51.529Z",
@@ -715,7 +717,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 8,
     "fields": {
       "created": "1999-04-11T18:27:19.494Z",
@@ -738,7 +740,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 6,
     "fields": {
       "created": "1999-04-11T18:24:29.705Z",
@@ -761,7 +763,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 11,
     "fields": {
       "created": "2020-06-19T15:17:47.102Z",
@@ -784,7 +786,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 7,
     "fields": {
       "created": "1999-04-11T18:26:10.767Z",
@@ -807,7 +809,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 4,
     "fields": {
       "created": "1999-04-11T18:23:10.733Z",
@@ -830,7 +832,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 5,
     "fields": {
       "created": "1999-04-11T18:23:51.688Z",
@@ -853,7 +855,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 10,
     "fields": {
       "created": "1999-04-20T16:36:06.375Z",
@@ -876,7 +878,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 3,
     "fields": {
       "created": "1999-04-11T18:22:32.505Z",
@@ -899,7 +901,7 @@
     }
   },
   {
-    "model": "whereabouts.contact",
+    "model": "whereabouts.place",
     "pk": 9,
     "fields": {
       "created": "1999-04-11T18:31:54.276Z",
@@ -930,7 +932,9 @@
       "is_removed": false,
       "display_name": "CFCC Main",
       "slug": "d7c8Fd_main",
-      "contact": 1
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -942,7 +946,9 @@
       "is_removed": false,
       "display_name": "\u5929\u4e0a",
       "slug": "faBd6C_sky",
-      "contact": 9
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -954,7 +960,9 @@
       "is_removed": false,
       "display_name": "Sonoma State University",
       "slug": "sonoma_state_university",
-      "contact": 11
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -966,7 +974,9 @@
       "is_removed": false,
       "display_name": "CFCC Fellowship Hall",
       "slug": "fellowship_hall",
-      "contact": 1,
+      "infos": {
+        "contacts": {}
+      },
       "campus": 1
     }
   },
@@ -979,7 +989,9 @@
       "is_removed": false,
       "display_name": "CFCC \u820a\u4e3b\u5802",
       "slug": "old_main_sanctuary",
-      "contact": 1,
+      "infos": {
+        "contacts": {}
+      },
       "campus": 1
     }
   },
@@ -992,7 +1004,11 @@
       "is_removed": false,
       "display_name": "SSU Sauvignon Village",
       "slug": "ssu_sauvignon_village",
-      "contact": 11,
+      "infos": {
+        "contacts": {
+          "phone1": "+17076642880"
+        }
+      },
       "campus": 3
     }
   },
@@ -1005,7 +1021,11 @@
       "is_removed": false,
       "display_name": "SSU Student Center",
       "slug": "ssu_student_center",
-      "contact": 11,
+      "infos": {
+        "contacts": {
+          "phone1": "+17076642880"
+        }
+      },
       "campus": 3
     }
   },
@@ -3818,110 +3838,147 @@
       "category": "primary"
     }
   },
+
   {
-    "model": "persons.attendeecontact",
-    "pk": 1,
-    "fields": {
-      "created": "1999-04-12T02:35:56.316Z",
-      "modified": "2020-04-12T02:35:56.316Z",
-      "is_removed": false,
-      "attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
-      "contact": 5,
-      "display_name": "main",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 2,
-    "fields": {
-      "created": "1999-04-12T02:36:28.174Z",
-      "modified": "2020-04-12T02:36:28.174Z",
-      "is_removed": false,
-      "attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "contact": 3,
-      "display_name": "main",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 3,
-    "fields": {
-      "created": "1999-04-12T02:37:31.869Z",
-      "modified": "2020-04-12T02:37:31.869Z",
-      "is_removed": false,
-      "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "contact": 3,
-      "display_name": "resident",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 4,
-    "fields": {
-      "created": "1999-04-12T02:37:31.870Z",
-      "modified": "2020-04-12T02:37:31.870Z",
-      "is_removed": false,
-      "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "contact": 4,
-      "display_name": "resident",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 5,
-    "fields": {
-      "created": "1999-04-12T02:38:10.664Z",
-      "modified": "2020-04-12T02:38:10.664Z",
-      "is_removed": false,
-      "attendee": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
-      "contact": 2,
-      "display_name": "main",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 6,
-    "fields": {
-      "created": "1999-04-12T02:38:37.899Z",
-      "modified": "2020-04-12T02:38:37.899Z",
-      "is_removed": false,
-      "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "contact": 6,
-      "display_name": "main",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
-    "pk": 7,
-    "fields": {
-      "created": "1999-04-12T02:39:02.228Z",
-      "modified": "2020-04-12T02:39:02.228Z",
-      "is_removed": false,
-      "attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "contact": 6,
-      "display_name": "main",
-      "display_order": 0
-    }
-  },
-  {
-    "model": "persons.attendeecontact",
+    "model": "whereabouts.locate",
     "pk": 8,
     "fields": {
-      "created": "1999-04-12T02:39:24.344Z",
-      "modified": "2020-04-12T02:39:24.344Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "contact": 6,
+      "place": 5,
+      "content_type": 46,
+      "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "display_name": "main",
-      "display_order": 0
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
+
+  {
+    "model": "whereabouts.locate",
+    "pk": 9,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 3,
+      "content_type": 46,
+      "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+
+  {
+    "model": "whereabouts.locate",
+    "pk": 10,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 3,
+      "content_type": 46,
+      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "display_name": "resident",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+
+  {
+    "model": "whereabouts.locate",
+    "pk": 11,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 4,
+      "content_type": 46,
+      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "display_name": "resident",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 12,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 2,
+      "content_type": 46,
+      "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 13,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 14,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 15,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+
   {
     "model": "occasions.assembly",
     "pk": 1,
@@ -3936,7 +3993,10 @@
       "display_order": 0,
       "slug": "cfcch_junior_regular_activity",
       "need_age": true,
-      "division": 3
+      "division": 3,
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -3953,7 +4013,15 @@
       "display_order": 0,
       "slug": "cfcch_chinese_worship_team",
       "need_age": false,
-      "division": 1
+      "division": 1,
+      "infos": {
+        "contacts": {
+          "url": "https://chineseforchristchurch.org",
+          "email1": "haywardchurch@yahoo.com",
+          "email2": "church.office@cfcchayward.org",
+          "phone1": "+1-510-581-1630"
+        }
+      }
     }
   },
   {
@@ -3970,7 +4038,10 @@
       "display_order": 0,
       "slug": "cfcch_junior_special_activity",
       "need_age": true,
-      "division": 3
+      "division": 3,
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -3987,7 +4058,10 @@
       "display_order": 0,
       "slug": "heaven_throne_worship",
       "need_age": false,
-      "division": 4
+      "division": 4,
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -4004,7 +4078,10 @@
       "display_order": 0,
       "slug": "cfcch_congregation_data",
       "need_age": false,
-      "division": 5
+      "division": 5,
+      "infos": {
+        "contacts": {}
+      }
     }
   },
   {
@@ -4021,7 +4098,16 @@
       "display_order": 0,
       "slug": "cfcch_summer_retreat_2020",
       "need_age": false,
-      "division": 6
+      "division": 6,
+      "infos": {
+        "contacts": {
+          "url": null,
+          "email1": null,
+          "email2": null,
+          "phone1": "+17076642880",
+          "phone2": null
+        }
+      }
     }
   },
   {
@@ -4038,91 +4124,134 @@
       "display_order": 0,
       "slug": "cfcch_crossing_worship_team",
       "need_age": false,
-      "division": 2
+      "division": 2,
+      "infos": {
+        "contacts": {
+          "url": "https://www.thecrossing.website",
+          "email1": "church.office@cfcchayward.org",
+          "phone1": "+12222222222",
+          "phone2": "+22222222222"
+        }
+      }
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 1,
     "fields": {
-      "created": "2020-04-11T18:41:13.836Z",
-      "modified": "2020-04-11T18:41:13.836Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 1,
-      "contact": 1,
-      "category": "normal"
+      "place": 1,
+      "content_type": 52,
+      "object_id": "1",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 2,
     "fields": {
-      "created": "2020-04-11T18:41:25.032Z",
-      "modified": "2020-04-11T18:41:25.032Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 2,
-      "contact": 1,
-      "category": "normal"
+      "place": 1,
+      "content_type": 52,
+      "object_id": "2",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 3,
     "fields": {
-      "created": "2020-04-11T18:41:41.979Z",
-      "modified": "2020-04-20T16:36:48.153Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 3,
-      "contact": 10,
-      "category": "normal"
+      "place": 10,
+      "content_type": 52,
+      "object_id": "3",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 4,
     "fields": {
-      "created": "1999-04-11T18:41:57.656Z",
-      "modified": "2020-04-11T18:41:57.656Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 4,
-      "contact": 9,
-      "category": "normal"
+      "place": 9,
+      "content_type": 52,
+      "object_id": "4",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 5,
     "fields": {
-      "created": "2020-05-09T22:31:18.495Z",
-      "modified": "2020-05-09T22:31:18.495Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 5,
-      "contact": 1,
-      "category": "normal"
+      "place": 1,
+      "content_type": 52,
+      "object_id": "5",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 6,
     "fields": {
-      "created": "2020-06-19T15:26:20.428Z",
-      "modified": "2020-06-19T15:26:20.428Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 6,
-      "contact": 11,
-      "category": "primary"
+      "place": 11,
+      "content_type": 52,
+      "object_id": "6",
+      "display_name": "primary",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
-    "model": "occasions.assemblycontact",
+    "model": "whereabouts.locate",
     "pk": 7,
     "fields": {
-      "created": "2021-04-08T13:48:06.902Z",
-      "modified": "2021-04-08T13:48:06.902Z",
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "assembly": 7,
-      "contact": 1,
-      "category": "normal"
+      "place": 1,
+      "content_type": 52,
+      "object_id": "7",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
     }
   },
   {
@@ -7295,7 +7424,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7323,7 +7457,12 @@
       },
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7351,7 +7490,12 @@
         "fixed": {
           "public_name": "\u5f1f\u5144"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7379,7 +7523,12 @@
       },
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7407,7 +7556,12 @@
         "fixed": {
           "public_name": "\u8001\u59ca"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7435,7 +7589,12 @@
         "fixed": {
           "public_name": "\u6230\u795e\u4e48\u4e48"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7461,7 +7620,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7487,7 +7651,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7518,7 +7687,12 @@
           "allergy": "peanuts",
           "public_name": "\u5927\u5bf6"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7544,7 +7718,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7570,7 +7749,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7605,7 +7789,12 @@
           "public_name": "root",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": "5greata@email.com",
+          "email2": "5greatb@email.com",
+          "phone1": "+15555555555",
+          "phone2": "+25555555555"
+        }
       }
     }
   },
@@ -7631,7 +7820,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": "6coola@email.com",
+          "email2": "6coolb@email.com",
+          "phone1": "+16666666666",
+          "phone2": "+26666666666"
+        }
       }
     }
   },
@@ -7657,7 +7851,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7687,7 +7886,12 @@
         "fixed": {
           "other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7715,7 +7919,12 @@
         "fixed": {
           "public_name": "\u4f7f\u5f92\u7d04\u7ff0"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7741,7 +7950,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": "7coola@email.com",
+          "email2": "7coolb@email.com",
+          "phone1": "+17777777777",
+          "phone2": "+27777777777"
+        }
       }
     }
   },
@@ -7769,7 +7983,12 @@
         "fixed": {
           "public_name": "\u7687\u540e"
         },
-        "flexible": {}
+        "contacts": {
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        }
       }
     }
   },
@@ -7795,7 +8014,12 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "flexible": {}
+        "contacts": {
+          "email1": "8coola@email.com",
+          "email2": "8coolb@email.com",
+          "phone1": "+18888888888",
+          "phone2": "+28888888888"
+        }
       }
     }
   },
