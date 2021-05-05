@@ -39,7 +39,7 @@
     "model": "address.country",
     "pk": 1,
     "fields": {
-      "name": "United States of America",
+      "name": "USA",
       "code": "US"
     }
   },
@@ -3978,7 +3978,23 @@
       "fields": {}
     }
   },
-
+  {
+    "model": "whereabouts.locate",
+    "pk": 16,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 39,
+      "object_id": "1",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
   {
     "model": "occasions.assembly",
     "pk": 1,
