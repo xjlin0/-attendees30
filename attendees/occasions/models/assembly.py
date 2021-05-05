@@ -1,6 +1,8 @@
 from django.db import models
-from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.indexes import GinIndex
+from django.urls import reverse
 
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
@@ -20,6 +22,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True, help_text='format: Organization_name-Assembly_name')
     need_age = models.BooleanField('Does registration need age info?', null=False, blank=False, default=False, help_text="Does the age info of the participants required?")
     division = models.ForeignKey('whereabouts.Division', null=False, blank=False, on_delete=models.SET(0))
+    infos = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
 
     def get_absolute_url(self):
         return reverse('assembly_detail', args=[str(self.id)])
@@ -28,6 +31,9 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'occasions_assemblies'
         verbose_name_plural = 'Assemblies'
         ordering = ('display_order',)
+        indexes = [
+            GinIndex(fields=['infos'], name='assembly_infos_gin', ),
+        ]
 
     def __str__(self):
         return '%s' % self.display_name
