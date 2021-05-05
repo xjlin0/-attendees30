@@ -7,7 +7,7 @@ from django.db.models.expressions import F
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
-from attendees.persons.models import Locate
+from attendees.whereabouts.models import Locate
 from attendees.persons.serializers import AttendeeContactSerializer
 
 

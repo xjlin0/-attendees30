@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from attendees.persons.models import Locate
+from attendees.whereabouts.models import Locate
 from attendees.whereabouts.serializers import PlaceSerializer
 
 

@@ -11,7 +11,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('persons', '0009_attending_meet_m2m'),
+        ('whereabouts', '0003_place'),
     ]
 
     operations = [
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('finish', models.DateTimeField(blank=True, null=True, help_text='optional')),
                 ('is_removed', models.BooleanField(default=False)),
                 # ('contact', models.ForeignKey(on_delete=models.CASCADE, to='whereabouts.Place')),
-                ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
+                # ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
                 # ('category', models.CharField(max_length=20, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),
                 ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
                 ('display_name', models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')),

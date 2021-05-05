@@ -2,12 +2,13 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel
-from . import Utility
+
+from attendees.persons.models import Utility
 
 
 class Locate(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    attendee = models.ForeignKey('Attendee', on_delete=models.CASCADE, null=False, blank=False)
+    # attendee = models.ForeignKey('Attendee', on_delete=models.CASCADE, null=False, blank=False)
     start = models.DateTimeField(null=True, blank=True, help_text='optional')
     finish = models.DateTimeField(null=True, blank=True, help_text='optional')
     # contact = models.ForeignKey('whereabouts.Place', on_delete=models.CASCADE, null=False, blank=False)
