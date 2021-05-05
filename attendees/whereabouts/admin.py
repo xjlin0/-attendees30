@@ -10,8 +10,16 @@ from .models import *
 #     model = AssemblyContact
 #     extra = 0
 
+class LocateAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+    search_fields = ('display_name',)
+    list_display_links = ('display_name',)
+    readonly_fields = ['id', 'created', 'modified']
+    list_display = ('display_name', 'subject')
 
-class ContactAdmin(admin.ModelAdmin):
+class PlaceAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
@@ -69,7 +77,8 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'slug', 'infos', 'modified')
 
 
-admin.site.register(Place, ContactAdmin)
+admin.site.register(Place, PlaceAdmin)
+admin.site.register(Locate, LocateAdmin)
 admin.site.register(Campus, CampusAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(Suite, SuiteAdmin)

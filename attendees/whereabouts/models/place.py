@@ -8,7 +8,6 @@ from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
 from attendees.persons.models import Utility, Note
-from attendees.occasions.models import Assembly  #, AssemblyContact
 
 
 class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
@@ -35,7 +34,7 @@ class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
     fields = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
 
     def get_absolute_url(self):
-        return reverse('contact_detail', args=[str(self.id)])
+        return reverse('place_detail', args=[str(self.id)])
 
     # def clean(self):  #needs to check if fields are valid json (even empty json)
     #     if not (self.street1 or self.fields['phone1'] or self.fields['url'] or self.fields['email1']):
@@ -82,5 +81,5 @@ class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
         return txt
 
     def __str__(self):
-        return 'change attendees/whereabouts/models/place.py'
-        # return '%s, %s' % (self.display_name or self.attendees.first() or '', self.street or '')
+        # return 'change attendees/whereabouts/models/place.py'
+        return '%s, %s' % (self.display_name or '', self.street or '')
