@@ -8,6 +8,7 @@ from attendees.persons.models import Utility, Note
 
 
 class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
+    locates = GenericRelation('whereabouts.Locate')
     notes = GenericRelation(Note)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     start = models.DateTimeField(null=True, blank=True, help_text='optional')

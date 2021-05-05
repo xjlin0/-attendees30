@@ -7,7 +7,6 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 
 class Family(UUIDModel, TimeStampedModel, SoftDeletableModel):
     locates = GenericRelation('whereabouts.Locate')
-    # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
     attendees = models.ManyToManyField('persons.Attendee', through='FamilyAttendee', related_name='attendees')
     # contacts = models.ManyToManyField('whereabouts.Place', through='FamilyContact')
