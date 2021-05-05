@@ -311,87 +311,31 @@ Attendees.datagridUpdate = {
 
 
               {
-                colSpan: 6,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.phone1",
+                colSpan: 8,
+                dataField: "infos.contacts.phone1",
                 label: {
                   text: 'phone',
                 },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
-                    const defaultClass = "phone1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone1 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing phone1 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone1 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
               },
               {
-                colSpan: 6,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.phone2",
+                colSpan: 4,
+                dataField: "infos.contacts.phone2",
                 label: {
                   visible: false,
                 },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
-                    const defaultClass = "phone2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.phone2 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing phone2 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.phone2 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
               },
               {
-                colSpan: 6,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.email1",
+                colSpan: 7,
+                dataField: "infos.contacts.email1",
                 label: {
                   text: 'email',
                 },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
-                    const defaultClass = "email1 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email1 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing email1 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email1 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
-                },
               },
               {
-                colSpan: 6,
-                dataField: "attendeecontact_set[0]",
-                name: "attendeecontact_set[0].contact.fields.fixed.email2",
+                colSpan: 5,
+                dataField: "infos.contacts.email2",
                 label: {
                   visible: false,
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value && data.editorOptions.value.contact && typeof data.editorOptions.value.contact === 'object'){
-                    const defaultClass = "email2 btn button btn-sm attendee-contact-button " + (data.editorOptions.value.contact.fields.fixed.email2 ? "btn-outline-dark" : "btn-outline-secondary");
-                    const $button = $('<button>', {
-                      type: 'button',
-                      title: "editing email2 in address",
-                      class: defaultClass,
-                      value: data.editorOptions.value.id,
-                      text: data.editorOptions.value.contact.fields.fixed.email2 || 'N/A',
-                    });
-                    itemElement.append($button);
-                  }
                 },
               },
               {
