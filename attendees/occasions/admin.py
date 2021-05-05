@@ -19,6 +19,9 @@ from .models import *
 
 
 class AssemblyAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     prepopulated_fields = {"slug": ("display_name",)}
     # inlines = (AssemblyContactInline,)
     list_display_links = ('display_name',)

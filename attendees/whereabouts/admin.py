@@ -45,6 +45,9 @@ class DivisionAdmin(admin.ModelAdmin):
 
 
 class PropertyAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'display_name', 'slug', 'campus', 'modified')

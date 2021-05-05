@@ -39,8 +39,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
         return '%s' % self.display_name
 
     def get_addresses(self):
-        # return "\n".join([a.street for a in self.contacts.all() if a is not None])
-        return 'occasions/models/assembly.py needs changes'
+        return "\n".join([a.place.street for a in self.locates.all() if a is not None])
 
 # from rest_framework import serializers
 #

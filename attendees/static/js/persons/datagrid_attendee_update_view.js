@@ -404,7 +404,7 @@ Attendees.datagridUpdate = {
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(attendeeContact => {
                       if (attendeeContact.contact && typeof attendeeContact.contact === 'object'){
-                        let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', United States of America', '. ');
+                        let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', USA', '. ');
                         if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
                         if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
                         const $button = $('<button>', {

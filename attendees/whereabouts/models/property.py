@@ -30,4 +30,4 @@ class Property(TimeStampedModel, SoftDeletableModel, Utility):
         return reverse('property_detail', args=[str(self.id)])
 
     def __str__(self):
-        return '%s %s %s' % (self.campus, self.display_name, self.contact and self.contact.street or '')
+        return '%s %s %s' % (self.campus, self.display_name, self.locates.all() and '; '.join([a.place.street for a in self.locates.all()]) or '')
