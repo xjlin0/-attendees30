@@ -3,17 +3,11 @@ from pathlib import Path
 from attendees.persons.models import Attendee
 from rest_framework import serializers
 
-from attendees.persons.serializers import FamilyAttendeeSerializer, AttendeeContactSerializer
+from attendees.persons.serializers import FamilyAttendeeSerializer, LocateSerializer
 
 
 class AttendeeMinimalSerializer(serializers.ModelSerializer):
-    # parents_notifiers_names = serializers.CharField()
-    # self_email_addresses = serializers.CharField(read_only=True)
-    # caregiver_email_addresses = serializers.CharField()
-    # self_phone_numbers = serializers.CharField(read_only=True)
-    # caregiver_phone_numbers = serializers.CharField()
-    # joined_roaster = serializers.IntegerField()
-    attendeecontact_set = AttendeeContactSerializer(read_only=True, many=True) # attendeecontact_set
+    locates = LocateSerializer(many=True, read_only=True)
     familyattendee_set = FamilyAttendeeSerializer(read_only=True, many=True)
     photo = serializers.ImageField(use_url=True, required=False)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
     joined_meets = serializers.JSONField(read_only=True)
@@ -29,7 +23,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
             # 'parents_notifiers_names',
             'familyattendee_set',
             # 'caregiver_email_addresses',
-            'attendeecontact_set',
+            'locates',
         ]
 
     def create(self, validated_data):

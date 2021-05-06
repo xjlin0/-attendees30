@@ -8,19 +8,19 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from attendees.whereabouts.models import Locate
-from attendees.persons.serializers import AttendeeContactSerializer
+from attendees.persons.serializers import LocateSerializer
 
 
 class ApiDatagridDataAttendeeContactViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
     """
     API endpoint that allows Locate & Place to be viewed or edited.
     """
-    serializer_class = AttendeeContactSerializer
+    serializer_class = LocateSerializer
 
     def retrieve(self, request, *args, **kwargs):
         attendeecontact_id = self.request.query_params.get('attendeecontact_id')
         attendee = Locate.objects.filter(pk=attendeecontact_id).first()
-        serializer = AttendeeContactSerializer(attendee)
+        serializer = LocateSerializer(attendee)
         return Response(serializer.data)
 
     def get_queryset(self):  # Todo: check if current user are allowed to query this attendee's contact

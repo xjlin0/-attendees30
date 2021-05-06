@@ -223,12 +223,14 @@ Attendees.datagridUpdate = {
                   $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(familyAttendee => {
-                      const buttonAttrs = {
-    //                    title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
-                        type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
-                        value: familyAttendee.family.id,
+                      if (familyAttendee && typeof familyAttendee === 'object') {
+                        const buttonAttrs = {
+                          //title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
+                          type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                          value: familyAttendee.family.id,
+                        };
+                        $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
                       }
-                      $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
                     });
                   }
                 },
@@ -340,22 +342,19 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 24,
-                dataField: "attendeecontact_set",
+                dataField: "locates",
                 label: {
-                  text: 'contacts',
+                  text: 'address',
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(attendeeContact => {
-                      if (attendeeContact.contact && typeof attendeeContact.contact === 'object'){
-                        let text = (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.contact.street.replace(', USA', '. ');
-                        if (attendeeContact.contact.fields.fixed.phone1) text+= attendeeContact.contact.fields.fixed.phone1;
-                        if (attendeeContact.contact.fields.fixed.email1) text+= ('. ' + attendeeContact.contact.fields.fixed.email1);
+                      if (attendeeContact.place && typeof attendeeContact.place === 'object'){
                         const $button = $('<button>', {
                           type: 'button',
                           class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
                           value: attendeeContact.id,
-                          text: text,
+                          text: (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.place.street.replace(', USA', '. '),
                         });
                         itemElement.append($button);
                       }
@@ -734,7 +733,7 @@ Attendees.datagridUpdate = {
     const ajaxUrl=$('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/';
     return {
       visible: true,
-      title: contactButton.value ? 'Viewing Contact' : 'Creating Contact',
+      title: contactButton.value ? 'Viewing Address' : 'Creating Address',
       minwidth: "20%",
       minheight: "30%",
       position: {
@@ -759,42 +758,6 @@ Attendees.datagridUpdate = {
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-            {
-              dataField: "contact.fields.fixed.phone1",
-              label: {
-                text: 'Phone 1',
-              },
-              editorOptions: {
-                placeholder: "format: +1-510-123-4567",
-              },
-            },
-            {
-              dataField: "contact.fields.fixed.phone2",
-              label: {
-                text: 'Phone 2',
-              },
-              editorOptions: {
-                placeholder: "format: +1-510-123-4567",
-              },
-            },
-            {
-              dataField: "contact.fields.fixed.email1",
-              label: {
-                text: 'Email 1',
-              },
-              editorOptions: {
-                placeholder: "format: name@domain.com",
-              },
-            },
-            {
-              dataField: "contact.fields.fixed.email2",
-              label: {
-                text: 'Email 2',
-              },
-              editorOptions: {
-                placeholder: "format: name@domain.com",
-              },
-            },
             {
               dataField: "display_name",
               label: {
@@ -831,8 +794,8 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 2,
-              dataField: "contact.id",
-              name: "contact",
+              dataField: "place.id",
+              name: "place",
               label: {
                 text: 'Address',
               },
@@ -922,7 +885,7 @@ Attendees.datagridUpdate = {
 
   fetchAttendeecontactFormData: (contactButton) => {
     if (contactButton.value){
-      const fetchedContact = Attendees.datagridUpdate.attendeeFormConfigs.formData.attendeecontact_set.find(x => x.id == contactButton.value); // button value is string
+      const fetchedContact = Attendees.datagridUpdate.attendeeFormConfigs.formData.locates.find(x => x.id == contactButton.value); // button value is string
       if (!Attendees.utilities.editingEnabled && fetchedContact) {
         Attendees.datagridUpdate.attendeecontactPopupDxFormData = fetchedContact;
         Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', fetchedContact);
@@ -943,7 +906,7 @@ Attendees.datagridUpdate = {
   contactSource: new DevExpress.data.CustomStore({
     key: 'id',
     load: (loadOptions) => {
-      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact];
+      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.place];
 
       const deferred = $.Deferred();
       const args = {};
@@ -967,7 +930,7 @@ Attendees.datagridUpdate = {
         dataType: "json",
         data: args,
         success: (result) => {
-          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact]), {
+          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.place]), {
             totalCount: result.totalCount,
             summary:    result.summary,
             groupCount: result.groupCount
@@ -983,8 +946,8 @@ Attendees.datagridUpdate = {
       return deferred.promise();
     },
     byKey: (key) => {
-      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact){
-        return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.contact];
+      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.attendeecontactPopupDxFormData.place){
+        return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.place];
       }else{
         const d = new $.Deferred();
         $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
@@ -996,7 +959,7 @@ Attendees.datagridUpdate = {
     },
   }),
 
-}
+};
 
 $(document).ready(() => {
   Attendees.datagridUpdate.init();

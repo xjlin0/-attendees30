@@ -4,15 +4,15 @@ from attendees.whereabouts.models import Locate
 from attendees.whereabouts.serializers import PlaceSerializer
 
 
-class AttendeeContactSerializer(serializers.ModelSerializer):
-    contact = PlaceSerializer(read_only=True)
+class LocateSerializer(serializers.ModelSerializer):
+    place = PlaceSerializer(read_only=True)
 
     class Meta:
         model = Locate
-        # fields = '__all__'
-        fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
-            # 'contact',
-        ]
+        fields = '__all__'
+        # fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
+        #     # 'contact',
+        # ]
 
     def create(self, validated_data):
         """
@@ -20,7 +20,7 @@ class AttendeeContactSerializer(serializers.ModelSerializer):
         """
 
         attendeecontact_id = self._kwargs['data'].get('id')
-        print("hi 23 in AttendeeContactSerializer, here is validated_data: ")
+        print("hi 23 in LocateSerializer, here is validated_data: ")
         print(validated_data)
         obj, created = Locate.objects.update_or_create(
             id=attendeecontact_id,
@@ -33,7 +33,7 @@ class AttendeeContactSerializer(serializers.ModelSerializer):
         Update and return an existing `AttendingMeet` instance, given the validated data.
 
         """
-        print("hi 36 in AttendeeContactSerializer")
+        print("hi 36 in LocateSerializer")
         # instance.title = validated_data.get('title', instance.title)
         # instance.code = validated_data.get('code', instance.code)
         # instance.linenos = validated_data.get('linenos', instance.linenos)
