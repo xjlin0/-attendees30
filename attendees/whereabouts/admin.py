@@ -15,9 +15,10 @@ class LocateAdmin(admin.ModelAdmin):
         fields.JSONField: {'widget': JSONEditorWidget},
     }
     search_fields = ('display_name',)
-    list_display_links = ('display_name',)
+    list_display_links = ('id',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'subject')
+    list_display = ('id', 'display_name', 'subject')
+
 
 class PlaceAdmin(admin.ModelAdmin):
     formfield_overrides = {
