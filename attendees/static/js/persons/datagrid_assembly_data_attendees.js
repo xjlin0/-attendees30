@@ -167,17 +167,39 @@ Attendees.dataAttendees = {
 
     {
       caption: "Phone",
-      dataField: "self_phone_numbers",
+      dataField: "infos.contacts",
+      name: 'infos.contacts.phones',
       allowSorting: false,
       dataType: "string",
       allowHeaderFiltering: false,
+      cellTemplate: (container, rowData) => {
+        const phones = [];
+        if (rowData.data.infos.contacts.phone1) phones.push(rowData.data.infos.contacts.phone1);
+        if (rowData.data.infos.contacts.phone2) phones.push(rowData.data.infos.contacts.phone2);
+        const attrs = {
+          "class": "text-info",
+          "text": phones.join(', '),
+        };
+        $($('<span>', attrs)).appendTo(container);
+      },
     },
     {
       caption: "Email",
-      dataField: "self_email_addresses",
+      dataField: "infos.contacts",
+      name: 'infos.contacts.emails',
       allowSorting: false,
       dataType: "string",
       allowHeaderFiltering: false,
+      cellTemplate: (container, rowData) => {
+        const emails = [];
+        if (rowData.data.infos.contacts.email1) emails.push(rowData.data.infos.contacts.email1);
+        if (rowData.data.infos.contacts.email2) emails.push(rowData.data.infos.contacts.email2);
+        const attrs = {
+          "class": "text-info",
+          "text": emails.join(', '),
+        };
+        $($('<span>', attrs)).appendTo(container);
+      },
     },
   ],
 

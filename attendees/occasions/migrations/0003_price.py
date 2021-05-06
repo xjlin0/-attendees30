@@ -12,7 +12,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('occasions', '0002_assembly_contact'),
+        ('occasions', '0001_assembly'),
     ]
 
     operations = [

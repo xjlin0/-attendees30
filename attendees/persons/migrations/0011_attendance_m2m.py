@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('occasions', '0008_attendance'),
-        ('persons', '0010_attendee_contact'),
+        ('persons', '0009_attending_meet_m2m'),
     ]
 
     operations = [

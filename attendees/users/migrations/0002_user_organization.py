@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0001_organization'),
+        ('whereabouts', '0003_organization'),
         ('users', '0001_initial'),
     ]
 

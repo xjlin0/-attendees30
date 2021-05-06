@@ -20,9 +20,9 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
     display_name = models.CharField(max_length=50, blank=True, null=True, help_text="02/09/2020, etc")
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"LG_location": "F207", "link": "https://..."}. Please keep {} here even no data')
     occurrence = models.ForeignKey(Occurrence, blank=True, null=True, on_delete=models.SET_NULL)
-    site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='location: django_content_type id for table name')
+    site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
     site_id = models.BigIntegerField()
-    location = GenericForeignKey('site_type', 'site_id')
+    site = GenericForeignKey('site_type', 'site_id')
 
     # from itertools import groupby
     # from operator import attrgetter
