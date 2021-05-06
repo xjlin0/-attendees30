@@ -16,11 +16,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     # RELATIVES_KEYWORDS = ['parent', 'mother', 'guardian', 'father', 'caregiver']
     # AS_PARENT_KEYWORDS = ['notifier', 'caregiver']  # to find attendee's parents/caregiver in cowokers view of all activities
     # BE_LISTED_KEYWORDS = ['care receiver']  # let the attendee's attendance showed in their parent/caregiver account
-
+    locates = GenericRelation('whereabouts.Locate')
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
-    contacts = models.ManyToManyField('whereabouts.Contact', through='AttendeeContact', related_name='contacts')
+    # contacts = models.ManyToManyField('whereabouts.Place', through='Locate', related_name='contacts')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
@@ -50,25 +50,23 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     @cached_property
     def self_phone_numbers(self):
-        return self.self_addresses_for_fields_of(['fields__fixed__phone1', 'fields__fixed__phone2'])
+        return self.self_addresses_for_fields_of(['phone1', 'phone2'])
 
     @cached_property
     def self_email_addresses(self):
-        return self.self_addresses_for_fields_of(['fields__fixed__email1', 'fields__fixed__email2'])
+        return self.self_addresses_for_fields_of(['email1', 'email2'])
 
     def self_addresses_for_fields_of(self, fields):
-        items = sum(self.contacts.values_list(*fields), ())
-        return ', '.join(
-            item for item in items if item
-        )
+        contacts = self.infos.get('contacts', {})
+        return ', '.join([contacts.get(field) for field in fields if contacts.get(field)])
 
     @cached_property
     def caregiver_email_addresses(self):
-        return self.caregiver_addresses_for_fields_of(['fields__fixed__email1', 'fields__fixed__email2'])
+        return self.caregiver_addresses_for_fields_of(['email1', 'email2'])
 
     @cached_property
     def caregiver_phone_numbers(self):
-        return self.caregiver_addresses_for_fields_of(['fields__fixed__phone1', 'fields__fixed__phone2'])
+        return self.caregiver_addresses_for_fields_of(['phone1', 'phone2'])
 
     def caregiver_addresses_for_fields_of(self, fields):
         return ', '.join(set(

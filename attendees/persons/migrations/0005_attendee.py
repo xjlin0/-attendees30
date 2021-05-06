@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('persons', '0004_family'),
-        ('whereabouts', '0002_division'),
+        ('whereabouts', '0004_division'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

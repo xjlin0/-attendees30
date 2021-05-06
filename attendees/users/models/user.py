@@ -48,11 +48,11 @@ class User(AbstractUser):
         return False
 
     def is_data_admin(self):
-        organization_data_admin_group = self.organization.infos.get('data_admins', []) if self.organization else None
+        organization_data_admin_group = self.organization.infos.get('data_admins', []) if self.organization else []
         return self.belongs_to_groups_of(organization_data_admin_group)
 
     def is_counselor(self):
-        organization_counselor_groups = self.organization.infos.get('counselor', []) if self.organization else None
+        organization_counselor_groups = self.organization.infos.get('counselor', []) if self.organization else []
         return self.belongs_to_groups_of(organization_counselor_groups)
 
     def attendee_uuid_str(self):

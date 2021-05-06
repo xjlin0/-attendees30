@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
                 ('site_id', models.BigIntegerField()),
-                ('site_type', models.ForeignKey(help_text='location: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
+                ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('meet', models.ForeignKey(on_delete=models.SET(0), to='occasions.Meet')),
                 ('slug', models.SlugField(max_length=50, unique=True)),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),

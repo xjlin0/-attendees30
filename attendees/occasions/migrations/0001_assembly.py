@@ -2,6 +2,8 @@
 
 import attendees.persons.models.utility
 from django.db import migrations, models
+from django.contrib.postgres.fields.jsonb import JSONField
+from django.contrib.postgres.indexes import GinIndex
 import django.db.models.manager
 import django.utils.timezone
 import model_utils.fields
@@ -10,7 +12,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0003_contact'),
+        ('whereabouts', '0001_place'),
         ('occasions', '0000_initial'),
     ]
 
@@ -30,6 +32,7 @@ class Migration(migrations.Migration):
                 ('category', models.CharField(default='normal', help_text='normal, no-display, etc', max_length=20, blank=False, null=False, db_index=True)),
                 ('slug', models.SlugField(max_length=50, unique=True, help_text='format: Organization_name-Assembly_name')),
                 ('display_name', models.CharField(max_length=50)),
+                ('infos', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={
                 'db_table': 'occasions_assemblies',
@@ -37,5 +40,9 @@ class Migration(migrations.Migration):
                 'ordering': ('display_order',),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
+        ),
+        migrations.AddIndex(
+            model_name='Assembly',
+            index=GinIndex(fields=['infos'], name='assembly_infos_gin'),
         ),
     ]

@@ -8,19 +8,22 @@ from .models import *
 # Register your models here.
 
 
-class AssemblyContactAdmin(admin.ModelAdmin):
-    readonly_fields = ['id', 'created', 'modified']
-    list_display = ('assembly', 'contact', 'modified')
+# class AssemblyContactAdmin(admin.ModelAdmin):
+#     readonly_fields = ['id', 'created', 'modified']
+#     list_display = ('assembly', 'contact', 'modified')
 
 
-class AssemblyContactInline(admin.TabularInline):
-    model = AssemblyContact
-    extra = 0
+# class AssemblyContactInline(admin.TabularInline):
+#     model = AssemblyContact
+#     extra = 0
 
 
 class AssemblyAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     prepopulated_fields = {"slug": ("display_name",)}
-    inlines = (AssemblyContactInline,)
+    # inlines = (AssemblyContactInline,)
     list_display_links = ('display_name',)
     list_display = ('id', 'division', 'display_name', 'slug', 'get_addresses')
     readonly_fields = ['id', 'created', 'modified']
@@ -97,7 +100,7 @@ class MeetAdmin(admin.ModelAdmin):
     search_fields = ('display_name',)
     list_filter = ('assembly',)
     list_display_links = ('display_name',)
-    list_display = ('id', 'display_name', 'slug', 'assembly', 'location')
+    list_display = ('id', 'display_name', 'slug', 'assembly', 'site')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish', 'slug']),
@@ -122,7 +125,7 @@ class GatheringAdmin(admin.ModelAdmin):
     list_display_links = ('display_name',)
     search_fields = ('meet__display_name', 'display_name')
     list_filter = ('meet',)
-    list_display = ('id', 'meet', 'start', 'display_name', 'location', 'infos')
+    list_display = ('id', 'meet', 'start', 'display_name', 'site', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),
@@ -137,7 +140,7 @@ class GatheringAdmin(admin.ModelAdmin):
         js = ['js/admin/list_filter_collapse.js']
 
 
-admin.site.register(AssemblyContact, AssemblyContactAdmin)
+# admin.site.register(AssemblyContact, AssemblyContactAdmin)
 admin.site.register(Assembly, AssemblyAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Character, CharacterAdmin)
