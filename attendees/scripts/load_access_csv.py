@@ -852,13 +852,13 @@ def update_attendee_photo(attendee, photo_names):
 
 
 def return_two_phones(phones):
-    cleaned_phones = [p for p in phones if (p and not p.isspace())]
+    cleaned_phones = list(set([re.sub("[^0-9\+]+", "", p) for p in phones if (p and not p.isspace())]))
     return (cleaned_phones + [None, None])[0:2]
 
 
 def save_two_phones(attendee, phone):
     if phone:
-        phone1, phone2 = return_two_phones([phone, attendee.infos.get('contacts', {}).get('phone1'), attendee.infos.get('contacts', {}).get('phone2')])
+        phone1, phone2 = return_two_phones([add_int_code(phone), attendee.infos.get('contacts', {}).get('phone1'), attendee.infos.get('contacts', {}).get('phone2')])
         attendee.infos['contacts'] = {
             'phone1': add_int_code(phone1),
             'phone2': add_int_code(phone2),
