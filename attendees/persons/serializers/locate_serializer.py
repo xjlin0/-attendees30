@@ -11,7 +11,7 @@ class LocateSerializer(serializers.ModelSerializer):
         model = Locate
         fields = '__all__'
         # fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
-        #     # 'contact',
+        #     # 'place',
         # ]
 
     def create(self, validated_data):
@@ -19,11 +19,11 @@ class LocateSerializer(serializers.ModelSerializer):
         Create or update `AttendingMeet` instance, given the validated data.
         """
 
-        attendeecontact_id = self._kwargs['data'].get('id')
+        locate_id = self._kwargs['data'].get('id')
         print("hi 23 in LocateSerializer, here is validated_data: ")
         print(validated_data)
         obj, created = Locate.objects.update_or_create(
-            id=attendeecontact_id,
+            id=locate_id,
             defaults=validated_data,
         )
         return obj

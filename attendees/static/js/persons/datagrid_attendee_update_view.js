@@ -14,11 +14,11 @@ Attendees.datagridUpdate = {
     finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
   },
 
-  attendeecontactPopup: null, // for show/hide popup
-  attendeecontactPopupDxForm: null,  // for getting formData
-  attendeecontactPopupDxFormData: {},  // for storing formData
-  attendeecontactDefaults: {
-    display_order: 1,
+  locatePopup: null, // for show/hide popup
+  locatePopupDxForm: null,  // for getting formData
+  locatePopupDxFormData: {},  // for storing formData
+  locateDefaults: {
+    display_order: 0,
     display_name: 'other',
   },
 
@@ -31,7 +31,7 @@ Attendees.datagridUpdate = {
   initListeners: () => {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
     $("div.form-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
-    $("div.form-container").on("click", "button.attendee-contact-button",  e => Attendees.datagridUpdate.initAttendeecontactPopupDxForm(e));
+    $("div.form-container").on("click", "button.attendee-contact-button",  e => Attendees.datagridUpdate.initLocatePopupDxForm(e));
     // add listeners for Family, counselling, etc.
   },
 
@@ -348,13 +348,13 @@ Attendees.datagridUpdate = {
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(attendeeContact => {
-                      if (attendeeContact.place && typeof attendeeContact.place === 'object'){
+                    data.editorOptions.value.forEach(locate => {
+                      if (locate.place && typeof locate.place === 'object'){
                         const $button = $('<button>', {
                           type: 'button',
                           class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
-                          value: attendeeContact.id,
-                          text: (attendeeContact.display_name ? attendeeContact.display_name + ': ' : '' ) + attendeeContact.place.street.replace(', USA', '. '),
+                          value: locate.id,
+                          text: (locate.display_name ? locate.display_name + ': ' : '' ) + locate.place.street.replace(', USA', ''),
                         });
                         itemElement.append($button);
                       }
@@ -723,14 +723,14 @@ Attendees.datagridUpdate = {
 
   },
 
-  initAttendeecontactPopupDxForm: (event) => {
+  initLocatePopupDxForm: (event) => {
     const contactButton = event.target;
-    Attendees.datagridUpdate.attendeecontactPopup = $("div.popup-attendeecontact-update").dxPopup(Attendees.datagridUpdate.AttendeeContactPopupDxFormConfig(contactButton)).dxPopup("instance");
-    Attendees.datagridUpdate.fetchAttendeecontactFormData(contactButton);
+    Attendees.datagridUpdate.locatePopup = $('div.popup-locate-update').dxPopup(Attendees.datagridUpdate.locatePopupDxFormConfig(contactButton)).dxPopup('instance');
+    Attendees.datagridUpdate.fetchLocateFormData(contactButton);
   },
 
-  AttendeeContactPopupDxFormConfig: (contactButton) => {
-    const ajaxUrl=$('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/';
+  locatePopupDxFormConfig: (contactButton) => {
+    const ajaxUrl=$('form#locate-update-popup-form').attr('action') + contactButton.value + '/';
     return {
       visible: true,
       title: contactButton.value ? 'Viewing Address' : 'Creating Address',
@@ -746,10 +746,10 @@ Attendees.datagridUpdate = {
       },
       dragEnabled: true,
       contentTemplate: (e) => {
-        const formContainer = $('<div class="attendeeContactForm">');
-        Attendees.datagridUpdate.attendeecontactPopupDxForm = formContainer.dxForm({
+        const formContainer = $('<div class="locate-form">');
+        Attendees.datagridUpdate.locatePopupDxForm = formContainer.dxForm({
         readOnly: !Attendees.utilities.editingEnabled,
-          formData: Attendees.datagridUpdate.attendeecontactDefaults,
+          formData: Attendees.datagridUpdate.locateDefaults,
           colCount: 2,
           scrollingEnabled: true,
           showColonAfterLabel: false,
@@ -761,7 +761,7 @@ Attendees.datagridUpdate = {
             {
               dataField: "display_name",
               label: {
-                text: 'Contact Type',
+                text: 'Address Type',
               },
               helpText: 'what kind of address is this?',
               isRequired: true,
@@ -772,7 +772,7 @@ Attendees.datagridUpdate = {
             {
               dataField: "display_order",
               label: {
-                text: 'Contact Importance',
+                text: 'Address Importance',
               },
               helpText: '0 will be shown ahead, others will be 1,2,3...',
               isRequired: true,
@@ -836,8 +836,8 @@ Attendees.datagridUpdate = {
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if(confirm('are you sure to submit the popup attendeeContact Form?')){
-                    const userData = Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData');
+                  if(confirm('are you sure to submit the popup locate Form?')){
+                    const userData = Attendees.datagridUpdate.locatePopupDxForm.option('formData');
                     userData._method = userData.id ? 'PUT' : 'POST';
 
                     $.ajax({
@@ -845,10 +845,10 @@ Attendees.datagridUpdate = {
                       data   : userData,
                       method : 'POST',
                       success: (response) => {
-                                 Attendees.datagridUpdate.attendeecontactPopup.hide();
+                                 Attendees.datagridUpdate.locatePopup.hide();
                                  DevExpress.ui.notify(
                                    {
-                                     message: "saving attendeecontact success",
+                                     message: 'saving locate success',
                                      width: 500,
                                      position: {
                                       my: 'center',
@@ -858,11 +858,11 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('915 Failed to save data for attendeeContact Form in Popup, error: ', response);
+                                 console.log('861 Failed to save data for locate Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
-                                     message: "saving attendeecontact error",
+                                     message: 'saving locate error',
                                      width: 500,
                                      position: {
                                       my: 'center',
@@ -883,21 +883,21 @@ Attendees.datagridUpdate = {
     };
   },
 
-  fetchAttendeecontactFormData: (contactButton) => {
-    if (contactButton.value){
-      const fetchedContact = Attendees.datagridUpdate.attendeeFormConfigs.formData.locates.find(x => x.id == contactButton.value); // button value is string
-      if (!Attendees.utilities.editingEnabled && fetchedContact) {
-        Attendees.datagridUpdate.attendeecontactPopupDxFormData = fetchedContact;
-        Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', fetchedContact);
+  fetchLocateFormData: (locateButton) => {
+    if (locateButton.value){
+      const fetchedLocate = Attendees.datagridUpdate.attendeeFormConfigs.formData.locates.find(x => x.id == locateButton.value); // button value is string
+      if (!Attendees.utilities.editingEnabled && fetchedLocate) {
+        Attendees.datagridUpdate.locatePopupDxFormData = fetchedLocate;
+        Attendees.datagridUpdate.locatePopupDxForm.option('formData', fetchedLocate);
       }else{
         $.ajax({
-          url    : $('form#attendeecontact-update-popup-form').attr('action') + contactButton.value + '/',
+          url    : $('form#locate-update-popup-form').attr('action') + locateButton.value + '/',
           success: (response) => {
-                     Attendees.datagridUpdate.attendeecontactPopupDxFormData = response.data[0];
-                     Attendees.datagridUpdate.attendeecontactPopupDxForm.option('formData', response.data[0]);
-                     Attendees.datagridUpdate.attendeecontactPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
+                     Attendees.datagridUpdate.locatePopupDxFormData = response.data[0];
+                     Attendees.datagridUpdate.locatePopupDxForm.option('formData', response.data[0]);
+                     Attendees.datagridUpdate.locatePopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
                    },
-          error  : (response) => console.log("Failed to fetch data for Attendeecontact Form in Popup, error: ", response),
+          error  : (response) => console.log('Failed to fetch data for Locate Form in Popup, error: ', response),
         });
       }
     }
@@ -906,7 +906,7 @@ Attendees.datagridUpdate = {
   contactSource: new DevExpress.data.CustomStore({
     key: 'id',
     load: (loadOptions) => {
-      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.place];
+      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.locatePopupDxFormData.place];
 
       const deferred = $.Deferred();
       const args = {};
@@ -930,7 +930,7 @@ Attendees.datagridUpdate = {
         dataType: "json",
         data: args,
         success: (result) => {
-          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendeecontactPopupDxFormData.place]), {
+          deferred.resolve(result.data.concat([Attendees.datagridUpdate.locatePopupDxFormData.place]), {
             totalCount: result.totalCount,
             summary:    result.summary,
             groupCount: result.groupCount
@@ -946,8 +946,8 @@ Attendees.datagridUpdate = {
       return deferred.promise();
     },
     byKey: (key) => {
-      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.attendeecontactPopupDxFormData.place){
-        return [Attendees.datagridUpdate.attendeecontactPopupDxFormData.place];
+      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.locatePopupDxFormData.place){
+        return [Attendees.datagridUpdate.locatePopupDxFormData.place];
       }else{
         const d = new $.Deferred();
         $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
