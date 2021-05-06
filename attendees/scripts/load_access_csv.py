@@ -3,14 +3,16 @@ from datetime import datetime
 from itertools import permutations
 from glob import glob
 from pathlib import Path
+
+from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 
 from address.models import Locality, State, Address
 
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
-from attendees.persons.models import Utility, GenderEnum, Family, FamilyContact, Relation, Attendee, FamilyAttendee, \
-    Locate, Relationship, Registration, Attending, AttendingMeet
-from attendees.whereabouts.models import Place, Division
+from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
+     Relationship, Registration, Attending, AttendingMeet
+from attendees.whereabouts.models import Place, Division, Locate
 
 
 def import_household_people_address(
@@ -124,14 +126,6 @@ def import_addresses(addresses, california):
                 address_extra = possible_extras[0][0].strip() if possible_extras else ''
                 street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
 
-                # address_model, address_model_created = Address.objects.update_or_create(
-                #     street_number=street_strs[0],
-                #     extra=extra,
-                #     route=' '.join(street_strs[1:]),
-                #     locality=locality,
-                #     raw=f"{street}, {city}, {state} {zip_code}",
-                # )
-
                 contact_values = {
                     'street_number': street_strs[0],
                     'route': ' '.join(street_strs[1:]),
@@ -173,6 +167,7 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
+    family_content_type = ContentType.objects.get(model='family')
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     for household in households:
@@ -191,6 +186,7 @@ def import_households(households, division1_slug, division2_slug):
                         'access_household_id': household_id,
                         'access_household_values': household,
                         'last_update': Utility.presence(household.get('LastUpdate')),
+                        'contacts': {},
                     }
                 }
 
@@ -209,7 +205,7 @@ def import_households(households, division1_slug, division2_slug):
                     phone2 = Utility.presence(household.get('HouseholdFax'))
                     # old_contact = Place.objects.filter(fields__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    contact, contact_created = Place.objects.update_or_create(
+                    place, place_created = Place.objects.update_or_create(
                         fields__access_address_id=address_id,
                         # address=address,
                         defaults={
@@ -217,17 +213,18 @@ def import_households(households, division1_slug, division2_slug):
                             # 'address': address,
                             'fields': {
                                 'access_address_id': address_id,
-                                'fixed': {
-                                    'phone1': '+1' + phone1 if phone1 else None,  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
-                                    'phone2': '+1' + phone2 if phone2 else None,
+                                'contacts': {
+                                    'phone1': add_int_code(phone1),  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
+                                    'phone2': add_int_code(phone2),
                                 },
-                                'flexible': {}
+                                'fixed': {}
                             },
                         }
                     )
-                    FamilyContact.objects.update_or_create(
-                        family=family,
-                        contact=contact
+                    Locate.objects.update_or_create(
+                        content_type=family_content_type,
+                        object_id=family.id,
+                        place=place
                     )
             successfully_processed_count += 1
 
@@ -288,7 +285,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     pdt = pytz.timezone('America/Los_Angeles')
     member_character = Character.objects.get(slug=member_character_slug)
     general_character = Character.objects.get(slug=data_general_character_slug)
-
+    attendee_content_type = ContentType.objects.get(model='attendee')
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -302,7 +299,20 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
             household_role = Utility.presence(people.get('HouseholdRole'))
 
             if household_id and (first_name or last_name):
+                phones = [Utility.presence(people.get('WorkPhone')), Utility.presence(people.get('CellPhone'))]
+                email = Utility.presence(people.get('E-mail'))
+                if email:
+                    if '@' not in email:  # some phone number are accidentally in email column
+                        phones = [email] + phones
+                        email = None
+                phone1, phone2 = return_two_phones(phones)
 
+                contacts = {
+                            'email1': email,
+                            'email2': None,
+                            'phone1': add_int_code(phone1),
+                            'phone2': add_int_code(phone2),
+                            }
                 attendee_values = {
                     'first_name': first_name,
                     'last_name': last_name,
@@ -315,7 +325,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             'access_people_household_id': household_id,
                             'access_people_values': people,
                         },
-                        'flexible': {}
+                        'contacts': contacts,
                     }
                 }
 
@@ -371,7 +381,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             display_order = 10
 
                         some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('fixed', {}).get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('fixed', {}).get('access_household_values', {}).get(access_header)) is not None}
-                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'flexible': {}}
+                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts}
 
                         attendee.save()
                         FamilyAttendee.objects.update_or_create(
@@ -381,11 +391,12 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        contact = Place.objects.filter(fields__access_address_id=address_id).first()
-                        if contact:
+                        place = Place.objects.filter(fields__access_address_id=address_id).first()
+                        if place:
                             Locate.objects.update_or_create(
-                                contact=contact,
-                                attendee=attendee,
+                                place=place,
+                                content_type=attendee_content_type,
+                                object_id=attendee.id,
                                 defaults={'display_name': 'main', 'display_order': 0}
                             )
                     else:
@@ -431,9 +442,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
-            families_contact = family.contacts.first() # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
-
+            families_address = family.locates.first().place # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
+            potential_primary_phone = family.infos.get('access_household_values', {}).get('HouseholdPhone')
             if len(parents) > 1:  # family role modification skipped for singles
+                potential_secondary_phone = family.infos.get('access_household_values', {}).get('HouseholdFax')
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
                     print("\n Parents genders are mislabelled, trying to reassign them: ", parents)
 
@@ -467,16 +479,19 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         attendee=unspecified_househead,
                         defaults={'display_order': 0, 'role': househead_role}
                     )
+                    save_two_phones(unspecified_househead, potential_primary_phone)
 
                 husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
                 wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
 
-                if families_contact:
-                    hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    families_contact.fields['fixed']['email1'] = Utility.presence(hushand_email)
-                    families_contact.fields['fixed']['email2'] = Utility.presence(wife_email)
-                    families_contact.save()
+                save_two_phones(husband, potential_primary_phone)
+                save_two_phones(wife, potential_secondary_phone)
+
+                hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
+                wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
+                family.infos['contacts']['email1'] = Utility.presence(hushand_email)
+                family.infos['contacts']['email2'] = Utility.presence(wife_email)
+                family.save()
 
                 Relationship.objects.update_or_create(
                     from_attendee=wife,
@@ -514,13 +529,14 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         family_attendee.role = wife_role
                         family_attendee.save()
 
-                if families_contact and househead_single:
                     self_email = househead_single.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    families_contact.fields['fixed']['email1'] = Utility.presence(self_email)
-                    families_contact.save()
+                    family.infos['contacts']['email1'] = Utility.presence(self_email)
+                    family.save()
+                    save_two_phones(househead_single, potential_primary_phone)
+
                 else:
                     if Attendee.objects.filter(infos__fixed__access_people_household_id=family.infos['access_household_id']):
-                        print("\nSomehow there's nothing in families_address or househead_single, for family ", family, '. families_address: ', families_contact, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
+                        print("\nSomehow there's no one in families parents or househead_single (orphan?), for family ", family, '. families_address: ', families_address, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
                     else:
                         pass  # skipping since there is no such people with the household id in the original access data.
 
@@ -834,6 +850,32 @@ def update_attendee_photo(attendee, photo_names):
     else:
         return 'Attendee ' + str(attendee) + ' photo file(s) missing: ' + photo_names + "\n"
 
+
+def return_two_phones(phones):
+    cleaned_phones = [p for p in phones if (p and not p.isspace())]
+    return (cleaned_phones + [None, None])[0:2]
+
+
+def save_two_phones(attendee, phone):
+    if phone:
+        phone1, phone2 = return_two_phones([phone, attendee.infos.get('contacts', {}).get('phone1'), attendee.infos.get('contacts', {}).get('phone2')])
+        attendee.infos['contacts'] = {
+            'phone1': add_int_code(phone1),
+            'phone2': add_int_code(phone2),
+            'email1': attendee.infos.get('contacts', {}).get('email1'),
+            'email2': attendee.infos.get('contacts', {}).get('email2'),
+        }
+        attendee.save()
+
+
+def add_int_code(phone, default='+1'):
+    if phone and not phone.isspace():
+        if '+' in phone:
+            return phone
+        else:
+            return default + phone
+    else:
+        return None
 
 def check_all_headers():
     #households_headers = ['HouseholdID', 'HousholdLN', 'HousholdFN', 'SpouseFN', 'AddressID', 'HouseholdPhone', 'HouseholdFax', 'AttendenceCount', 'FlyerMailing', 'CardMailing', 'UpdateDir', 'PrintDir', 'LastUpdate', 'HouseholdNote', 'FirstDate', '海沃之友', 'Congregation']
