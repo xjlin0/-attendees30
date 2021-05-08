@@ -90,157 +90,6 @@ Attendees.datagridUpdate = {
     colCount: 24,
     formData: null, // will be fetched
     items: [
-
-      {
-        colSpan: 20,
-        colCount: 20,
-        itemType: "group",
-        caption: "Basic info",
-        items: [
-
-          {
-            colSpan: 7,
-//            caption: "colSpan: 7",
-            itemType: "group",
-            items: [
-              {
-                dataField: "division",
-                editorType: "dxSelectBox",
-                isRequired: true,
-                label: {
-                  text: 'Major Division',
-                },
-                editorOptions: {
-                  valueExpr: "id",
-                  displayExpr: "display_name",
-                  placeholder: "Select a value...",
-                  dataSource: new DevExpress.data.DataSource({
-                    store: new DevExpress.data.CustomStore({
-                      key: "id",
-                      loadMode: "raw",
-                      load: () => {
-                        const d = $.Deferred();
-                        $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
-                          d.resolve(response.data);
-                        });
-                        return d.promise();
-                      }
-                    })
-                  }),
-                },
-              },
-              {
-                dataField: "gender",
-                editorType: "dxSelectBox",
-                isRequired: true,
-                editorOptions: {
-                  dataSource: Attendees.utilities.genderEnums(),
-                  valueExpr: "name",
-                  displayExpr: "name",
-                },
-                validationRules: [
-                  {
-                    type: "required",
-                    message: "gender is required"
-                  },
-                ],
-              },
-              {
-                dataField: "actual_birthday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                  elementAttr: {
-                    title: 'month, day and year are all required',
-                  },
-                },
-              },
-            ],
-          },
-          {
-            colSpan: 7,
-//            caption: "colSpan: 7",
-            itemType: "group",
-            items: [
-              {
-                dataField: "first_name",
-                editorOptions: {
-                  placeholder: "English",
-                },
-              },
-              {
-                dataField: "last_name2",
-              },
-              {
-                dataField: "estimated_birthday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                  elementAttr: {
-                    title: 'pick any day of your best guess year for the age estimation',
-                  },
-                },
-              },
-            ],
-          },
-          {
-            colSpan: 6,
-//            caption: "colSpan: 6",
-            itemType: "group",
-            items: [
-              {
-                dataField: "last_name",
-                editorOptions: {
-                  placeholder: "English",
-                },
-              },
-              {
-                dataField: "first_name2",
-              },
-              {
-                dataField: "deathday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                },
-              },
-            ],
-          },
-          {
-            colSpan: 20,
-            colCount: 20,
-            caption: "Families",
-            itemType: "group",
-            items: [
-
-              {
-                colSpan: 20,
-                dataField: "familyattendee_set",
-                label: {
-                  text: 'families',
-                },
-                template: (data, itemElement) => {
-                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
-                  if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(familyAttendee => {
-                      if (familyAttendee && typeof familyAttendee === 'object') {
-                        const buttonAttrs = {
-                          //title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
-                          type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
-                          value: familyAttendee.family.id,
-                        };
-                        $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
-                      }
-                    });
-                  }
-                },
-              },
-
-
-            ],
-          },
-        ],
-      },
       {
         colSpan: 4,
         itemType: "group",
@@ -250,7 +99,7 @@ Attendees.datagridUpdate = {
           {
             dataField: 'photo',
             label: {
-              // location: 'top',
+              location: 'top',
               text: ' ',  // empty space required for removing label
               showColon: false,
             },
@@ -302,8 +151,152 @@ Attendees.datagridUpdate = {
           },
         ],
       },
-
-
+      {
+        colSpan: 20,
+        colCount: 20,
+        itemType: "group",
+        caption: "Basic info",
+        items: [
+          {
+            colSpan: 7,
+//            caption: "colSpan: 7",
+            itemType: "group",
+            items: [
+              {
+                dataField: "first_name",
+                editorOptions: {
+                  placeholder: "English",
+                },
+              },
+              {
+                dataField: "last_name2",
+              },
+              {
+                dataField: "actual_birthday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "click calendar",
+                  elementAttr: {
+                    title: 'month, day and year are all required',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            colSpan: 7,
+//            caption: "colSpan: 6",
+            itemType: "group",
+            items: [
+              {
+                dataField: "last_name",
+                editorOptions: {
+                  placeholder: "English",
+                },
+              },
+              {
+                dataField: "first_name2",
+              },
+              {
+                dataField: "estimated_birthday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "click calendar",
+                  elementAttr: {
+                    title: 'pick any day of your best guess year for the age estimation',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            colSpan: 6,
+//            caption: "colSpan: 7",
+            itemType: "group",
+            items: [
+              {
+                dataField: "division",
+                editorType: "dxSelectBox",
+                isRequired: true,
+                label: {
+                  text: 'Major Division',
+                },
+                editorOptions: {
+                  valueExpr: "id",
+                  displayExpr: "display_name",
+                  placeholder: "Select a value...",
+                  dataSource: new DevExpress.data.DataSource({
+                    store: new DevExpress.data.CustomStore({
+                      key: "id",
+                      loadMode: "raw",
+                      load: () => {
+                        const d = $.Deferred();
+                        $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                          d.resolve(response.data);
+                        });
+                        return d.promise();
+                      }
+                    })
+                  }),
+                },
+              },
+              {
+                dataField: "gender",
+                editorType: "dxSelectBox",
+                isRequired: true,
+                editorOptions: {
+                  dataSource: Attendees.utilities.genderEnums(),
+                  valueExpr: "name",
+                  displayExpr: "name",
+                },
+                validationRules: [
+                  {
+                    type: "required",
+                    message: "gender is required"
+                  },
+                ],
+              },
+              {
+                dataField: "deathday",
+                editorType: "dxDateBox",
+                editorOptions: {
+                  placeholder: "click calendar",
+                },
+              },
+            ],
+          },
+          {
+            colSpan: 20,
+            colCount: 20,
+            caption: "Families",
+            itemType: "group",
+            items: [
+              {
+                colSpan: 20,
+                dataField: "familyattendee_set",
+                label: {
+                  text: 'families',
+                },
+                template: (data, itemElement) => {
+                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
+                  if (data.editorOptions && data.editorOptions.value){
+                    data.editorOptions.value.forEach(familyAttendee => {
+                      if (familyAttendee && typeof familyAttendee === 'object') {
+                        const buttonAttrs = {
+                          //title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
+                          type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                          value: familyAttendee.family.id,
+                        };
+                        $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
+                      }
+                    });
+                  }
+                },
+              },
+            ],
+          },
+        ],
+      },
       {
         colSpan: 24,
         colCount: 24,
