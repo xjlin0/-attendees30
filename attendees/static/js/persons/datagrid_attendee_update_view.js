@@ -817,7 +817,6 @@ Attendees.datagridUpdate = {
             {
               itemType: "button",
               horizontalAlignment: "left",
-//              colSpan: 2,
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -866,7 +865,25 @@ Attendees.datagridUpdate = {
                       },
                     });
                   }
-                }
+                },
+              },
+            },
+            {
+              itemType: "button",
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Add new address",
+                icon: "home",
+                hint: "add new address in the popup",
+                type: "normal",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  console.log("hi 886 clicked add new address!");
+                },
               },
             },
           ],
