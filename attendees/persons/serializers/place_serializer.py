@@ -1,14 +1,13 @@
 from rest_framework import serializers
 
-from attendees.whereabouts.models import Locate
-from attendees.whereabouts.serializers import PlaceSerializer
+from attendees.whereabouts.models import Place
+# from attendees.whereabouts.serializers import PlaceSerializer
 
 
-class LocateSerializer(serializers.ModelSerializer):
-    place = PlaceSerializer(read_only=True)
+class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Locate
+        model = Place
         fields = '__all__'
         # fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
         #     # 'place',
@@ -20,9 +19,9 @@ class LocateSerializer(serializers.ModelSerializer):
         """
 
         locate_id = self._kwargs['data'].get('id')
-        print("hi 23 in LocateSerializer, here is validated_data: ")
+        print("hi 23 in PlaceSerializer, here is validated_data: ")
         print(validated_data)
-        obj, created = Locate.objects.update_or_create(
+        obj, created = Place.objects.update_or_create(
             id=locate_id,
             defaults=validated_data,
         )
@@ -33,7 +32,7 @@ class LocateSerializer(serializers.ModelSerializer):
         Update and return an existing `AttendingMeet` instance, given the validated data.
 
         """
-        print("hi 36 in LocateSerializer")
+        print("hi 36 in PlaceSerializer")
         # instance.title = validated_data.get('title', instance.title)
         # instance.code = validated_data.get('code', instance.code)
         # instance.linenos = validated_data.get('linenos', instance.linenos)

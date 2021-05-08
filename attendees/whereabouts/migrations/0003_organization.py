@@ -10,7 +10,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0002_locate'),
+        ('whereabouts', '0001_place'),
     ]
 
     operations = [

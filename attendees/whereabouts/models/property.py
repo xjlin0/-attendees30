@@ -11,7 +11,7 @@ from attendees.occasions.models import Gathering
 
 class Property(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
-    locates = GenericRelation('whereabouts.Locate')
+    locates = GenericRelation('whereabouts.Place')
     gathering = GenericRelation(Gathering)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=False, null=False, db_index=True)
