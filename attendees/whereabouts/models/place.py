@@ -1,17 +1,19 @@
-from address.models import Address
+# from address.models import Address
+from address.models import AddressField
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.indexes import GinIndex
-from model_utils.models import TimeStampedModel, SoftDeletableModel
+from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 
 from attendees.persons.models import Utility, Note
 
 
-class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
+class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
+    address = AddressField(related_name='+', blank=True, null=True)
     # id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=True, null=True, db_index=True, help_text='optional label')
     # assemblies = models.ManyToManyField(Assembly, through=AssemblyContact)
@@ -46,7 +48,7 @@ class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'whereabouts_places'
         # verbose_name_plural = 'Places'
         # ordering = ['created']
-        ordering = ('locality', 'route', 'street_number', 'address_extra')
+        # ordering = ('locality', 'route', 'street_number', 'address_extra')
         indexes = [
             GinIndex(fields=['fields'], name='place_fields_gin', ),
         ]
@@ -82,4 +84,4 @@ class Place(Address, TimeStampedModel, SoftDeletableModel, Utility):
 
     def __str__(self):
         # return 'change attendees/whereabouts/models/place.py'
-        return '%s, %s' % (self.display_name or '', self.street or '')
+        return '%s, %s' % (self.display_name or '', '')

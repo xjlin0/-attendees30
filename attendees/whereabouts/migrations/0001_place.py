@@ -20,8 +20,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Place',
             fields=[
-                # ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
-                ('address_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='address.Address')),
+                ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
+                # ('address_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='address.Address')),
+                ('address', AddressField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='address.Address')),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
@@ -42,7 +43,7 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'whereabouts_places',
                 # 'verbose_name_plural': 'Contacts',
-                'ordering': ('locality', 'route', 'street_number', 'address_extra'),
+                # 'ordering': ('locality', 'route', 'street_number', 'address_extra'),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
