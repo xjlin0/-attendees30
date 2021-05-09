@@ -5,13 +5,14 @@ from attendees.whereabouts.models import Place
 
 
 class PlaceSerializer(serializers.ModelSerializer):
+    street = serializers.CharField()
 
     class Meta:
         model = Place
         fields = '__all__'
-        # fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
-        #     # 'place',
-        # ]
+        fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
+            'street',
+        ]
 
     def create(self, validated_data):
         """

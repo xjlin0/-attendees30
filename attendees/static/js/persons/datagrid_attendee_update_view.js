@@ -335,19 +335,19 @@ Attendees.datagridUpdate = {
               },
               {
                 colSpan: 24,
-                dataField: "locates",
+                dataField: "places",
                 label: {
                   text: 'address',
                 },
                 template: (data, itemElement) => {
                   if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(locate => {
-                      if (locate.place && typeof locate.place === 'object'){
+                    data.editorOptions.value.forEach(place => {
+                      if (place.id && typeof place === 'object'){
                         const $button = $('<button>', {
                           type: 'button',
                           class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
-                          value: locate.id,
-                          text: (locate.display_name ? locate.display_name + ': ' : '' ) + locate.place.street.replace(', USA', ''),
+                          value: place.id,
+                          text: (place.display_name ? place.display_name + ': ' : '' ) + place.street && place.street.replace(', USA', ''),
                         });
                         itemElement.append($button);
                       }
@@ -787,7 +787,7 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 2,
-              dataField: "place.id",
+              dataField: "id",
               name: "place",
               label: {
                 text: 'Address',
@@ -895,7 +895,7 @@ Attendees.datagridUpdate = {
 
   fetchLocateFormData: (locateButton) => {
     if (locateButton.value){
-      const fetchedLocate = Attendees.datagridUpdate.attendeeFormConfigs.formData.locates.find(x => x.id == locateButton.value); // button value is string
+      const fetchedLocate = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.find(x => x.id == locateButton.value); // button value is string
       if (!Attendees.utilities.editingEnabled && fetchedLocate) {
         Attendees.datagridUpdate.locatePopupDxFormData = fetchedLocate;
         Attendees.datagridUpdate.locatePopupDxForm.option('formData', fetchedLocate);
@@ -916,7 +916,7 @@ Attendees.datagridUpdate = {
   contactSource: new DevExpress.data.CustomStore({
     key: 'id',
     load: (loadOptions) => {
-      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.locatePopupDxFormData.place];
+      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.locatePopupDxFormData];
 
       const deferred = $.Deferred();
       const args = {};
@@ -956,8 +956,8 @@ Attendees.datagridUpdate = {
       return deferred.promise();
     },
     byKey: (key) => {
-      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.locatePopupDxFormData.place){
-        return [Attendees.datagridUpdate.locatePopupDxFormData.place];
+      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.locatePopupDxFormData){
+        return [Attendees.datagridUpdate.locatePopupDxFormData];
       }else{
         const d = new $.Deferred();
         $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
