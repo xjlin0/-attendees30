@@ -401,16 +401,20 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        saved_place = Place.objects.filter(infos__access_address_id=address_id).first()
-                        if saved_place:
+                        family_place = Place.objects.filter(infos__access_address_id=address_id).first()
+                        if family_place:
                             Place.objects.update_or_create(
-                                address=saved_place.address,
+                                address=family_place.address,
                                 content_type=attendee_content_type,
                                 object_id=attendee.id,
+                                address_extra=family_place.address_extra,
                                 defaults={
+                                    'address': family_place.address,
+                                    'content_type': attendee_content_type,
+                                    'object_id': attendee.id,
                                     'display_name': 'main',
                                     'display_order': 0,
-                                    'address_extra': saved_place.address_extra,
+                                    'address_extra': family_place.address_extra,
                                     'infos': {
                                         'contacts': {},
                                         'fixed': {},

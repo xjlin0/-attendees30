@@ -306,14 +306,14 @@ Attendees.datagridUpdate = {
 
 
               {
-                colSpan: 8,
+                colSpan: 7,
                 dataField: "infos.contacts.phone1",
                 label: {
                   text: 'phone',
                 },
               },
               {
-                colSpan: 4,
+                colSpan: 5,
                 dataField: "infos.contacts.phone2",
                 label: {
                   visible: false,
@@ -347,7 +347,7 @@ Attendees.datagridUpdate = {
                           type: 'button',
                           class: "btn-outline-success contact-button btn button btn-sm attendee-contact-button", // or use btn-block class
                           value: place.id,
-                          text: (place.display_name ? place.display_name + ': ' : '' ) + place.street && place.street.replace(', USA', ''),
+                          text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
                         });
                         itemElement.append($button);
                       }
