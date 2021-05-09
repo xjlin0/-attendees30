@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='place',
-            constraint=models.UniqueConstraint(fields=('content_type', 'object_id', 'address'), name='address_object'),
+            constraint=models.UniqueConstraint(fields=('content_type', 'object_id', 'address', 'address_extra'), name='address_object'),
         ),
         migrations.AddIndex(
             model_name='place',
