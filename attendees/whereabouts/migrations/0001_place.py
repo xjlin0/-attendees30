@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'whereabouts_places',
-                'ordering': ('display_order',),
+                'ordering': ('content_type', 'object_id', 'display_order',),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),

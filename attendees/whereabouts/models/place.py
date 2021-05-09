@@ -26,7 +26,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'whereabouts_places'
-        ordering = ('display_order',)
+        ordering = ('content_type', 'object_id', 'display_order',)
         constraints = [
             models.UniqueConstraint(fields=['content_type', 'object_id', 'address'], name="address_object")
         ]
@@ -37,7 +37,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     @property
     def street(self):
         if self.address:
-            if not self.address.formatted.isspace() and self.address_extra in self.address.formatted:
+            if Utility.blank_check(self.address_extra) and Utility.present_check(self.address.formatted):
                 txt = '%s' % self.address.formatted
             elif self.address.locality:
                 txt = ''

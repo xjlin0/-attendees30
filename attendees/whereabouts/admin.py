@@ -13,7 +13,7 @@ class PlaceAdmin(admin.ModelAdmin):
     search_fields = ('display_name',)
     list_display_links = ('id',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'display_name', 'subject')
+    list_display = ('id', 'display_name', 'subject', 'street')
 
 
 class DivisionAdmin(admin.ModelAdmin):

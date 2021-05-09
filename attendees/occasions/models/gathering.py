@@ -48,4 +48,4 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
         ]
 
     def __str__(self):
-        return '%s %s %s %s' % (self.meet, self.start, self.display_name or '', self.location or '')
+        return '%s %s %s %s' % (self.meet, self.start, self.display_name or '', self.site or '')

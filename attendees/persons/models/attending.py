@@ -55,7 +55,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
 
     @cached_property
     def all_addresses(self):
-        return '; '.join([a.place.street for a in self.attendee.locates.all()])
+        return '; '.join([a.street for a in self.attendee.places.all()])
 
     def __str__(self):
         return '%s %s' % (self.attendee, self.meet_names)

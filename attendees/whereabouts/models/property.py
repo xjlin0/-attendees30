@@ -11,7 +11,7 @@ from attendees.occasions.models import Gathering
 
 class Property(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
-    locates = GenericRelation('whereabouts.Place')
+    places = GenericRelation('whereabouts.Place')
     gathering = GenericRelation(Gathering)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=False, null=False, db_index=True)
@@ -30,4 +30,4 @@ class Property(TimeStampedModel, SoftDeletableModel, Utility):
         return reverse('property_detail', args=[str(self.id)])
 
     def __str__(self):
-        return '%s %s %s' % (self.campus, self.display_name, self.locates.all() and '; '.join([a.place.street for a in self.locates.all()]) or '')
+        return '%s %s %s' % (self.campus, self.display_name, self.places.all() and '; '.join([a.street for a in self.places.all()]) or '')

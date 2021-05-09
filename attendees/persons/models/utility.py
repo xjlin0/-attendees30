@@ -14,6 +14,18 @@ class Utility:
         return self.notes.all()
 
     @staticmethod
+    def present_check(string):
+        if string:
+            return not string.isspace()
+        return False
+
+    @staticmethod
+    def blank_check(string):
+        if string:
+            return string.isspace()
+        return True
+
+    @staticmethod
     def default_infos():
         return {"contacts": {}, "fixed": {}}
 
