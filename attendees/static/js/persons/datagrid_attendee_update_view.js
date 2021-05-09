@@ -936,7 +936,7 @@ Attendees.datagridUpdate = {
       });
 
       $.ajax({
-        url: $('div.datagrid-attendee-update').data('contacts-endpoint'),
+        url: $('div.datagrid-attendee-update').data('places-endpoint'),
         dataType: "json",
         data: args,
         success: (result) => {
@@ -960,7 +960,7 @@ Attendees.datagridUpdate = {
         return [Attendees.datagridUpdate.locatePopupDxFormData];
       }else{
         const d = new $.Deferred();
-        $.get($('div.datagrid-attendee-update').data('contacts-endpoint'), {id: key})
+        $.get($('div.datagrid-attendee-update').data('places-endpoint'), {id: key})
             .done(function(result) {
                 d.resolve(result.data);
             });

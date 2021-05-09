@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from attendees.whereabouts.views import (
     api_user_division_viewset,
-    api_user_contact_view_set,
+    api_user_place_view_set,
 )
 
 app_name = "whereabouts"
@@ -15,9 +15,9 @@ router.register(
     basename='division',
 )
 router.register(
-    'api/user_contacts',
-    api_user_contact_view_set,
-    basename='contact',
+    'api/user_places',
+    api_user_place_view_set,
+    basename='place',
 )
 
 urlpatterns = [

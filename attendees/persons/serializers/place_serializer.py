@@ -5,7 +5,7 @@ from attendees.whereabouts.models import Place
 
 
 class PlaceSerializer(serializers.ModelSerializer):
-    street = serializers.CharField()
+    street = serializers.CharField(read_only=True)
 
     class Meta:
         model = Place
