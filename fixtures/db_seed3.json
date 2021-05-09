@@ -1,0 +1,516 @@
+[
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "sites",
+      "model": "site"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "account",
+      "model": "emailaddress"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "account",
+      "model": "emailconfirmation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialaccount"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialapp"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialtoken"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "crontabschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "intervalschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "periodictask"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "periodictasks"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "solarschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "clockedschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "authtoken",
+      "model": "token"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "authtoken",
+      "model": "tokenproxy"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "django_summernote",
+      "model": "attachment"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "schedule",
+      "model": "calendar"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+      "app_label": "schedule",
+      "model": "calendarrelation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+      "app_label": "schedule",
+      "model": "event"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+      "app_label": "schedule",
+      "model": "eventrelation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": {
+      "app_label": "schedule",
+      "model": "occurrence"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+      "app_label": "schedule",
+      "model": "rule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": {
+      "app_label": "address",
+      "model": "address"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": {
+      "app_label": "address",
+      "model": "country"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 29,
+    "fields": {
+      "app_label": "address",
+      "model": "locality"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 30,
+    "fields": {
+      "app_label": "address",
+      "model": "state"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 31,
+    "fields": {
+      "app_label": "users",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 32,
+    "fields": {
+      "app_label": "users",
+      "model": "menu"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 33,
+    "fields": {
+      "app_label": "users",
+      "model": "menuauthgroup"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 34,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "place"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 35,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "organization"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 36,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "division"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 37,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "campus"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 38,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "property"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 39,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "suite"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 40,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "room"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 41,
+    "fields": {
+      "app_label": "persons",
+      "model": "category"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 42,
+    "fields": {
+      "app_label": "persons",
+      "model": "note"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 43,
+    "fields": {
+      "app_label": "persons",
+      "model": "relation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 44,
+    "fields": {
+      "app_label": "persons",
+      "model": "family"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 45,
+    "fields": {
+      "app_label": "persons",
+      "model": "attendee"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 46,
+    "fields": {
+      "app_label": "persons",
+      "model": "relationship"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 47,
+    "fields": {
+      "app_label": "persons",
+      "model": "registration"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 48,
+    "fields": {
+      "app_label": "persons",
+      "model": "attending"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 49,
+    "fields": {
+      "app_label": "persons",
+      "model": "attendingmeet"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 50,
+    "fields": {
+      "app_label": "persons",
+      "model": "familyattendee"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 51,
+    "fields": {
+      "app_label": "occasions",
+      "model": "assembly"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 52,
+    "fields": {
+      "app_label": "occasions",
+      "model": "price"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 53,
+    "fields": {
+      "app_label": "occasions",
+      "model": "character"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 54,
+    "fields": {
+      "app_label": "occasions",
+      "model": "meet"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 55,
+    "fields": {
+      "app_label": "occasions",
+      "model": "gathering"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 56,
+    "fields": {
+      "app_label": "occasions",
+      "model": "team"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 57,
+    "fields": {
+      "app_label": "occasions",
+      "model": "attendance"
+    }
+  },
+  {
+    "model": "address.country",
+    "pk": 1,
+    "fields": {
+      "name": "Australia",
+      "code": "AU"
+    }
+  },
+  {
+    "model": "address.state",
+    "pk": 1,
+    "fields": {
+      "name": "Victoria",
+      "code": "VIC",
+      "country": 1
+    }
+  },
+  {
+    "model": "address.locality",
+    "pk": 1,
+    "fields": {
+      "name": "Northcote",
+      "postal_code": "3070",
+      "state": 1
+    }
+  },
+  {
+    "model": "address.address",
+    "pk": 1,
+    "fields": {
+      "street_number": "1",
+      "route": "Somewhere Ave",
+      "locality": 1,
+      "raw": "1 Somewhere Ave, Northcote, VIC 3070, AU",
+      "formatted": "1 Somewhere Ave, Northcote, Victoria 3070, Australia",
+      "latitude": null,
+      "longitude": null
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": "2cf4cca1-83c9-450b-8169-96b0daf9d564",
+    "fields": {
+      "created": "2021-05-08T21:58:58.470Z",
+      "modified": "2021-05-08T21:58:58.470Z",
+      "is_removed": false,
+      "content_type": 1,
+      "object_id": "1",
+      "address": 1,
+      "address_extra": "2F",
+      "address_type": "street",
+      "display_name": "test",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "infos": {}
+    }
+  }
+  ]

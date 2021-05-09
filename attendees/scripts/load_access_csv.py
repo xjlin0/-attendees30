@@ -12,7 +12,7 @@ from address.models import Locality, State, Address
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
      Relationship, Registration, Attending, AttendingMeet
-from attendees.whereabouts.models import Place, Division, Locate
+from attendees.whereabouts.models import Place, Division
 
 
 def import_household_people_address(
@@ -116,21 +116,30 @@ def import_addresses(addresses, california):
             city = Utility.presence(address_dict.get('City'))
             zip_code = Utility.presence(address_dict.get('Zip'))
             if address_id and street and state == california.code:
-                locality, locality_created = Locality.objects.update_or_create(
-                    name=city,
-                    postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
-                    state=california
-                )
+                # locality, locality_created = Locality.objects.update_or_create(
+                #     name=city,
+                #     postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
+                #     state=california
+                # )
 
                 possible_extras = re.findall('((?i)(apt|unit|#| \D{1}\d+).+)$', street)  # Get extra info such as Apt#
                 address_extra = possible_extras[0][0].strip() if possible_extras else ''
                 street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
 
                 contact_values = {
-                    'street_number': street_strs[0],
-                    'route': ' '.join(street_strs[1:]),
-                    'locality': locality,
-                    'raw': f"{street}, {city}, {state} {zip_code}",
+                    'address': {
+                        'street_number': street_strs[0],
+                        'route': ' '.join(street_strs[1:]),
+                        'locality': Utility.presence(address_dict.get('City')),
+                        'postal_code': Utility.presence(address_dict.get('Zip')),
+                        'state': california.name,
+                        'state_code': california.code,
+                        'country': 'USA',
+                        'country_code': 'US',
+                        'raw': f"{street}, {city}, {state} {zip_code}",
+                    },
+                    'content_type_id': '1',  # session
+                    'object_id': '0',        # non-exist but works for Generic Relation, will update later
                     'address_extra': Utility.presence(address_extra),
                     'fields': {
                         'access_address_id': address_id,
@@ -205,12 +214,13 @@ def import_households(households, division1_slug, division2_slug):
                     phone2 = Utility.presence(household.get('HouseholdFax'))
                     # old_contact = Place.objects.filter(fields__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    place, place_created = Place.objects.update_or_create(
+                    Place.objects.update_or_create(
                         fields__access_address_id=address_id,
                         # address=address,
                         defaults={
                             'display_name':  display_name,
-                            # 'address': address,
+                            'content_type': family_content_type,
+                            'object_id': family.id,
                             'fields': {
                                 'access_address_id': address_id,
                                 'contacts': {
@@ -220,11 +230,6 @@ def import_households(households, division1_slug, division2_slug):
                                 'fixed': {}
                             },
                         }
-                    )
-                    Locate.objects.update_or_create(
-                        content_type=family_content_type,
-                        object_id=family.id,
-                        place=place
                     )
             successfully_processed_count += 1
 
@@ -442,7 +447,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
-            families_address = family.locates.first().place # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
+            families_address = family.places.first().street # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
             potential_primary_phone = family.infos.get('access_household_values', {}).get('HouseholdPhone')
             if len(parents) > 1:  # family role modification skipped for singles
                 potential_secondary_phone = family.infos.get('access_household_values', {}).get('HouseholdFax')

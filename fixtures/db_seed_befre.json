@@ -1,5 +1,469 @@
 [
   {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "sites",
+      "model": "site"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "account",
+      "model": "emailaddress"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "account",
+      "model": "emailconfirmation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialaccount"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialapp"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "socialaccount",
+      "model": "socialtoken"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "crontabschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "intervalschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "periodictask"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "periodictasks"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "solarschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "django_celery_beat",
+      "model": "clockedschedule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "authtoken",
+      "model": "token"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "authtoken",
+      "model": "tokenproxy"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "django_summernote",
+      "model": "attachment"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "schedule",
+      "model": "calendar"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+      "app_label": "schedule",
+      "model": "calendarrelation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+      "app_label": "schedule",
+      "model": "event"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+      "app_label": "schedule",
+      "model": "eventrelation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": {
+      "app_label": "schedule",
+      "model": "occurrence"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+      "app_label": "schedule",
+      "model": "rule"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": {
+      "app_label": "address",
+      "model": "address"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": {
+      "app_label": "address",
+      "model": "country"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 29,
+    "fields": {
+      "app_label": "address",
+      "model": "locality"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 30,
+    "fields": {
+      "app_label": "address",
+      "model": "state"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 31,
+    "fields": {
+      "app_label": "users",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 32,
+    "fields": {
+      "app_label": "users",
+      "model": "menu"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 33,
+    "fields": {
+      "app_label": "users",
+      "model": "menuauthgroup"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 34,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "place"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 35,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "locate"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 36,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "organization"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 37,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "division"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 38,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "campus"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 39,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "property"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 40,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "suite"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 41,
+    "fields": {
+      "app_label": "whereabouts",
+      "model": "room"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 42,
+    "fields": {
+      "app_label": "persons",
+      "model": "category"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 43,
+    "fields": {
+      "app_label": "persons",
+      "model": "note"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 44,
+    "fields": {
+      "app_label": "persons",
+      "model": "relation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 45,
+    "fields": {
+      "app_label": "persons",
+      "model": "family"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 46,
+    "fields": {
+      "app_label": "persons",
+      "model": "attendee"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 47,
+    "fields": {
+      "app_label": "persons",
+      "model": "relationship"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 48,
+    "fields": {
+      "app_label": "persons",
+      "model": "registration"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 49,
+    "fields": {
+      "app_label": "persons",
+      "model": "attending"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 50,
+    "fields": {
+      "app_label": "persons",
+      "model": "attendingmeet"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 51,
+    "fields": {
+      "app_label": "persons",
+      "model": "familyattendee"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 52,
+    "fields": {
+      "app_label": "occasions",
+      "model": "assembly"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 53,
+    "fields": {
+      "app_label": "occasions",
+      "model": "price"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 54,
+    "fields": {
+      "app_label": "occasions",
+      "model": "character"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 55,
+    "fields": {
+      "app_label": "occasions",
+      "model": "meet"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 56,
+    "fields": {
+      "app_label": "occasions",
+      "model": "gathering"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 57,
+    "fields": {
+      "app_label": "occasions",
+      "model": "team"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 58,
+    "fields": {
+      "app_label": "occasions",
+      "model": "attendance"
+    }
+  },
+  {
     "model": "schedule.calendar",
     "pk": 1,
     "fields": {
@@ -672,6 +1136,530 @@
     }
   },
   {
+    "model": "whereabouts.place",
+    "pk": 2,
+    "fields": {
+      "created": "2020-04-11T18:21:36.525Z",
+      "modified": "2020-04-11T18:21:36.525Z",
+      "is_removed": false,
+      "display_name": "Burbank Elementary School",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 2,
+        "fixed": {
+          "url": "https://www.thecrossing.website/",
+          "email1": null,
+          "email2": null,
+          "phone1": "+12222222222",
+          "phone2": "+22222222222"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 1,
+    "fields": {
+      "created": "2020-04-11T18:20:51.529Z",
+      "modified": "2020-04-11T18:20:51.529Z",
+      "is_removed": false,
+      "display_name": "cfcc_hayward_main",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 1,
+        "fixed": {
+          "url": "https://chineseforchristchurch.org/",
+          "email1": "haywardchurch@yahoo.com",
+          "email2": "church.office@cfcchayward.org",
+          "phone1": "+15105811630"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 8,
+    "fields": {
+      "created": "1999-04-11T18:27:19.494Z",
+      "modified": "2020-04-11T18:27:19.494Z",
+      "is_removed": false,
+      "display_name": null,
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 8,
+        "fixed": {
+          "url": null,
+          "email1": "8beautifula@email.com",
+          "email2": "8beautifulb@email.com",
+          "phone1": "+18888888888",
+          "phone2": "+28888888888"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 6,
+    "fields": {
+      "created": "1999-04-11T18:24:29.705Z",
+      "modified": "2020-04-11T18:24:29.705Z",
+      "is_removed": false,
+      "display_name": null,
+      "address_extra": "#A123",
+      "address_type": "street",
+      "fields": {
+        "id": 6,
+        "fixed": {
+          "url": null,
+          "email1": "6coola@email.com",
+          "email2": "6coolb@email.com",
+          "phone1": "+16666666666",
+          "phone2": "+26666666666"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 11,
+    "fields": {
+      "created": "2020-06-19T15:17:47.102Z",
+      "modified": "2020-06-19T15:18:10.908Z",
+      "is_removed": false,
+      "display_name": "Sonoma State University",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 11,
+        "fixed": {
+          "url": null,
+          "email1": null,
+          "email2": null,
+          "phone1": "+17076642880",
+          "phone2": null
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 7,
+    "fields": {
+      "created": "1999-04-11T18:26:10.767Z",
+      "modified": "2020-04-11T18:26:10.767Z",
+      "is_removed": false,
+      "display_name": null,
+      "address_extra": "Apt 456",
+      "address_type": "street",
+      "fields": {
+        "id": 7,
+        "fixed": {
+          "url": null,
+          "email1": "7excellenta@email.com",
+          "email2": "7excellentb@email.com",
+          "phone1": "+17777777777",
+          "phone2": "+27777777777"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 4,
+    "fields": {
+      "created": "1999-04-11T18:23:10.733Z",
+      "modified": "2020-04-11T18:23:10.733Z",
+      "is_removed": false,
+      "display_name": null,
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 4,
+        "fixed": {
+          "url": null,
+          "email1": "4gooda@email.com",
+          "email2": "4goodb@email.com",
+          "phone1": "+14444444444",
+          "phone2": "+24444444444"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 5,
+    "fields": {
+      "created": "1999-04-11T18:23:51.688Z",
+      "modified": "2020-04-11T18:23:51.688Z",
+      "is_removed": false,
+      "display_name": null,
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 5,
+        "fixed": {
+          "url": null,
+          "email1": "5greata@email.com",
+          "email2": "5greatb@email.com",
+          "phone1": "+15555555555",
+          "phone2": "+25555555555"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 10,
+    "fields": {
+      "created": "1999-04-20T16:36:06.375Z",
+      "modified": "2020-04-20T16:40:03.539Z",
+      "is_removed": false,
+      "display_name": "short mission trip address",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 10,
+        "fixed": {
+          "url": null,
+          "email1": null,
+          "email2": null,
+          "phone1": null,
+          "phone2": null
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 3,
+    "fields": {
+      "created": "1999-04-11T18:22:32.505Z",
+      "modified": "2020-04-11T18:22:32.505Z",
+      "is_removed": false,
+      "display_name": "Hagar's place",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 3,
+        "fixed": {
+          "url": null,
+          "email1": "3prettya@email.com",
+          "email2": "3prettyb@email.com",
+          "phone1": "+13333333333",
+          "phone2": "+23333333333"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.place",
+    "pk": 9,
+    "fields": {
+      "created": "1999-04-11T18:31:54.276Z",
+      "modified": "2020-04-11T18:31:54.276Z",
+      "is_removed": false,
+      "display_name": "\u65b0\u5929\u65b0\u5730",
+      "address_extra": null,
+      "address_type": "street",
+      "fields": {
+        "id": 9,
+        "fixed": {
+          "url": null,
+          "email1": "9thronea@email.com",
+          "email2": "9throneb@email.com",
+          "phone1": "+19999999999",
+          "phone2": "+29999999999"
+        },
+        "flexible": {}
+      }
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 1,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 52,
+      "object_id": "1",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 2,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 52,
+      "object_id": "2",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 3,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 10,
+      "content_type": 52,
+      "object_id": "3",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 4,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 9,
+      "content_type": 52,
+      "object_id": "4",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 5,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 52,
+      "object_id": "5",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 6,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 11,
+      "content_type": 52,
+      "object_id": "6",
+      "display_name": "primary",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 7,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 52,
+      "object_id": "7",
+      "display_name": "normal",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 8,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 5,
+      "content_type": 46,
+      "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 9,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 3,
+      "content_type": 46,
+      "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 10,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 3,
+      "content_type": 46,
+      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "display_name": "resident",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 11,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 4,
+      "content_type": 46,
+      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "display_name": "resident",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 12,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 2,
+      "content_type": 46,
+      "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 13,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 14,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 15,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 6,
+      "content_type": 46,
+      "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
+    "model": "whereabouts.locate",
+    "pk": 16,
+    "fields": {
+      "created": "2021-05-05T05:46:36.216Z",
+      "modified": "2021-05-05T05:46:36.216Z",
+      "is_removed": false,
+      "place": 1,
+      "content_type": 39,
+      "object_id": "1",
+      "display_name": "main",
+      "display_order": 0,
+      "start": null,
+      "finish": null,
+      "fields": {}
+    }
+  },
+  {
     "model": "whereabouts.campus",
     "pk": 1,
     "fields": {
@@ -722,10 +1710,10 @@
       "is_removed": false,
       "display_name": "CFCC Fellowship Hall",
       "slug": "fellowship_hall",
+      "campus": 1,
       "infos": {
         "contacts": {}
-      },
-      "campus": 1
+      }
     }
   },
   {
@@ -737,10 +1725,10 @@
       "is_removed": false,
       "display_name": "CFCC \u820a\u4e3b\u5802",
       "slug": "old_main_sanctuary",
+      "campus": 1,
       "infos": {
         "contacts": {}
-      },
-      "campus": 1
+      }
     }
   },
   {
@@ -752,12 +1740,12 @@
       "is_removed": false,
       "display_name": "SSU Sauvignon Village",
       "slug": "ssu_sauvignon_village",
+      "campus": 3,
       "infos": {
         "contacts": {
           "phone1": "+17076642880"
         }
-      },
-      "campus": 3
+      }
     }
   },
   {
@@ -769,12 +1757,12 @@
       "is_removed": false,
       "display_name": "SSU Student Center",
       "slug": "ssu_student_center",
+      "campus": 3,
       "infos": {
         "contacts": {
           "phone1": "+17076642880"
         }
-      },
-      "campus": 3
+      }
     }
   },
   {
@@ -3586,229 +4574,6 @@
       "category": "primary"
     }
   },
-
-  {
-    "model": "whereabouts.place",
-    "pk": "650cf1cb-bc34-4d74-a486-49ce2ff314fa",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 5,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 8,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-
-  {
-    "model": "whereabouts.place",
-    "pk": "fed38918-449c-4224-8290-4d7138101838",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 3,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 9,
-        "fixed": {
-          "address_name": "Hagar's place"
-        },
-        "contacts": {}
-      }
-    }
-  },
-
-  {
-    "model": "whereabouts.place",
-    "pk": "721be461-4304-49f4-a477-3e45f7ed38bd",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 3,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "display_name": "resident",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 10,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-
-  {
-    "model": "whereabouts.place",
-    "pk": "a37797e4-32a6-4ecd-b820-c04330b94662",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 4,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "display_name": "resident",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 11,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "c9bdde0a-a482-4d04-9f6a-6de7582498db",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 2,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 12,
-        "fixed": {
-          "address_name": "Burbank Elementary School"
-        },
-        "contacts": {
-          "url": "https://www.thecrossing.website/",
-          "email1": null,
-          "email2": null,
-          "phone1": "+12222222222",
-          "phone2": "+22222222222"
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "ba8a8b21-5b22-4335-ba98-b606e556d588",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 6,
-      "address_extra": "#A123",
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 13,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "b6752a2a-8dcc-496b-889c-a0baa84709de",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 6,
-      "address_extra": "#A123",
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 14,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "b180f95a-3fb7-4a8b-99bc-ff3830080d53",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 6,
-      "address_extra": "#A123",
-      "address_type": "street",
-      "content_type": 45,
-      "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 15,
-        "fixed": {},
-        "contacts": {}
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "680656f5-a475-439e-9844-1129bd5aa5a4",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 1,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 38,
-      "object_id": "1",
-      "display_name": "main",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 16,
-        "fixed": {
-          "address_name": "cfcc_hayward_main"
-        },
-        "contacts": {}
-      }
-    }
-  },
   {
     "model": "occasions.assembly",
     "pk": 1,
@@ -3825,7 +4590,6 @@
       "need_age": true,
       "division": 3,
       "infos": {
-        "fixed": {},
         "contacts": {}
       }
     }
@@ -3846,7 +4610,6 @@
       "need_age": false,
       "division": 1,
       "infos": {
-        "fixed": {},
         "contacts": {
           "url": "https://chineseforchristchurch.org",
           "email1": "haywardchurch@yahoo.com",
@@ -3872,7 +4635,6 @@
       "need_age": true,
       "division": 3,
       "infos": {
-        "fixed": {},
         "contacts": {}
       }
     }
@@ -3893,7 +4655,6 @@
       "need_age": false,
       "division": 4,
       "infos": {
-        "fixed": {},
         "contacts": {}
       }
     }
@@ -3914,7 +4675,6 @@
       "need_age": false,
       "division": 5,
       "infos": {
-        "fixed": {},
         "contacts": {}
       }
     }
@@ -3935,7 +4695,6 @@
       "need_age": false,
       "division": 6,
       "infos": {
-        "fixed": {},
         "contacts": {
           "url": null,
           "email1": null,
@@ -3962,219 +4721,12 @@
       "need_age": false,
       "division": 2,
       "infos": {
-        "fixed": {},
         "contacts": {
           "url": "https://www.thecrossing.website",
           "email1": "church.office@cfcchayward.org",
           "phone1": "+12222222222",
           "phone2": "+22222222222"
         }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "f8a73e66-b04f-11eb-9e9c-8c2f49e08706",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 1,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "1",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 1,
-        "fixed": {
-          "address_name": "cfcc_hayward_main"
-        },
-        "contacts": {
-          "url": "https://chineseforchristchurch.org/",
-          "email1": "haywardchurch@yahoo.com",
-          "email2": "church.office@cfcchayward.org",
-          "phone1": "+15105811630"
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "4b76fa2f-0ad8-434e-9838-10e73bd6ade0",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 2,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "7",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 2,
-        "fixed": {
-          "address_name": "Burbank Elementary School"
-        },
-        "contacts": {
-          "url": "https://www.thecrossing.website/",
-          "email1": null,
-          "email2": null,
-          "phone1": "+12222222222",
-          "phone2": "+22222222222"
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "edd6463b-3757-423e-83a8-4ff823ee9059",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 10,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "3",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 3,
-        "fixed": {
-          "address_name": "short mission trip address"
-        },
-        "contacts": {
-          "url": null,
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "e50d2b9c-0f92-4048-a524-918909d7a0c5",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 9,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "4",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 4,
-        "fixed": {
-          "address_name": "\u65b0\u5929\u65b0\u5730"
-        },
-        "contacts": {
-          "url": null,
-          "email1": "9thronea@email.com",
-          "email2": "9throneb@email.com",
-          "phone1": "+19999999999",
-          "phone2": "+29999999999"
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "e9208c4d-66cc-4bbd-9fb9-3c611e08503d",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 1,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "5",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 5,
-        "fixed": {
-          "address_name": null
-        },
-        "contacts": {
-          "url": null,
-          "email1": "5greata@email.com",
-          "email2": "5greatb@email.com",
-          "phone1": "+15555555555",
-          "phone2": "+25555555555"
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "e6e50c89-f4b7-4071-8a58-850800445304",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 11,
-      "address_extra": null,
-      "address_type": "street",
-      "content_type": 51,
-      "object_id": "6",
-      "display_name": "primary",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 6,
-        "fixed": {
-          "address_name": "Sonoma State University"
-        },
-        "contacts": {
-          "url": null,
-          "email1": null,
-          "email2": null,
-          "phone1": "+17076642880",
-          "phone2": null
-        }
-      }
-    }
-  },
-  {
-    "model": "whereabouts.place",
-    "pk": "fdaa2863-cc0b-48ea-8426-7df14e924843",
-    "fields": {
-      "created": "2021-05-05T05:46:36.216Z",
-      "modified": "2021-05-05T05:46:36.216Z",
-      "is_removed": false,
-      "address": 1,
-      "content_type": 51,
-      "object_id": "2",
-      "display_name": "normal",
-      "display_order": 0,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "id": 7,
-        "fixed": {},
-        "contacts": {}
       }
     }
   },
@@ -5936,42 +6488,38 @@
         78,
         79,
         80,
-        177,
-        178,
-        179,
-        180,
-        189,
-        190,
-        191,
-        192,
-        193,
-        194,
-        195,
-        196,
-        161,
-        162,
-        163,
-        164,
-        173,
-        174,
-        175,
-        176,
-        165,
-        166,
-        167,
-        168,
-        185,
-        186,
-        187,
-        188,
-        169,
-        170,
-        171,
-        172,
         181,
         182,
         183,
         184,
+        193,
+        194,
+        195,
+        196,
+        165,
+        166,
+        167,
+        168,
+        177,
+        178,
+        179,
+        180,
+        169,
+        170,
+        171,
+        172,
+        189,
+        190,
+        191,
+        192,
+        173,
+        174,
+        175,
+        176,
+        185,
+        186,
+        187,
+        188,
         81,
         82,
         83,
@@ -6004,34 +6552,38 @@
         122,
         123,
         124,
-        145,
-        146,
-        147,
-        148,
-        141,
-        142,
-        143,
-        144,
-        137,
-        138,
-        139,
-        140,
-        133,
-        134,
-        135,
-        136,
         149,
         150,
         151,
         152,
-        157,
-        158,
-        159,
-        160,
+        145,
+        146,
+        147,
+        148,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        133,
+        134,
+        135,
+        136,
         153,
         154,
         155,
-        156
+        156,
+        161,
+        162,
+        163,
+        164,
+        157,
+        158,
+        159,
+        160
       ]
     }
   },
@@ -6054,37 +6606,33 @@
         70,
         71,
         72,
-        177,
-        178,
-        179,
-        180,
-        189,
-        190,
-        192,
+        181,
+        182,
+        184,
         193,
         194,
         195,
         196,
-        161,
-        162,
-        163,
-        164,
-        173,
-        174,
-        176,
         165,
         166,
         168,
+        177,
+        178,
+        179,
+        180,
+        169,
+        170,
+        172,
+        189,
+        190,
+        192,
+        173,
+        174,
+        176,
         185,
         186,
         187,
         188,
-        169,
-        170,
-        172,
-        181,
-        182,
-        184,
         97,
         98,
         100,
@@ -6098,33 +6646,37 @@
         121,
         122,
         124,
-        145,
-        146,
-        147,
-        148,
-        141,
-        142,
-        143,
-        144,
-        137,
-        138,
-        139,
-        140,
-        133,
-        134,
-        135,
-        136,
         149,
         150,
         151,
         152,
-        157,
-        158,
-        160,
+        145,
+        146,
+        147,
+        148,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        133,
+        134,
+        135,
+        136,
         153,
         154,
         155,
-        156
+        156,
+        161,
+        162,
+        163,
+        164,
+        157,
+        158,
+        160
       ]
     }
   },
@@ -6142,33 +6694,33 @@
         118,
         120,
         76,
-        177,
-        180,
+        184,
         193,
         194,
         196,
-        161,
-        162,
-        164,
+        177,
+        180,
         185,
         186,
         188,
-        184,
         128,
         132,
         124,
+        149,
         145,
         141,
         142,
         144,
         136,
-        149,
-        157,
-        158,
-        160,
         153,
         154,
-        156
+        156,
+        161,
+        162,
+        164,
+        157,
+        158,
+        160
       ]
     }
   },
@@ -6201,58 +6753,54 @@
         70,
         71,
         72,
-        209,
-        210,
-        211,
-        212,
-        177,
-        178,
-        179,
-        180,
-        197,
-        198,
-        199,
-        200,
-        189,
-        190,
-        191,
-        192,
-        193,
-        194,
-        195,
-        196,
-        161,
-        162,
-        163,
-        164,
-        173,
-        174,
-        175,
-        176,
-        201,
-        202,
-        203,
-        204,
         205,
         206,
         207,
         208,
-        165,
-        166,
-        167,
-        168,
-        185,
-        186,
-        187,
-        188,
-        169,
-        170,
-        171,
-        172,
+        209,
+        210,
+        211,
+        212,
         181,
         182,
         183,
         184,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        165,
+        166,
+        167,
+        168,
+        177,
+        178,
+        179,
+        180,
+        201,
+        202,
+        203,
+        204,
+        169,
+        170,
+        171,
+        172,
+        189,
+        190,
+        191,
+        192,
+        173,
+        174,
+        175,
+        176,
+        185,
+        186,
+        187,
+        188,
         97,
         98,
         99,
@@ -6271,34 +6819,38 @@
         122,
         123,
         124,
-        145,
-        146,
-        147,
-        148,
-        141,
-        142,
-        143,
-        144,
-        137,
-        138,
-        139,
-        140,
-        133,
-        134,
-        135,
-        136,
         149,
         150,
         151,
         152,
-        157,
-        158,
-        159,
-        160,
+        145,
+        146,
+        147,
+        148,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        133,
+        134,
+        135,
+        136,
         153,
         154,
         155,
-        156
+        156,
+        161,
+        162,
+        163,
+        164,
+        157,
+        158,
+        159,
+        160
       ]
     }
   },
@@ -6339,62 +6891,58 @@
         77,
         78,
         80,
-        209,
-        210,
-        211,
-        212,
-        213,
-        214,
-        215,
-        216,
-        177,
-        178,
-        179,
-        180,
-        197,
-        198,
-        199,
-        200,
-        189,
-        190,
-        191,
-        192,
-        193,
-        194,
-        195,
-        196,
-        161,
-        162,
-        163,
-        164,
-        173,
-        174,
-        175,
-        176,
-        201,
-        202,
-        203,
-        204,
         205,
         206,
         207,
         208,
-        165,
-        166,
-        167,
-        168,
-        185,
-        186,
-        187,
-        188,
-        169,
-        170,
-        171,
-        172,
+        213,
+        214,
+        215,
+        216,
+        209,
+        210,
+        211,
+        212,
         181,
         182,
         183,
         184,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        165,
+        166,
+        167,
+        168,
+        177,
+        178,
+        179,
+        180,
+        201,
+        202,
+        203,
+        204,
+        169,
+        170,
+        171,
+        172,
+        189,
+        190,
+        191,
+        192,
+        173,
+        174,
+        175,
+        176,
+        185,
+        186,
+        187,
+        188,
         81,
         82,
         83,
@@ -6424,34 +6972,38 @@
         122,
         123,
         124,
-        145,
-        146,
-        147,
-        148,
-        141,
-        142,
-        143,
-        144,
-        137,
-        138,
-        139,
-        140,
-        133,
-        134,
-        135,
-        136,
         149,
         150,
         151,
         152,
-        157,
-        158,
-        159,
-        160,
+        145,
+        146,
+        147,
+        148,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        133,
+        134,
+        135,
+        136,
         153,
         154,
         155,
-        156
+        156,
+        161,
+        162,
+        163,
+        164,
+        157,
+        158,
+        159,
+        160
       ]
     }
   },
@@ -6484,58 +7036,54 @@
         70,
         71,
         72,
-        209,
-        210,
-        211,
-        212,
-        177,
-        178,
-        179,
-        180,
-        197,
-        198,
-        199,
-        200,
-        189,
-        190,
-        191,
-        192,
-        193,
-        194,
-        195,
-        196,
-        161,
-        162,
-        163,
-        164,
-        173,
-        174,
-        175,
-        176,
-        201,
-        202,
-        203,
-        204,
         205,
         206,
         207,
         208,
-        165,
-        166,
-        167,
-        168,
-        185,
-        186,
-        187,
-        188,
-        169,
-        170,
-        171,
-        172,
+        209,
+        210,
+        211,
+        212,
         181,
         182,
         183,
         184,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        165,
+        166,
+        167,
+        168,
+        177,
+        178,
+        179,
+        180,
+        201,
+        202,
+        203,
+        204,
+        169,
+        170,
+        171,
+        172,
+        189,
+        190,
+        191,
+        192,
+        173,
+        174,
+        175,
+        176,
+        185,
+        186,
+        187,
+        188,
         97,
         98,
         99,
@@ -6554,34 +7102,38 @@
         122,
         123,
         124,
-        145,
-        146,
-        147,
-        148,
-        141,
-        142,
-        143,
-        144,
-        137,
-        138,
-        139,
-        140,
-        133,
-        134,
-        135,
-        136,
         149,
         150,
         151,
         152,
-        157,
-        158,
-        159,
-        160,
+        145,
+        146,
+        147,
+        148,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        133,
+        134,
+        135,
+        136,
         153,
         154,
         155,
-        156
+        156,
+        161,
+        162,
+        163,
+        164,
+        157,
+        158,
+        159,
+        160
       ]
     }
   },
@@ -7964,4 +8516,4 @@
       "color_event": "#000000"
     }
   }
-]
+  ]

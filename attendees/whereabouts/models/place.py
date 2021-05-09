@@ -21,7 +21,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
     start = models.DateTimeField(null=True, blank=True, help_text='optional')
     finish = models.DateTimeField(null=True, blank=True, help_text='optional')
-    infos = JSONField(default=dict, null=True, blank=True, help_text="please keep {} here even there's no data")
+    infos = JSONField(default=Utility.default_infos, null=True, blank=True, help_text="please keep {} here even there's no data")
     # need to validate there only one 'main' for display_name
 
     class Meta:
