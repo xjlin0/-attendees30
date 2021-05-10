@@ -6,7 +6,9 @@ from attendees.whereabouts.models import Place
 
 class PlaceSerializer(serializers.ModelSerializer):
     street = serializers.CharField(read_only=True)
-    address = AddressSerializer(read_only=True)
+    address = AddressSerializer(required=False)
+    # content_type = serializers.PrimaryKeyRelatedField(read_only=True)
+    # object_id = serializers.CharField(read_only=True)  # https://www.django-rest-framework.org/api-guide/relations/#generic-relationships
 
     class Meta:
         model = Place
@@ -16,16 +18,29 @@ class PlaceSerializer(serializers.ModelSerializer):
             'address',
         ]
 
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['address'] = AddressSerializer(instance.address).data
+    #     print("hi 24 in PlaceSerializer here is AddressSerializer(instance.address).data")
+    #     print(AddressSerializer(instance.address).data)
+    #     return rep
+
     def create(self, validated_data):
         """
         Create or update `Place` instance, given the validated data.
         """
 
         place_id = self._kwargs['data'].get('id')
-        print("hi 25 in PlaceSerializer, here is validated_data: ")
+        print("hi 34 in PlaceSerializer, here is validated_data: ")
         print(validated_data)
-        print("hi 27 in PlaceSerializer, here is self._kwargs: ")
+        print("hi 36 in PlaceSerializer, here is self._kwargs: ")
         print(self._kwargs)
+        print("hi 38 in PlaceSerializer, here is self._kwargs['data'].get('address'): ")
+        print(self._kwargs['data'].get('address'))
+        print("hi 40 in PlaceSerializer, here is validated_data.get('address'): ")
+        print(validated_data.get('address'))
+        # print("hi 42 in PlaceSerializer, here is validated_data.get('address'): ")
+        # print(self.)
         obj, created = Place.objects.update_or_create(
             id=place_id,
             defaults=validated_data,

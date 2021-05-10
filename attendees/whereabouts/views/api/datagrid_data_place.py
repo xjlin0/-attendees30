@@ -27,6 +27,8 @@ class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from Gen
 
     def get_queryset(self):  # Todo: check if current user are allowed to query this attendee's contact
         querying_place_id = self.kwargs.get('place_id')
+        print("hi ApiDatagridDataPlaceViewSet 30 here is querying_place_id")
+        print(querying_place_id)
         return Place.objects.filter(pk=querying_place_id)
 
 

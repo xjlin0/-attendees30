@@ -14,7 +14,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=False, blank=False)
     object_id = models.CharField(max_length=36, null=False, blank=False)
     subject = GenericForeignKey('content_type', 'object_id')
-    address = AddressField(related_name='+', blank=True, null=True)
+    address = AddressField(related_name='place', blank=True, null=True)
     address_extra = models.CharField(max_length=50, blank=True, null=True, help_text='i.e. Apartment number')
     address_type = models.CharField(max_length=20, default='street', blank=True, null=True, help_text='mailing, remote or street address')
     display_name = models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')

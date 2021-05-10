@@ -847,7 +847,9 @@ Attendees.datagridUpdate = {
 
                     $.ajax({
                       url    : ajaxUrl,
-                      data   : userData,
+                      data   : JSON.stringify(userData),
+                      dataType:'json',
+                      contentType: "application/json; charset=utf-8",
                       method : 'POST',
                       success: (response) => {
                                  Attendees.datagridUpdate.placePopup.hide();

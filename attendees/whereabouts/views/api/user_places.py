@@ -21,8 +21,8 @@ class ApiUserPlaceViewSet(LoginRequiredMixin, ModelViewSet):
             keywords = self.request.query_params.get('searchValue', ''),
             keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on browser does not help
             places = Place.objects if self.request.user.privileged() else self.request.user.attendee.contacts
-            print("hi ApiUserPlaceViewSet 24 here is self.request.query_params")
-            print(self.request.query_params)
+            print("hi ApiUserPlaceViewSet 24 here is keywords")
+            print(keywords)
             if place_id:
                 return places.filter(pk=place_id)
             else:
