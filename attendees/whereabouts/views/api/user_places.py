@@ -19,10 +19,9 @@ class ApiUserPlaceViewSet(LoginRequiredMixin, ModelViewSet):
             # Todo: 20210502 filter contacts the current user can see (for schedulers)
             place_id = self.request.query_params.get('id', None)
             keywords = self.request.query_params.get('searchValue', ''),
-            keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on browser does not help
+            keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on ajax does not help, check if args[i] = JSON.stringify(loadOptions[i]) help
             places = Place.objects if self.request.user.privileged() else self.request.user.attendee.contacts
-            print("hi ApiUserPlaceViewSet 24 here is keywords")
-            print(keywords)
+
             if place_id:
                 return places.filter(pk=place_id)
             else:

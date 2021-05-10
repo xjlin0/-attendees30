@@ -13,22 +13,18 @@ from attendees.whereabouts.serializers import PlaceSerializer
 
 class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
     """
-    API endpoint that allows Locate & Place to be viewed or edited.
+    API endpoint that allows Place to be viewed or edited.
     """
     serializer_class = PlaceSerializer
 
     def retrieve(self, request, *args, **kwargs):
         place_id = self.request.query_params.get('place_id')
-        print("hi ApiDatagridDataPlaceViewSet 22 here is place_id")
-        print(place_id)
         place = Place.objects.filter(pk=place_id).first()
         serializer = PlaceSerializer(place)
         return Response(serializer.data)
 
     def get_queryset(self):  # Todo: check if current user are allowed to query this attendee's contact
         querying_place_id = self.kwargs.get('place_id')
-        print("hi ApiDatagridDataPlaceViewSet 30 here is querying_place_id")
-        print(querying_place_id)
         return Place.objects.filter(pk=querying_place_id)
 
 

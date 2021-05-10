@@ -811,7 +811,6 @@ Attendees.datagridUpdate = {
                 },
                 dataSource: Attendees.datagridUpdate.addressSource,
                 onValueChanged: (e) => {
-                  console.log("hi 814 here is onValueChanged e: ", e);
                   if (e.previousValue && e.previousValue !== e.value){
                     const previousFormData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
@@ -865,7 +864,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('851 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('867 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -897,7 +896,7 @@ Attendees.datagridUpdate = {
                 type: "normal",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  console.log("hi 886 clicked add new address!");
+                  console.log("hi 899 clicked add new address!");
                 },
               },
             },
@@ -962,7 +961,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 958 ajax error here is response: ', response);
+          console.log('hi 964 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
