@@ -8,7 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from attendees.whereabouts.models import Place
-from attendees.persons.serializers import PlaceSerializer
+from attendees.whereabouts.serializers import PlaceSerializer
 
 
 class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
@@ -19,6 +19,8 @@ class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from Gen
 
     def retrieve(self, request, *args, **kwargs):
         place_id = self.request.query_params.get('place_id')
+        print("hi ApiDatagridDataPlaceViewSet 22 here is place_id")
+        print(place_id)
         place = Place.objects.filter(pk=place_id).first()
         serializer = PlaceSerializer(place)
         return Response(serializer.data)

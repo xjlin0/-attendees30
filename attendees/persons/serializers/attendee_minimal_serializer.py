@@ -3,7 +3,8 @@ from pathlib import Path
 from attendees.persons.models import Attendee
 from rest_framework import serializers
 
-from attendees.persons.serializers import FamilyAttendeeSerializer, PlaceSerializer
+from attendees.persons.serializers import FamilyAttendeeSerializer
+from attendees.whereabouts.serializers import PlaceSerializer
 
 
 class AttendeeMinimalSerializer(serializers.ModelSerializer):

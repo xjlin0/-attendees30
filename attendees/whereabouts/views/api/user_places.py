@@ -5,14 +5,14 @@ from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import AuthenticationFailed
 from attendees.whereabouts.models import Place
-from attendees.whereabouts.serializers import PlaceSerializer
+from attendees.whereabouts.serializers import PlaceMinimalSerializer
 
 
 class ApiUserPlaceViewSet(LoginRequiredMixin, ModelViewSet):
     """
     API endpoint that allows Place to be viewed or edited.
     """
-    serializer_class = PlaceSerializer
+    serializer_class = PlaceMinimalSerializer
 
     def get_queryset(self, **kwargs):
         if self.request.user.organization:
@@ -21,7 +21,8 @@ class ApiUserPlaceViewSet(LoginRequiredMixin, ModelViewSet):
             keywords = self.request.query_params.get('searchValue', ''),
             keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on browser does not help
             places = Place.objects if self.request.user.privileged() else self.request.user.attendee.contacts
-
+            print("hi ApiUserPlaceViewSet 24 here is self.request.query_params")
+            print(self.request.query_params)
             if place_id:
                 return places.filter(pk=place_id)
             else:

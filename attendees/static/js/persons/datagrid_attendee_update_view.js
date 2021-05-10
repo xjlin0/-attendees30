@@ -735,7 +735,7 @@ Attendees.datagridUpdate = {
         of: window,
       },
       onHiding: () => {
-        $('div.contact-lookup-search').dxLookup('instance').close();
+        $('div.address-lookup-search').dxLookup('instance').close();
       },
       dragEnabled: true,
       contentTemplate: (e) => {
@@ -787,20 +787,18 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 2,
-              dataField: "id",
-              name: "place",
-              label: {
-                text: 'Address',
-              },
+              dataField: "address.id",
+//              name: "address",
+//              label: {
+//                text: 'Address',
+//              },
               editorType: "dxLookup",
               editorOptions: {
                 elementAttr: {
-                  class: 'contact-lookup-search',  // calling closing by the parent
+                  class: 'address-lookup-search',  // calling closing by the parent
                 },
                 valueExpr: "id",
-                displayExpr: (item) => {
-                  return item ? '(' + (item.display_name || ' ') + ') ' + (item.street || 'null record place: ' + item.id) : '';
-                },
+                displayExpr: "raw",  // 'formatted' does not exist
                 placeholder: "Select a value...",
                 searchExpr: ['street_number', 'raw'],
 //                searchMode: 'startswith',
@@ -811,7 +809,22 @@ Attendees.datagridUpdate = {
                   showTitle: false,
                   closeOnOutsideClick: true,
                 },
-                dataSource: Attendees.datagridUpdate.placeSource,
+                dataSource: Attendees.datagridUpdate.addressSource,
+                onValueChanged: (e) => {
+                  console.log("hi 814 here is onValueChanged e: ", e);
+                  if (e.previousValue && e.previousValue !== e.value){
+                    const previousFormData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
+                    const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
+                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
+                  }
+                },
+              },
+            },
+            {
+              dataField: "address_extra",
+              helpText: 'apt/unit/suite number, ect',
+              editorOptions: {
+                placeholder: "example: Apt 2F",
               },
             },
             {
@@ -822,13 +835,13 @@ Attendees.datagridUpdate = {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Contact",
+                text: "Save Place",
                 icon: "save",
-                hint: "save attendeecontect data in the popup",
+                hint: "save Place data in the popup",
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if(confirm('are you sure to submit the popup locate Form?')){
+                  if(confirm('are you sure to submit the popup Place Form?')){
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     userData._method = userData.id ? 'PUT' : 'POST';
 
@@ -840,7 +853,7 @@ Attendees.datagridUpdate = {
                                  Attendees.datagridUpdate.placePopup.hide();
                                  DevExpress.ui.notify(
                                    {
-                                     message: 'saving locate success',
+                                     message: 'saving place success',
                                      width: 500,
                                      position: {
                                       my: 'center',
@@ -850,7 +863,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('861 Failed to save data for locate Form in Popup, error: ', response);
+                                 console.log('851 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -913,10 +926,10 @@ Attendees.datagridUpdate = {
     }
   },
 
-  placeSource: new DevExpress.data.CustomStore({
+  addressSource: new DevExpress.data.CustomStore({
     key: 'id',
     load: (loadOptions) => {
-      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.placePopupDxFormData];
+      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.placePopupDxFormData.address];
 
       const deferred = $.Deferred();
       const args = {};
@@ -936,7 +949,7 @@ Attendees.datagridUpdate = {
       });
 
       $.ajax({
-        url: $('div.datagrid-attendee-update').data('places-endpoint'),
+        url: $('div.datagrid-attendee-update').data('addresses-endpoint'),
         dataType: "json",
         data: args,
         success: (result) => {
@@ -947,7 +960,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 995 ajax error here is response: ', response);
+          console.log('hi 958 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -957,10 +970,10 @@ Attendees.datagridUpdate = {
     },
     byKey: (key) => {
       if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.placePopupDxFormData){
-        return [Attendees.datagridUpdate.placePopupDxFormData];
+        return [Attendees.datagridUpdate.placePopupDxFormData.address];
       }else{
         const d = new $.Deferred();
-        $.get($('div.datagrid-attendee-update').data('places-endpoint'), {id: key})
+        $.get($('div.datagrid-attendee-update').data('addresses-endpoint'), {id: key})
             .done(function(result) {
                 d.resolve(result.data);
             });
