@@ -30,7 +30,7 @@ class Meet(TimeStampedModel, SoftDeletableModel, Utility):
     #     pass # https://stackoverflow.com/a/27241824
 
     def get_absolute_url(self):
-        return reverse('character_detail', args=[str(self.id)])
+        return reverse('meet_detail', args=[str(self.id)])
 
     def info(self):
         return self.infos.get('info', '')

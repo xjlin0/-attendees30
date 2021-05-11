@@ -10,7 +10,7 @@ from attendees.persons.models import Utility, Note
 
 
 class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
-    locates = GenericRelation('whereabouts.Locate')
+    places = GenericRelation('whereabouts.Place')
     notes = GenericRelation(Note)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     start = models.DateTimeField(null=True, blank=True, help_text='optional')
@@ -39,7 +39,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
         return '%s' % self.display_name
 
     def get_addresses(self):
-        return "\n".join([a.place.street for a in self.locates.all() if a is not None])
+        return "\n".join([a.street for a in self.places.all() if a is not None])
 
 # from rest_framework import serializers
 #

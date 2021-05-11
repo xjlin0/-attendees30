@@ -12,7 +12,7 @@ from address.models import Locality, State, Address
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
      Relationship, Registration, Attending, AttendingMeet
-from attendees.whereabouts.models import Place, Division, Locate
+from attendees.whereabouts.models import Place, Division
 
 
 def import_household_people_address(
@@ -107,6 +107,7 @@ def import_addresses(addresses, california):
 
     print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
+    address_content_type = ContentType.objects.get(model='address')
     for address_dict in addresses:
         try:
             print('.', end='')
@@ -116,29 +117,38 @@ def import_addresses(addresses, california):
             city = Utility.presence(address_dict.get('City'))
             zip_code = Utility.presence(address_dict.get('Zip'))
             if address_id and street and state == california.code:
-                locality, locality_created = Locality.objects.update_or_create(
-                    name=city,
-                    postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
-                    state=california
-                )
+                # locality, locality_created = Locality.objects.update_or_create(
+                #     name=city,
+                #     postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
+                #     state=california
+                # )
 
                 possible_extras = re.findall('((?i)(apt|unit|#| \D{1}\d+).+)$', street)  # Get extra info such as Apt#
                 address_extra = possible_extras[0][0].strip() if possible_extras else ''
                 street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
 
                 contact_values = {
-                    'street_number': street_strs[0],
-                    'route': ' '.join(street_strs[1:]),
-                    'locality': locality,
-                    'raw': f"{street}, {city}, {state} {zip_code}",
+                    'address': {
+                        'street_number': street_strs[0],
+                        'route': ' '.join(street_strs[1:]),
+                        'locality': Utility.presence(address_dict.get('City')),
+                        'postal_code': Utility.presence(address_dict.get('Zip')) or '',
+                        'state': california.name,
+                        'state_code': california.code,
+                        'country': 'USA',
+                        'country_code': 'US',
+                        'raw': f"{street}, {city}, {state} {zip_code}",
+                    },
+                    'content_type': address_content_type,
+                    'object_id': str(address_id),        # will update later
                     'address_extra': Utility.presence(address_extra),
-                    'fields': {
+                    'infos': {
                         'access_address_id': address_id,
                         'access_address_values': address_dict,
                     }
                 }
                 Place.objects.update_or_create(
-                    fields__access_address_id=address_id,
+                    infos__access_address_id=address_id,
                     defaults=contact_values
                 )
             else:
@@ -203,29 +213,29 @@ def import_households(households, division1_slug, division2_slug):
                 if address_id:
                     phone1 = Utility.presence(household.get('HouseholdPhone'))
                     phone2 = Utility.presence(household.get('HouseholdFax'))
-                    # old_contact = Place.objects.filter(fields__access_address_id=address_id).first()
+                    # old_contact = Place.objects.filter(infos__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    place, place_created = Place.objects.update_or_create(
-                        fields__access_address_id=address_id,
-                        # address=address,
-                        defaults={
-                            'display_name':  display_name,
-                            # 'address': address,
-                            'fields': {
-                                'access_address_id': address_id,
-                                'contacts': {
-                                    'phone1': add_int_code(phone1),  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
-                                    'phone2': add_int_code(phone2),
+                    saved_place = Place.objects.filter(infos__access_address_id=address_id).first()
+                    if saved_place:
+                        Place.objects.update_or_create(
+                            infos__access_address_id=address_id,
+                            # address=address,
+                            defaults={
+                                'address': saved_place.address,
+                                'display_name':  display_name,
+                                'content_type': family_content_type,
+                                'object_id': family.id,
+                                'address_extra': saved_place.address_extra,
+                                'infos': {
+                                    'access_address_id': address_id,
+                                    'contacts': {
+                                        'phone1': add_int_code(phone1),  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
+                                        'phone2': add_int_code(phone2),
+                                    },
+                                    'fixed': {}
                                 },
-                                'fixed': {}
-                            },
-                        }
-                    )
-                    Locate.objects.update_or_create(
-                        content_type=family_content_type,
-                        object_id=family.id,
-                        place=place
-                    )
+                            }
+                        )
             successfully_processed_count += 1
 
         except Exception as e:
@@ -391,14 +401,26 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        place = Place.objects.filter(fields__access_address_id=address_id).first()
-                        if place:
-                            Locate.objects.update_or_create(
-                                place=place,
+                        family_place = Place.objects.filter(infos__access_address_id=address_id).first()
+                        if family_place:
+                            Place.objects.update_or_create(
+                                address=family_place.address,
                                 content_type=attendee_content_type,
                                 object_id=attendee.id,
-                                defaults={'display_name': 'main', 'display_order': 0}
-                            )
+                                address_extra=family_place.address_extra,
+                                defaults={
+                                    'address': family_place.address,
+                                    'content_type': attendee_content_type,
+                                    'object_id': attendee.id,
+                                    'display_name': 'main',
+                                    'display_order': 0,
+                                    'address_extra': family_place.address_extra,
+                                    'infos': {
+                                        'contacts': {},
+                                        'fixed': {},
+                                    },
+                                }
+                            )  # don't add infos__access_address_id so future query will only get one at family level
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 
@@ -442,7 +464,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
             print('.', end='')
             children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
             parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
-            families_address = family.locates.first().place # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
+            families_address = family.places.first() # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
             potential_primary_phone = family.infos.get('access_household_values', {}).get('HouseholdPhone')
             if len(parents) > 1:  # family role modification skipped for singles
                 potential_secondary_phone = family.infos.get('access_household_values', {}).get('HouseholdFax')
