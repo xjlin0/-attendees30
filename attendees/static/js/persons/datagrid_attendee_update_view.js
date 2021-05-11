@@ -743,7 +743,7 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.placePopupDxForm = formContainer.dxForm({
         readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.placeDefaults,
-          colCount: 2,
+          colCount: 3,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -752,6 +752,7 @@ Attendees.datagridUpdate = {
           showValidationSummary: true,
           items: [
             {
+              colSpan: 2,
               dataField: "display_name",
               label: {
                 text: 'Address Type',
@@ -767,7 +768,7 @@ Attendees.datagridUpdate = {
               label: {
                 text: 'Address Importance',
               },
-              helpText: '0 will be shown ahead, others will be 1,2,3...',
+              helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
                 placeholder: "0/1/2/3, etc",
@@ -786,7 +787,7 @@ Attendees.datagridUpdate = {
               ]
             },
             {
-              colSpan: 2,
+              colSpan: 3,
               dataField: "address.id",
 //              name: "address",
 //              label: {
@@ -820,12 +821,55 @@ Attendees.datagridUpdate = {
               },
             },
             {
-              dataField: "address_extra",
-              helpText: 'apt/unit/suite number, ect',
+              dataField: "address.street_number",
+              helpText: 'no road name please',
+              label: {
+                text: 'Door number',
+              },
               editorOptions: {
-                placeholder: "example: Apt 2F",
+                placeholder: "example: '22416'",
               },
             },
+            {
+              dataField: "address.route",
+              helpText: 'no door number please',
+              label: {
+                text: 'Road',
+              },
+              editorOptions: {
+                placeholder: "example: 'A street'",
+              },
+            },
+            {
+              dataField: "address_extra",
+              helpText: 'suite/floor number, etc',
+              label: {
+                text: 'unit/apt',
+              },
+              editorOptions: {
+                placeholder: "example: Apt 2G",
+              },
+            },
+            // {
+            //   itemType: "empty",
+            // },
+            {
+              dataField: "address.locality",
+              helpText: 'Village/Town name',
+              label: {
+                text: 'City',
+              },
+              editorOptions: {
+                placeholder: "example: 'San Francisco'",
+              },
+            },
+            // {
+            //   dataField: "address.locality",
+            //   helpText: 'City/Town name',
+            //   editorOptions: {
+            //     placeholder: "example: 'San Francisco'",
+            //   },
+            // },
             {
               itemType: "button",
               horizontalAlignment: "left",
