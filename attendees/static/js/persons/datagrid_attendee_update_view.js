@@ -741,7 +741,8 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="locate-form">');
         Attendees.datagridUpdate.placePopupDxForm = formContainer.dxForm({
-        readOnly: !Attendees.utilities.editingEnabled,
+          // repaintChangesOnly: true,  // https://github.com/DevExpress/DevExtreme/issues/7295
+          readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.placeDefaults,
           colCount: 3,
           scrollingEnabled: true,
@@ -790,9 +791,9 @@ Attendees.datagridUpdate = {
               colSpan: 3,
               dataField: "address.id",
 //              name: "address",
-//              label: {
-//                text: 'Address',
-//              },
+              label: {
+                text: 'Address',
+              },
               editorType: "dxLookup",
               editorOptions: {
                 elementAttr: {
@@ -813,9 +814,13 @@ Attendees.datagridUpdate = {
                 dataSource: Attendees.datagridUpdate.addressSource,
                 onValueChanged: (e) => {
                   if (e.previousValue && e.previousValue !== e.value){
-                    const previousFormData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
+                    // const previousFormData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
                     Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
+                    // Attendees.datagridUpdate.placePopupDxForm.updateData('formData.address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
                   }
                 },
               },
