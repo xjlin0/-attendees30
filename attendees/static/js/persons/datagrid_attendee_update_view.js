@@ -735,7 +735,8 @@ Attendees.datagridUpdate = {
         of: window,
       },
       onHiding: () => {
-        $('div.address-lookup-search').dxLookup('instance').close();
+        const $existingAddressSelector = $('div.address-lookup-search').dxLookup('instance');
+        if ($existingAddressSelector) $existingAddressSelector.close();
       },
       dragEnabled: true,
       contentTemplate: (e) => {
@@ -790,7 +791,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               dataField: "address.id",
-//              name: "address",
+              name: "existingAddressSelector",
               label: {
                 text: 'Address',
               },
@@ -814,67 +815,72 @@ Attendees.datagridUpdate = {
                 dataSource: Attendees.datagridUpdate.addressSource,
                 onValueChanged: (e) => {
                   if (e.previousValue && e.previousValue !== e.value){
-                    // const previousFormData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
                     Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
                     // Attendees.datagridUpdate.placePopupDxForm.updateData('formData.address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
+                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
+                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
+                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
                   }
                 },
               },
             },
             {
-              dataField: "address.street_number",
-              helpText: 'no road name please',
-              label: {
-                text: 'Door number',
-              },
-              editorOptions: {
-                placeholder: "example: '22416'",
-              },
+              itemType: "group",
+              visible: false,
+              name: 'NewAddressItems',
+              colSpan: 3,
+              colCount: 3,
+              items: [
+                {
+                  dataField: "address.street_number",
+                  helpText: 'no road name please',
+                  label: {
+                    text: 'Door number',
+                  },
+                  editorOptions: {
+                    placeholder: "example: '22416'",
+                  },
+                },
+                {
+                  dataField: "address.route",
+                  helpText: 'no door number please',
+                  label: {
+                    text: 'Road',
+                  },
+                  editorOptions: {
+                    placeholder: "example: 'A street'",
+                  },
+                },
+                {
+                  dataField: "address_extra",
+                  helpText: 'suite/floor number, etc',
+                  label: {
+                    text: 'unit/apt',
+                  },
+                  editorOptions: {
+                    placeholder: "example: Apt 2G",
+                  },
+                },
+                {
+                  dataField: "address.locality",
+                  helpText: 'Village/Town name',
+                  label: {
+                    text: 'City',
+                  },
+                  editorOptions: {
+                    placeholder: "example: 'San Francisco'",
+                  },
+                },
+                {
+                  dataField: "address.zip_code",
+                  helpText: 'ZIP code',
+                  editorOptions: {
+                    placeholder: "example: '94106'",
+                  },
+                },
+              ],
             },
-            {
-              dataField: "address.route",
-              helpText: 'no door number please',
-              label: {
-                text: 'Road',
-              },
-              editorOptions: {
-                placeholder: "example: 'A street'",
-              },
-            },
-            {
-              dataField: "address_extra",
-              helpText: 'suite/floor number, etc',
-              label: {
-                text: 'unit/apt',
-              },
-              editorOptions: {
-                placeholder: "example: Apt 2G",
-              },
-            },
-            // {
-            //   itemType: "empty",
-            // },
-            {
-              dataField: "address.locality",
-              helpText: 'Village/Town name',
-              label: {
-                text: 'City',
-              },
-              editorOptions: {
-                placeholder: "example: 'San Francisco'",
-              },
-            },
-            // {
-            //   dataField: "address.locality",
-            //   helpText: 'City/Town name',
-            //   editorOptions: {
-            //     placeholder: "example: 'San Francisco'",
-            //   },
-            // },
             {
               itemType: "button",
               horizontalAlignment: "left",
@@ -913,7 +919,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                                },
                       error  : (response) => {
-                                 console.log('867 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('947 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -933,6 +939,8 @@ Attendees.datagridUpdate = {
             },
             {
               itemType: "button",
+              name: "newAddressButton",
+              visible: true,
               horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
@@ -945,7 +953,13 @@ Attendees.datagridUpdate = {
                 type: "normal",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  console.log("hi 899 clicked add new address!");
+                  if(confirm("Are you sure to add new address?")){
+                    Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
+                  }
                 },
               },
             },
