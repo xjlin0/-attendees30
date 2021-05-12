@@ -20,6 +20,7 @@ Attendees.datagridUpdate = {
   placeDefaults: {
     display_order: 0,
     display_name: 'other',
+    content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
 
   init: () => {
@@ -64,6 +65,7 @@ Attendees.datagridUpdate = {
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
+    Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
     Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
     $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
     $.ajax({
@@ -211,7 +213,6 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 6,
-//            caption: "colSpan: 7",
             itemType: "group",
             items: [
               {
@@ -303,67 +304,59 @@ Attendees.datagridUpdate = {
         caption: "Contacts",
         itemType: "group",
         items: [
-
-
-              {
-                colSpan: 7,
-                dataField: "infos.contacts.phone1",
-                label: {
-                  text: 'phone',
-                },
-              },
-              {
-                colSpan: 5,
-                dataField: "infos.contacts.phone2",
-                label: {
-                  visible: false,
-                },
-              },
-              {
-                colSpan: 7,
-                dataField: "infos.contacts.email1",
-                label: {
-                  text: 'email',
-                },
-              },
-              {
-                colSpan: 5,
-                dataField: "infos.contacts.email2",
-                label: {
-                  visible: false,
-                },
-              },
-              {
-                colSpan: 24,
-                dataField: "places",
-                label: {
-                  text: 'address',
-                },
-                template: (data, itemElement) => {
-                  if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(place => {
-                      if (place.id && typeof place === 'object'){
-                        const $button = $('<button>', {
-                          type: 'button',
-                          class: "btn-outline-success place-button btn button btn-sm attendee-place-button", // or use btn-block class
-                          value: place.id,
-                          text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
-                        });
-                        itemElement.append($button);
-                      }
+          {
+            colSpan: 7,
+            dataField: "infos.contacts.phone1",
+            label: {
+              text: 'phone',
+            },
+          },
+          {
+            colSpan: 5,
+            dataField: "infos.contacts.phone2",
+            label: {
+              visible: false,
+            },
+          },
+          {
+            colSpan: 7,
+            dataField: "infos.contacts.email1",
+            label: {
+              text: 'email',
+            },
+          },
+          {
+            colSpan: 5,
+            dataField: "infos.contacts.email2",
+            label: {
+              visible: false,
+            },
+          },
+          {
+            colSpan: 24,
+            dataField: "places",
+            label: {
+              text: 'address',
+            },
+            template: (data, itemElement) => {
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(place => {
+                  if (place.id && typeof place === 'object'){
+                    const $button = $('<button>', {
+                      type: 'button',
+                      class: "btn-outline-success place-button btn button btn-sm attendee-place-button", // or use btn-block class
+                      value: place.id,
+                      text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
                     });
+                    itemElement.append($button);
                   }
-                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "place-button-new place-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
-                },
-              },
-
-
-
-
+                });
+              }
+              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "place-button-new place-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
+            },
+          },
         ],
       },
-
-
       {
         colSpan: 24,
         colCount: 24,
@@ -394,7 +387,6 @@ Attendees.datagridUpdate = {
               }
             }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
           },
-
         ],
       },
       { // https://supportcenter.devexpress.com/ticket/details/t681806
@@ -447,8 +439,6 @@ Attendees.datagridUpdate = {
                               }, "error", 5000);
                 },
               });
-
-
             }
           }
         },
@@ -512,18 +502,18 @@ Attendees.datagridUpdate = {
                 displayExpr: "attending_label",
                 placeholder: "Select a value...",
                 dataSource: new DevExpress.data.DataSource({
-                    store: new DevExpress.data.CustomStore({
-                        key: "id",
-                        loadMode: "raw",
-                        load: () => {
-                          const d = $.Deferred();
-                          const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
-                          $.get($('div.datagrid-attendee-update').data('attendings-endpoint'), attendeeData).done((response) => {
-                              d.resolve(response.data)
-                          });
-                          return d.promise();
-                        }
-                    })
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
+                      $.get($('div.datagrid-attendee-update').data('attendings-endpoint'), attendeeData).done((response) => {
+                          d.resolve(response.data)
+                      });
+                      return d.promise();
+                    },
+                  })
                 }),
               },
             },
@@ -550,7 +540,7 @@ Attendees.datagridUpdate = {
                         d.resolve(response.data);
                       });
                       return d.promise();
-                    }
+                    },
                   })
                 }),
                 onValueChanged: (e) => {
@@ -567,7 +557,6 @@ Attendees.datagridUpdate = {
               dataField: "meet",
               editorType: "dxSelectBox",
               colSpan: 3,
-//              disabled: true,
               isRequired: true,
               label: {
                 text: 'Participating activity',
@@ -605,7 +594,6 @@ Attendees.datagridUpdate = {
             {
               dataField: "character",
               editorType: "dxSelectBox",
-//              disabled: true,
               label: {
                 text: '(Optional) Participating character',
                 showColon: true,
@@ -629,8 +617,8 @@ Attendees.datagridUpdate = {
                         });
                         return d.promise();
                       }
-                    }
-                  })
+                    },
+                  }),
                 }),
               },
             },
@@ -656,7 +644,6 @@ Attendees.datagridUpdate = {
             {
               itemType: "button",
               horizontalAlignment: "left",
-//              colSpan: 2,
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -688,7 +675,7 @@ Attendees.datagridUpdate = {
                                       of: window,
                                      }
                                     }, "success", 2500);
-                               },
+                      },
                       error  : (response) => {
                                  console.log('Failed to save data for AttendingmeetForm in Popup, error: ', response);
                                  console.log('formData: ', userData);
@@ -786,7 +773,7 @@ Attendees.datagridUpdate = {
                   type: "required",
                   message: "display_order is required"
                 },
-              ]
+              ],
             },
             {
               colSpan: 3,
@@ -917,7 +904,7 @@ Attendees.datagridUpdate = {
                                       of: window,
                                      }
                                     }, "success", 2500);
-                               },
+                      },
                       error  : (response) => {
                                  console.log('947 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
