@@ -18,6 +18,7 @@ Attendees.datagridUpdate = {
   placePopupDxForm: null,  // for getting formData
   placePopupDxFormData: {},  // for storing formData
   placeDefaults: {
+    address: {},
     display_order: 0,
     display_name: 'other',
     content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
@@ -734,7 +735,7 @@ Attendees.datagridUpdate = {
           // repaintChangesOnly: true,  // https://github.com/DevExpress/DevExtreme/issues/7295
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.placeDefaults,
-          colCount: 3,
+          colCount: 12,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -743,10 +744,10 @@ Attendees.datagridUpdate = {
           showValidationSummary: true,
           items: [
             {
-              colSpan: 2,
+              colSpan: 3,
               dataField: "display_name",
               label: {
-                text: 'Address Type',
+                text: 'Type',
               },
               helpText: 'what kind of address is this?',
               isRequired: true,
@@ -755,9 +756,10 @@ Attendees.datagridUpdate = {
               },
             },
             {
+              colSpan: 3,
               dataField: "display_order",
               label: {
-                text: 'Address Importance',
+                text: 'Importance',
               },
               helpText: '0 is shown before 1,2...',
               isRequired: true,
@@ -779,6 +781,30 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
+              dataField: "start",
+              editorType: "dxDateBox",
+              label: {
+                text: 'stay from',
+              },
+              helpText: 'When moved in?',
+              editorOptions: {
+                type: "date",
+              },
+            },
+            {
+              colSpan: 3,
+              dataField: "finish",
+              editorType: "dxDateBox",
+              label: {
+                text: 'stay until',
+              },
+              helpText: 'When moved out?',
+              editorOptions: {
+                type: "date",
+              },
+            },
+            {
+              colSpan: 12,
               dataField: "address.id",
               name: "existingAddressSelector",
               label: {
@@ -818,10 +844,11 @@ Attendees.datagridUpdate = {
               itemType: "group",
               visible: false,
               name: 'NewAddressItems',
-              colSpan: 3,
-              colCount: 3,
+              colSpan: 12,
+              colCount: 12,
               items: [
                 {
+                  colSpan: 4,
                   dataField: "address.street_number",
                   helpText: 'no road name please',
                   label: {
@@ -832,6 +859,7 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
+                  colSpan: 4,
                   dataField: "address.route",
                   helpText: 'no door number please',
                   label: {
@@ -842,6 +870,7 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
+                  colSpan: 4,
                   dataField: "address_extra",
                   helpText: 'suite/floor number, etc',
                   label: {
@@ -852,6 +881,7 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
+                  colSpan: 4,
                   dataField: "address.city",
                   name: "locality",
                   helpText: 'Village/Town name',
@@ -863,6 +893,7 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
+                  colSpan: 4,
                   dataField: "address.postal_code",
                   helpText: 'ZIP code',
                   editorOptions: {
@@ -870,6 +901,7 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
+                  colSpan: 4,
                   dataField: "address.state_id",
     //              name: "existingAddressSelector",
                   label: {
@@ -884,7 +916,7 @@ Attendees.datagridUpdate = {
                     displayExpr: (item) => {
                       return item ? item.name + ", " + item.country_name : null;
                     },
-                    placeholder: "where?",
+                    placeholder: "Example: 'CA'",
                     searchExpr: ['name'],
     //                searchMode: 'startswith',
                     searchPlaceholder: 'Search states',
@@ -898,7 +930,7 @@ Attendees.datagridUpdate = {
                     onValueChanged: (e) => {
                       if (e.previousValue && e.previousValue !== e.value){
                         const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                        console.log("hi 898 here is selectedState: ", selectedState);
+                        console.log("hi 932 here is selectedState: ", selectedState);
                       }
                     },
                   },
@@ -906,6 +938,7 @@ Attendees.datagridUpdate = {
               ],
             },
             {
+              colSpan: 3,
               itemType: "button",
               horizontalAlignment: "left",
               buttonOptions: {
@@ -929,7 +962,9 @@ Attendees.datagridUpdate = {
                       dataType:'json',
                       contentType: "application/json; charset=utf-8",
                       method : 'POST',
-                      success: (response) => {
+                      success: (savedPlace) => {
+                                 const clickedButton = $('button.attendee-place-button[value="' + savedPlace.id + '"]');
+                                 if (clickedButton.length) { clickedButton.text(savedPlace.display_name + ': ' + savedPlace.address.raw)}
                                  Attendees.datagridUpdate.placePopup.hide();
                                  DevExpress.ui.notify(
                                    {
@@ -943,7 +978,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('947 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('978 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -962,6 +997,7 @@ Attendees.datagridUpdate = {
               },
             },
             {
+              colSpan: 3,
               itemType: "button",
               name: "newAddressButton",
               visible: true,
@@ -973,7 +1009,7 @@ Attendees.datagridUpdate = {
                 disabled: !Attendees.utilities.editingEnabled,
                 text: "Add new address",
                 icon: "home",
-                hint: "add new address in the popup",
+                hint: "Can't find exiting address, add a new one here",
                 type: "normal",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
@@ -1048,7 +1084,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1015 ajax error here is response: ', response);
+          console.log('hi 1094 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1104,7 +1140,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1103 ajax error here is response: ', response);
+          console.log('hi 1150 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1117,7 +1153,7 @@ Attendees.datagridUpdate = {
 //        return [Attendees.datagridUpdate.placePopupDxFormData.address];
 //      }else{
         const d = new $.Deferred();
-        console.log("hi 1116 here is state key: ", key);
+        console.log("hi 1163 here is state key: ", key);
         $.get($('div.datagrid-attendee-update').data('states-endpoint'), {id: key})
             .done(function(result) {
                 d.resolve(result.data);

@@ -19,8 +19,8 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     address_type = models.CharField(max_length=20, default='street', blank=True, null=True, help_text='mailing, remote or street address')
     display_name = models.CharField(db_index=True, max_length=50, default='main', blank=False, null=False, help_text='main, resident, etc (main will be displayed first)')
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
-    start = models.DateTimeField(null=True, blank=True, help_text='optional')
-    finish = models.DateTimeField(null=True, blank=True, help_text='optional')
+    start = models.DateField(null=True, blank=True, help_text='optional, moved in date')
+    finish = models.DateField(null=True, blank=True, help_text='optional, moved out date')
     infos = JSONField(default=Utility.default_infos, null=True, blank=True, help_text="please keep {} here even there's no data")
     # need to validate there only one 'main' for display_name
 
