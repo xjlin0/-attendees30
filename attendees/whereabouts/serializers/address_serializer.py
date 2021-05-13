@@ -1,4 +1,4 @@
-from address.models import Address, Locality
+from address.models import Address
 from rest_framework import serializers
 
 
@@ -6,10 +6,6 @@ class AddressSerializer(serializers.ModelSerializer):
     postal_code = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
     state_id = serializers.SerializerMethodField(read_only=True)
-    new_address = serializers.SerializerMethodField(read_only=True)
-    # locality = serializers.PrimaryKeyRelatedField(required=False, queryset=Locality.objects.all())
-
-    # country_id = serializers.SerializerMethodField()
 
     def get_postal_code(self, obj):
         locality = obj.locality
@@ -22,9 +18,6 @@ class AddressSerializer(serializers.ModelSerializer):
     def get_state_id(self, obj):
         locality = obj.locality
         return locality.state.id if locality else None
-
-    def get_new_address(self, obj):
-        return {}
 
     class Meta:
         model = Address
