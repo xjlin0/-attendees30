@@ -26,6 +26,8 @@ class PlaceSerializer(serializers.ModelSerializer):
         """
 
         place_id = self._kwargs['data'].get('id')
+        print("hi 29 here is place_id:")
+        print(place_id)
         obj, created = Place.objects.update_or_create(
             id=place_id,
             defaults=validated_data,

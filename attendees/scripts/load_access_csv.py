@@ -47,9 +47,9 @@ def import_household_people_address(
     :param data_general_character_slug: key of data_general_character_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
-    california = State.objects.first()
+    california = State.objects.filter(code='CA').first()
     if not california:
-        raise Exception("Sorry, no state imported, did db_seed.json loaded?")
+        raise Exception("Sorry, California not imported, did db_seed.json loaded?")
 
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)

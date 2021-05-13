@@ -724,6 +724,8 @@ Attendees.datagridUpdate = {
       onHiding: () => {
         const $existingAddressSelector = $('div.address-lookup-search').dxLookup('instance');
         if ($existingAddressSelector) $existingAddressSelector.close();
+        const $existingStateSelector = $('div.state-lookup-search').dxLookup('instance');
+        if ($existingStateSelector) $existingStateSelector.close();
       },
       dragEnabled: true,
       contentTemplate: (e) => {
@@ -850,7 +852,8 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
-                  dataField: "address.locality",
+                  dataField: "address.city",
+                  name: "locality",
                   helpText: 'Village/Town name',
                   label: {
                     text: 'City',
@@ -860,10 +863,44 @@ Attendees.datagridUpdate = {
                   },
                 },
                 {
-                  dataField: "address.zip_code",
+                  dataField: "address.postal_code",
                   helpText: 'ZIP code',
                   editorOptions: {
                     placeholder: "example: '94106'",
+                  },
+                },
+                {
+                  dataField: "address.state_id",
+    //              name: "existingAddressSelector",
+                  label: {
+                    text: 'State',
+                  },
+                  editorType: "dxLookup",
+                  editorOptions: {
+                    elementAttr: {
+                      class: 'state-lookup-search',  // calling closing by the parent
+                    },
+                    valueExpr: "id",
+                    displayExpr: (item) => {
+                      return item ? item.name + ", " + item.country_name : null;
+                    },
+                    placeholder: "where?",
+                    searchExpr: ['name'],
+    //                searchMode: 'startswith',
+                    searchPlaceholder: 'Search states',
+                    minSearchLength: 2,  // cause values disappeared in drop down
+                    searchTimeout: 200,  // cause values disappeared in drop down
+                    dropDownOptions: {
+                      showTitle: false,
+                      closeOnOutsideClick: true,
+                    },
+                    dataSource: Attendees.datagridUpdate.stateSource,
+                    onValueChanged: (e) => {
+                      if (e.previousValue && e.previousValue !== e.value){
+                        const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
+                        console.log("hi 898 here is selectedState: ", selectedState);
+                      }
+                    },
                   },
                 },
               ],
@@ -1011,7 +1048,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 964 ajax error here is response: ', response);
+          console.log('hi 1015 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1030,6 +1067,63 @@ Attendees.datagridUpdate = {
             });
         return d.promise();
       }
+    },
+  }),
+
+  stateSource: new DevExpress.data.CustomStore({
+    key: 'id',
+    load: (loadOptions) => {
+//      if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.placePopupDxFormData.address];
+
+      const deferred = $.Deferred();
+      const args = {};
+
+      [
+          "skip",
+          "take",
+          "sort",
+          "filter",
+          "searchExpr",
+          "searchOperation",
+          "searchValue",
+          "group",
+      ].forEach((i) => {
+          if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+              args[i] = loadOptions[i];
+      });
+
+      $.ajax({
+        url: $('div.datagrid-attendee-update').data('states-endpoint'),
+        dataType: "json",
+        data: args,
+        success: (result) => {
+          deferred.resolve(result.data, {
+            totalCount: result.totalCount,
+            summary:    result.summary,
+            groupCount: result.groupCount
+          });
+        },
+        error: (response) => {
+          console.log('hi 1103 ajax error here is response: ', response);
+          deferred.reject("Data Loading Error, probably time out?");
+        },
+        timeout: 7000,
+      });
+
+      return deferred.promise();
+    },
+    byKey: (key) => {
+//      if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.placePopupDxFormData){
+//        return [Attendees.datagridUpdate.placePopupDxFormData.address];
+//      }else{
+        const d = new $.Deferred();
+        console.log("hi 1116 here is state key: ", key);
+        $.get($('div.datagrid-attendee-update').data('states-endpoint'), {id: key})
+            .done(function(result) {
+                d.resolve(result.data);
+            });
+        return d.promise();
+//      }
     },
   }),
 
