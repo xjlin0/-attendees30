@@ -611,6 +611,15 @@
     }
   },
   {
+    "model": "address.locality",
+    "pk": 2,
+    "fields": {
+      "name": "Rohnert Park",
+      "postal_code": "94928",
+      "state": 6
+    }
+  },
+  {
     "model": "address.address",
     "pk": 1,
     "fields": {
@@ -642,8 +651,8 @@
     "fields": {
       "street_number": "1",
       "route": "pretty street",
-      "locality": null,
-      "raw": "1 pretty st. pretty place, CA 11111",
+      "locality": 1,
+      "raw": "1 pretty st. Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -655,8 +664,8 @@
     "fields": {
       "street_number": "2",
       "route": "good street",
-      "locality": null,
-      "raw": "2 good street, god town, CA 22222",
+      "locality": 1,
+      "raw": "2 good street, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -668,8 +677,8 @@
     "fields": {
       "street_number": "3",
       "route": "great road",
-      "locality": null,
-      "raw": "3 great rd, great town, CA 33333",
+      "locality": 1,
+      "raw": "3 great rd, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -681,8 +690,8 @@
     "fields": {
       "street_number": "4",
       "route": "cool lane",
-      "locality": null,
-      "raw": "4 cool lane #A123, cool city, CA 44444",
+      "locality": 1,
+      "raw": "4 cool lane #A123, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -694,8 +703,8 @@
     "fields": {
       "street_number": "5",
       "route": "excellent court",
-      "locality": null,
-      "raw": "5 excellent ct. Apt 456, excellent village, CA 55555",
+      "locality": 1,
+      "raw": "5 excellent ct. Apt 456, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -707,8 +716,8 @@
     "fields": {
       "street_number": "6",
       "route": "beautiful drive",
-      "locality": null,
-      "raw": "6 beautiful dr, beautiful view, CA 66666",
+      "locality": 1,
+      "raw": "6 beautiful dr, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -720,8 +729,8 @@
     "fields": {
       "street_number": "7",
       "route": "throne way",
-      "locality": null,
-      "raw": "7 throne way, heaven, GG 99999",
+      "locality": 1,
+      "raw": "7 throne way, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -746,7 +755,7 @@
     "fields": {
       "street_number": "1801",
       "route": "East Cotati Avenue",
-      "locality": null,
+      "locality": 2,
       "raw": "1801 E Cotati Ave. Rohnert Park, CA 94928",
       "formatted": "",
       "latitude": null,

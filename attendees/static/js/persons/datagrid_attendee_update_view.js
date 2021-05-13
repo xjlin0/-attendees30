@@ -842,8 +842,10 @@ Attendees.datagridUpdate = {
                 onValueChanged: (e) => {
                   if (e.previousValue && e.previousValue !== e.value){
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
-                    // Attendees.datagridUpdate.placePopupDxForm.updateData('formData.address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+//                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
+                    Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+//                    console.log("hi 847 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
+//                    console.log("hi 848 here is selectedAddress: ", selectedAddress);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
@@ -989,7 +991,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('992 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('994 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -1030,6 +1032,7 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
+                    Attendees.datagridUpdate.placePopupDxForm.updateData('address', {});
                   }
                 },
               },

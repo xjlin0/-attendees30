@@ -1,3 +1,4 @@
+from address.models import Address
 from rest_framework import serializers
 
 from attendees.whereabouts.serializers import AddressSerializer
@@ -24,15 +25,23 @@ class PlaceSerializer(serializers.ModelSerializer):
         """
         Create or update `Place` instance, given the validated data.
         """
+        place_data = self._kwargs.get('data', {})
+        place_id = place_data.get('id')
+        address_data = place_data.get('address')
+        address_id = address_data.get('id')
 
-        place_id = self._kwargs['data'].get('id')
-        print("hi 29 here is place_id:")
-        print(place_id)
-        obj, created = Place.objects.update_or_create(
+        locality = validated_data.get('address', {}).get('locality')
+        address_data['locality'] = locality
+        address, address_created = Address.objects.update_or_create(
+            id=address_id,
+            defaults=address_data,
+        )
+        validated_data['address'] = address
+        place, place_created = Place.objects.update_or_create(
             id=place_id,
             defaults=validated_data,
         )
-        return obj
+        return place
 
     def update(self, instance, validated_data):
         """
