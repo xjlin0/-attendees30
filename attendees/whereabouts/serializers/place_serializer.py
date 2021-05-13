@@ -29,18 +29,30 @@ class PlaceSerializer(serializers.ModelSerializer):
         place_id = place_data.get('id')
         address_data = place_data.get('address')
         address_id = address_data.get('id')
-
         locality = validated_data.get('address', {}).get('locality')
         address_data['locality'] = locality
-        address, address_created = Address.objects.update_or_create(
-            id=address_id,
-            defaults=address_data,
-        )
-        validated_data['address'] = address
-        place, place_created = Place.objects.update_or_create(
-            id=place_id,
-            defaults=validated_data,
-        )
+
+        if address_id:
+            address, address_created = Address.objects.update_or_create(
+                id=address_id,
+                defaults=address_data,
+            )
+            validated_data['address'] = address
+
+            place, place_created = Place.objects.update_or_create(
+                id=place_id,
+                defaults=validated_data,
+            )
+        else:  # user is creating new address
+            new_address_data = address_data.get('new_address', {})
+            del validated_data['address']
+            place, place_created = Place.objects.update_or_create(
+                id=place_id,
+                defaults=validated_data,
+            )
+            place.address = new_address_data
+            place.save()
+
         return place
 
     def update(self, instance, validated_data):
