@@ -789,6 +789,12 @@ Attendees.datagridUpdate = {
               helpText: 'When moved in?',
               editorOptions: {
                 type: "date",
+                showClearButton: true,
+                dateSerializationFormat: "yyyy-MM-dd",
+                onFocusIn: (e) => {
+                  if(!e.component.option("value")) {e.component.option("value", new Date())};
+                },
+                placeholder: "click calendar",
               },
             },
             {
@@ -801,6 +807,11 @@ Attendees.datagridUpdate = {
               helpText: 'When moved out?',
               editorOptions: {
                 type: "date",
+                showClearButton: true,
+                onFocusIn: (e) => {
+                  if(!e.component.option("value")) {e.component.option("value", new Date())};
+                },
+                placeholder: "click calendar",
               },
             },
             {
@@ -930,7 +941,7 @@ Attendees.datagridUpdate = {
                     onValueChanged: (e) => {
                       if (e.previousValue && e.previousValue !== e.value){
                         const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                        console.log("hi 932 here is selectedState: ", selectedState);
+                        console.log("hi 944 here is selectedState: ", selectedState);
                       }
                     },
                   },
@@ -978,7 +989,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('978 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('992 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -1084,7 +1095,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1094 ajax error here is response: ', response);
+          console.log('hi 1098 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1140,7 +1151,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1150 ajax error here is response: ', response);
+          console.log('hi 1154 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1153,7 +1164,7 @@ Attendees.datagridUpdate = {
 //        return [Attendees.datagridUpdate.placePopupDxFormData.address];
 //      }else{
         const d = new $.Deferred();
-        console.log("hi 1163 here is state key: ", key);
+        console.log("hi 1167 here is state key: ", key);
         $.get($('div.datagrid-attendee-update').data('states-endpoint'), {id: key})
             .done(function(result) {
                 d.resolve(result.data);
