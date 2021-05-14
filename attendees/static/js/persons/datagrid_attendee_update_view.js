@@ -978,7 +978,7 @@ Attendees.datagridUpdate = {
                       userData.address = {
                         raw: 'new',
                         new_address: {  // special object for creating new django-address instance
-                          raw: newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.text,
+                          raw: newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.text + ' ' + newZIP,
                           street_number: newStreetNumber,
                           route: newRoute,
                           locality: newCity,
@@ -1035,6 +1035,33 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: "button",
+              name: "editAddressButton",
+              visible: true,
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Edit the address",
+                icon: "edit",
+                hint: "Modifying the current address, without creating one",
+                type: "success",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if(confirm("Are you sure to edit the current address?")){
+                    Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
+                  }
+                },
+              },
+            },
+            {
+              colSpan: 3,
+              itemType: "button",
               name: "newAddressButton",
               visible: true,
               horizontalAlignment: "left",
@@ -1046,7 +1073,7 @@ Attendees.datagridUpdate = {
                 text: "Add new address",
                 icon: "home",
                 hint: "Can't find exiting address, add a new one here",
-                type: "normal",
+                type: "danger",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to add new address?")){
@@ -1054,6 +1081,7 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.addressId = null;
                   }

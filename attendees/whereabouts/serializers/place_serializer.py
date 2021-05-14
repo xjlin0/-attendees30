@@ -1,4 +1,4 @@
-from address.models import Address
+from address.models import Address, Locality, State
 from rest_framework import serializers
 
 from attendees.whereabouts.serializers import AddressSerializer
@@ -30,9 +30,25 @@ class PlaceSerializer(serializers.ModelSerializer):
         address_data = place_data.get('address')
         address_id = address_data.get('id')
         locality = validated_data.get('address', {}).get('locality')
-        address_data['locality'] = locality
 
-        if address_id:
+        if address_id and locality:
+            new_city = address_data.get('city')
+            new_zip = address_data.get('postal_code')
+            new_state = State.objects.filter(pk=address_data.get('state_id')).first()
+
+            if new_state:
+                locality, locality_created = Locality.objects.update_or_create(
+                    name=new_city,
+                    postal_code=new_zip,
+                    state=new_state,
+                    defaults={
+                        'name': new_city,
+                        'postal_code': new_zip,
+                        'state': new_state,
+                    },
+                )
+
+            address_data['locality'] = locality
             address, address_created = Address.objects.update_or_create(
                 id=address_id,
                 defaults=address_data,
