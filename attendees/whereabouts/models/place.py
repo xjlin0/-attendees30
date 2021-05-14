@@ -31,7 +31,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
             models.UniqueConstraint(fields=['content_type', 'object_id', 'address', 'address_extra'], name="address_object")
         ]
         indexes = [
-            GinIndex(fields=['infos'], name='infos_fields_gin', ),
+            GinIndex(fields=['infos'], name='place_infos_gin', ),
         ]
 
     @property

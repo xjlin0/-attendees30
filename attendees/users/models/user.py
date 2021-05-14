@@ -1,8 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField
 from django.db import models
+from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.indexes import GinIndex
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+
+from attendees.persons.models import Utility
 from attendees.whereabouts.models import Organization
 
 
@@ -12,6 +16,12 @@ class User(AbstractUser):
     # around the globe.
     name = CharField(_("Name of User"), blank=True, max_length=255)
     organization = models.ForeignKey(Organization, null=True, blank=True, default=None, on_delete=models.SET_NULL, help_text='Primary organization of the user')
+    infos = JSONField(default=Utility.user_infos, null=True, blank=True, help_text="please keep {} here even there's no data")
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['infos'], name='user_infos_gin', ),
+        ]
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})

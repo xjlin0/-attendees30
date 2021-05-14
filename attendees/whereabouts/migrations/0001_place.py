@@ -47,6 +47,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='place',
-            index=GinIndex(fields=['infos'], name='infos_fields_gin'),
+            index=GinIndex(fields=['infos'], name='place_infos_gin'),
         ),
     ]

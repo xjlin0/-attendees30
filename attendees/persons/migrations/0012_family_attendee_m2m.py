@@ -23,6 +23,8 @@ class Migration(migrations.Migration):
                 ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
                 ('family', models.ForeignKey(on_delete=models.CASCADE, to='persons.Family')),
                 ('role', models.ForeignKey(help_text='[Title] the family role of the attendee?', on_delete=models.SET(0), related_name='role', to='persons.Relation', verbose_name='attendee is')),
+                ('start', models.DateField(blank=True, null=True, help_text='date joining family')),
+                ('finish', models.DateField(blank=True, null=True, help_text='date leaving family')),
             ],
             options={
                 'db_table': 'persons_family_attendees',

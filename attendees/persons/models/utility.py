@@ -26,8 +26,16 @@ class Utility:
         return True
 
     @staticmethod
+    def user_infos():
+        return {"settings": {}}
+
+    @staticmethod
     def default_infos():
-        return {"contacts": {}, "fixed": {}}
+        return {"fixed": {}, "contacts": {}}
+
+    @staticmethod
+    def attendee_infos():
+        return {"names": {}, "fixed": {}, "contacts": {}}
 
     @staticmethod
     def forever():  # 1923 years from now
