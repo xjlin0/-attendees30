@@ -90,3 +90,6 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
+## Todo:
+
+* Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and possibly retire db level full_name. 

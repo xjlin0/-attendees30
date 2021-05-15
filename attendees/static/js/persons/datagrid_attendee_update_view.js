@@ -23,6 +23,7 @@ Attendees.datagridUpdate = {
     display_name: 'other',
     content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
+  familyAttrPopup: null,
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -34,6 +35,7 @@ Attendees.datagridUpdate = {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
     $("div.form-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
     $("div.form-container").on("click", "button.attendee-place-button",  e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
+    $("div.form-container").on("click", "button.family-button",  e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
     // add listeners for Family, counselling, etc.
   },
 
@@ -62,6 +64,10 @@ Attendees.datagridUpdate = {
       history.replaceState(null, '', '?' + params + location.hash);
     }
   },
+
+
+  ///////////////////////  Main Attendee DxForm and Submit ///////////////////////
+
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
@@ -293,7 +299,8 @@ Attendees.datagridUpdate = {
                       if (familyAttendee && typeof familyAttendee === 'object') {
                         $("<button>", {
                           text: familyAttendee.family.display_name,
-                          type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
+                          type: 'button',
+                          class: "btn-outline-success family-button btn button btn-sm ",
                           value: familyAttendee.family.id,
                         }).appendTo(itemElement);
                       }
@@ -389,12 +396,12 @@ Attendees.datagridUpdate = {
                 data.editorOptions.value.forEach(attending => {
                   if (attending && attending.attendingmeet_id) {
                     const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-                    const buttonAttrs = {
+                    $("<button>", {
+                      text: attending.meet_name,
                       title: "since " + attending.attending_start,
                       type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
                       value: attending.attendingmeet_id
-                    }
-                    $("<button>").attr(buttonAttrs).text(attending.meet_name).appendTo(itemElement);
+                    }).appendTo(itemElement);
                   }
                 });
               }
@@ -458,6 +465,10 @@ Attendees.datagridUpdate = {
       },
     ]
   },
+
+
+  ///////////////////////  Attending Meet Popup and DxForm  ///////////////////////
+
 
   initAttendingmeetPopupDxForm: (event) => {
     const meetButton = event.target;
@@ -713,8 +724,11 @@ Attendees.datagridUpdate = {
         e.append(formContainer);
       }
     };
-
   },
+
+
+  ///////////////////////  Place (Address) Popup and DxForm  ///////////////////////
+
 
   initPlacePopupDxForm: (event) => {
     const placeButton = event.target;
@@ -1242,6 +1256,26 @@ Attendees.datagridUpdate = {
     },
   }),
 
+
+  ///////////////////////  Family Attributes Popup and DxForm  ///////////////////////
+
+  initFamilyAttrPopupDxForm: (event) => {
+    const familyAttrButton = event.target;
+    Attendees.datagridUpdate.familyAttrPopup = $('div.popup-family-attr-update').dxPopup(Attendees.datagridUpdate.familyAttrPopupDxFormConfig(familyAttrButton)).dxPopup('instance');
+    Attendees.datagridUpdate.fetchFamilyAttrFormData(familyAttrButton);
+  },
+
+  familyAttrPopupDxFormConfig: (familyAttrButton) => {
+    const ajaxUrl=$('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
+    console.log("hi 1270 here is ajaxUrl: ", ajaxUrl);
+    return {
+
+    }
+  },
+
+  fetchFamilyAttrFormData: (familyAttrButton) => {
+    console.log("hi 1277 here is familyAttrButton: ", familyAttrButton);
+  },
 };
 
 $(document).ready(() => {
