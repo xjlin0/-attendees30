@@ -285,7 +285,7 @@ Attendees.datagridUpdate = {
                 dataField: "familyattendee_set",
                 name: "familyAttrs",
                 label: {
-                  text: 'family attributes',
+                  text: 'families',
                 },
                 template: (data, itemElement) => {
                   $("<button>", {
@@ -314,7 +314,9 @@ Attendees.datagridUpdate = {
                 dataField: "familyattendee_set",
                 name: "familyAttendeeDatagrid",
                 label: {
-                  text: 'family members',
+                  location: 'top',
+                  text: ' ',  // empty space required for removing label
+                  showColon: false,
                 },
                 template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
               }
@@ -1295,23 +1297,25 @@ Attendees.datagridUpdate = {
 
   initFamilyAttendeeDatagrid: (data, itemElement) => {
     console.log("hi 1297 here is data.editorOptions.value: ", data.editorOptions.value);
-    itemElement.append("<div id='family-attendee-datagrid-container'>")
-      .dxTextArea({
-        value: "hi 1300", // data.component.option('formData')[data.dataField],
-        onValueChanged: (e) => {
-          console.log("familyAttendeeDatagrid.onValueChanged() triggered");
-          // data.component.updateData(data.dataField, e.value);
-        }
-      });
+    Attendees.datagridUpdate.familyAttendeeDatagridConfig['dataSource'] = Attendees.datagridUpdate.familyAttendeeDatagridDataSource;
+    const $myDxText = $("<div id='family-attendee-datagrid-container'>").dxTextArea({
+      value: "hi 1300", // data.component.option('formData')[data.dataField],
+      onValueChanged: (e) => {
+        console.log("familyAttendeeDatagrid.onValueChanged() triggered");
+        // data.component.updateData(data.dataField, e.value);
+      }
+    });
+
+    itemElement.append($myDxText);
   },
 
-  familyAttendeeDatagridConfig: () => {
-    return {};
+  familyAttendeeDatagridConfig: {
+    dataSource: null,
   },
 
-  familyAttendeeDatagridDataSource: () => {
+  familyAttendeeDatagridDataSource: new DevExpress.data.CustomStore({
 
-  },
+  }),
 
 
   ///////////////////////  Family Attributes Popup and DxForm  ///////////////////////
