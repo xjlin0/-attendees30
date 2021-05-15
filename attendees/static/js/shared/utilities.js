@@ -12,13 +12,13 @@ Attendees.utilities = {
       event.preventDefault();  // stop checkbox from being changed.
     }
     return Attendees.utilities.editingEnabled;
-  },
+  },  // if button clicking bug can't be fixed, considering DevExtreme DxSwitch
 
   isNotEmpty: (value) => {
       return value !== undefined && value !== null && value !== "";
   },
 
-  toggleDxFormGroups: () => {
+  toggleDxFormGroups: (animationSpeed="fast") => {
     $(".dx-form-group-caption")
       .each(function () {
         $(this)
@@ -28,23 +28,21 @@ Attendees.utilities = {
                     "margin-right": "1rem",
                 })
                 .dxButton({
-                    "icon": "minus",
-                    "onClick": function (e) {
-                        let hidden = e.component.option('icon') == 'plus';
-                        let $caption = e.element.closest('.dx-form-group-caption');
-                        let $content = $caption.siblings(".dx-form-group-content");
-
-                        $content.toggle();
-
+                    "icon": "collapse",
+                    "onClick": (e) => {
+                        const hidden = e.component.option('icon') === 'expand';
+                        const $caption = e.element.closest('.dx-form-group-caption');
+                        const $content = $caption.siblings(".dx-form-group-content");
+                        $content.toggle(animationSpeed);
                         e.component.option(
                             'icon',
-                            hidden ? 'minus' : 'plus'
+                            hidden ? 'collapse' : 'expand'
                         );
                     }
                 })
           );
       });
-  },  // https://supportcenter.devexpress.com/ticket/details/t525231
+  },  // jQuery toggle() from https://supportcenter.devexpress.com/ticket/details/t525231
 
   convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
             formData.append(key, object[key]);
