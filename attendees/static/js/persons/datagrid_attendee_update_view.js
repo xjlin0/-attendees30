@@ -281,16 +281,21 @@ Attendees.datagridUpdate = {
                   text: 'families',
                 },
                 template: (data, itemElement) => {
-                  $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new family", type: 'button', class: "family-button-new family-button btn-outline-primary btn button btn-sm "}).text("Join new family+").appendTo(itemElement);
+                  $("<button>", {
+                    text: "Join new family+",
+                    disabled: !Attendees.utilities.editingEnabled,
+                    title: "+ Add the attendee to a new family",
+                    type: 'button',
+                    class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
+                    }).appendTo(itemElement);
                   if (data.editorOptions && data.editorOptions.value){
                     data.editorOptions.value.forEach(familyAttendee => {
                       if (familyAttendee && typeof familyAttendee === 'object') {
-                        const buttonAttrs = {
-                          //title: "since " + familyAttendee.created,  // waiting for FamilyAttendee.start/finish or from infos fields
+                        $("<button>", {
+                          text: familyAttendee.family.display_name,
                           type: 'button', class: "btn-outline-success family-button btn button btn-sm ",
                           value: familyAttendee.family.id,
-                        };
-                        $("<button>").attr(buttonAttrs).text(familyAttendee.family.display_name).appendTo(itemElement);
+                        }).appendTo(itemElement);
                       }
                     });
                   }
@@ -341,6 +346,13 @@ Attendees.datagridUpdate = {
               text: 'address',
             },
             template: (data, itemElement) => {
+              $("<button>", {
+                text: "Add new address+",
+                disabled: !Attendees.utilities.editingEnabled,
+                title: "+ Add the attendee to a new address",
+                type: 'button',
+                class: "place-button-new place-button btn-outline-primary btn button btn-sm ",
+              }).appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value){
                 data.editorOptions.value.forEach(place => {
                   if (place.id && typeof place === 'object'){
@@ -354,7 +366,6 @@ Attendees.datagridUpdate = {
                   }
                 });
               }
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add the attendee to a new address", type: 'button', class: "place-button-new place-button btn-outline-primary btn button btn-sm "}).text("Add new address+").appendTo(itemElement);
             },
           },
         ],
