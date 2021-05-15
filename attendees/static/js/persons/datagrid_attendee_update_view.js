@@ -89,6 +89,7 @@ Attendees.datagridUpdate = {
     readOnly: !Attendees.utilities.editingEnabled,
     onContentReady: () => {
       $('div.spinner-border').hide();
+      Attendees.utilities.toggleDxFormGroups();
     },
     colCount: 24,
     formData: null, // will be fetched
@@ -270,7 +271,7 @@ Attendees.datagridUpdate = {
           {
             colSpan: 20,
             colCount: 20,
-            caption: "Families",
+            caption: "Families or Relations",
             itemType: "group",
             items: [
               {

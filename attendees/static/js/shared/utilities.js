@@ -18,6 +18,34 @@ Attendees.utilities = {
       return value !== undefined && value !== null && value !== "";
   },
 
+  toggleDxFormGroups: () => {
+    $(".dx-form-group-caption")
+      .each(function () {
+        $(this)
+          .prepend(
+            $('<div />')
+                .css({
+                    "margin-right": "1rem",
+                })
+                .dxButton({
+                    "icon": "minus",
+                    "onClick": function (e) {
+                        let hidden = e.component.option('icon') == 'plus';
+                        let $caption = e.element.closest('.dx-form-group-caption');
+                        let $content = $caption.siblings(".dx-form-group-content");
+
+                        $content.toggle();
+
+                        e.component.option(
+                            'icon',
+                            hidden ? 'minus' : 'plus'
+                        );
+                    }
+                })
+          );
+      });
+  },  // https://supportcenter.devexpress.com/ticket/details/t525231
+
   convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
             formData.append(key, object[key]);
             return formData;   // https://stackoverflow.com/a/62936649/4257237
