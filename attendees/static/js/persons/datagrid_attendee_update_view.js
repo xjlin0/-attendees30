@@ -283,8 +283,9 @@ Attendees.datagridUpdate = {
               {
                 colSpan: 20,
                 dataField: "familyattendee_set",
+                name: "familyAttrs",
                 label: {
-                  text: 'families',
+                  text: 'family attributes',
                 },
                 template: (data, itemElement) => {
                   $("<button>", {
@@ -308,6 +309,15 @@ Attendees.datagridUpdate = {
                   }
                 },
               },
+              {
+                colSpan: 20,
+                dataField: "familyattendee_set",
+                name: "familyAttendeeDatagrid",
+                label: {
+                  text: 'family members',
+                },
+                template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
+              }
             ],
           },
         ],
@@ -1099,7 +1109,7 @@ Attendees.datagridUpdate = {
                 text: "Add new address",
                 icon: "home",
                 hint: "Can't find exiting address, add a new one here",
-                type: "danger",
+                type: "normal",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to add new address?")){
@@ -1110,6 +1120,29 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.addressId = null;
+                  }
+                },
+              },
+            },
+            {
+              colSpan: 3,
+              itemType: "button",
+              name: "setFamilyAddressButton",
+              visible: true,
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Address to Family",
+                icon: "group",
+                hint: "Assign the address to attendee's first family",
+                type: "danger",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if(confirm("Are you sure to set the current address to the attendee's first family?")){
+                    console.log("Hi 1135 Todo 20210515: Please implement this function")
                   }
                 },
               },
@@ -1257,6 +1290,30 @@ Attendees.datagridUpdate = {
   }),
 
 
+  ///////////////////////  Family Attendees Datagrid in main DxForm  ///////////////////////
+
+
+  initFamilyAttendeeDatagrid: (data, itemElement) => {
+    console.log("hi 1297 here is data.editorOptions.value: ", data.editorOptions.value);
+    itemElement.append("<div id='family-attendee-datagrid-container'>")
+      .dxTextArea({
+        value: "hi 1300", // data.component.option('formData')[data.dataField],
+        onValueChanged: (e) => {
+          console.log("familyAttendeeDatagrid.onValueChanged() triggered");
+          // data.component.updateData(data.dataField, e.value);
+        }
+      });
+  },
+
+  familyAttendeeDatagridConfig: () => {
+    return {};
+  },
+
+  familyAttendeeDatagridDataSource: () => {
+
+  },
+
+
   ///////////////////////  Family Attributes Popup and DxForm  ///////////////////////
 
   initFamilyAttrPopupDxForm: (event) => {
@@ -1267,14 +1324,27 @@ Attendees.datagridUpdate = {
 
   familyAttrPopupDxFormConfig: (familyAttrButton) => {
     const ajaxUrl=$('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
-    console.log("hi 1270 here is ajaxUrl: ", ajaxUrl);
+    console.log("hi 1327 here is ajaxUrl: ", ajaxUrl);
     return {
-
-    }
+      visible: true,
+      title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
+      minwidth: "20%",
+      minheight: "30%",
+      position: {
+        my: 'center',
+        at: 'center',
+        of: window,
+      },
+      // onHiding: () => {
+      // },
+      dragEnabled: true,
+      // contentTemplate: (e) => {
+      // },
+    };
   },
 
   fetchFamilyAttrFormData: (familyAttrButton) => {
-    console.log("hi 1277 here is familyAttrButton: ", familyAttrButton);
+    console.log("hi 1347 here is familyAttrButton: ", familyAttrButton);
   },
 };
 

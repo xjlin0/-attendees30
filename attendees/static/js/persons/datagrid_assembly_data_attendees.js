@@ -225,7 +225,7 @@ Attendees.dataAttendees = {
 
     Attendees.dataAttendees.dataGridOpts['columns']=[...Attendees.dataAttendees.initialAttendeesColumns, ...meetColumns, ...Attendees.dataAttendees.otherAttendeesColumns]
   },
-}
+};
 
 $(document).ready(() => {
   Attendees.dataAttendees.init();
