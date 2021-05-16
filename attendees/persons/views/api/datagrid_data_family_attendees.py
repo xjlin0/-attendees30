@@ -19,7 +19,7 @@ class ApiDatagridDataFamilyAttendeesViewsSet(LoginRequiredMixin, SpyGuard, views
         return FamilyAttendee.objects.filter(
             family__in=attendee.families.all()
         ).order_by(
-            'family', 'display_order',
+            'family', 'role__display_order',
         )  # Todo: 20210515 add filter by start/finish for end users but not data-admins
 
 

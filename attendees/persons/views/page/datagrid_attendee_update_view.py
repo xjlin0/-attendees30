@@ -28,7 +28,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
-        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
+        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
