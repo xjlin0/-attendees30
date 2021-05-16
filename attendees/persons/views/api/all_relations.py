@@ -13,7 +13,11 @@ class ApiAllRelationsViewsSet(LoginRequiredMixin, viewsets.ModelViewSet):
     serializer_class = RelationSerializer
 
     def get_queryset(self):
-        return Relation.objects.all().order_by('display_order')
+        relation_id = self.request.query_params.get('relation_id')
+        if relation_id:
+            return Relation.objects.filter(pk=relation_id)
+        else:
+            return Relation.objects.order_by('display_order')
 
 
 api_all_relations_viewset = ApiAllRelationsViewsSet

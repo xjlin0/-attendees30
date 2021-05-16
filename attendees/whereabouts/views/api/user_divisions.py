@@ -19,7 +19,11 @@ class ApiUserDivisionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.organization:
-            return DivisionService.by_organization(self.request.user.organization.slug)
+            division_id = self.request.query_params.get('division_id')
+            if division_id:
+                return DivisionService.by_organization(self.request.user.organization.slug).filter(pk=division_id)
+            else:
+                return DivisionService.by_organization(self.request.user.organization.slug)
 
         else:
             time.sleep(2)

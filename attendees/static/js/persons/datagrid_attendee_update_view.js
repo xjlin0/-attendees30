@@ -23,6 +23,7 @@ Attendees.datagridUpdate = {
     display_name: 'other',
     content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
+  familyAttendeeDatagrid: null,
   familyAttrPopup: null,
 
   init: () => {
@@ -45,7 +46,20 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
     Attendees.datagridUpdate.attendingmeetPopupDxForm && Attendees.datagridUpdate.attendingmeetPopupDxForm.option("readOnly", !enabled);
-    $("div#family-attendee-datagrid-container").dxDataGrid("instance").clearGrouping();
+
+    if(enabled){
+      Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
+    } else {
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
+    }
+
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", {
+      mode: "cell",
+      allowUpdating: enabled,
+      allowAdding: enabled,
+      allowDeleting: false,
+    });
+
   },
 
   displayNotifiers: ()=> {
@@ -292,7 +306,7 @@ Attendees.datagridUpdate = {
             },
             template: (data, itemElement) => {
               $("<button>", {
-                text: "Join new family+",
+                text: "New family+",
                 disabled: !Attendees.utilities.editingEnabled,
                 title: "+ Add the attendee to a new family",
                 type: 'button',
@@ -1301,10 +1315,10 @@ Attendees.datagridUpdate = {
     // Attendees.datagridUpdate.familyAttendeeDatagridConfig['dataSource'] = Attendees.datagridUpdate.familyAttendeeDatagridDataSource;
     const $myDatagrid = $("<div id='family-attendee-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.familyAttendeeDatagridConfig);
     itemElement.append($myDatagrid);
-    const mydatagrid = $myDatagrid.dxDataGrid("instance");
-    mydatagrid.beginUpdate();
-    mydatagrid.option("dataSource", document.querySelector('div.datagrid-attendee-update').dataset.familyAttendeesEndpoint);
-    mydatagrid.endUpdate();
+    Attendees.datagridUpdate.familyAttendeeDatagrid = $myDatagrid.dxDataGrid("instance");
+    Attendees.datagridUpdate.familyAttendeeDatagrid.beginUpdate();
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("dataSource", document.querySelector('div.datagrid-attendee-update').dataset.familyAttendeesEndpoint);
+    Attendees.datagridUpdate.familyAttendeeDatagrid.endUpdate();
   },
 
   familyAttendeeDatagridConfig: {
@@ -1323,6 +1337,12 @@ Attendees.datagridUpdate = {
     grouping: {
       autoExpandAll: true,
     },
+    "editing": {
+      mode: "cell",
+      allowUpdating: Attendees.utilities.editingEnabled,
+      allowAdding: Attendees.utilities.editingEnabled,
+      allowDeleting: false,
+    },
     // groupPanel: {
     //   visible: "auto",
     // },
@@ -1332,28 +1352,6 @@ Attendees.datagridUpdate = {
     // },
     // remoteOperations: true,
     columns:[
-
-      // {
-      //   dataField: "gathering",
-      //   groupIndex: 0,
-      //   lookup: {
-      //     valueExpr: "id",
-      //     displayExpr: "gathering_label",
-      //     dataSource: {
-      //       store: new DevExpress.data.CustomStore({
-      //         key: "id",
-      //         load: () => {
-      //           const $selectedMeets = $('select.filter-meets').val();
-      //           if ($selectedMeets.length > 0) {
-      //             return $.getJSON($('div.attendances').data('gatherings-endpoint'), {meets: $selectedMeets});
-      //           }
-      //         },
-      //       }),
-      //     },
-      //   }
-      // },
-
-//
       {
         dataField: "family.id",
         caption: 'Family',
@@ -1367,6 +1365,15 @@ Attendees.datagridUpdate = {
               load: () => {
                 return $.getJSON($('div.datagrid-attendee-update').data('attendee-families-endpoint'));
               },
+          byKey: (key) => {
+            console.log("hi 1369 here is key: ", key);
+            const d = new $.Deferred();
+            $.get($('div.datagrid-attendee-update').data('attendee-families-endpoint'), {family_id: key})
+                .done(function(result) {
+                    d.resolve(result.data);
+                });
+            return d.promise();
+          },
             }),
           },
         },
@@ -1382,6 +1389,15 @@ Attendees.datagridUpdate = {
               key: "id",
               load: () => {
                 return $.getJSON($('div.datagrid-attendee-update').data('relations-endpoint'));
+              },
+              byKey: (key) => {
+                console.log("hi 1394 here is key: ", key);
+                const d = new $.Deferred();
+                $.get($('div.datagrid-attendee-update').data('relations-endpoint'), {relation_id: key})
+                    .done(function(result) {
+                        d.resolve(result.data);
+                    });
+                return d.promise();
               },
             }),
           },
@@ -1423,6 +1439,15 @@ Attendees.datagridUpdate = {
               key: "id",
               load: () => {
                 return $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
+              },
+              byKey: (key) => {
+                console.log("hi 1444 here is key: ", key);
+                const d = new $.Deferred();
+                $.get($('div.datagrid-attendee-update').data('divisions-endpoint'), {division_id: key})
+                    .done(function(result) {
+                        d.resolve(result.data);
+                    });
+                return d.promise();
               },
             }),
           },
