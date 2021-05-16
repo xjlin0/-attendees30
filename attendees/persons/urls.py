@@ -4,6 +4,7 @@ from rest_framework import routers
 from attendees.persons.views import (
     api_all_relations_viewset,
     api_assembly_meet_attendings_viewset,
+    api_attendee_families_viewset,
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
     api_datagrid_data_attendee_viewset,
@@ -81,7 +82,11 @@ router.register(
     api_all_relations_viewset,
     basename='relation',
 )
-
+router.register(
+    'api/attendee_families/(?P<attendee_id>.+)',
+    api_attendee_families_viewset,
+    basename='family',
+)
 
 urlpatterns = [
     path('',

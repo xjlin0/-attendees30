@@ -1356,6 +1356,19 @@ Attendees.datagridUpdate = {
       {
         dataField: "family.id",
         caption: 'Family',
+        groupIndex: 0,
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON($('div.datagrid-attendee-update').data('attendee-families-endpoint'));
+              },
+            }),
+          },
+        },
       },
       {
         dataField: "role",
