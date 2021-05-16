@@ -1296,25 +1296,87 @@ Attendees.datagridUpdate = {
 
 
   initFamilyAttendeeDatagrid: (data, itemElement) => {
-    console.log("hi 1297 here is data.editorOptions.value: ", data.editorOptions.value);
+    console.log("hi 1299 here is data.editorOptions.value: ", data.editorOptions.value);
     Attendees.datagridUpdate.familyAttendeeDatagridConfig['dataSource'] = Attendees.datagridUpdate.familyAttendeeDatagridDataSource;
-    const $myDxText = $("<div id='family-attendee-datagrid-container'>").dxTextArea({
-      value: "hi 1300", // data.component.option('formData')[data.dataField],
-      onValueChanged: (e) => {
-        console.log("familyAttendeeDatagrid.onValueChanged() triggered");
-        // data.component.updateData(data.dataField, e.value);
-      }
-    });
-
-    itemElement.append($myDxText);
+    const $myDatagrid = $("<div id='family-attendee-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.familyAttendeeDatagridConfig);
+    itemElement.append($myDatagrid);
   },
 
   familyAttendeeDatagridConfig: {
     dataSource: null,
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
+    columnResizingMode: 'nextColumn',
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    loadPanel: {
+      message: 'Fetching...',
+      enabled: true,
+    },
+    wordWrapEnabled: false,
+    grouping: {
+      autoExpandAll: true,
+    },
+    // columnChooser: {
+    //   enabled: true,
+    //   mode: "select",
+    // },
+    remoteOperations: true,
+    columns:[
+      {
+        dataField: "family.display_name",
+      },
+      {
+        dataField: "role",
+      },
+      "attendee",
+
+      "start",
+      "finish",
+    ],
   },
 
   familyAttendeeDatagridDataSource: new DevExpress.data.CustomStore({
+    key: "id",
+    load: (loadOptions) => {
+      const deferred = $.Deferred();
+      const args = {};
 
+      [
+        "skip",
+        "take",
+        "requireTotalCount",
+        "requireGroupCount",
+        "sort",
+        "filter",
+        "totalSummary",
+        "group",
+        "groupSummary"
+      ].forEach((i) => {
+        if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+          args[i] = JSON.stringify(loadOptions[i]);
+      });
+
+      $.ajax({
+        url: document.querySelector('div.datagrid-attendee-update').dataset.familyAttendeesEndpoint,
+        dataType: "json",
+        data: args,
+        success: (result) => {
+          deferred.resolve(result.data, {
+            totalCount: result.totalCount,
+            summary:    result.summary,
+            groupCount: result.groupCount
+          });
+        },
+        error: () => {
+          deferred.reject("Data Loading Error, probably time out?");
+        },
+        timeout: 30000,
+      });
+
+      return deferred.promise();
+    }
   }),
 
 
