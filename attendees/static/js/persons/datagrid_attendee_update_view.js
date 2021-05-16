@@ -305,54 +305,6 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families or Relations: double click table cells to edit if editing mode is on",
-        itemType: "group",
-        items: [
-          {
-            colSpan: 24,
-            dataField: "familyattendee_set",
-            name: "familyAttrs",
-            label: {
-              text: 'families',
-            },
-            template: (data, itemElement) => {
-              $("<button>", {
-                text: "New family+",
-                disabled: !Attendees.utilities.editingEnabled,
-                title: "+ Add the attendee to a new family",
-                type: 'button',
-                class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
-              }).appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
-                data.editorOptions.value.forEach(familyAttendee => {
-                  if (familyAttendee && typeof familyAttendee === 'object') {
-                    $("<button>", {
-                      text: familyAttendee.family.display_name,
-                      type: 'button',
-                      class: "btn-outline-success family-button btn button btn-sm ",
-                      value: familyAttendee.family.id,
-                    }).appendTo(itemElement);
-                  }
-                });
-              }
-            },
-          },
-          {
-            colSpan: 24,
-            dataField: "familyattendee_set",
-            name: "familyAttendeeDatagrid",
-            label: {
-              location: 'top',
-              text: ' ',  // empty space required for removing label
-              showColon: false,
-            },
-            template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
-          }
-        ],
-      },
-      {
-        colSpan: 24,
-        colCount: 24,
         caption: "Contacts",
         itemType: "group",
         items: [
@@ -413,6 +365,54 @@ Attendees.datagridUpdate = {
               }
             },
           },
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Families or Relations: double click table cells to edit if editing mode is on",
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "familyattendee_set",
+            name: "familyAttrs",
+            label: {
+              text: 'families',
+            },
+            template: (data, itemElement) => {
+              $("<button>", {
+                text: "New family+",
+                disabled: !Attendees.utilities.editingEnabled,
+                title: "+ Add the attendee to a new family",
+                type: 'button',
+                class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
+              }).appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(familyAttendee => {
+                  if (familyAttendee && typeof familyAttendee === 'object') {
+                    $("<button>", {
+                      text: familyAttendee.family.display_name,
+                      type: 'button',
+                      class: "btn-outline-success family-button btn button btn-sm ",
+                      value: familyAttendee.family.id,
+                    }).appendTo(itemElement);
+                  }
+                });
+              }
+            },
+          },
+          {
+            colSpan: 24,
+            dataField: "familyattendee_set",
+            name: "familyAttendeeDatagrid",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
+          }
         ],
       },
       {
