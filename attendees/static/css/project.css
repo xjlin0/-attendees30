@@ -30,3 +30,8 @@ img.attendee-photo-img:hover {
 div.dx-popup-normal div.dx-box-item-content {
   max-width: 98%;
 }  /* for editor items in dxform in dxpopup of attendingmeet to avoid scroll bar */
+
+div.dx-fileuploader-input-label {
+  height: 0px;
+  visibility: hidden;
+}  /* to remove "or Drop File here" under dxFileUploader */

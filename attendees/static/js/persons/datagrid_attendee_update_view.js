@@ -274,54 +274,54 @@ Attendees.datagridUpdate = {
               },
             ],
           },
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Families or Relations",
+        itemType: "group",
+        items: [
           {
-            colSpan: 20,
-            colCount: 20,
-            caption: "Families or Relations",
-            itemType: "group",
-            items: [
-              {
-                colSpan: 20,
-                dataField: "familyattendee_set",
-                name: "familyAttrs",
-                label: {
-                  text: 'families',
-                },
-                template: (data, itemElement) => {
-                  $("<button>", {
-                    text: "Join new family+",
-                    disabled: !Attendees.utilities.editingEnabled,
-                    title: "+ Add the attendee to a new family",
-                    type: 'button',
-                    class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
+            colSpan: 24,
+            dataField: "familyattendee_set",
+            name: "familyAttrs",
+            label: {
+              text: 'families',
+            },
+            template: (data, itemElement) => {
+              $("<button>", {
+                text: "Join new family+",
+                disabled: !Attendees.utilities.editingEnabled,
+                title: "+ Add the attendee to a new family",
+                type: 'button',
+                class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
+              }).appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value){
+                data.editorOptions.value.forEach(familyAttendee => {
+                  if (familyAttendee && typeof familyAttendee === 'object') {
+                    $("<button>", {
+                      text: familyAttendee.family.display_name,
+                      type: 'button',
+                      class: "btn-outline-success family-button btn button btn-sm ",
+                      value: familyAttendee.family.id,
                     }).appendTo(itemElement);
-                  if (data.editorOptions && data.editorOptions.value){
-                    data.editorOptions.value.forEach(familyAttendee => {
-                      if (familyAttendee && typeof familyAttendee === 'object') {
-                        $("<button>", {
-                          text: familyAttendee.family.display_name,
-                          type: 'button',
-                          class: "btn-outline-success family-button btn button btn-sm ",
-                          value: familyAttendee.family.id,
-                        }).appendTo(itemElement);
-                      }
-                    });
                   }
-                },
-              },
-              {
-                colSpan: 20,
-                dataField: "familyattendee_set",
-                name: "familyAttendeeDatagrid",
-                label: {
-                  location: 'top',
-                  text: ' ',  // empty space required for removing label
-                  showColon: false,
-                },
-                template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
+                });
               }
-            ],
+            },
           },
+          {
+            colSpan: 24,
+            dataField: "familyattendee_set",
+            name: "familyAttendeeDatagrid",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => Attendees.datagridUpdate.initFamilyAttendeeDatagrid(data, itemElement),
+          }
         ],
       },
       {
@@ -1332,14 +1332,16 @@ Attendees.datagridUpdate = {
     // remoteOperations: true,
     columns:[
       {
-        dataField: "family",
+        dataField: "family.id",
+        caption: 'Family',
       },
       {
         dataField: "role",
+        caption: 'Role',
       },
       {
         dataField: "attendee.gender",
-        caption: 'gender',
+        caption: 'Gender',
         lookup: {
           valueExpr: "name",
           displayExpr: "name",
@@ -1347,24 +1349,24 @@ Attendees.datagridUpdate = {
         }
       },
       {
-        caption: 'first name',
+        caption: 'First name',
         dataField: "attendee.first_name",
       },
       {
-        caption: 'last name',
+        caption: 'Last name',
         dataField: "attendee.last_name",
       },
       {
-        caption: 'last name 2',
+        caption: 'Last name2',
         dataField: "attendee.last_name2",
       },
       {
-        caption: 'first name 2',
+        caption: 'First name2',
         dataField: "attendee.first_name2",
       },
       {
         dataField: "attendee.division",
-        caption: 'division',
+        caption: 'Division',
         lookup: {
           valueExpr: "id",
           displayExpr: "display_name",
