@@ -49,7 +49,17 @@ Attendees.datagridUpdate = {
 
     if(enabled){
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.full_name", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
     } else {
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.full_name", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
     }
 
@@ -1323,7 +1333,23 @@ Attendees.datagridUpdate = {
   },
 
   familyAttendeeDatagridConfig: {
-    dataSource: null,
+    // dataSource: {
+    //   store: new DevExpress.data.CustomStore({
+    //     key: "id",
+    //     load: () => {
+    //       return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
+    //     },
+    //     byKey: (key) => {
+    //       console.log("hi 1333 here is key: ", key);
+    //       const d = new $.Deferred();
+    //       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {family_id: key})
+    //         .done(function(result) {
+    //           d.resolve(result.data);
+    //         });
+    //       return d.promise();
+    //     },
+    //   }),
+    // },
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
@@ -1355,6 +1381,7 @@ Attendees.datagridUpdate = {
     columns:[
       {
         dataField: "family.id",
+        validationRules: [{ type: "required" }],
         caption: 'Family',
         groupIndex: 0,
         lookup: {
@@ -1381,6 +1408,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "role",
+        validationRules: [{ type: "required" }],
         caption: 'Role',
         lookup: {
           valueExpr: "id",
@@ -1406,6 +1434,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "attendee.gender",
+        validationRules: [{ type: "required" }],
         caption: 'Gender',
         lookup: {
           valueExpr: "name",
@@ -1414,23 +1443,41 @@ Attendees.datagridUpdate = {
         }
       },
       {
+        caption: 'Full name',
+        dataField: "attendee.full_name",
+        allowEditing: false,
+        cellTemplate: (container, rowData) => {
+          const attrs = {
+            "class": "text-info",
+            "text": rowData.data.attendee.full_name,
+            "href": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
+          };
+          $('<a>', attrs).appendTo(container);
+        },
+      },
+      {
         caption: 'First name',
         dataField: "attendee.first_name",
+        visible: false,
       },
       {
         caption: 'Last name',
         dataField: "attendee.last_name",
+        visible: false,
       },
       {
         caption: 'Last name2',
         dataField: "attendee.last_name2",
+        visible: false,
       },
       {
         caption: 'First name2',
         dataField: "attendee.first_name2",
+        visible: false,
       },
       {
         dataField: "attendee.division",
+        validationRules: [{ type: "required" }],
         caption: 'Division',
         lookup: {
           valueExpr: "id",
