@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('display_order', models.SmallIntegerField(db_index=True, default=1, help_text="0 will be household header")),
+                ('display_order', models.SmallIntegerField(db_index=True, default=1, help_text="0 will be first family")),
                 ('attendee', models.ForeignKey(on_delete=models.CASCADE, to='persons.Attendee')),
                 ('family', models.ForeignKey(on_delete=models.CASCADE, to='persons.Family')),
                 ('role', models.ForeignKey(help_text='[Title] the family role of the attendee?', on_delete=models.SET(0), related_name='role', to='persons.Relation', verbose_name='attendee is')),

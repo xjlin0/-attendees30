@@ -45,6 +45,7 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
     Attendees.datagridUpdate.attendingmeetPopupDxForm && Attendees.datagridUpdate.attendingmeetPopupDxForm.option("readOnly", !enabled);
+    $("div#family-attendee-datagrid-container").dxDataGrid("instance").clearGrouping();
   },
 
   displayNotifiers: ()=> {

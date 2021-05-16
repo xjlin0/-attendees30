@@ -398,7 +398,11 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         FamilyAttendee.objects.update_or_create(
                             family=family,
                             attendee=attendee,
-                            defaults={'display_order': display_order, 'role': relation}
+                            defaults={
+                                'display_order': display_order,
+                                'role': relation,
+                                'start': '1900-01-01',
+                            }
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
