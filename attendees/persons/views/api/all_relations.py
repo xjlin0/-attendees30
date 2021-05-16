@@ -1,25 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 
-from attendees.persons.models import Attendee, FamilyAttendee
-from attendees.persons.serializers import FamilyAttendeeSerializer
+from attendees.persons.models import Relation
+from attendees.persons.serializers import RelationSerializer
 
 
-class ApiDatagridDataFamilyAttendeesViewsSet(LoginRequiredMixin, viewsets.ModelViewSet):
+class ApiAllRelationsViewsSet(LoginRequiredMixin, viewsets.ModelViewSet):
     """
-    API endpoint that allows families(attendees) of a single Attendee to be viewed or edited.
+    API endpoint that allows Relation(Role) to be viewed or edited.
     """
-    serializer_class = FamilyAttendeeSerializer
+    serializer_class = RelationSerializer
 
     def get_queryset(self):
-        attendee = get_object_or_404(Attendee, pk=self.kwargs.get('relation_id'))
-        return FamilyAttendee.objects.filter(
-            family__in=attendee.families.all()
-        ).order_by(
-            'family', 'role__display_order',
-        )  # Todo: 20210515 add filter by start/finish for end users but not data-admins
+        return Relation.objects.all().order_by('display_order')
 
 
-api_datagrid_data_family_attendees_viewset = ApiDatagridDataFamilyAttendeesViewsSet
+api_all_relations_viewset = ApiAllRelationsViewsSet

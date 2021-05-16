@@ -1,3 +1,4 @@
+from .api.all_relations import api_all_relations_viewset
 from .api.assembly_meet_attendings import api_assembly_meet_attendings_viewset
 from .api.data_attendings import api_data_attendings_viewset
 from .api.attendee_attendings import api_attendee_attendings_viewset

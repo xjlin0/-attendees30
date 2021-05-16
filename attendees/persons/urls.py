@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from attendees.persons.views import (
+    api_all_relations_viewset,
     api_assembly_meet_attendings_viewset,
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
@@ -74,6 +75,11 @@ router.register(
     'api/datagrid_data_family_attendees/(?P<attendee_id>.+)',
     api_datagrid_data_family_attendees_viewset,
     basename='familyattendee',
+)
+router.register(
+    'api/all_relations',
+    api_all_relations_viewset,
+    basename='relation',
 )
 
 

@@ -38,6 +38,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'divisions_endpoint': '/whereabouts/api/user_divisions/',
             'addresses_endpoint': '/whereabouts/api/all_addresses/',
             'states_endpoint': '/whereabouts/api/all_states/',
+            'relations_endpoint': '/persons/api/all_relations/',
             'attendings_endpoint': '/persons/api/attendee_attendings/',
             'family_attendees_endpoint': f"/persons/api/datagrid_data_family_attendees/{current_attendee_id}/",
             'targeting_attendee_id': current_attendee_id,

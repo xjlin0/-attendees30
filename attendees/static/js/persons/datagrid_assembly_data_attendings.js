@@ -185,7 +185,7 @@ Attendees.attendings = {
 
     document.getElementById('filter-meets').value = [];
   },
-}
+};
 
 $(document).ready(() => {
   Attendees.attendings.init();

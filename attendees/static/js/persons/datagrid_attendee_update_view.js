@@ -1331,6 +1331,28 @@ Attendees.datagridUpdate = {
     // },
     // remoteOperations: true,
     columns:[
+
+      // {
+      //   dataField: "gathering",
+      //   groupIndex: 0,
+      //   lookup: {
+      //     valueExpr: "id",
+      //     displayExpr: "gathering_label",
+      //     dataSource: {
+      //       store: new DevExpress.data.CustomStore({
+      //         key: "id",
+      //         load: () => {
+      //           const $selectedMeets = $('select.filter-meets').val();
+      //           if ($selectedMeets.length > 0) {
+      //             return $.getJSON($('div.attendances').data('gatherings-endpoint'), {meets: $selectedMeets});
+      //           }
+      //         },
+      //       }),
+      //     },
+      //   }
+      // },
+
+//
       {
         dataField: "family.id",
         caption: 'Family',
@@ -1338,6 +1360,18 @@ Attendees.datagridUpdate = {
       {
         dataField: "role",
         caption: 'Role',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "title",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON($('div.datagrid-attendee-update').data('relations-endpoint'));
+              },
+            }),
+          },
+        },
       },
       {
         dataField: "attendee.gender",

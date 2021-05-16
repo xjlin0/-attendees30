@@ -1,4 +1,5 @@
 # order matters
+from .relation_serializer import RelationSerializer
 from .attendee import AttendeeSerializer
 from .attending import AttendingSerializer
 from .family_serializer import FamilySerializer
