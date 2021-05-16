@@ -1332,15 +1332,58 @@ Attendees.datagridUpdate = {
     // remoteOperations: true,
     columns:[
       {
-        dataField: "family.display_name",
+        dataField: "family",
       },
       {
         dataField: "role",
       },
-      "attendee",
-
-      "start",
-      "finish",
+      {
+        dataField: "attendee.gender",
+        caption: 'gender',
+        lookup: {
+          valueExpr: "name",
+          displayExpr: "name",
+          dataSource: Attendees.utilities.genderEnums(),
+        }
+      },
+      {
+        caption: 'first name',
+        dataField: "attendee.first_name",
+      },
+      {
+        caption: 'last name',
+        dataField: "attendee.last_name",
+      },
+      {
+        caption: 'last name 2',
+        dataField: "attendee.last_name2",
+      },
+      {
+        caption: 'first name 2',
+        dataField: "attendee.first_name2",
+      },
+      {
+        dataField: "attendee.division",
+        caption: 'division',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
+              },
+            }),
+          },
+        }
+      },
+      {
+        dataField: "start",
+      },
+      {
+        dataField: "finish",
+      },
     ],
   },
 

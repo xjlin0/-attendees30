@@ -5,9 +5,9 @@ from attendees.persons.serializers import FamilySerializer, AttendeeSerializer
 
 
 class FamilyAttendeeSerializer(serializers.ModelSerializer):
-    family = FamilySerializer(read_only=True)
+    # family = FamilySerializer(read_only=True)
     attendee = AttendeeSerializer(read_only=True)
-    
+
 
     class Meta:
         model = FamilyAttendee
