@@ -86,6 +86,7 @@ Attendees.datagridUpdate = {
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
+    Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.attendeeUrn;
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
     Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
@@ -148,7 +149,7 @@ Attendees.datagridUpdate = {
                 $inputDiv.append($clearInputLabel);
                 itemElement.append($inputDiv);
               } else {
-                $('<img>', {src: $('div.datagrid-attendee-update').data('empty-image-link'), class: 'attendee-photo-img'}).appendTo(itemElement);
+                $('<img>', {src: Attendees.datagridUpdate.attendeeAttrs.dataset.emptyImageLink, class: 'attendee-photo-img'}).appendTo(itemElement);
               }
             },
           },
@@ -255,7 +256,7 @@ Attendees.datagridUpdate = {
                       loadMode: "raw",
                       load: () => {
                         const d = $.Deferred();
-                        $.get($('div.datagrid-attendee-update').data('divisions-endpoint')).done((response) => {
+                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
                           d.resolve(response.data);
                         });
                         return d.promise();
@@ -294,7 +295,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families or Relations",
+        caption: "Families or Relations: double click table cells to edit if editing mode is on",
         itemType: "group",
         items: [
           {
@@ -559,7 +560,7 @@ Attendees.datagridUpdate = {
                     load: () => {
                       const d = $.Deferred();
                       const attendeeData={'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
-                      $.get($('div.datagrid-attendee-update').data('attendings-endpoint'), attendeeData).done((response) => {
+                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint, attendeeData).done((response) => {
                           d.resolve(response.data)
                       });
                       return d.promise();
@@ -587,7 +588,7 @@ Attendees.datagridUpdate = {
                     loadMode: "raw",
                     load: () => {
                       const d = $.Deferred();
-                      $.get($('div.datagrid-attendee-update').data('assemblies-endpoint')).done((response) => {
+                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.assembliesEndpoint).done((response) => {
                         d.resolve(response.data);
                       });
                       return d.promise();
@@ -627,7 +628,7 @@ Attendees.datagridUpdate = {
                       if (selectedAssemblyId){
                         const d = $.Deferred();
                         const data = {'assemblies[]': selectedAssemblyId};
-                        $.get($('div.datagrid-attendee-update').data('meets-endpoint'), data).done((response) => {
+                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, data).done((response) => {
                           d.resolve(response.data);
                         });
                         return d.promise();
@@ -663,7 +664,7 @@ Attendees.datagridUpdate = {
                       if (selectedAssemblyId){
                         const d = $.Deferred();
                         const data = {'assemblies[]': selectedAssemblyId};
-                        $.get($('div.datagrid-attendee-update').data('characters-endpoint'), data).done((response) => {
+                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint, data).done((response) => {
                           d.resolve(response.data);
                         });
                         return d.promise();
@@ -1240,7 +1241,7 @@ Attendees.datagridUpdate = {
         return [Attendees.datagridUpdate.placePopupDxFormData.address];
       }else{
         const d = new $.Deferred();
-        $.get($('div.datagrid-attendee-update').data('addresses-endpoint'), {id: key})
+        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.addressesEndpoint, {id: key})
             .done(function(result) {
                 d.resolve(result.data);
             });
@@ -1272,7 +1273,7 @@ Attendees.datagridUpdate = {
       });
 
       $.ajax({
-        url: $('div.datagrid-attendee-update').data('states-endpoint'),
+        url: Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint,
         dataType: "json",
         data: args,
         success: (result) => {
@@ -1297,7 +1298,7 @@ Attendees.datagridUpdate = {
 //      }else{
         const d = new $.Deferred();
 //        console.log("hi 1195 here is state key: ", key);
-        $.get($('div.datagrid-attendee-update').data('states-endpoint'), {id: key})
+        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint, {id: key})
             .done(function(result) {
                 d.resolve(result.data);
             });
@@ -1363,12 +1364,12 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: "id",
               load: () => {
-                return $.getJSON($('div.datagrid-attendee-update').data('attendee-families-endpoint'));
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint);
               },
           byKey: (key) => {
             console.log("hi 1369 here is key: ", key);
             const d = new $.Deferred();
-            $.get($('div.datagrid-attendee-update').data('attendee-families-endpoint'), {family_id: key})
+            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint, {family_id: key})
                 .done(function(result) {
                     d.resolve(result.data);
                 });
@@ -1388,12 +1389,12 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: "id",
               load: () => {
-                return $.getJSON($('div.datagrid-attendee-update').data('relations-endpoint'));
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint);
               },
               byKey: (key) => {
                 console.log("hi 1394 here is key: ", key);
                 const d = new $.Deferred();
-                $.get($('div.datagrid-attendee-update').data('relations-endpoint'), {relation_id: key})
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {relation_id: key})
                     .done(function(result) {
                         d.resolve(result.data);
                     });
@@ -1438,12 +1439,12 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: "id",
               load: () => {
-                return $.getJSON($('div.datagrid-attendee-update').data('divisions-endpoint'));
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
               },
               byKey: (key) => {
                 console.log("hi 1444 here is key: ", key);
                 const d = new $.Deferred();
-                $.get($('div.datagrid-attendee-update').data('divisions-endpoint'), {division_id: key})
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
                     .done(function(result) {
                         d.resolve(result.data);
                     });

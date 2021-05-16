@@ -46,6 +46,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
+            'attendee_urn': f"/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/",
         })
         return context
 
