@@ -10,20 +10,33 @@ from attendees.users.authorization.route_guard import SpyGuard
 
 class ApiDatagridDataFamilyAttendeesViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewSet):
     """
-    API endpoint that allows families(attendees) of a single Attendee to be viewed or edited.
+    API endpoint that allows FamiliesAttendees of a single Attendee in headers to be viewed or edited.
+    For example, if Alice, Bob & Charlie are in a family, passing Alice's attendee id in headers (key:
+    X-TARGET-ATTENDEE-ID) will return all 3 FamilyAttendee objects of Alice, Bob & Charlie. Also,
+    attaching Bob's FamilyAttendee id at the end of the endpoint will return Bob's FamilyAttendee only.
+
+    Note: If Dick is not in the family, passing Dick's attendee id in headers plus Bob's FamilyAttendee
+    id at the end of the endpoint will return nothing.
     """
     serializer_class = FamilyAttendeeSerializer
 
     def get_queryset(self):
-        attendee = get_object_or_404(Attendee, pk=self.kwargs.get('attendee_id'))
-        return FamilyAttendee.objects.filter(
-            family__in=attendee.families.all().order_by('display_order')
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        target_familyattendee_id = self.kwargs.get('pk')
+        target_attendee_familyattendees = FamilyAttendee.objects.filter(
+            family__in=target_attendee.families.all()
         ).order_by(  # Todo: 20210516 order by attendee's family attendee display_order, such as order_by annotate()
             '-family__created', 'role__display_order',
         )  # Todo: 20210515 add filter by start/finish for end users but not data-admins
 
+        if target_familyattendee_id:
+            return target_attendee_familyattendees.filter(pk=target_familyattendee_id)
+        else:
+            return target_attendee_familyattendees
 
-    # def update(self, request, *args, **kwargs):
+
+
+    # def update(self, request, *args, **kwargs):  # from UpdateModelMixin
     #     print("hi 27 here is request: ")
     #     print(request)
     #     partial = kwargs.pop('partial', False)
@@ -40,14 +53,14 @@ class ApiDatagridDataFamilyAttendeesViewsSet(LoginRequiredMixin, SpyGuard, views
     #
     #     return Response(serializer.data)
     #
-    # def perform_update(self, serializer):
+    # def perform_update(self, serializer):  # from UpdateModelMixin
     #     serializer.save()
     #
-    # def partial_update(self, request, *args, **kwargs):
+    # def partial_update(self, request, *args, **kwargs):  # from UpdateModelMixin
     #     print("hi 47 here is request: ")
     #     print(request)
     #     kwargs['partial'] = True
     #     return self.update(request, *args, **kwargs)
 
 
-api_datagrid_data_family_attendees_viewset = ApiDatagridDataFamilyAttendeesViewsSet
+api_datagrid_data_familyattendees_viewset = ApiDatagridDataFamilyAttendeesViewsSet

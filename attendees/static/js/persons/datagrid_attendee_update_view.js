@@ -100,7 +100,12 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
     Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
-    $.ajaxSetup({headers: {"X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()}})
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+        "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
+      }
+    });
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
