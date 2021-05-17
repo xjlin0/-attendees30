@@ -191,7 +191,7 @@ Attendees.datagridUpdate = {
         colSpan: 20,
         colCount: 20,
         itemType: "group",
-        caption: "Basic info",
+        caption: "Basic info",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [
           {
             colSpan: 7,
@@ -1322,34 +1322,29 @@ Attendees.datagridUpdate = {
 
 
   initFamilyAttendeeDatagrid: (data, itemElement) => {
-    console.log("hi 1299 here is data.editorOptions.value: ", data.editorOptions.value);
-    // Attendees.datagridUpdate.familyAttendeeDatagridConfig['dataSource'] = Attendees.datagridUpdate.familyAttendeeDatagridDataSource;
     const $myDatagrid = $("<div id='family-attendee-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.familyAttendeeDatagridConfig);
     itemElement.append($myDatagrid);
     Attendees.datagridUpdate.familyAttendeeDatagrid = $myDatagrid.dxDataGrid("instance");
-    Attendees.datagridUpdate.familyAttendeeDatagrid.beginUpdate();
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("dataSource", document.querySelector('div.datagrid-attendee-update').dataset.familyAttendeesEndpoint);
-    Attendees.datagridUpdate.familyAttendeeDatagrid.endUpdate();
   },
 
   familyAttendeeDatagridConfig: {
-    // dataSource: {
-    //   store: new DevExpress.data.CustomStore({
-    //     key: "id",
-    //     load: () => {
-    //       return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
-    //     },
-    //     byKey: (key) => {
-    //       console.log("hi 1333 here is key: ", key);
-    //       const d = new $.Deferred();
-    //       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {family_id: key})
-    //         .done(function(result) {
-    //           d.resolve(result.data);
-    //         });
-    //       return d.promise();
-    //     },
-    //   }),
-    // },
+    dataSource: {
+      store: new DevExpress.data.CustomStore({
+        key: "id",
+        load: () => {
+          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
+        },
+        byKey: (key) => {
+          console.log("hi 1338 here is key: ", key);
+          const d = new $.Deferred();
+          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {family_id: key})
+            .done(function(result) {
+              d.resolve(result.data);
+            });
+          return d.promise();
+        },
+      }),
+    },
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
