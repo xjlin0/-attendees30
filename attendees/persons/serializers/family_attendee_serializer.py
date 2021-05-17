@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from attendees.persons.models import FamilyAttendee
+from attendees.persons.models import FamilyAttendee, Family, Attendee
 from attendees.persons.serializers import FamilySerializer, AttendeeSerializer
 
 
 class FamilyAttendeeSerializer(serializers.ModelSerializer):
-    family = FamilySerializer(required=False)
-    attendee = AttendeeSerializer(required=False)
+    family = FamilySerializer(many=False)
+    attendee = AttendeeSerializer(many=False)
 
     class Meta:
         model = FamilyAttendee
@@ -21,10 +21,6 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         """
 
         familyattendee_id = self._kwargs['data'].get('id')
-        print("hi 24 here is self._kwargs['data']: ")
-        print(self._kwargs['data'])
-        print("hi 26 here is validated_data: ")
-        print(validated_data)
         obj, created = FamilyAttendee.objects.update_or_create(
             id=familyattendee_id,
             defaults=validated_data,
@@ -36,12 +32,27 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         Update and return an existing `FamilyAttendee` instance, given the validated data.
 
         """
-        print("hi 39 here is validated_data: ")
-        print(validated_data)
-        # instance.title = validated_data.get('title', instance.title)
-        # instance.code = validated_data.get('code', instance.code)
-        # instance.linenos = validated_data.get('linenos', instance.linenos)
-        # instance.language = validated_data.get('language', instance.language)
-        # instance.style = validated_data.get('style', instance.style)
-        instance.save()
-        return instance
+        new_family = Family.objects.filter(pk=self._kwargs.get('data', {}).get('family', {}).get('id')).first()
+        new_attendee_data = validated_data.get('attendee', {})
+
+        if new_family:
+            instance.family = new_family
+            validated_data['family'] = new_family
+        # else:
+        #     validated_data['family'] = instance.family
+
+        if new_attendee_data:
+            attendee, attendee_created = Attendee.objects.update_or_create(
+                id=instance.attendee.id,
+                defaults=new_attendee_data,
+            )
+            validated_data['attendee'] = attendee
+        # else:
+        #     validated_data['attendee'] = instance.attendee
+
+        obj, created = FamilyAttendee.objects.update_or_create(
+            id=instance.id,
+            defaults=validated_data,
+        )
+
+        return obj

@@ -375,7 +375,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families or Relations: double click table cells to edit if editing mode is on, hit Enter to save",
+        caption: "Families or Relations: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
         itemType: "group",
         items: [
           {
@@ -1340,7 +1340,6 @@ Attendees.datagridUpdate = {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
         },
         byKey: (key) => {
-          console.log("hi 1338 here is key: ", key);
           const d = new $.Deferred();
           $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {familyattendee_id: key})
             .done((result) => {
@@ -1349,13 +1348,25 @@ Attendees.datagridUpdate = {
           return d.promise();
         },
         update: (key, values) => {
-          console.log("hi 1347 here is key, values: ", key, values);
-          const d = new $.Deferred();
-          $.post(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {familyattendee_id: key, data: values, hi: key})
-            .done((result) => {
-              d.resolve(result.data);
-            });
-          return d.promise();
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
+            method: "PATCH",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "update success, please reload page if changing family",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
         },
       }),
     },
@@ -1498,7 +1509,6 @@ Attendees.datagridUpdate = {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
               },
               byKey: (key) => {
-                console.log("hi 1444 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
                     .done((result) => {
@@ -1512,9 +1522,11 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "start",
+        dataType: "date",
       },
       {
         dataField: "finish",
+        dataType: "date",
       },
     ],
   },
