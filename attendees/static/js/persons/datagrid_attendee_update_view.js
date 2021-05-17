@@ -370,7 +370,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families or Relations: double click table cells to edit if editing mode is on",
+        caption: "Families or Relations: double click table cells to edit if editing mode is on, hit Enter to save",
         itemType: "group",
         items: [
           {
@@ -1252,7 +1252,7 @@ Attendees.datagridUpdate = {
       }else{
         const d = new $.Deferred();
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.addressesEndpoint, {id: key})
-            .done(function(result) {
+            .done((result) => {
                 d.resolve(result.data);
             });
         return d.promise();
@@ -1309,7 +1309,7 @@ Attendees.datagridUpdate = {
         const d = new $.Deferred();
 //        console.log("hi 1195 here is state key: ", key);
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint, {id: key})
-            .done(function(result) {
+            .done((result) => {
                 d.resolve(result.data);
             });
         return d.promise();
@@ -1337,8 +1337,17 @@ Attendees.datagridUpdate = {
         byKey: (key) => {
           console.log("hi 1338 here is key: ", key);
           const d = new $.Deferred();
-          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {family_id: key})
-            .done(function(result) {
+          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {familyattendee_id: key})
+            .done((result) => {
+              d.resolve(result.data);
+            });
+          return d.promise();
+        },
+        update: (key, values) => {
+          console.log("hi 1347 here is key, values: ", key, values);
+          const d = new $.Deferred();
+          $.post(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {familyattendee_id: key, data: values, hi: key})
+            .done((result) => {
               d.resolve(result.data);
             });
           return d.promise();
@@ -1392,7 +1401,7 @@ Attendees.datagridUpdate = {
             console.log("hi 1369 here is key: ", key);
             const d = new $.Deferred();
             $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint, {family_id: key})
-                .done(function(result) {
+                .done((result) => {
                     d.resolve(result.data);
                 });
             return d.promise();
@@ -1418,7 +1427,7 @@ Attendees.datagridUpdate = {
                 console.log("hi 1394 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {relation_id: key})
-                    .done(function(result) {
+                    .done((result) => {
                         d.resolve(result.data);
                     });
                 return d.promise();
@@ -1487,7 +1496,7 @@ Attendees.datagridUpdate = {
                 console.log("hi 1444 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
-                    .done(function(result) {
+                    .done((result) => {
                         d.resolve(result.data);
                     });
                 return d.promise();
