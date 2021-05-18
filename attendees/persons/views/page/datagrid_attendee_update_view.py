@@ -28,7 +28,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
-        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str)
+        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
@@ -38,11 +38,15 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'divisions_endpoint': '/whereabouts/api/user_divisions/',
             'addresses_endpoint': '/whereabouts/api/all_addresses/',
             'states_endpoint': '/whereabouts/api/all_states/',
+            'relations_endpoint': '/persons/api/all_relations/',
+            'attendee_families_endpoint': f"/persons/api/attendee_families/{current_attendee_id}/",
             'attendings_endpoint': '/persons/api/attendee_attendings/',
+            'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
             'targeting_attendee_id': current_attendee_id,
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
+            'attendee_urn': f"/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/",
         })
         return context
 

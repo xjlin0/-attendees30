@@ -1767,7 +1767,7 @@
       "gender": "FEMALE",
       "reciprocal_ids": "[\"3\", \"4\", \"27\"]",
       "title": "mother",
-      "display_order": 20,
+      "display_order": 21,
       "emergency_contact": true,
       "scheduler": true,
       "relative": true
@@ -1783,7 +1783,7 @@
       "gender": "MALE",
       "reciprocal_ids": "[\"1\", \"2\", \"30\"]",
       "title": "son",
-      "display_order": 20,
+      "display_order": 25,
       "emergency_contact": true,
       "scheduler": false,
       "relative": true
@@ -1799,7 +1799,7 @@
       "gender": "FEMALE",
       "reciprocal_ids": "[\"1\", \"2\", \"30\"]",
       "title": "daughter",
-      "display_order": 20,
+      "display_order": 26,
       "emergency_contact": true,
       "scheduler": false,
       "relative": true
@@ -1831,7 +1831,7 @@
       "gender": "FEMALE",
       "reciprocal_ids": "[\"5\", \"14\"]",
       "title": "wife",
-      "display_order": 1,
+      "display_order": 2,
       "emergency_contact": true,
       "scheduler": true,
       "relative": true

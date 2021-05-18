@@ -1,4 +1,4 @@
-import csv, os, pytz, re
+import csv, os, pytz, re, time
 from datetime import datetime
 from itertools import permutations
 from glob import glob
@@ -181,6 +181,7 @@ def import_households(households, division1_slug, division2_slug):
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     for household in households:
+        time.sleep(0.1)  # bypass Todo: 20210516 order by attendee's family attendee display_order
         try:
             print('.', end='')
             household_id = Utility.presence(household.get('HouseholdID'))
@@ -397,7 +398,11 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         FamilyAttendee.objects.update_or_create(
                             family=family,
                             attendee=attendee,
-                            defaults={'display_order': display_order, 'role': relation}
+                            defaults={
+                                'display_order': display_order,
+                                'role': relation,
+                                'start': '1900-01-01',
+                            }
                         )
 
                         address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')

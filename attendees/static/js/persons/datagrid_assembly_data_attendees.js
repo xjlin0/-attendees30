@@ -18,7 +18,7 @@ Attendees.dataAttendees = {
 
   startDataGrid: () => {
     Attendees.dataAttendees.dataGridOpts['dataSource'] = Attendees.dataAttendees.customStore;
-    $("div.dataAttendees").dxDataGrid(Attendees.dataAttendees.dataGridOpts).dxDataGrid("instance");
+    $("div.dataAttendees").dxDataGrid(Attendees.dataAttendees.dataGridOpts);//.dxDataGrid("instance");
   },
 
   customStore: new DevExpress.data.CustomStore({
@@ -225,7 +225,7 @@ Attendees.dataAttendees = {
 
     Attendees.dataAttendees.dataGridOpts['columns']=[...Attendees.dataAttendees.initialAttendeesColumns, ...meetColumns, ...Attendees.dataAttendees.otherAttendeesColumns]
   },
-}
+};
 
 $(document).ready(() => {
   Attendees.dataAttendees.init();

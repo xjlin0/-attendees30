@@ -79,9 +79,13 @@
          data-divisions-endpoint="{{divisions_endpoint}}"
          data-addresses-endpoint="{{addresses_endpoint}}"
          data-states-endpoint="{{states_endpoint}}"
+         data-relations-endpoint="{{relations_endpoint}}"
+         data-attendee-families-endpoint="{{attendee_families_endpoint}}"
          data-attendings-endpoint="{{attendings_endpoint}}"
          data-assemblies-endpoint="{{assemblies_endpoint}}"
          data-attendee-endpoint="{{attendee_endpoint}}"
+         data-family-attendees-endpoint="{{family_attendees_endpoint}}"
+         data-attendee-urn="{{attendee_urn}}"
          data-assembly="{{current_assembly_slug}}">
     </div>
   </form>
@@ -97,10 +101,10 @@
     <div class="popup-place-update">
     </div>
   </form>
-  <form id="familyattendee-update-popup-form"
-        action="/persons/api/datagrid_data_familyattendee/"
+  <form id="family-attr-update-popup-form"
+        action="/persons/api/datagrid_data_family/"
         method="post">
-    <div class="popup-familyattendee-update">
+    <div class="popup-family-attr-update">
     </div>
   </form>
 </div>

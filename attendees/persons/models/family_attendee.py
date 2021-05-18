@@ -7,7 +7,7 @@ class FamilyAttendee(TimeStampedModel, SoftDeletableModel):
     family = models.ForeignKey('persons.Family', null=False, blank=False, on_delete=models.CASCADE)
     attendee = models.ForeignKey('persons.Attendee', null=False, blank=False, on_delete=models.CASCADE)
     role = models.ForeignKey('persons.Relation', related_name='role', null=False, blank=False, on_delete=models.SET(0), verbose_name='attendee is', help_text="[Title] the family role of the attendee?")
-    display_order = models.SmallIntegerField(default=1, blank=False, null=False, db_index=True, help_text="0 will be household header")
+    display_order = models.SmallIntegerField(default=1, blank=False, null=False, db_index=True, help_text="0 will be first family")  # In current Attendee update page, FamilyAttendee order by created of family
     start = models.DateField(null=True, blank=True, help_text='date joining family')
     finish = models.DateField(null=True, blank=True, help_text='date leaving family')
 

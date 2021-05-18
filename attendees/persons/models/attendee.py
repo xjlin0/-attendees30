@@ -46,7 +46,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
 
     @cached_property
     def family_members(self):
-        return self.__class__.objects.filter(families__in=self.families.all())
+        return self.__class__.objects.filter(families__in=self.families.all()).distinct()
 
     @cached_property
     def self_phone_numbers(self):
