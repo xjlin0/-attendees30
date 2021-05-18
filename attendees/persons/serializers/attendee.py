@@ -3,11 +3,11 @@ from rest_framework import serializers
 
 
 class AttendeeSerializer(serializers.ModelSerializer):
-    parents_notifiers_names = serializers.CharField()
-    self_email_addresses = serializers.CharField()
-    caregiver_email_addresses = serializers.CharField()
-    self_phone_numbers = serializers.CharField()
-    caregiver_phone_numbers = serializers.CharField()
+    parents_notifiers_names = serializers.CharField(read_only=True)
+    self_email_addresses = serializers.CharField(read_only=True)
+    caregiver_email_addresses = serializers.CharField(read_only=True)
+    self_phone_numbers = serializers.CharField(read_only=True)
+    caregiver_phone_numbers = serializers.CharField(read_only=True)
 
     class Meta:
         model = Attendee

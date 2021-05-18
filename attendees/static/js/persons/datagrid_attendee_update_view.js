@@ -1368,7 +1368,40 @@ Attendees.datagridUpdate = {
             },
           });
         },
+        insert: function (values) {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
+            method: "POST",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "Create success, please find the new attendee in the table",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
+        },
       }),
+    },
+    onInitNewRow: (e) => {
+      DevExpress.ui.notify(
+        {
+          message: "Let's create a new family member, click away or hit Enter to save. Hit Esc to quit without save",
+          width: 500,
+          position: {
+            my: 'center',
+            at: 'center',
+            of: window,
+          }
+        }, "info", 3000);
     },
     allowColumnReordering: true,
     columnAutoWidth: true,
@@ -1440,7 +1473,6 @@ Attendees.datagridUpdate = {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint);
               },
               byKey: (key) => {
-                console.log("hi 1394 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {relation_id: key})
                     .done((result) => {
@@ -1479,21 +1511,49 @@ Attendees.datagridUpdate = {
         caption: 'First name',
         dataField: "attendee.first_name",
         visible: false,
+        validationRules: [
+          {
+            type: "stringLength",
+            max: 25,
+            message: "first name cannot exceed 25 characters"
+          },
+        ],
       },
       {
         caption: 'Last name',
         dataField: "attendee.last_name",
         visible: false,
+        validationRules: [
+          {
+            type: "stringLength",
+            max: 25,
+            message: "last name cannot exceed 25 characters"
+          },
+        ],
       },
       {
         caption: 'Last name2',
         dataField: "attendee.last_name2",
         visible: false,
+        validationRules: [
+          {
+            type: "stringLength",
+            max: 8,
+            message: "last name 2 cannot exceed 8 characters"
+          },
+        ],
       },
       {
         caption: 'First name2',
         dataField: "attendee.first_name2",
         visible: false,
+        validationRules: [
+          {
+            type: "stringLength",
+            max: 12,
+            message: "last name 2 cannot exceed 12 characters"
+          },
+        ],
       },
       {
         dataField: "attendee.division",

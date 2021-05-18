@@ -19,8 +19,19 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         """
         Create or update `FamilyAttendee` instance, given the validated data.
         """
+        familyattendee_id = self._kwargs.get('data', {}).get('id')
+        new_family = Family.objects.filter(pk=self._kwargs.get('data', {}).get('family', {}).get('id')).first()
+        new_attendee_data = validated_data.get('attendee', {})
+        if new_family:
+            validated_data['family'] = new_family
 
-        familyattendee_id = self._kwargs['data'].get('id')
+        if new_attendee_data:
+            attendee, attendee_created = Attendee.objects.update_or_create(
+                id=new_attendee_data.get('id'),
+                defaults=new_attendee_data,
+            )
+            validated_data['attendee'] = attendee
+
         obj, created = FamilyAttendee.objects.update_or_create(
             id=familyattendee_id,
             defaults=validated_data,
@@ -36,7 +47,7 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         new_attendee_data = validated_data.get('attendee', {})
 
         if new_family:
-            instance.family = new_family
+            # instance.family = new_family
             validated_data['family'] = new_family
         # else:
         #     validated_data['family'] = instance.family
