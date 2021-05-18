@@ -34,7 +34,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     deathday = models.DateField(blank=True, null=True)
     photo = PrivateFileField("Photo", blank=True, null=True, upload_to="attendee_portrait") #https://github.com/edoburu/django-private-storage
     progressions = JSONField(null=True, blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data')
-    infos = JSONField(null=True, blank=True, default=Utility.attendee_infos, help_text='Example: {"fixed": {"food allergy": "peanuts", "public_name": "John", "other_name": "Apostle"}}. Please keep {} here even no data')
+    infos = JSONField(null=True, blank=True, default=Utility.attendee_infos, help_text='Example: {"fixed": {"food allergy": "peanuts", "nick_name": "John"}}. Please keep {} here even no data')
 
     @property
     def display_label(self):

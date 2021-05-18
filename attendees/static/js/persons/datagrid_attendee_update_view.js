@@ -196,7 +196,7 @@ Attendees.datagridUpdate = {
         colSpan: 20,
         colCount: 20,
         itemType: "group",
-        caption: "Basic info",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
+        caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [
           {
             colSpan: 7,
@@ -220,6 +220,19 @@ Attendees.datagridUpdate = {
                   elementAttr: {
                     title: 'month, day and year are all required',
                   },
+                },
+              },
+              {
+                dataField: "infos.contacts.phone1",
+                label: {
+                  text: 'phone1',
+                },
+                // editorOptions: {mask: "+1 (X00) 000-0000",}
+              },
+              {
+                dataField: "infos.contacts.email1",
+                label: {
+                  text: 'email1',
                 },
               },
             ],
@@ -246,6 +259,19 @@ Attendees.datagridUpdate = {
                   elementAttr: {
                     title: 'pick any day of your best guess year for the age estimation',
                   },
+                },
+              },
+              {
+                dataField: "infos.contacts.phone2",
+                label: {
+                  text: 'phone2',
+                },
+                // editorOptions: {mask: "+1 (X00) 000-0000",}
+              },
+              {
+                dataField: "infos.contacts.email2",
+                label: {
+                  text: 'email2',
                 },
               },
             ],
@@ -303,6 +329,12 @@ Attendees.datagridUpdate = {
                   placeholder: "click calendar",
                 },
               },
+              {
+                dataField: "infos.contacts.nick_name",
+                label: {
+                  text: 'nick name',
+                },
+              },
             ],
           },
         ],
@@ -310,42 +342,16 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Contacts",
+        caption: "Addresses",
         itemType: "group",
         items: [
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.phone1",
-            label: {
-              text: 'phone',
-            },
-          },
-          {
-            colSpan: 5,
-            dataField: "infos.contacts.phone2",
-            label: {
-              visible: false,
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.email1",
-            label: {
-              text: 'email',
-            },
-          },
-          {
-            colSpan: 5,
-            dataField: "infos.contacts.email2",
-            label: {
-              visible: false,
-            },
-          },
           {
             colSpan: 24,
             dataField: "places",
             label: {
-              text: 'address',
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
             },
             template: (data, itemElement) => {
               $("<button>", {

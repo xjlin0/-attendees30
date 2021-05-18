@@ -7994,7 +7994,7 @@
       "progressions": {},
       "infos": {
         "fixed": {
-          "public_name": "\u5f1f\u5144"
+          "nick_name": "\u5f1f\u5144"
         },
         "contacts": {
           "email1": null,
@@ -8060,7 +8060,7 @@
       "progressions": {},
       "infos": {
         "fixed": {
-          "public_name": "\u8001\u59ca"
+          "nick_name": "\u8001\u59ca"
         },
         "contacts": {
           "email1": null,
@@ -8093,7 +8093,7 @@
       "progressions": {},
       "infos": {
         "fixed": {
-          "public_name": "\u6230\u795e\u4e48\u4e48"
+          "nick_name": "\u6230\u795e\u4e48\u4e48"
         },
         "contacts": {
           "email1": null,
@@ -8191,7 +8191,7 @@
       "infos": {
         "fixed": {
           "allergy": "peanuts",
-          "public_name": "\u5927\u5bf6"
+          "nick_name": "\u5927\u5bf6"
         },
         "contacts": {
           "email1": null,
@@ -8292,7 +8292,7 @@
       },
       "infos": {
         "fixed": {
-          "public_name": "root",
+          "nick_name": "root",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
         "contacts": {
@@ -8390,7 +8390,7 @@
       },
       "infos": {
         "fixed": {
-          "other_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
+          "nick_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
         },
         "contacts": {
           "email1": null,
@@ -8423,7 +8423,7 @@
       "progressions": {},
       "infos": {
         "fixed": {
-          "public_name": "\u4f7f\u5f92\u7d04\u7ff0"
+          "nick_name": "\u4f7f\u5f92\u7d04\u7ff0"
         },
         "contacts": {
           "email1": null,
@@ -8487,7 +8487,7 @@
       "progressions": {},
       "infos": {
         "fixed": {
-          "public_name": "\u7687\u540e"
+          "nick_name": "\u7687\u540e"
         },
         "contacts": {
           "email1": null,
