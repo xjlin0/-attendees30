@@ -74,15 +74,16 @@ class AttendeeService:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slug)
 
-        init_query = Q(division__organization=current_user_organization).add(     # preventing browser hacks since
-                      Q(attendings__meets__assembly__slug=assembly_slug), Q.AND)  # assembly_slug is from browser
+        init_query = Q(attendings__meets__assembly__slug=assembly_slug)  # assembly_slug is from browser
         # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slug), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
-                joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
-                ).filter(final_query).order_by(*orderby_list)
+                    joined_meets=ArrayAgg('attendings__meets__slug', distinct=True),
+                ).filter(final_query).filter(
+                    division__organization=current_user_organization  #Bugfix 20210517 limit org in init_query doesn't work.
+                ).order_by(*orderby_list)
 
     @staticmethod
     def orderby_parser(orderby_string, assembly_slug):

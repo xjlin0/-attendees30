@@ -42,7 +42,7 @@ class FamilyAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('display_name', 'infos')
+    search_fields = ('id', 'display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     inlines = (FamilyAttendeeInline,)
     list_display_links = ('id',)
@@ -70,7 +70,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('full_name',)
+    search_fields = ('id', 'full_name')
     readonly_fields = ['id', 'created', 'modified', 'full_name']
     inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)

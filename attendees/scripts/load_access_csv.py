@@ -1,5 +1,5 @@
-import csv, os, pytz, re, time
-from datetime import datetime
+import csv, os, pytz, re
+from datetime import datetime, timedelta
 from itertools import permutations
 from glob import glob
 from pathlib import Path
@@ -180,8 +180,9 @@ def import_households(households, division1_slug, division2_slug):
     family_content_type = ContentType.objects.get(model='family')
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
-    for household in households:
-        time.sleep(0.1)  # bypass Todo: 20210516 order by attendee's family attendee display_order
+    pdt = pytz.timezone('America/Los_Angeles')
+    long_time_ago = pdt.localize(datetime(1800, 1, 1), is_dst=None)
+    for index, household in enumerate(households, start=1):
         try:
             print('.', end='')
             household_id = Utility.presence(household.get('HouseholdID'))
@@ -191,6 +192,7 @@ def import_households(households, division1_slug, division2_slug):
 
             if household_id:
                 household_values = {
+                    'created': long_time_ago + timedelta(index),  # bypass Todo: 20210516 order by attendee's family attendee display_order
                     'display_name': display_name,
                     'division': default_division,
                     'infos': {
@@ -391,7 +393,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                                 attendee.division = division3
                             display_order = 10
 
-                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('fixed', {}).get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('fixed', {}).get('access_household_values', {}).get(access_header)) is not None}
+                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('access_household_values', {}).get(access_header)) is not None}
                         attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts}
 
                         attendee.save()
@@ -401,7 +403,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             defaults={
                                 'display_order': display_order,
                                 'role': relation,
-                                'start': '1900-01-01',
+                                'start': '1850-01-01',
                             }
                         )
 
@@ -631,6 +633,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
 
 def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering):
+    pdt = pytz.timezone('America/Los_Angeles')
     access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
     data_registration, data_registration_created = Registration.objects.update_or_create(
         assembly=data_assembly,
@@ -675,8 +678,8 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
             defaults={
                 'character': general_character,
                 'category': 'primary',
-                'start': roaster_gathering.start,
-                'finish': roaster_gathering.finish,
+                'start': roaster_meet.start,
+                'finish': datetime.now(pdt) + timedelta(365),  # whoever don't attend for a year won't be counted anymore
             },
         )
 
@@ -735,7 +738,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             'character': member_character,
             'category': 'tertiary',
             'start': Utility.parsedate_or_now(attendee.progressions.get('member_since')),
-            'finish': member_gathering.finish,
+            'finish': member_meet.finish,
         }
 
         AttendingMeet.objects.update_or_create(
