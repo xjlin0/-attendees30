@@ -31,7 +31,7 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
                 defaults=new_attendee_data,
             )
             validated_data['attendee'] = attendee
-
+        # Todo: 20210517  create relationships among families such as siblings, etc
         obj, created = FamilyAttendee.objects.update_or_create(
             id=familyattendee_id,
             defaults=validated_data,
@@ -60,7 +60,7 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
             validated_data['attendee'] = attendee
         # else:
         #     validated_data['attendee'] = instance.attendee
-
+        # Todo: 20210517  update relationships among families such as siblings, etc
         obj, created = FamilyAttendee.objects.update_or_create(
             id=instance.id,
             defaults=validated_data,

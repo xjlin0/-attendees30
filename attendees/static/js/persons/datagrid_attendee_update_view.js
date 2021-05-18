@@ -866,9 +866,9 @@ Attendees.datagridUpdate = {
                 type: "date",
                 showClearButton: true,
                 dateSerializationFormat: "yyyy-MM-dd",
-                onFocusIn: (e) => {
-                  if(!e.component.option("value")) {e.component.option("value", new Date())};
-                },
+//                onFocusIn: (e) => {
+//                  if(!e.component.option("value")) {e.component.option("value", new Date())};
+//                },
                 placeholder: "click calendar",
               },
             },
@@ -883,9 +883,10 @@ Attendees.datagridUpdate = {
               editorOptions: {
                 type: "date",
                 showClearButton: true,
-                onFocusIn: (e) => {
-                  if(!e.component.option("value")) {e.component.option("value", new Date())};
-                },
+                dateSerializationFormat: "yyyy-MM-dd",
+//                onFocusIn: (e) => {
+//                  if(!e.component.option("value")) {e.component.option("value", new Date())};
+//                },
                 placeholder: "click calendar",
               },
             },
@@ -1180,7 +1181,7 @@ Attendees.datagridUpdate = {
                 type: "danger",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if(confirm("Are you sure to set the current address to the attendee's first family?")){
+                  if(confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")){
                     console.log("Hi 1135 Todo 20210515: Please implement this function")
                   }
                 },

@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('relation', models.ForeignKey('persons.Relation', related_name='relation', null=False, blank=False, on_delete=models.SET(0), verbose_name='to_attendee is', help_text="[Title] What would from_attendee call to_attendee?")),
                 ('emergency_contact', models.BooleanField('to_attendee is the emergency contact?', default=False, null=False, blank=False, help_text="[from_attendee decide:] Notify to_attendee of from_attendee's emergency?")),
                 ('scheduler', models.BooleanField('to_attendee is the scheduler?', default=False, null=False, blank=False, help_text="[from_attendee decide:] to_attendee can view/change the schedules of the from_attendee?")),
+                ('public', models.BooleanField('show to end user?', default=True, null=False, blank=False, help_text="for internal admin only or show to attendees")),
                 ('from_attendee', models.ForeignKey(on_delete=models.CASCADE, related_name='from_attendee', to='persons.Attendee')),
                 ('to_attendee', models.ForeignKey(on_delete=models.CASCADE, related_name='to_attendee', to='persons.Attendee')),
                 ('finish', models.DateTimeField(null=False, blank=False, default=Utility.forever, help_text='The relation will be ended at when')),
