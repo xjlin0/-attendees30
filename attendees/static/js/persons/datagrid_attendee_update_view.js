@@ -350,33 +350,65 @@ Attendees.datagridUpdate = {
         items: [
           {
             colSpan: 24,
-            dataField: "places",
+            name: "places",
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
               showColon: false,
             },
             template: (data, itemElement) => {
-              $("<button>", {
+              const familyContentTypeId = parseInt(document.querySelector('div.datagrid-attendee-update').dataset.familyContenttypeId);
+              const $placeUl = $('<ul>', {class: 'list-group'});
+              const newButtonAttrs = {
                 text: "Add new address+",
                 disabled: !Attendees.utilities.editingEnabled,
                 title: "+ Add the attendee to a new address",
                 type: 'button',
                 class: "place-button-new place-button btn-outline-primary btn button btn-sm ",
-              }).appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
-                data.editorOptions.value.forEach(place => {
-                  if (place.id && typeof place === 'object'){
-                    const $button = $('<button>', {
-                      type: 'button',
-                      class: "btn-outline-success place-button btn button btn-sm attendee-place-button", // or use btn-block class
-                      value: place.id,
-                      text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
-                    });
-                    itemElement.append($button);
-                  }
+              };
+
+              const $personalNewButton = $("<button>", {
+                ...newButtonAttrs,
+                'data-content-type': Attendees.datagridUpdate.placeDefaults.content_type,
+                'data-object-id': Attendees.datagridUpdate.attendeeId,
+              });
+              const personalPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places || [];
+              const familyattendees = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set || [];
+              let $personalLi = $('<li>', {class: 'list-group-item', text: 'Personal'}).append($personalNewButton);
+
+              personalPlaces.forEach(place => {
+                const $button = $('<button>', {
+                  type: 'button',
+                  class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
+                  value: place.id,
+                  text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
                 });
-              }
+                $personalLi = $personalLi.append($button);
+              });
+              let $places = $placeUl.append($personalLi);
+
+              familyattendees.forEach(familyattendee => {
+                const family = familyattendee.family;
+                const $familyNewButton = $("<button>", {
+                  ...newButtonAttrs,
+                  'data-content-type': familyContentTypeId,
+                  'data-object-id': family.id,
+                });
+
+                let $familyLi = $('<li>', {class: 'list-group-item', text: family.display_name}).append($familyNewButton);
+
+                familyattendee.family.places.forEach(place => {
+                  const $button = $('<button>', {
+                    type: 'button',
+                    class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
+                    value: place.id,
+                    text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
+                  });
+                  $familyLi = $familyLi.append($button);
+                });
+                $places = $places.append($familyLi);
+              });
+              itemElement.append($places);
             },
           },
         ],
@@ -1235,7 +1267,7 @@ Attendees.datagridUpdate = {
                      Attendees.datagridUpdate.placePopupDxFormData = response.data[0];
                      Attendees.datagridUpdate.placePopupDxForm.option('formData', response.data[0]);
                      Attendees.datagridUpdate.placePopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
-                     Attendees.datagridUpdate.addressId = Attendees.datagridUpdate.placePopupDxFormData.address.id;
+                     Attendees.datagridUpdate.addressId = Attendees.datagridUpdate.placePopupDxFormData.address && Attendees.datagridUpdate.placePopupDxFormData.address.id;
                    },
           error  : (response) => console.log('Failed to fetch data for Locate Form in Popup, error: ', response),
         });
@@ -1277,7 +1309,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1126 ajax error here is response: ', response);
+          console.log('hi 1317 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,

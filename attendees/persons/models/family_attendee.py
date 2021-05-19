@@ -16,7 +16,7 @@ class FamilyAttendee(TimeStampedModel, SoftDeletableModel):
 
     class Meta:
         db_table = 'persons_family_attendees'
-        ordering = ('display_order', '-modified',)
+        ordering = ('display_order', )
         constraints = [
             models.UniqueConstraint(fields=['family', 'attendee'], name="family_attendee")
         ]

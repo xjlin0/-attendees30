@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import DetailView, UpdateView
 
-from attendees.persons.models import Attendee
+from attendees.persons.models import Attendee, Family
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.utils.view_helpers import get_object_or_delayed_403
 
@@ -31,6 +31,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
+            'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
