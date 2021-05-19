@@ -24,7 +24,10 @@ Attendees.datagridUpdate = {
     content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
   familyAttendeeDatagrid: null,
+  familyAttrPopupDxForm: null,
   familyAttrPopup: null,
+  familyAttrDefaults: {
+  },
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -781,6 +784,7 @@ Attendees.datagridUpdate = {
 
   initPlacePopupDxForm: (event) => {
     const placeButton = event.target;
+    console.log("hi 787 here is placeButton: ", placeButton);
     Attendees.datagridUpdate.placePopup = $('div.popup-place-update').dxPopup(Attendees.datagridUpdate.locatePopupDxFormConfig(placeButton)).dxPopup('instance');
     Attendees.datagridUpdate.fetchLocateFormData(placeButton);
   },
@@ -1168,25 +1172,48 @@ Attendees.datagridUpdate = {
               colSpan: 3,
               itemType: "button",
               name: "setFamilyAddressButton",
-              visible: true,
+              visible: true,  // only show if family address is different
               horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Address to Family",
+                text: "Overwrite Family Address",
                 icon: "group",
-                hint: "Assign the address to attendee's first family",
+                hint: "Copy the address to attendee's first family",
                 type: "danger",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")){
-                    console.log("Hi 1135 Todo 20210515: Please implement this function")
+                    console.log("Hi 1189 Todo 20210515: Please implement this function")
                   }
                 },
               },
             },
+//            {
+//              colSpan: 3,
+//              itemType: "button",
+//              name: "copyFamilyAddressButton",
+//              visible: true, // only show if family address is different
+//              horizontalAlignment: "left",
+//              buttonOptions: {
+//                elementAttr: {
+//                  class: 'attendee-form-submits',    // for toggling editing mode
+//                },
+//                disabled: !Attendees.utilities.editingEnabled,
+//                text: "Copy Family address",
+//                icon: "group",
+//                hint: "Copy address from attendee's first family",
+//                type: "danger",
+//                useSubmitBehavior: false,
+//                onClick: (clickEvent) => {
+//                  if(confirm("Are you sure to copy the attendee's first family? (not implement yet)")){
+//                    console.log("Hi 1212 Todo 20210515: Please implement this function")
+//                  }
+//                },
+//              },
+//            },
           ],
         }).dxForm("instance");
         e.append(formContainer);
@@ -1598,48 +1625,6 @@ Attendees.datagridUpdate = {
     ],
   },
 
-  // familyAttendeeDatagridDataSource: new DevExpress.data.CustomStore({
-  //   key: "id",
-  //   load: (loadOptions) => {
-  //     const deferred = $.Deferred();
-  //     const args = {};
-  //
-  //     [
-  //       "skip",
-  //       "take",
-  //       "requireTotalCount",
-  //       "requireGroupCount",
-  //       "sort",
-  //       "filter",
-  //       "totalSummary",
-  //       "group",
-  //       "groupSummary"
-  //     ].forEach((i) => {
-  //       if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
-  //         args[i] = JSON.stringify(loadOptions[i]);
-  //     });
-  //
-  //     $.ajax({
-  //       url: document.querySelector('div.datagrid-attendee-update').dataset.familyAttendeesEndpoint,
-  //       dataType: "json",
-  //       data: args,
-  //       success: (result) => {
-  //         deferred.resolve(result.data, {
-  //           totalCount: result.totalCount,
-  //           summary:    result.summary,
-  //           groupCount: result.groupCount
-  //         });
-  //       },
-  //       error: () => {
-  //         deferred.reject("Data Loading Error, probably time out?");
-  //       },
-  //       timeout: 30000,
-  //     });
-  //
-  //     return deferred.promise();
-  //   }
-  // }),
-
 
   ///////////////////////  Family Attributes Popup and DxForm  ///////////////////////
 
@@ -1651,7 +1636,7 @@ Attendees.datagridUpdate = {
 
   familyAttrPopupDxFormConfig: (familyAttrButton) => {
     const ajaxUrl=$('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
-    console.log("hi 1327 here is ajaxUrl: ", ajaxUrl);
+    console.log("hi 1639 here is ajaxUrl: ", ajaxUrl);
     return {
       visible: true,
       title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
@@ -1662,16 +1647,31 @@ Attendees.datagridUpdate = {
         at: 'center',
         of: window,
       },
-      // onHiding: () => {
-      // },
       dragEnabled: true,
-      // contentTemplate: (e) => {
-      // },
+      contentTemplate: (e) => {
+        const formContainer = $('<div class="familyAttrForm">');
+        Attendees.datagridUpdate.familyAttrPopupDxForm = formContainer.dxForm({
+          readOnly: !Attendees.utilities.editingEnabled,
+          formData: Attendees.datagridUpdate.familyAttrDefaults,
+          colCount: 2,
+          scrollingEnabled: true,
+          showColonAfterLabel: false,
+          requiredMark: "*",
+          labelLocation: "top",
+          minColWidth: "20%",
+          showValidationSummary: true,
+          items: [
+
+
+          ],
+        }).dxForm("instance");
+        e.append(formContainer);
+      }
     };
   },
 
   fetchFamilyAttrFormData: (familyAttrButton) => {
-    console.log("hi 1347 here is familyAttrButton: ", familyAttrButton);
+    console.log("hi 1674 here is familyAttrButton: ", familyAttrButton);
   },
 };
 
