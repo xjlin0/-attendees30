@@ -2233,7 +2233,7 @@
       "relation": 3,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T16:52:12Z"
     }
@@ -2250,7 +2250,7 @@
       "relation": 2,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T16:58:34Z"
     }
@@ -2267,7 +2267,7 @@
       "relation": 10,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": null,
       "finish": "3936-11-05T16:59:13Z"
     }
@@ -2284,7 +2284,7 @@
       "relation": 10,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": null,
       "finish": "3936-11-05T16:59:44Z"
     }
@@ -2301,7 +2301,7 @@
       "relation": 7,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:00:50Z"
     }
@@ -2318,7 +2318,7 @@
       "relation": 1,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:02:11Z"
     }
@@ -2335,7 +2335,7 @@
       "relation": 5,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:02:42Z"
     }
@@ -2352,7 +2352,7 @@
       "relation": 5,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:07:24Z"
     }
@@ -2369,7 +2369,7 @@
       "relation": 3,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:07:48Z"
     }
@@ -2386,7 +2386,7 @@
       "relation": 2,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:08:29Z"
     }
@@ -2403,7 +2403,7 @@
       "relation": 1,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:09:17Z"
     }
@@ -2420,7 +2420,7 @@
       "relation": 3,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:12:21Z"
     }
@@ -2437,7 +2437,7 @@
       "relation": 6,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-05T17:13:12Z"
     }
@@ -2454,7 +2454,7 @@
       "relation": 5,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-15T00:46:42Z"
     }
@@ -2471,7 +2471,7 @@
       "relation": 6,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-15T00:47:08Z"
     }
@@ -2488,7 +2488,7 @@
       "relation": 26,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": null,
       "finish": "3936-11-15T00:59:22Z"
     }
@@ -2505,7 +2505,7 @@
       "relation": 2,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-15T01:01:20Z"
     }
@@ -2522,7 +2522,7 @@
       "relation": 1,
       "emergency_contact": true,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "finish": "3936-11-15T01:01:20Z"
     }
@@ -2539,7 +2539,7 @@
       "relation": 6,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T02:08:07Z"
     }
@@ -2556,7 +2556,7 @@
       "relation": 3,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T03:34:15Z"
     }
@@ -2573,7 +2573,7 @@
       "relation": 5,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T03:34:52Z"
     }
@@ -2590,7 +2590,7 @@
       "relation": 3,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T03:34:52Z"
     }
@@ -2607,7 +2607,7 @@
       "relation": 1,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T03:35:37Z"
     }
@@ -2624,7 +2624,7 @@
       "relation": 2,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T03:35:37Z"
     }
@@ -2641,7 +2641,7 @@
       "relation": 1,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:02:59Z"
     }
@@ -2658,7 +2658,7 @@
       "relation": 2,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:02:59Z"
     }
@@ -2675,7 +2675,7 @@
       "relation": 8,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:02:59Z"
     }
@@ -2692,7 +2692,7 @@
       "relation": 3,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:03:44Z"
     }
@@ -2709,7 +2709,7 @@
       "relation": 3,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:04:10Z"
     }
@@ -2726,7 +2726,7 @@
       "relation": 8,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "finish": "3937-05-24T04:04:24Z"
     }
@@ -2743,7 +2743,7 @@
       "relation": 18,
       "emergency_contact": true,
       "scheduler": true,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": null,
       "finish": "3937-06-12T17:58:04Z"
     }
@@ -2760,7 +2760,7 @@
       "relation": 18,
       "emergency_contact": false,
       "scheduler": false,
-      "public": true,
+      "infos": {"show_secret": {}},
       "in_family": null,
       "finish": "3937-06-12T17:58:04Z"
     }

@@ -38,6 +38,10 @@ class Utility:
         return {"names": {}, "fixed": {}, "contacts": {}}
 
     @staticmethod
+    def relationship_infos():
+        return {"show_secret": {}}
+
+    @staticmethod
     def forever():  # 1923 years from now
         return datetime.now(timezone.utc)+timedelta(weeks=99999)
 

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.postgres.fields.jsonb import JSONField
+from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 from . import Utility, Note, Attendee
 
@@ -12,14 +14,17 @@ class Relationship(TimeStampedModel, SoftDeletableModel, Utility):
     relation = models.ForeignKey('persons.Relation', related_name='relation', null=False, blank=False, on_delete=models.SET(0), verbose_name='to_attendee is', help_text="[Title] What would from_attendee call to_attendee?")
     emergency_contact = models.BooleanField('to_attendee is the emergency contact?', null=False, blank=False, default=False, help_text="[from_attendee decide:] Notify to_attendee of from_attendee's emergency?")
     scheduler = models.BooleanField('to_attendee is the scheduler?', null=False, blank=False, default=False, help_text="[from_attendee decide:] to_attendee can view/change the schedules of the from_attendee?")
-    public = models.BooleanField('show to end user?', null=False, blank=False, default=True, help_text="for internal admin only or show to attendees")
     in_family = models.ForeignKey('persons.Family', null=True, blank=True, on_delete=models.SET_NULL, related_name="in_family")
     finish = models.DateTimeField(blank=False, null=False, default=Utility.forever, help_text="The relation will be ended at when")
+    infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data')  # compare to NoteAdmin
 
     class Meta:
         db_table = 'persons_relationships'
         constraints = [
             models.UniqueConstraint(fields=['from_attendee', 'to_attendee', 'relation'], name="attendee_relation")
+        ]
+        indexes = [
+            GinIndex(fields=['infos'], name='relationship_infos_gin', ),
         ]
 
     def __str__(self):

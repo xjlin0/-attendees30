@@ -144,6 +144,9 @@ class NoteAdmin(SummernoteModelAdmin):
 
 
 class RelationshipAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     list_display_links = ('relation',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
