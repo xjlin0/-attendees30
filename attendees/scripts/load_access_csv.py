@@ -406,28 +406,28 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                                 'start': '1850-01-01',
                             }
                         )
-
-                        address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
-                        family_place = Place.objects.filter(infos__access_address_id=address_id).first()
-                        if family_place:
-                            Place.objects.update_or_create(
-                                address=family_place.address,
-                                content_type=attendee_content_type,
-                                object_id=attendee.id,
-                                address_extra=family_place.address_extra,
-                                defaults={
-                                    'address': family_place.address,
-                                    'content_type': attendee_content_type,
-                                    'object_id': attendee.id,
-                                    'display_name': 'main',
-                                    'display_order': 0,
-                                    'address_extra': family_place.address_extra,
-                                    'infos': {
-                                        'contacts': {},
-                                        'fixed': {},
-                                    },
-                                }
-                            )  # don't add infos__access_address_id so future query will only get one at family level
+                        #
+                        # address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
+                        # family_place = Place.objects.filter(infos__access_address_id=address_id).first()
+                        # if family_place:
+                        #     Place.objects.update_or_create(
+                        #         address=family_place.address,
+                        #         content_type=attendee_content_type,
+                        #         object_id=attendee.id,
+                        #         address_extra=family_place.address_extra,
+                        #         defaults={
+                        #             'address': family_place.address,
+                        #             'content_type': attendee_content_type,
+                        #             'object_id': attendee.id,
+                        #             'display_name': 'main',
+                        #             'display_order': 0,
+                        #             'address_extra': family_place.address_extra,
+                        #             'infos': {
+                        #                 'contacts': {},
+                        #                 'fixed': {},
+                        #             },
+                        #         }
+                        #     )  # don't add infos__access_address_id so future query will only get one at family level
                     else:
                         print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 

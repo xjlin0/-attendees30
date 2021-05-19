@@ -357,7 +357,7 @@ Attendees.datagridUpdate = {
               showColon: false,
             },
             template: (data, itemElement) => {
-              const familyContentTypeId = parseInt(document.querySelector('div.datagrid-attendee-update').dataset.familyContenttypeId);
+              const familyContentTypeId = document.querySelector('div.datagrid-attendee-update').dataset.familyContenttypeId;
               const $placeUl = $('<ul>', {class: 'list-group'});
               const newButtonAttrs = {
                 text: "Add new address+",
