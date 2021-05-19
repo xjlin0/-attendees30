@@ -369,6 +369,7 @@ Attendees.datagridUpdate = {
 
               const $personalNewButton = $("<button>", {
                 ...newButtonAttrs,
+                'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name,
                 'data-content-type': Attendees.datagridUpdate.placeDefaults.content_type,
                 'data-object-id': Attendees.datagridUpdate.attendeeId,
               });
@@ -379,6 +380,7 @@ Attendees.datagridUpdate = {
               personalPlaces.forEach(place => {
                 const $button = $('<button>', {
                   type: 'button',
+                  'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name,
                   class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                   value: place.id,
                   text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
@@ -391,6 +393,7 @@ Attendees.datagridUpdate = {
                 const family = familyattendee.family;
                 const $familyNewButton = $("<button>", {
                   ...newButtonAttrs,
+                  'data-level': 'family address of ' + family.display_name,
                   'data-content-type': familyContentTypeId,
                   'data-object-id': family.id,
                 });
@@ -400,6 +403,7 @@ Attendees.datagridUpdate = {
                 familyattendee.family.places.forEach(place => {
                   const $button = $('<button>', {
                     type: 'button',
+                    'data-level': 'family address of ' + family.display_name,
                     class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                     value: place.id,
                     text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
@@ -825,7 +829,7 @@ Attendees.datagridUpdate = {
     const ajaxUrl=$('form#place-update-popup-form').attr('action') + placeButton.value + '/';
     return {
       visible: true,
-      title: placeButton.value ? 'Viewing Address' : 'Creating Address',
+      title: (placeButton.value ? 'Viewing ' : 'Creating ') + placeButton.dataset.level,
       minwidth: "20%",
       minheight: "30%",
       position: {
@@ -1126,7 +1130,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('1017 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('1129 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -1218,7 +1222,7 @@ Attendees.datagridUpdate = {
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")){
-                    console.log("Hi 1189 Todo 20210515: Please implement this function")
+                    console.log("Hi 1221 Todo 20210515: Please implement this function")
                   }
                 },
               },
@@ -1241,7 +1245,7 @@ Attendees.datagridUpdate = {
 //                useSubmitBehavior: false,
 //                onClick: (clickEvent) => {
 //                  if(confirm("Are you sure to copy the attendee's first family? (not implement yet)")){
-//                    console.log("Hi 1212 Todo 20210515: Please implement this function")
+//                    console.log("Hi 1244 Todo 20210515: Please implement this function")
 //                  }
 //                },
 //              },
@@ -1255,11 +1259,12 @@ Attendees.datagridUpdate = {
 
   fetchLocateFormData: (locateButton) => {
     if (locateButton.value){
-      const fetchedPlace = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.find(x => x.id == locateButton.value); // button value is string
+      const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
+      const fetchedPlace = allPlaces.find(x => x.id === locateButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedPlace) {
         Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
         Attendees.datagridUpdate.placePopupDxForm.option('formData', fetchedPlace);
-        Attendees.datagridUpdate.addressId = fetchedPlace.address.id;
+        Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
       }else{
         $.ajax({
           url    : $('form#place-update-popup-form').attr('action') + locateButton.value + '/',
@@ -1309,7 +1314,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1317 ajax error here is response: ', response);
+          console.log('hi 1313 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1365,7 +1370,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1182 ajax error here is response: ', response);
+          console.log('hi 1369 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
