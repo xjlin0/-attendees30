@@ -75,6 +75,9 @@ def import_household_people_address(
             print('Number of households successfully imported/updated: ', upserted_household_id_count)
             print('Initial family count: ', initial_family_count, '. final family count: ', Family.objects.count(), end="\n")
 
+            place_with_family_count = Place.objects.filter(content_type=ContentType.objects.get_for_model(Family)).count()
+            print('Number of place(address) successfully associated with family (originally 0): ', place_with_family_count)
+
             print('Number of people successfully imported/updated: ', upserted_attendee_count)
             print('Initial attendee count: ', initial_attendee_count, '. final attendee count: ', Attendee.objects.count(), end="\n")
 
@@ -111,7 +114,7 @@ def import_addresses(addresses, california):
     for address_dict in addresses:
         try:
             print('.', end='')
-            address_id = Utility.presence(address_dict.get('AddressID'))
+            address_id = Utility.presence(address_dict.get('AddressID'))  # str
             state = Utility.presence(address_dict.get('State'))
             street = Utility.presence(address_dict.get('Street'))
             city = Utility.presence(address_dict.get('City'))
@@ -139,18 +142,39 @@ def import_addresses(addresses, california):
                         'country_code': 'US',
                         'raw': f"{street}, {city}, {state} {zip_code}",
                     },
-                    'content_type': address_content_type,
-                    'object_id': str(address_id),        # will update later
                     'address_extra': Utility.presence(address_extra),
                     'infos': {
+                        **Utility.default_infos(),
                         'access_address_id': address_id,
                         'access_address_values': address_dict,
                     }
                 }
-                Place.objects.update_or_create(
-                    infos__access_address_id=address_id,
-                    defaults=contact_values
-                )
+                existing_places = Place.objects.filter(infos__access_address_id=address_id)  # multiple households can share an address
+
+                if existing_places:
+                    for place in existing_places:
+                        place.infos = contact_values.get('infos')
+                        place.address_extra = contact_values.get('address_extra')
+                        address = place.address
+                        address.street_number = contact_values.get('address', {}).get('street_number')
+                        address.route = contact_values.get('address', {}).get('route')
+                        address.raw = contact_values.get('address', {}).get('raw')
+
+                        potential_new_local = Locality.objects.filter(postal_code=contact_values.get('address', {}).get('postal_code'), name=contact_values.get('address', {}).get('locality')).first()
+                        if potential_new_local:
+                            address.locality = potential_new_local
+
+                        address.save()
+                        place.save()
+                else:
+                    Place.objects.update_or_create(
+                        infos__access_address_id=address_id,  # str
+                        defaults={
+                            **contact_values,
+                            'content_type': address_content_type,
+                            'object_id': str(address_id),  # will update later.  Remember some address are duplicated
+                        }
+                    )
             else:
                 print('Is the address completed or in California? address not good for processing: ', address_dict)
             successfully_processed_count += 1
@@ -186,7 +210,7 @@ def import_households(households, division1_slug, division2_slug):
         try:
             print('.', end='')
             household_id = Utility.presence(household.get('HouseholdID'))
-            address_id = Utility.presence(household.get('AddressID'))
+            address_id = Utility.presence(household.get('AddressID'))  # str
             display_name = Utility.presence(household.get('HousholdLN', '') + ' ' + household.get('HousholdFN', '') + ' ' + household.get('SpouseFN', '')) or 'household_id: ' + household_id
             congregation = Utility.presence(household.get('Congregation'))
 
@@ -218,10 +242,16 @@ def import_households(households, division1_slug, division2_slug):
                     phone2 = Utility.presence(household.get('HouseholdFax'))
                     # old_contact = Place.objects.filter(infos__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    saved_place = Place.objects.filter(infos__access_address_id=address_id).first()
+                    saved_place = family.places.first() or Place.objects.filter(infos__access_address_id=address_id).first()
+
                     if saved_place:
+                        potential_new_place_id = None
+
+                        if saved_place.subject == family or saved_place.content_type != family_content_type:
+                            potential_new_place_id = saved_place.id
+
                         Place.objects.update_or_create(
-                            infos__access_address_id=address_id,
+                            id=potential_new_place_id,  # infos__access_address_id=address_id,  # multiple households could share the same address
                             # address=address,
                             defaults={
                                 'address': saved_place.address,
@@ -230,7 +260,7 @@ def import_households(households, division1_slug, division2_slug):
                                 'object_id': family.id,
                                 'address_extra': saved_place.address_extra,
                                 'infos': {
-                                    'access_address_id': address_id,
+                                    'access_address_id': address_id,  # str
                                     'contacts': {
                                         'phone1': add_int_code(phone1),  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
                                         'phone2': add_int_code(phone2),

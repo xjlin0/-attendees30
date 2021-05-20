@@ -10,7 +10,7 @@ class PlaceAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('id', 'display_name')
+    search_fields = ('id', 'display_name', 'infos')
     list_display_links = ('id',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'display_name', 'subject', 'street')
