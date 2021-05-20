@@ -420,7 +420,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families or Relations: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: "Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save",
         itemType: "group",
         items: [
           {
@@ -1488,20 +1488,22 @@ Attendees.datagridUpdate = {
     grouping: {
       autoExpandAll: true,
     },
-    "editing": {
+    editing: {
       mode: "cell",
       allowUpdating: Attendees.utilities.editingEnabled,
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
     },
-    // groupPanel: {
-    //   visible: "auto",
-    // },
-    // columnChooser: {
-    //   enabled: true,
-    //   mode: "select",
-    // },
-    // remoteOperations: true,
+    onEditingStart: (info) => {
+      if (info.data.attendee.id === Attendees.datagridUpdate.attendeeId ) {
+        info.cancel = true;
+      }
+    },
+    onRowPrepared: (e) => {
+      if (e.rowType === 'data' && e.data.attendee && e.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
+        e.rowElement.css("color", "SeaGreen");
+      }
+    },
     columns:[
       {
         dataField: "family.id",
@@ -1560,12 +1562,16 @@ Attendees.datagridUpdate = {
         dataField: "attendee.full_name",
         allowEditing: false,
         cellTemplate: (container, rowData) => {
-          const attrs = {
-            "class": "text-info",
-            "text": rowData.data.attendee.full_name,
-            "href": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
-          };
-          $('<a>', attrs).appendTo(container);
+          if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId){
+            $('<span>', {text: rowData.data.attendee.full_name}).appendTo(container);
+          }else {
+            const attrs = {
+              "class": "text-info",
+              "text": rowData.data.attendee.full_name,
+              "href": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
+            };
+            $('<a>', attrs).appendTo(container);
+          }
         },
       },
       {
