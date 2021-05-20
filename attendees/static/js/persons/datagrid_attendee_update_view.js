@@ -1669,7 +1669,6 @@ Attendees.datagridUpdate = {
 
   familyAttrPopupDxFormConfig: (familyAttrButton) => {
     const ajaxUrl=$('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
-    console.log("hi 1676 here is ajaxUrl: ", ajaxUrl);
     return {
       visible: true,
       title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
@@ -1686,7 +1685,7 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.familyAttrPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.familyAttrDefaults,
-          colCount: 2,
+          colCount: 3,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -1698,9 +1697,9 @@ Attendees.datagridUpdate = {
               colSpan: 1,
               dataField: "display_name",
               label: {
-                text: 'Type',
+                text: 'Name',
               },
-              helpText: 'what kind of address is this?',
+              helpText: 'what family is this?',
               isRequired: true,
               editorOptions: {
                 placeholder: "Main/parent/past, etc",
@@ -1730,6 +1729,92 @@ Attendees.datagridUpdate = {
                 },
               ],
             },
+            {
+              colSpan: 1,
+              dataField: "division",
+              editorType: "dxSelectBox",
+              isRequired: true,
+              label: {
+                text: 'Major Division',
+              },
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "display_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
+                        d.resolve(response.data);
+                      });
+                      return d.promise();
+                    },
+                  })
+                }),
+              },
+            },
+
+            {
+              colSpan: 1,
+              itemType: "button",
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Save Family",
+                icon: "save",
+                hint: "save Family attr data in the popup",
+                type: "default",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if(confirm('are you sure to submit the popup Family attr Form?')){
+                    const userData = Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData');
+
+                    $.ajax({
+                      url    : ajaxUrl,
+                      data   : JSON.stringify(userData),
+                      dataType:'json',
+                      contentType: "application/json; charset=utf-8",
+                      method : 'PUT',
+                      success: (savedFamily) => {
+                        const clickedButton = $('button.family-button[value="' + savedFamily.id + '"]');
+                        if (clickedButton.length) { clickedButton.text(savedFamily.display_name)}
+                        Attendees.datagridUpdate.familyAttrPopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'saving Family attr success',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, "success", 2500);
+                      },
+                      error  : (response) => {
+                        console.log('1801 Failed to save data for Family attr Form in Popup, error: ', response);
+                        console.log('formData: ', userData);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'saving locate error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, "error", 5000);
+                      },
+                    });
+                  }
+                },
+              },
+            },
 
           ],
         }).dxForm("instance");
@@ -1739,25 +1824,22 @@ Attendees.datagridUpdate = {
   },
 
   fetchFamilyAttrFormData: (familyAttrButton) => {
-    console.log("hi 1746 here is familyAttrButton: ", familyAttrButton);
     if (familyAttrButton.value){
-      // const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
-      // const fetchedPlace = allPlaces.find(x => x.id === locateButton.value);
-      // if (!Attendees.utilities.editingEnabled && fetchedPlace) {
-      //   Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
-      //   Attendees.datagridUpdate.placePopupDxForm.option('formData', fetchedPlace);
-      //   Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
-      // }else{
+      const families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
+      const fetchedFamily = families.find(x => x.id === familyAttrButton.value);
+      if (!Attendees.utilities.editingEnabled && fetchedFamily) {
+        Attendees.datagridUpdate.familyAttrPopupDxFormData = fetchedFamily;
+        Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', fetchedFamily);
+      }else{
         $.ajax({
           url    : $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/',
           success: (response) => {
-            Attendees.datagridUpdate.familyAttrPopupDxFormData = response.data[0];
-            Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response.data[0]);
-            // Attendees.datagridUpdate.familyAttrPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
+            Attendees.datagridUpdate.familyAttrPopupDxFormData = response;
+            Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response);
           },
           error  : (response) => console.log('Failed to fetch data for Family Attr Form in Popup, error: ', response),
         });
-      // }
+      }
     }
 
 
