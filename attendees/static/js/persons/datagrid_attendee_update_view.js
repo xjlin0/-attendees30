@@ -1514,18 +1514,8 @@ Attendees.datagridUpdate = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: "id",
-              load: () => {
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint);
-              },
-          byKey: (key) => {
-            console.log("hi 1369 here is key: ", key);
-            const d = new $.Deferred();
-            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint, {family_id: key})
-                .done((result) => {
-                    d.resolve(result.data);
-                });
-            return d.promise();
-          },
+              load: () => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint),
+              byKey: (key) => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint +  key + '/'),
             }),
           },
         },
@@ -1673,7 +1663,7 @@ Attendees.datagridUpdate = {
 
   familyAttrPopupDxFormConfig: (familyAttrButton) => {
     const ajaxUrl=$('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
-    console.log("hi 1639 here is ajaxUrl: ", ajaxUrl);
+    console.log("hi 1676 here is ajaxUrl: ", ajaxUrl);
     return {
       visible: true,
       title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
@@ -1698,7 +1688,42 @@ Attendees.datagridUpdate = {
           minColWidth: "20%",
           showValidationSummary: true,
           items: [
-
+            {
+              colSpan: 1,
+              dataField: "display_name",
+              label: {
+                text: 'Type',
+              },
+              helpText: 'what kind of address is this?',
+              isRequired: true,
+              editorOptions: {
+                placeholder: "Main/parent/past, etc",
+              },
+            },
+            {
+              colSpan: 1,
+              dataField: "display_order",
+              label: {
+                text: 'Importance',
+              },
+              helpText: '0 is shown before 1,2...',
+              isRequired: true,
+              editorOptions: {
+                placeholder: "0/1/2/3, etc",
+              },
+              validationRules: [
+                {
+                  type: "range",
+                  max: 32767,
+                  min: 0,
+                  message: "display_order should be between 0 and 32767"
+                },
+                {
+                  type: "required",
+                  message: "display_order is required"
+                },
+              ],
+            },
 
           ],
         }).dxForm("instance");
@@ -1708,7 +1733,29 @@ Attendees.datagridUpdate = {
   },
 
   fetchFamilyAttrFormData: (familyAttrButton) => {
-    console.log("hi 1674 here is familyAttrButton: ", familyAttrButton);
+    console.log("hi 1746 here is familyAttrButton: ", familyAttrButton);
+    if (familyAttrButton.value){
+      // const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
+      // const fetchedPlace = allPlaces.find(x => x.id === locateButton.value);
+      // if (!Attendees.utilities.editingEnabled && fetchedPlace) {
+      //   Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
+      //   Attendees.datagridUpdate.placePopupDxForm.option('formData', fetchedPlace);
+      //   Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
+      // }else{
+        $.ajax({
+          url    : $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/',
+          success: (response) => {
+            Attendees.datagridUpdate.familyAttrPopupDxFormData = response.data[0];
+            Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response.data[0]);
+            // Attendees.datagridUpdate.familyAttrPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
+          },
+          error  : (response) => console.log('Failed to fetch data for Family Attr Form in Popup, error: ', response),
+        });
+      // }
+    }
+
+
+
   },
 };
 

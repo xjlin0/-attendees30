@@ -10,13 +10,13 @@ from attendees.users.authorization.route_guard import SpyGuard
 
 class ApiAttendeeFamiliesViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewSet):
     """
-    API endpoint that allows families(attendees) of an Attendee to be viewed or edited.
+    API endpoint that allows families of an Attendee (in header) to be viewed or edited.
     """
     serializer_class = FamilySerializer
 
     def get_queryset(self):
-        attendee = get_object_or_404(Attendee, pk=self.kwargs.get('attendee_id'))
-        family_id = self.request.query_params.get('family_id')
+        attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        family_id = self.kwargs.get('pk')
         if family_id:
             return attendee.families.filter(pk=family_id)
         else:

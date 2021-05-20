@@ -83,7 +83,7 @@ router.register(
     basename='relation',
 )
 router.register(
-    'api/attendee_families/(?P<attendee_id>.+)',
+    'api/attendee_families',
     api_attendee_families_viewset,
     basename='family',
 )
