@@ -111,7 +111,14 @@ Attendees.utilities = {
       {name: 'UNSPECIFIED'},
     ];
   },
-}
+
+  basicContacts: [
+    'phone1',
+    'phone2',
+    'email1',
+    'email2'
+  ],
+};
 
 $(document).ready(() => {
   Attendees.utilities.init();
