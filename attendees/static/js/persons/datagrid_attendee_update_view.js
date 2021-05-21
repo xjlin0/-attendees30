@@ -127,25 +127,23 @@ Attendees.datagridUpdate = {
   },
 
   attachContactAddButton: () => {
-    $("<span>", {class: "extra-contacts"})
+    $('<span>', {class: 'extra-contacts', css: {'margin-left': '1rem'}})
       .dxButton({
         disabled: !Attendees.utilities.editingEnabled,
         elementAttr: {
           class: 'attendee-form-submits',  // for toggling editing mode
         },
         text:'Add more contact',
-        icon:"email",
-        type:"normal",
+        icon:'email',  // or 'fas fa-comment-dots'
+        stylingMode: 'outlined',
+        type: "success",
         height: '1.4rem',
         hint: 'add more different contacts such as more phones/emails',
-        onClick: ()=> {
-          Attendees.datagridUpdate.contactPopup = $("div.popup-more-contacts").dxPopup(Attendees.datagridUpdate.contactPopupDxFormConfig()).dxPopup("instance");
+        onClick: () => {
+          Attendees.datagridUpdate.contactPopup = $('div.popup-more-contacts').dxPopup(Attendees.datagridUpdate.contactPopupDxFormConfig).dxPopup('instance');
         },
-      })
-      .appendTo($("span.dx-form-group-caption")[1]);
+      }).appendTo($('span.dx-form-group-caption')[1]);  // basic info block is at index 1
   },
-
-
 
   attendeeFormConfigs: {
     readOnly: !Attendees.utilities.editingEnabled,
@@ -577,133 +575,131 @@ Attendees.datagridUpdate = {
     ]
   },
 
-  contactPopupDxFormConfig: () => {
-    return {
-      visible: true,
-      title: 'Add Contact',
-      minwidth: "20%",
-      minheight: "30%",
-      position: {
-        my: 'center',
-        at: 'center',
-        of: window,
-      },
-      dragEnabled: true,
-      contentTemplate: (e) => {
-        const formContainer = $('<div class="contact-form">');
-        Attendees.datagridUpdate.contactPopupDxForm = formContainer.dxForm({
-          // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
-          // formData: Attendees.datagridUpdate.placeDefaults,
-          // onFieldDataChanged: (e) => {e.component.validate()},
-          scrollingEnabled: true,
-          showColonAfterLabel: false,
-          requiredMark: "*",
-          // labelLocation: "top",
-          // minColWidth: "20%",
-          showValidationSummary: true,
-          items: [
-            {
-              dataField: "contactKey",
-              editorOptions: {
-                placeholder: 'for example: WeChat1',
+  contactPopupDxFormConfig: {
+    maxWidth: "50%",
+    maxHeight: "50%",
+    visible: true,
+    title: 'Add Contact',
+    position: {
+      my: 'center',
+      at: 'center',
+      of: window,
+    },
+    dragEnabled: true,
+    contentTemplate: (e) => {
+      const formContainer = $('<div class="contact-form">');
+      Attendees.datagridUpdate.contactPopupDxForm = formContainer.dxForm({
+        // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
+        // formData: Attendees.datagridUpdate.placeDefaults,
+        // onFieldDataChanged: (e) => {e.component.validate()},
+        scrollingEnabled: true,
+        showColonAfterLabel: false,
+        requiredMark: "*",
+        // labelLocation: "top",
+        // maxWidth: "30%",
+        showValidationSummary: true,
+        items: [
+          {
+            dataField: "contactKey",
+            editorOptions: {
+              placeholder: 'for example: WeChat1',
+            },
+            helpText: 'Any contact such as email3/phone3/fax1, etc',
+            label: {
+              text: 'Contact method',
+            },
+            isRequired: true,
+            validationRules: [
+              {
+                type: "required",
+                message: "Contact method is required"
               },
-              helpText: 'Any contact such as email3/phone3/fax1, etc',
-              label: {
-                text: 'Contact method',
+              {
+                type: "stringLength",
+                min: 2,
+                message: "Contact method can't be less than 2 characters"
               },
-              isRequired: true,
-              validationRules: [
-                {
-                  type: "required",
-                  message: "Contact method is required"
-                },
-                {
-                  type: "stringLength",
-                  min: 2,
-                  message: "Contact method can't be less than 2 characters"
-                },
-                {
-                  type: "custom",
-                  message: "That contact method exists already",
-                  validationCallback: (e) => {
-                    const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
-                    return !Object.keys(currentContacts).includes(e.value.trim());
-                  }
+              {
+                type: "custom",
+                message: "That contact method exists already",
+                validationCallback: (e) => {
+                  const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+                  return !Object.keys(currentContacts).includes(e.value.trim());
                 }
-              ],
+              }
+            ],
+          },
+          {
+            dataField: "contactValue",
+            editorOptions: {
+              placeholder: 'for example: WeiXin',
             },
-            {
-              dataField: "contactValue",
-              editorOptions: {
-                placeholder: 'for example: WeiXin',
-              },
-              helpText: 'Contact such as name@gmail.com/+15101234567 etc',
-              label: {
-                text: 'Contact content',
-              },
-              isRequired: true,
-              validationRules: [
-                {
-                  type: "required",
-                  message: "Contact content is required"
-                },
-                {
-                  type: "stringLength",
-                  min: 2,
-                  message: "Contact content can't be less than 2 characters"
-                },
-              ],
+            helpText: 'Contact such as name@gmail.com/+15101234567 etc',
+            label: {
+              text: 'Contact content',
             },
-            {
-              itemType: "button",
-              // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
-              buttonOptions: {
-                elementAttr: {
-                  class: 'attendee-form-submits',    // for toggling editing mode
-                },
-                disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Custom Contact",
-                icon: "save",
-                hint: "save Custom Contact in the popup",
-                type: "default",
-                useSubmitBehavior: false,
-                onClick: (clickEvent) => {
-                  if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
-                    const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
-                    const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
-                    const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
+            isRequired: true,
+            validationRules: [
+              {
+                type: "required",
+                message: "Contact content is required"
+              },
+              {
+                type: "stringLength",
+                min: 2,
+                message: "Contact content can't be less than 2 characters"
+              },
+            ],
+          },
+          {
+            itemType: "button",
+            horizontalAlignment: "left",
+            // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-submits',    // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled,
+              text: "Save Custom Contact",
+              icon: "save",
+              hint: "save Custom Contact in the popup",
+              type: "default",
+              useSubmitBehavior: false,
+              onClick: (e) => {
+                if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
+                  const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+                  const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
+                  const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
 
-                    currentContacts[trimmedContact.contactKey]=trimmedContact.contactValue;
-                    newBasicInfoItems = Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container").items.concat({
-                      colSpan: 7,
-                      dataField: "infos.contacts." + trimmedContact.contactKey,
-                      label: {
-                        text: trimmedContact.contactKey,
-                      },
-                    });
+                  currentContacts[trimmedContact.contactKey] = trimmedContact.contactValue;
+                  const newBasicInfoItems = Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container").items.concat({
+                    colSpan: 7,
+                    dataField: "infos.contacts." + trimmedContact.contactKey,
+                    label: {
+                      text: trimmedContact.contactKey,
+                    },
+                  });
 
-                    Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", newBasicInfoItems);
-                    Attendees.datagridUpdate.contactPopup.hide();
+                  Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", newBasicInfoItems);
+                  Attendees.datagridUpdate.contactPopup.hide();
 
-                  // $.ajax({
-                  //   url    : ajaxUrl,
-                  //   data   : JSON.stringify(userData),
-                  //   dataType:'json',
-                  //   contentType: "application/json; charset=utf-8",
-                  //   method : 'PATCH',
-                  //   success: (response) => console.log('599 Success to save data for contact Form in Popup, response: ', response),
-                  //   error  : (response) => console.log('600 Failed to save data for contact Form in Popup, response: ', response),
-                  // });
-                  }
-                },
+                // $.ajax({
+                //   url    : ajaxUrl,
+                //   data   : JSON.stringify(userData),
+                //   dataType:'json',
+                //   contentType: "application/json; charset=utf-8",
+                //   method : 'PATCH',
+                //   success: (response) => console.log('599 Success to save data for contact Form in Popup, response: ', response),
+                //   error  : (response) => console.log('600 Failed to save data for contact Form in Popup, response: ', response),
+                // });
+                }
               },
             },
-
-          ],
-        }).dxForm("instance");
-        e.append(formContainer);
-      },
-    };
+          },
+        ],
+      }).dxForm("instance");
+      e.append(formContainer);
+    },
   },
 
 

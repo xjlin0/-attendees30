@@ -47,10 +47,10 @@ Attendees.utilities = {
   trimBothKeyAndValue: (obj) => {
     return Object.entries(obj).reduce((acc, curr) => {
       const [key, value] = curr;
-      acc[key.trim()] = value.trim();
+      acc[key.trim()] = value.trim();  // acc[key.trim()] = typeof obj[key] == 'string'? obj[key].trim() : trimObj(obj[key]);
       return acc
     }, {});
-  },
+  },  // https://stackoverflow.com/a/33511005/4257237
 
 
   convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
