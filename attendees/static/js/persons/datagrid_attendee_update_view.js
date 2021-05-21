@@ -516,7 +516,7 @@ Attendees.datagridUpdate = {
 
               const userData = new FormData($('form#attendee-update-form')[0]);
               if(!$('input[name="photo"]')[0].value){userData.delete("photo")};
-
+              userData.set('infos', JSON.stringify(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos));
               userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
@@ -1502,6 +1502,7 @@ Attendees.datagridUpdate = {
     onRowPrepared: (e) => {
       if (e.rowType === 'data' && e.data.attendee && e.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
         e.rowElement.css("color", "SeaGreen");
+        e.rowElement.attr('title', "Please scroll up and change main attendee data there!");
       }
     },
     columns:[
