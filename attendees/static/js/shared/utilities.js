@@ -44,6 +44,15 @@ Attendees.utilities = {
       });
   },  // jQuery toggle() from https://supportcenter.devexpress.com/ticket/details/t525231
 
+  trimBothKeyAndValue: (obj) => {
+    return Object.entries(obj).reduce((acc, curr) => {
+      const [key, value] = curr;
+      acc[key.trim()] = value.trim();
+      return acc
+    }, {});
+  },
+
+
   convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
             formData.append(key, object[key]);
             return formData;   // https://stackoverflow.com/a/62936649/4257237

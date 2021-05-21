@@ -45,7 +45,7 @@ Attendees.datagridUpdate = {
   },
 
   toggleEditing: (enabled) => {
-    $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-submits, span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attendingmeet-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
@@ -117,7 +117,7 @@ Attendees.datagridUpdate = {
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
-                 Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", Attendees.datagridUpdate.attendeeFormBasicInfoItemsGenerator());
+                 Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", Attendees.datagridUpdate.attendeeFormBasicInfoItems);
                  Attendees.datagridUpdate.initListeners();
                },
       error  : (response) => {
@@ -130,15 +130,18 @@ Attendees.datagridUpdate = {
   attachContactAddButton: () => {
     $("<span>", {class: "extra-contacts"})
       .dxButton({
+        disabled: !Attendees.utilities.editingEnabled,
+        elementAttr: {
+          class: 'attendee-form-submits',  // for toggling editing mode
+        },
         text:'Add more contact',
         icon:"email",
         type:"normal",
         height: '1.4rem',
         hint: 'add more different contacts such as more phones/emails',
         onClick: ()=> {
-          console.log('hi 139 initializing contactPopup ...');
           Attendees.datagridUpdate.contactPopup = $("div.popup-more-contacts").dxPopup(Attendees.datagridUpdate.contactPopupDxFormConfig()).dxPopup("instance");
-          },
+        },
       })
       .appendTo($("span.dx-form-group-caption")[1]);
   },
@@ -435,151 +438,147 @@ Attendees.datagridUpdate = {
     ]
   },
 
-  attendeeFormBasicInfoItemsGenerator: () => {
-    const items = [
-      {
-        colSpan: 7,
-        dataField: "first_name",
-        editorOptions: {
-          placeholder: "English",
+  attendeeFormBasicInfoItems: [
+    {
+      colSpan: 7,
+      dataField: "first_name",
+      editorOptions: {
+        placeholder: "English",
+      },
+    },
+    {
+      colSpan: 7,
+      dataField: "last_name",
+      editorOptions: {
+        placeholder: "English",
+      },
+    },
+    {
+      colSpan: 7,
+      dataField: "division",
+      editorType: "dxSelectBox",
+      isRequired: true,
+      label: {
+        text: 'Major Division',
+      },
+      editorOptions: {
+        valueExpr: "id",
+        displayExpr: "display_name",
+        placeholder: "Select a value...",
+        dataSource: new DevExpress.data.DataSource({
+          store: new DevExpress.data.CustomStore({
+            key: "id",
+            loadMode: "raw",
+            load: () => {
+              const d = $.Deferred();
+              $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
+                d.resolve(response.data);
+              });
+              return d.promise();
+            }
+          })
+        }),
+      },
+    },
+    {
+      colSpan: 7,
+      dataField: "last_name2",
+    },
+    {
+      colSpan: 7,
+      dataField: "first_name2",
+    },
+    {
+      colSpan: 7,
+      dataField: "gender",
+      editorType: "dxSelectBox",
+      isRequired: true,
+      editorOptions: {
+        dataSource: Attendees.utilities.genderEnums(),
+        valueExpr: "name",
+        displayExpr: "name",
+      },
+      validationRules: [
+        {
+          type: "required",
+          message: "gender is required"
+        },
+      ],
+    },
+    {
+      colSpan: 7,
+      dataField: "actual_birthday",
+      editorType: "dxDateBox",
+      label: {
+        text: 'Real birthday',
+      },
+      editorOptions: {
+        placeholder: "click calendar",
+        elementAttr: {
+          title: 'month, day and year are all required',
         },
       },
-      {
-        colSpan: 7,
-        dataField: "last_name",
-        editorOptions: {
-          placeholder: "English",
+    },
+    {
+      colSpan: 7,
+      dataField: "estimated_birthday",
+      label: {
+        text: 'Guess birthday',
+      },
+      editorType: "dxDateBox",
+      editorOptions: {
+        placeholder: "click calendar",
+        elementAttr: {
+          title: 'pick any day of your best guess year for the age estimation',
         },
       },
-      {
-        colSpan: 7,
-        dataField: "division",
-        editorType: "dxSelectBox",
-        isRequired: true,
-        label: {
-          text: 'Major Division',
-        },
-        editorOptions: {
-          valueExpr: "id",
-          displayExpr: "display_name",
-          placeholder: "Select a value...",
-          dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-              key: "id",
-              loadMode: "raw",
-              load: () => {
-                const d = $.Deferred();
-                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
-                  d.resolve(response.data);
-                });
-                return d.promise();
-              }
-            })
-          }),
-        },
+    },
+    {
+      colSpan: 7,
+      dataField: "deathday",
+      editorType: "dxDateBox",
+      editorOptions: {
+        placeholder: "click calendar",
       },
-      {
-        colSpan: 7,
-        dataField: "last_name2",
+    },
+    {
+      colSpan: 7,
+      dataField: "infos.contacts.phone1",
+      label: {
+        text: 'phone1',
       },
-      {
-        colSpan: 7,
-        dataField: "first_name2",
+      // editorOptions: {mask: "+1 (X00) 000-0000",}
+    },
+    {
+      colSpan: 7,
+      dataField: "infos.contacts.phone2",
+      label: {
+        text: 'phone2',
       },
-      {
-        colSpan: 7,
-        dataField: "gender",
-        editorType: "dxSelectBox",
-        isRequired: true,
-        editorOptions: {
-          dataSource: Attendees.utilities.genderEnums(),
-          valueExpr: "name",
-          displayExpr: "name",
-        },
-        validationRules: [
-          {
-            type: "required",
-            message: "gender is required"
-          },
-        ],
+      // editorOptions: {mask: "+1 (X00) 000-0000",}
+    },
+    {
+      colSpan: 7,
+      dataField: "infos.contacts.nick_name",
+      label: {
+        text: 'nick name',
       },
-      {
-        colSpan: 7,
-        dataField: "actual_birthday",
-        editorType: "dxDateBox",
-        label: {
-          text: 'Real birthday',
-        },
-        editorOptions: {
-          placeholder: "click calendar",
-          elementAttr: {
-            title: 'month, day and year are all required',
-          },
-        },
+    },
+    {
+      colSpan: 7,
+      dataField: "infos.contacts.email1",
+      label: {
+        text: 'email1',
       },
-      {
-        colSpan: 7,
-        dataField: "estimated_birthday",
-        label: {
-          text: 'Guess birthday',
-        },
-        editorType: "dxDateBox",
-        editorOptions: {
-          placeholder: "click calendar",
-          elementAttr: {
-            title: 'pick any day of your best guess year for the age estimation',
-          },
-        },
+    },
+    {
+      colSpan: 7,
+      dataField: "infos.contacts.email2",
+      label: {
+        text: 'email2',
       },
-      {
-        colSpan: 7,
-        dataField: "deathday",
-        editorType: "dxDateBox",
-        editorOptions: {
-          placeholder: "click calendar",
-        },
-      },
-      {
-        colSpan: 7,
-        dataField: "infos.contacts.phone1",
-        label: {
-          text: 'phone1',
-        },
-        // editorOptions: {mask: "+1 (X00) 000-0000",}
-      },
-      {
-        colSpan: 7,
-        dataField: "infos.contacts.phone2",
-        label: {
-          text: 'phone2',
-        },
-        // editorOptions: {mask: "+1 (X00) 000-0000",}
-      },
-      {
-        colSpan: 7,
-        dataField: "infos.contacts.nick_name",
-        label: {
-          text: 'nick name',
-        },
-      },
-      {
-        colSpan: 7,
-        dataField: "infos.contacts.email1",
-        label: {
-          text: 'email1',
-        },
-      },
-      {
-        colSpan: 7,
-        dataField: "infos.contacts.email2",
-        label: {
-          text: 'email2',
-        },
-      },
-    ];
-    //Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts['email3']="hello world"
-    return items;
-  },
+    },
+  ],
 
   contactPopupDxFormConfig: () => {
     return {
@@ -596,8 +595,9 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="contact-form">');
         Attendees.datagridUpdate.contactPopupDxForm = formContainer.dxForm({
-          // disable: !Attendees.utilities.editingEnabled,
+          // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
           // formData: Attendees.datagridUpdate.placeDefaults,
+          // onFieldDataChanged: (e) => {e.component.validate()},
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: "*",
@@ -607,39 +607,87 @@ Attendees.datagridUpdate = {
           items: [
             {
               dataField: "contactKey",
+              editorOptions: {
+                placeholder: 'for example: WeChat1',
+              },
+              helpText: 'Any contact such as email3/phone3/fax1, etc',
+              label: {
+                text: 'Contact method',
+              },
               isRequired: true,
               validationRules: [
                 {
                   type: "required",
-                  message: "required"
+                  message: "Contact method is required"
                 },
+                {
+                  type: "stringLength",
+                  min: 2,
+                  message: "Contact method can't be less than 2 characters"
+                },
+                {
+                  type: "custom",
+                  message: "That contact method exists already",
+                  validationCallback: (e) => {
+                    const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+                    return !Object.keys(currentContacts).includes(e.value.trim());
+                  }
+                }
               ],
             },
             {
               dataField: "contactValue",
+              editorOptions: {
+                placeholder: 'for example: WeiXin',
+              },
+              helpText: 'Contact such as name@gmail.com/+15101234567 etc',
+              label: {
+                text: 'Contact content',
+              },
               isRequired: true,
               validationRules: [
                 {
                   type: "required",
-                  message: "required"
+                  message: "Contact content is required"
+                },
+                {
+                  type: "stringLength",
+                  min: 2,
+                  message: "Contact content can't be less than 2 characters"
                 },
               ],
             },
             {
               itemType: "button",
+              // disable: !(Attendees.datagridUpdate.contactPopupDxForm && Attendees.datagridUpdate.contactPopupDxForm.validate().isValid),
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
-                // disabled: !Attendees.utilities.editingEnabled,
+                disabled: !Attendees.utilities.editingEnabled,
                 text: "Save Custom Contact",
                 icon: "save",
                 hint: "save Custom Contact in the popup",
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  const userData = {contact: 'hi 641'};
-                  console.log("hi 642");
+                  if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
+                    const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+                    const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
+                    const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
+
+                    currentContacts[trimmedContact.contactKey]=trimmedContact.contactValue;
+                    newBasicInfoItems = Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container").items.concat({
+                      colSpan: 7,
+                      dataField: "infos.contacts." + trimmedContact.contactKey,
+                      label: {
+                        text: trimmedContact.contactKey,
+                      },
+                    });
+
+                    Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", newBasicInfoItems);
+                    Attendees.datagridUpdate.contactPopup.hide();
+
                   // $.ajax({
                   //   url    : ajaxUrl,
                   //   data   : JSON.stringify(userData),
@@ -649,6 +697,7 @@ Attendees.datagridUpdate = {
                   //   success: (response) => console.log('599 Success to save data for contact Form in Popup, response: ', response),
                   //   error  : (response) => console.log('600 Failed to save data for contact Form in Popup, response: ', response),
                   // });
+                  }
                 },
               },
             },
