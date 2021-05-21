@@ -197,25 +197,28 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 20,
-        colCount: 20,
+        colCount: 21,
         itemType: "group",
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [
-          {
-            colSpan: 7,
-//            caption: "colSpan: 7",
-            itemType: "group",
-            items: [
+//           {
+//             colSpan: 7,
+// //            caption: "colSpan: 7",
+//             itemType: "group",
+//             items: [
               {
+                colSpan: 7,
                 dataField: "first_name",
                 editorOptions: {
                   placeholder: "English",
                 },
               },
               {
+                colSpan: 7,
                 dataField: "last_name2",
               },
               {
+                colSpan: 7,
                 dataField: "actual_birthday",
                 editorType: "dxDateBox",
                 editorOptions: {
@@ -226,6 +229,7 @@ Attendees.datagridUpdate = {
                 },
               },
               {
+                colSpan: 7,
                 dataField: "infos.contacts.phone1",
                 label: {
                   text: 'phone1',
@@ -233,28 +237,32 @@ Attendees.datagridUpdate = {
                 // editorOptions: {mask: "+1 (X00) 000-0000",}
               },
               {
+                colSpan: 7,
                 dataField: "infos.contacts.email1",
                 label: {
                   text: 'email1',
                 },
               },
-            ],
-          },
-          {
-            colSpan: 7,
-//            caption: "colSpan: 6",
-            itemType: "group",
-            items: [
+//             ],
+//           },
+//           {
+//             colSpan: 7,
+// //            caption: "colSpan: 6",
+//             itemType: "group",
+//             items: [
               {
+                colSpan: 7,
                 dataField: "last_name",
                 editorOptions: {
                   placeholder: "English",
                 },
               },
               {
+                colSpan: 7,
                 dataField: "first_name2",
               },
               {
+                colSpan: 7,
                 dataField: "estimated_birthday",
                 editorType: "dxDateBox",
                 editorOptions: {
@@ -265,6 +273,7 @@ Attendees.datagridUpdate = {
                 },
               },
               {
+                colSpan: 7,
                 dataField: "infos.contacts.phone2",
                 label: {
                   text: 'phone2',
@@ -272,18 +281,20 @@ Attendees.datagridUpdate = {
                 // editorOptions: {mask: "+1 (X00) 000-0000",}
               },
               {
+                colSpan: 7,
                 dataField: "infos.contacts.email2",
                 label: {
                   text: 'email2',
                 },
               },
-            ],
-          },
-          {
-            colSpan: 6,
-            itemType: "group",
-            items: [
+          //   ],
+          // },
+          // {
+          //   colSpan: 6,
+          //   itemType: "group",
+          //   items: [
               {
+                colSpan: 7,
                 dataField: "division",
                 editorType: "dxSelectBox",
                 isRequired: true,
@@ -310,6 +321,7 @@ Attendees.datagridUpdate = {
                 },
               },
               {
+                colSpan: 7,
                 dataField: "gender",
                 editorType: "dxSelectBox",
                 isRequired: true,
@@ -326,6 +338,7 @@ Attendees.datagridUpdate = {
                 ],
               },
               {
+                colSpan: 7,
                 dataField: "deathday",
                 editorType: "dxDateBox",
                 editorOptions: {
@@ -333,13 +346,14 @@ Attendees.datagridUpdate = {
                 },
               },
               {
+                colSpan: 7,
                 dataField: "infos.contacts.nick_name",
                 label: {
                   text: 'nick name',
                 },
               },
-            ],
-          },
+          //   ],
+          // },
         ],
       },
       {
