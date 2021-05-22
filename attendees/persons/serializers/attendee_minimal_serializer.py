@@ -37,9 +37,8 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
 
         instance = Attendee.objects.get(pk=attendee_id)
         if instance:
-            old_photo = instance.photo
-
             if deleting_photo or validated_data.get('photo', None):
+                old_photo = instance.photo
                 if old_photo:
                     old_file = Path(old_photo.path)
                     old_file.unlink(missing_ok=True)
@@ -63,9 +62,8 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         deleting_photo = self._kwargs['data'].get('photo-clear', None)
 
         if instance:
-            old_photo = instance.photo
-
             if deleting_photo or validated_data.get('photo', None):
+                old_photo = instance.photo
                 if old_photo:
                     old_file = Path(old_photo.path)
                     old_file.unlink(missing_ok=True)

@@ -1,7 +1,7 @@
 Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
   attendeeAttrs: null,  // will be assigned later
-  attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
+  attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
   attendeePhotoFileUploader: null,
   attendingmeetPopupDxForm: null,  // for getting formData
@@ -13,7 +13,7 @@ Attendees.datagridUpdate = {
     start: new Date(),
     finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
   },
-  addressId: null, // for sending address data by AJAX
+  addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
   placePopupDxForm: null,  // for getting formData
   placePopupDxFormData: {},  // for storing formData
@@ -114,7 +114,7 @@ Attendees.datagridUpdate = {
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
-                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{}};
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{contacts:{}}};
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
@@ -437,38 +437,38 @@ Attendees.datagridUpdate = {
     ]
   },
 
-  populateBasicInfoBlock: () => {
-    basicInfoItems = [
+  populateBasicInfoBlock: (allContacts=Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts) => {
+    const basicInfoItems = [
       {
         colSpan: 7,
-        dataField: "first_name",
+        dataField: 'first_name',
         editorOptions: {
-          placeholder: "English",
+          placeholder: 'English',
         },
       },
       {
         colSpan: 7,
-        dataField: "last_name",
+        dataField: 'last_name',
         editorOptions: {
-          placeholder: "English",
+          placeholder: 'English',
         },
       },
       {
         colSpan: 7,
-        dataField: "division",
-        editorType: "dxSelectBox",
+        dataField: 'division',
+        editorType: 'dxSelectBox',
         isRequired: true,
         label: {
           text: 'Major Division',
         },
         editorOptions: {
-          valueExpr: "id",
-          displayExpr: "display_name",
-          placeholder: "Select a value...",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
+          placeholder: 'Select a value...',
           dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
-              key: "id",
-              loadMode: "raw",
+              key: 'id',
+              loadMode: 'raw',
               load: () => {
                 const d = $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
@@ -482,38 +482,38 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: "last_name2",
+        dataField: 'last_name2',
       },
       {
         colSpan: 7,
-        dataField: "first_name2",
+        dataField: 'first_name2',
       },
       {
         colSpan: 7,
-        dataField: "gender",
-        editorType: "dxSelectBox",
+        dataField: 'gender',
+        editorType: 'dxSelectBox',
         isRequired: true,
         editorOptions: {
           dataSource: Attendees.utilities.genderEnums(),
-          valueExpr: "name",
-          displayExpr: "name",
+          valueExpr: 'name',
+          displayExpr: 'name',
         },
         validationRules: [
           {
-            type: "required",
-            message: "gender is required"
+            type: 'required',
+            message: 'gender is required'
           },
         ],
       },
       {
         colSpan: 7,
-        dataField: "actual_birthday",
-        editorType: "dxDateBox",
+        dataField: 'actual_birthday',
+        editorType: 'dxDateBox',
         label: {
           text: 'Real birthday',
         },
         editorOptions: {
-          placeholder: "click calendar",
+          placeholder: 'click calendar',
           elementAttr: {
             title: 'month, day and year are all required',
           },
@@ -521,13 +521,13 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: "estimated_birthday",
+        dataField: 'estimated_birthday',
         label: {
           text: 'Guess birthday',
         },
-        editorType: "dxDateBox",
+        editorType: 'dxDateBox',
         editorOptions: {
-          placeholder: "click calendar",
+          placeholder: 'click calendar',
           elementAttr: {
             title: 'pick any day of your best guess year for the age estimation',
           },
@@ -535,15 +535,15 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: "deathday",
-        editorType: "dxDateBox",
+        dataField: 'deathday',
+        editorType: 'dxDateBox',
         editorOptions: {
-          placeholder: "click calendar",
+          placeholder: 'click calendar',
         },
       },
       {
         colSpan: 7,
-        dataField: "infos.contacts.phone1",
+        dataField: 'infos.contacts.phone1',
         label: {
           text: 'phone1',
         },
@@ -551,7 +551,7 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: "infos.contacts.phone2",
+        dataField: 'infos.contacts.phone2',
         label: {
           text: 'phone2',
         },
@@ -559,41 +559,39 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: "infos.contacts.nick_name",
+        dataField: 'infos.contacts.nick_name',
         label: {
           text: 'nick name',
         },
       },
       {
         colSpan: 7,
-        dataField: "infos.contacts.email1",
+        dataField: 'infos.contacts.email1',
         label: {
           text: 'email1',
         },
       },
       {
         colSpan: 7,
-        dataField: "infos.contacts.email2",
+        dataField: 'infos.contacts.email2',
         label: {
           text: 'email2',
         },
       },
     ];
 
-    const allContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
-
     for (const contactKey in allContacts) {
-      if(!(contactKey in Attendees.utilities.basicContacts)){
+      if(allContacts.hasOwnProperty(contactKey) && !(contactKey in Attendees.utilities.basicContacts)){
         basicInfoItems.push({
           colSpan: 7,
-          dataField: "infos.contacts." + contactKey,
+          dataField: 'infos.contacts.' + contactKey,
           label: {
             text: contactKey,
           },
         });
       }
     }
-    Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", basicInfoItems);
+    Attendees.datagridUpdate.attendeeMainDxForm.itemOption('basic-info-container', 'items', basicInfoItems);
   },
 
   contactPopupDxFormConfig: {
@@ -688,30 +686,47 @@ Attendees.datagridUpdate = {
               useSubmitBehavior: false,
               onClick: (e) => {
                 if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
-                  const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+                  const currentInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos;
                   const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
                   const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
-
-                  currentContacts[trimmedContact.contactKey] = trimmedContact.contactValue;
-                  const newBasicInfoItems = Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container").items.concat({
-                    colSpan: 7,
-                    dataField: "infos.contacts." + trimmedContact.contactKey,
-                    label: {
-                      text: trimmedContact.contactKey,
-                    },
-                  });
-
-                  Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", newBasicInfoItems);
-                  Attendees.datagridUpdate.contactPopup.hide();
+                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValue(currentInfos.contacts);  // emove emptied values
+                  currentInfos.contacts[trimmedContact.contactKey] = trimmedContact.contactValue;
 
                 $.ajax({
                   url    : Attendees.datagridUpdate.attendeeAjaxUrl,
-                  data   : JSON.stringify({infos: Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos}),
+                  data   : JSON.stringify({infos: currentInfos}),
                   dataType:'json',
-                  contentType: "application/json; charset=utf-8",
+                  contentType: 'application/json; charset=utf-8',
                   method : 'PATCH',
-                  success: (response) => console.log('712 Success to save data for contact Form in Popup, response: ', response),
-                  error  : (response) => console.log('713 Failed to save data for contact Form in Popup, response: ', response),
+                  success: (response) => {
+                    console.log('Success to save data for custom contact in Popup, response: ', response);
+                    Attendees.datagridUpdate.populateBasicInfoBlock(response.infos.contacts);
+                    Attendees.datagridUpdate.contactPopup.hide();
+                    DevExpress.ui.notify(
+                      {
+                        message: "saving custom contact success",
+                        width: 500,
+                        position: {
+                          my: 'center',
+                          at: 'center',
+                          of: window,
+                        }
+                      }, "success", 2500);
+                  },
+                  error  : (response) => {
+                    console.log('Failed to save data for custom contact in Popup, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
+                    Attendees.datagridUpdate.contactPopup.hide();
+                    DevExpress.ui.notify(
+                      {
+                        message: "saving custom contact error",
+                        width: 500,
+                        position: {
+                          my: 'center',
+                          at: 'center',
+                          of: window,
+                        }
+                      }, "error", 5000);
+                    },
                 });
                 }
               },
