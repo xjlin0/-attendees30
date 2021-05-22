@@ -1,7 +1,7 @@
 Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
   attendeeAttrs: null,  // will be assigned later
-  attendeeId: null,  // the attendee is being edited, since it maybe admin/parent editing another attendee
+  attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
   attendeePhotoFileUploader: null,
   attendingmeetPopupDxForm: null,  // for getting formData
@@ -13,7 +13,7 @@ Attendees.datagridUpdate = {
     start: new Date(),
     finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
   },
-  addressId: null, // for sending address data by AJAX
+  addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
   placePopupDxForm: null,  // for getting formData
   placePopupDxFormData: {},  // for storing formData
@@ -40,11 +40,13 @@ Attendees.datagridUpdate = {
     $("div.form-container").on("click", "button.attendingmeet-button",  e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
     $("div.form-container").on("click", "button.attendee-place-button",  e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
     $("div.form-container").on("click", "button.family-button",  e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
+    Attendees.datagridUpdate.attachContactAddButton();
     // add listeners for Family, counselling, etc.
   },
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attendingmeet-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
@@ -112,10 +114,11 @@ Attendees.datagridUpdate = {
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
-                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{contacts:{}}};
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                 Attendees.datagridUpdate.populateBasicInfoBlock();
                  Attendees.datagridUpdate.initListeners();
                },
       error  : (response) => {
@@ -123,6 +126,25 @@ Attendees.datagridUpdate = {
                },
     });
 
+  },
+
+  attachContactAddButton: () => {
+    $('<span>', {class: 'extra-contacts', css: {'margin-left': '1rem'}})
+      .dxButton({
+        disabled: !Attendees.utilities.editingEnabled,
+        elementAttr: {
+          class: 'attendee-form-submits',  // for toggling editing mode
+        },
+        text:'Add more contact',
+        icon:'email',  // or 'fas fa-comment-dots'
+        stylingMode: 'outlined',
+        type: "success",
+        height: '1.4rem',
+        hint: 'add more different contacts such as more phones/emails',
+        onClick: () => {
+          Attendees.datagridUpdate.contactPopup = $('div.popup-more-contacts').dxPopup(Attendees.datagridUpdate.contactPopupDxFormConfig).dxPopup('instance');
+        },
+      }).appendTo($('span.dx-form-group-caption')[1]);  // basic info block is at index 1
   },
 
   attendeeFormConfigs: {
@@ -197,150 +219,11 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 20,
-        colCount: 20,
+        colCount: 21,
         itemType: "group",
+        name: "basic-info-container",
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
-        items: [
-          {
-            colSpan: 7,
-//            caption: "colSpan: 7",
-            itemType: "group",
-            items: [
-              {
-                dataField: "first_name",
-                editorOptions: {
-                  placeholder: "English",
-                },
-              },
-              {
-                dataField: "last_name2",
-              },
-              {
-                dataField: "actual_birthday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                  elementAttr: {
-                    title: 'month, day and year are all required',
-                  },
-                },
-              },
-              {
-                dataField: "infos.contacts.phone1",
-                label: {
-                  text: 'phone1',
-                },
-                // editorOptions: {mask: "+1 (X00) 000-0000",}
-              },
-              {
-                dataField: "infos.contacts.email1",
-                label: {
-                  text: 'email1',
-                },
-              },
-            ],
-          },
-          {
-            colSpan: 7,
-//            caption: "colSpan: 6",
-            itemType: "group",
-            items: [
-              {
-                dataField: "last_name",
-                editorOptions: {
-                  placeholder: "English",
-                },
-              },
-              {
-                dataField: "first_name2",
-              },
-              {
-                dataField: "estimated_birthday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                  elementAttr: {
-                    title: 'pick any day of your best guess year for the age estimation',
-                  },
-                },
-              },
-              {
-                dataField: "infos.contacts.phone2",
-                label: {
-                  text: 'phone2',
-                },
-                // editorOptions: {mask: "+1 (X00) 000-0000",}
-              },
-              {
-                dataField: "infos.contacts.email2",
-                label: {
-                  text: 'email2',
-                },
-              },
-            ],
-          },
-          {
-            colSpan: 6,
-            itemType: "group",
-            items: [
-              {
-                dataField: "division",
-                editorType: "dxSelectBox",
-                isRequired: true,
-                label: {
-                  text: 'Major Division',
-                },
-                editorOptions: {
-                  valueExpr: "id",
-                  displayExpr: "display_name",
-                  placeholder: "Select a value...",
-                  dataSource: new DevExpress.data.DataSource({
-                    store: new DevExpress.data.CustomStore({
-                      key: "id",
-                      loadMode: "raw",
-                      load: () => {
-                        const d = $.Deferred();
-                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
-                          d.resolve(response.data);
-                        });
-                        return d.promise();
-                      }
-                    })
-                  }),
-                },
-              },
-              {
-                dataField: "gender",
-                editorType: "dxSelectBox",
-                isRequired: true,
-                editorOptions: {
-                  dataSource: Attendees.utilities.genderEnums(),
-                  valueExpr: "name",
-                  displayExpr: "name",
-                },
-                validationRules: [
-                  {
-                    type: "required",
-                    message: "gender is required"
-                  },
-                ],
-              },
-              {
-                dataField: "deathday",
-                editorType: "dxDateBox",
-                editorOptions: {
-                  placeholder: "click calendar",
-                },
-              },
-              {
-                dataField: "infos.contacts.nick_name",
-                label: {
-                  text: 'nick name',
-                },
-              },
-            ],
-          },
-        ],
+        items: [],  // will populate later for dynamic contacts
       },
       {
         colSpan: 24,
@@ -515,9 +398,11 @@ Attendees.datagridUpdate = {
             if (confirm("Are you sure?")){
 
               const userData = new FormData($('form#attendee-update-form')[0]);
-              if(!$('input[name="photo"]')[0].value){userData.delete("photo")};
-
-              userData._method = userData.id ? 'PUT' : 'POST';
+              if(!$('input[name="photo"]')[0].value){userData.delete('photo')}
+              const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
+              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValue(userInfos.contacts);  // remove emptied contacts
+              userData.set('infos', JSON.stringify(userInfos));
+              // userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
                 url    : Attendees.datagridUpdate.attendeeAjaxUrl,
@@ -525,7 +410,7 @@ Attendees.datagridUpdate = {
                 processData: false,
                 dataType: 'json',
                 data   : userData,
-                method : 'POST',
+                method : Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
                            console.log("success here is response: ", response);
                            const parser = new URL(window.location);
@@ -552,6 +437,301 @@ Attendees.datagridUpdate = {
         },
       },
     ]
+  },
+
+  populateBasicInfoBlock: (allContacts=Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts) => {
+    const basicInfoItems = [
+      {
+        colSpan: 7,
+        dataField: 'first_name',
+        editorOptions: {
+          placeholder: 'English',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'last_name',
+        editorOptions: {
+          placeholder: 'English',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'division',
+        editorType: 'dxSelectBox',
+        isRequired: true,
+        label: {
+          text: 'Major Division',
+        },
+        editorOptions: {
+          valueExpr: 'id',
+          displayExpr: 'display_name',
+          placeholder: 'Select a value...',
+          dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: () => {
+                const d = $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
+                  d.resolve(response.data);
+                });
+                return d.promise();
+              }
+            })
+          }),
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'last_name2',
+      },
+      {
+        colSpan: 7,
+        dataField: 'first_name2',
+      },
+      {
+        colSpan: 7,
+        dataField: 'gender',
+        editorType: 'dxSelectBox',
+        isRequired: true,
+        editorOptions: {
+          dataSource: Attendees.utilities.genderEnums(),
+          valueExpr: 'name',
+          displayExpr: 'name',
+        },
+        validationRules: [
+          {
+            type: 'required',
+            message: 'gender is required'
+          },
+        ],
+      },
+      {
+        colSpan: 7,
+        dataField: 'actual_birthday',
+        editorType: 'dxDateBox',
+        label: {
+          text: 'Real birthday',
+        },
+        editorOptions: {
+          placeholder: 'click calendar',
+          elementAttr: {
+            title: 'month, day and year are all required',
+          },
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'estimated_birthday',
+        label: {
+          text: 'Guess birthday',
+        },
+        editorType: 'dxDateBox',
+        editorOptions: {
+          placeholder: 'click calendar',
+          elementAttr: {
+            title: 'pick any day of your best guess year for the age estimation',
+          },
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'deathday',
+        editorType: 'dxDateBox',
+        editorOptions: {
+          placeholder: 'click calendar',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.contacts.phone1',
+        label: {
+          text: 'phone1',
+        },
+        // editorOptions: {mask: "+1 (X00) 000-0000",}
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.contacts.phone2',
+        label: {
+          text: 'phone2',
+        },
+        // editorOptions: {mask: "+1 (X00) 000-0000",}
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.contacts.nick_name',
+        label: {
+          text: 'nick name',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.contacts.email1',
+        label: {
+          text: 'email1',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.contacts.email2',
+        label: {
+          text: 'email2',
+        },
+      },
+    ];
+
+    for (const contactKey in allContacts) {
+      if(allContacts.hasOwnProperty(contactKey) && !(contactKey in Attendees.utilities.basicContacts)){
+        basicInfoItems.push({
+          colSpan: 7,
+          dataField: 'infos.contacts.' + contactKey,
+          label: {
+            text: contactKey,
+          },
+        });
+      }
+    }
+    Attendees.datagridUpdate.attendeeMainDxForm.itemOption('basic-info-container', 'items', basicInfoItems);
+  },
+
+  contactPopupDxFormConfig: {
+    maxWidth: '50%',
+    maxHeight: '50%',
+    visible: true,
+    title: 'Add Contact',
+    position: {
+      my: 'center',
+      at: 'center',
+      of: window,
+    },
+    dragEnabled: true,
+    contentTemplate: (e) => {
+      const formContainer = $('<div class="contact-form">');
+      Attendees.datagridUpdate.contactPopupDxForm = formContainer.dxForm({
+        scrollingEnabled: true,
+        showColonAfterLabel: false,
+        requiredMark: '*',
+        showValidationSummary: true,
+        items: [
+          {
+            dataField: 'contactKey',
+            editorOptions: {
+              placeholder: 'for example: WeChat1',
+            },
+            helpText: 'Any contact such as email3/phone3/fax1, etc',
+            label: {
+              text: 'Contact method',
+            },
+            isRequired: true,
+            validationRules: [
+              {
+                type: 'required',
+                message: 'Contact method is required'
+              },
+              {
+                type: 'stringLength',
+                min: 2,
+                message: "Contact method can't be less than 2 characters"
+              },
+              {
+                type: 'custom',
+                message: 'That contact method exists already',
+                validationCallback: (e) => {
+                  const currentContacts = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts;
+                  return !Object.keys(currentContacts).includes(e.value.trim());
+                }
+              }
+            ],
+          },
+          {
+            dataField: 'contactValue',
+            editorOptions: {
+              placeholder: 'for example: WeiXin',
+            },
+            helpText: 'Contact such as name@email.com/+15101234567 etc',
+            label: {
+              text: 'Contact content',
+            },
+            isRequired: true,
+            validationRules: [
+              {
+                type: 'required',
+                message: 'Contact content is required'
+              },
+              {
+                type: 'stringLength',
+                min: 2,
+                message: "Contact content can't be less than 2 characters"
+              },
+            ],
+          },
+          {
+            itemType: 'button',
+            horizontalAlignment: 'left',
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-submits',    // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled,
+              text: 'Save Custom Contact',
+              icon: 'save',
+              hint: "save Custom Contact in the popup",
+              type: 'default',
+              useSubmitBehavior: false,
+              onClick: (e) => {
+                if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
+                  const currentInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos;
+                  const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
+                  const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
+                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValue(currentInfos.contacts);  // remove emptied contacts
+                  currentInfos.contacts[trimmedContact.contactKey] = trimmedContact.contactValue;
+
+                $.ajax({
+                  url    : Attendees.datagridUpdate.attendeeAjaxUrl,
+                  data   : JSON.stringify({infos: currentInfos}),
+                  dataType:'json',
+                  contentType: 'application/json; charset=utf-8',
+                  method : 'PATCH',
+                  success: (response) => {
+                    Attendees.datagridUpdate.contactPopupDxForm.resetValues();
+                    Attendees.datagridUpdate.populateBasicInfoBlock(response.infos.contacts);
+                    Attendees.datagridUpdate.contactPopup.hide();
+                    DevExpress.ui.notify(
+                      {
+                        message: "saving custom contact success",
+                        width: 500,
+                        position: {
+                          my: 'center',
+                          at: 'center',
+                          of: window,
+                        }
+                      }, 'success', 2500);
+                  },
+                  error  : (response) => {
+                    console.log('Failed to save data for custom contact in Popup, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
+                    Attendees.datagridUpdate.contactPopup.hide();
+                    DevExpress.ui.notify(
+                      {
+                        message: "saving custom contact error",
+                        width: 500,
+                        position: {
+                          my: 'center',
+                          at: 'center',
+                          of: window,
+                        }
+                      }, 'error', 5000);
+                    },
+                });
+                }
+              },
+            },
+          },
+        ],
+      }).dxForm("instance");
+      e.append(formContainer);
+    },
   },
 
 
@@ -820,7 +1000,6 @@ Attendees.datagridUpdate = {
 
   initPlacePopupDxForm: (event) => {
     const placeButton = event.target;
-    console.log("hi 787 here is placeButton: ", placeButton);
     Attendees.datagridUpdate.placePopup = $('div.popup-place-update').dxPopup(Attendees.datagridUpdate.locatePopupDxFormConfig(placeButton)).dxPopup('instance');
     Attendees.datagridUpdate.fetchLocateFormData(placeButton);
   },
@@ -1502,6 +1681,7 @@ Attendees.datagridUpdate = {
     onRowPrepared: (e) => {
       if (e.rowType === 'data' && e.data.attendee && e.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
         e.rowElement.css("color", "SeaGreen");
+        e.rowElement.attr('title', "Please scroll up and change main attendee data there!");
       }
     },
     columns:[

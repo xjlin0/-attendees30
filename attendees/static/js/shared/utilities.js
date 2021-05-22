@@ -44,6 +44,18 @@ Attendees.utilities = {
       });
   },  // jQuery toggle() from https://supportcenter.devexpress.com/ticket/details/t525231
 
+  trimBothKeyAndValue: (obj, keepEmpties=false) => {
+    return Object.entries(obj).reduce((acc, curr) => {
+      const [key, value] = curr;
+      const trimmedValue = value.trim();
+
+      if(keepEmpties || trimmedValue) {  // Will retain a single empty string as the only one empty key
+        acc[key.trim()] = trimmedValue;  // acc[key.trim()] = typeof obj[key] == 'string'? obj[key].trim() : trimObj(obj[key]);
+      }
+      return acc;
+    }, {});
+  },  // https://stackoverflow.com/a/33511005/4257237
+
   convertObjectToFormData: object => Object.keys(object).reduce((formData, key) => {
             formData.append(key, object[key]);
             return formData;   // https://stackoverflow.com/a/62936649/4257237
@@ -111,7 +123,14 @@ Attendees.utilities = {
       {name: 'UNSPECIFIED'},
     ];
   },
-}
+
+  basicContacts: {
+    phone1: null,
+    phone2: null,
+    email1: null,
+    email2: null,
+  },
+};
 
 $(document).ready(() => {
   Attendees.utilities.init();

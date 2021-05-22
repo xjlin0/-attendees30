@@ -63,7 +63,7 @@ router.register(
     basename='attending',
 )
 router.register(
-    'api/datagrid_data_attendee/(?P<attendee_id>.+)',
+    'api/datagrid_data_attendee',
     api_datagrid_data_attendee_viewset,
     basename='attendee',
 )

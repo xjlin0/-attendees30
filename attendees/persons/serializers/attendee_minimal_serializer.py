@@ -37,9 +37,8 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
 
         instance = Attendee.objects.get(pk=attendee_id)
         if instance:
-            old_photo = instance.photo
-
             if deleting_photo or validated_data.get('photo', None):
+                old_photo = instance.photo
                 if old_photo:
                     old_file = Path(old_photo.path)
                     old_file.unlink(missing_ok=True)
@@ -51,7 +50,6 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
                 defaults=validated_data,
             )
 
-
             return obj
         else:
             return None
@@ -61,8 +59,21 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         Update and return an existing `AttendingMeet` instance, given the validated data.
 
         """
-        print("hi AttendeeMinimalSerializer.update() 47 here is validated_data: ")
-        print(validated_data)
-        instance.save()
-        return instance
+        deleting_photo = self._kwargs['data'].get('photo-clear', None)
+
+        if instance:
+            if deleting_photo or validated_data.get('photo', None):
+                old_photo = instance.photo
+                if old_photo:
+                    old_file = Path(old_photo.path)
+                    old_file.unlink(missing_ok=True)
+                if deleting_photo:
+                    validated_data['photo'] = None
+
+            obj, created = Attendee.objects.update_or_create(
+                id=instance.id,
+                defaults=validated_data,
+            )
+
+        return obj
 
