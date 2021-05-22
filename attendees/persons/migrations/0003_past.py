@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
                 ('object_id', models.CharField(max_length=36)),
                 ('category', models.ForeignKey(help_text="subtype: for education it's primary/high/college sub-types etc", on_delete=models.SET(0), to='persons.Category')),
-                ('type', models.CharField(default='generic', help_text='main type: education/job/faith, etc', max_length=25)),
+                ('type', models.CharField(default='generic', help_text='main type: education/job/faith, etc', db_index=True, max_length=25)),
                 ('display_order', models.SmallIntegerField(db_index=True, default=30000)),
                 ('start', models.DateTimeField(blank=True, default=attendees.persons.models.utility.Utility.now_with_timezone, null=True)),
                 ('finish', models.DateTimeField(blank=True, null=True)),
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'persons_pasts',
-                'ordering': ('display_order',),
+                'ordering': ('type', 'display_order',),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),

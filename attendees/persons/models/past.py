@@ -15,14 +15,14 @@ class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     start = models.DateTimeField(null=True, blank=True, default=Utility.now_with_timezone)
     finish = models.DateTimeField(null=True, blank=True)
     category = models.ForeignKey('persons.Category', null=False, blank=False, on_delete=models.SET(0), help_text="subtype: for education it's primary/high/college sub-types etc")
-    type = models.CharField(max_length=25, default='generic', blank=False, null=False, help_text='main type: education/job/faith, etc')
+    type = models.CharField(max_length=25, default='generic', blank=False, null=False, db_index=True, help_text='main type: education/job/faith, etc')
     display_order = models.SmallIntegerField(default=30000, blank=False, null=False, db_index=True)
     display_name = models.CharField(max_length=50, blank=True, null=True)
     infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data')  # compare to NoteAdmin
 
     class Meta:
         db_table = 'persons_pasts'
-        ordering = ('display_order',)
+        ordering = ('type', 'display_order',)
         indexes = [
             GinIndex(fields=['infos'], name='past_infos_gin', ),
         ]
