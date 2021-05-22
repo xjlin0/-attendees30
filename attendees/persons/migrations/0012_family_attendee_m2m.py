@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'persons_family_attendees',
-                'ordering': ('display_order', '-modified'),
+                'ordering': ('display_order',),
             },
         ),
         migrations.AddField(
