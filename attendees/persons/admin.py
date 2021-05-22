@@ -34,8 +34,16 @@ class FamilyAttendeeInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    prepopulated_fields = {"slug": ("display_name",)}
+    prepopulated_fields = {"slug": ("type", "display_name")}
     list_display = ('id', 'type', 'display_name', 'slug', 'display_order', 'description')
+
+
+class PastAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+    readonly_fields = ['id', 'created', 'modified']
+    list_display = ('subject', 'category', 'display_order', 'display_name', 'infos')
 
 
 class FamilyAdmin(admin.ModelAdmin):
@@ -160,6 +168,7 @@ class AttendingMeetAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Note, NoteAdmin)
+admin.site.register(Past, PastAdmin)
 admin.site.register(Family, FamilyAdmin)
 admin.site.register(Attendee, AttendeeAdmin)
 admin.site.register(FamilyAttendee, FamilyAttendeeAdmin)

@@ -28,4 +28,4 @@ class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
         ]
 
     def __str__(self):
-        return '%s %s %s' % (self.type, self.category.display_name, self.display_name)
+        return '%s %s %s' % (self.type, self.category, self.display_name)

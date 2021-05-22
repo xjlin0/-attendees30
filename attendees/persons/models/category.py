@@ -11,7 +11,7 @@ class Category(TimeStampedModel, SoftDeletableModel):
     description = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return '%s %s %s %s' % (self.display_name, self.slug, self.description, self.display_order)
+        return '%s %s' % (self.type, self.display_name)
 
     class Meta:
         db_table = 'persons_categories'
