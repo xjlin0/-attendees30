@@ -117,6 +117,7 @@ Attendees.datagridUpdate = {
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+                 Attendees.datagridUpdate.populateBasicInfoBlock();
                  Attendees.datagridUpdate.initListeners();
                },
       error  : (response) => {
@@ -221,147 +222,7 @@ Attendees.datagridUpdate = {
         itemType: "group",
         name: "basic-info-container",
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
-        items: [
-          {
-            colSpan: 7,
-            dataField: "first_name",
-            editorOptions: {
-              placeholder: "English",
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "last_name",
-            editorOptions: {
-              placeholder: "English",
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "division",
-            editorType: "dxSelectBox",
-            isRequired: true,
-            label: {
-              text: 'Major Division',
-            },
-            editorOptions: {
-              valueExpr: "id",
-              displayExpr: "display_name",
-              placeholder: "Select a value...",
-              dataSource: new DevExpress.data.DataSource({
-                store: new DevExpress.data.CustomStore({
-                  key: "id",
-                  loadMode: "raw",
-                  load: () => {
-                    const d = $.Deferred();
-                    $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
-                      d.resolve(response.data);
-                    });
-                    return d.promise();
-                  }
-                })
-              }),
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "last_name2",
-          },
-          {
-            colSpan: 7,
-            dataField: "first_name2",
-          },
-          {
-            colSpan: 7,
-            dataField: "gender",
-            editorType: "dxSelectBox",
-            isRequired: true,
-            editorOptions: {
-              dataSource: Attendees.utilities.genderEnums(),
-              valueExpr: "name",
-              displayExpr: "name",
-            },
-            validationRules: [
-              {
-                type: "required",
-                message: "gender is required"
-              },
-            ],
-          },
-          {
-            colSpan: 7,
-            dataField: "actual_birthday",
-            editorType: "dxDateBox",
-            label: {
-              text: 'Real birthday',
-            },
-            editorOptions: {
-              placeholder: "click calendar",
-              elementAttr: {
-                title: 'month, day and year are all required',
-              },
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "estimated_birthday",
-            label: {
-              text: 'Guess birthday',
-            },
-            editorType: "dxDateBox",
-            editorOptions: {
-              placeholder: "click calendar",
-              elementAttr: {
-                title: 'pick any day of your best guess year for the age estimation',
-              },
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "deathday",
-            editorType: "dxDateBox",
-            editorOptions: {
-              placeholder: "click calendar",
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.phone1",
-            label: {
-              text: 'phone1',
-            },
-            // editorOptions: {mask: "+1 (X00) 000-0000",}
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.phone2",
-            label: {
-              text: 'phone2',
-            },
-            // editorOptions: {mask: "+1 (X00) 000-0000",}
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.nick_name",
-            label: {
-              text: 'nick name',
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.email1",
-            label: {
-              text: 'email1',
-            },
-          },
-          {
-            colSpan: 7,
-            dataField: "infos.contacts.email2",
-            label: {
-              text: 'email2',
-            },
-          },
-        ],
+        items: [],  // will populate later for dynamic contacts
       },
       {
         colSpan: 24,
@@ -573,6 +434,165 @@ Attendees.datagridUpdate = {
         },
       },
     ]
+  },
+
+  populateBasicInfoBlock: () => {
+    basicInfoItems = [
+      {
+        colSpan: 7,
+        dataField: "first_name",
+        editorOptions: {
+          placeholder: "English",
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "last_name",
+        editorOptions: {
+          placeholder: "English",
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "division",
+        editorType: "dxSelectBox",
+        isRequired: true,
+        label: {
+          text: 'Major Division',
+        },
+        editorOptions: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          placeholder: "Select a value...",
+          dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              loadMode: "raw",
+              load: () => {
+                const d = $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
+                  d.resolve(response.data);
+                });
+                return d.promise();
+              }
+            })
+          }),
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "last_name2",
+      },
+      {
+        colSpan: 7,
+        dataField: "first_name2",
+      },
+      {
+        colSpan: 7,
+        dataField: "gender",
+        editorType: "dxSelectBox",
+        isRequired: true,
+        editorOptions: {
+          dataSource: Attendees.utilities.genderEnums(),
+          valueExpr: "name",
+          displayExpr: "name",
+        },
+        validationRules: [
+          {
+            type: "required",
+            message: "gender is required"
+          },
+        ],
+      },
+      {
+        colSpan: 7,
+        dataField: "actual_birthday",
+        editorType: "dxDateBox",
+        label: {
+          text: 'Real birthday',
+        },
+        editorOptions: {
+          placeholder: "click calendar",
+          elementAttr: {
+            title: 'month, day and year are all required',
+          },
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "estimated_birthday",
+        label: {
+          text: 'Guess birthday',
+        },
+        editorType: "dxDateBox",
+        editorOptions: {
+          placeholder: "click calendar",
+          elementAttr: {
+            title: 'pick any day of your best guess year for the age estimation',
+          },
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "deathday",
+        editorType: "dxDateBox",
+        editorOptions: {
+          placeholder: "click calendar",
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "infos.contacts.phone1",
+        label: {
+          text: 'phone1',
+        },
+        // editorOptions: {mask: "+1 (X00) 000-0000",}
+      },
+      {
+        colSpan: 7,
+        dataField: "infos.contacts.phone2",
+        label: {
+          text: 'phone2',
+        },
+        // editorOptions: {mask: "+1 (X00) 000-0000",}
+      },
+      {
+        colSpan: 7,
+        dataField: "infos.contacts.nick_name",
+        label: {
+          text: 'nick name',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "infos.contacts.email1",
+        label: {
+          text: 'email1',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: "infos.contacts.email2",
+        label: {
+          text: 'email2',
+        },
+      },
+    ];
+
+    const allContacts = Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos.contacts;
+
+    for (const contactKey in allContacts) {
+      if(!(contactKey in Attendees.utilities.basicContacts)){
+        basicInfoItems.push({
+          colSpan: 7,
+          dataField: "infos.contacts." + contactKey,
+          label: {
+            text: contactKey,
+          },
+        });
+      }
+    }
+    Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", basicInfoItems);
   },
 
   contactPopupDxFormConfig: {

@@ -121,12 +121,12 @@ Attendees.utilities = {
     ];
   },
 
-  basicContacts: [
-    'phone1',
-    'phone2',
-    'email1',
-    'email2'
-  ],
+  basicContacts: {
+    phone1: null,
+    phone2: null,
+    email1: null,
+    email2: null,
+  },
 };
 
 $(document).ready(() => {
