@@ -22,14 +22,14 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('display_order', models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)),
                 ('slug', models.SlugField(help_text='uniq key', blank=False, null=False, unique=True)),
-                ('type', models.CharField(blank=False, max_length=25, null=False, default='generic')),
+                ('type', models.CharField(blank=False, max_length=25, db_index=True, null=False, default='generic', help_text='main type')),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
                 ('description', models.CharField(blank=True, max_length=50, null=True)),
             ],
             options={
                 'db_table': 'persons_categories',
                 'verbose_name_plural': 'Categories',
-                'ordering': ('display_order', '-modified'),
+                'ordering': ('type', 'display_order'),
             },
         ),
     ]

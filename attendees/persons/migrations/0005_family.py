@@ -10,7 +10,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('persons', '0003_relation'),
+        ('persons', '0004_relation'),
     ]
 
     operations = [
