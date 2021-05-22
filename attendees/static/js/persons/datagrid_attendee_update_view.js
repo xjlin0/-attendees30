@@ -45,7 +45,8 @@ Attendees.datagridUpdate = {
   },
 
   toggleEditing: (enabled) => {
-    $('div.attendee-form-submits, span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attendingmeet-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
@@ -113,7 +114,7 @@ Attendees.datagridUpdate = {
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
-                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response.data[0];
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{}};
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
@@ -397,9 +398,9 @@ Attendees.datagridUpdate = {
             if (confirm("Are you sure?")){
 
               const userData = new FormData($('form#attendee-update-form')[0]);
-              if(!$('input[name="photo"]')[0].value){userData.delete("photo")};
+              if(!$('input[name="photo"]')[0].value){userData.delete('photo')}
               userData.set('infos', JSON.stringify(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos));
-              userData._method = userData.id ? 'PUT' : 'POST';
+              // userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
                 url    : Attendees.datagridUpdate.attendeeAjaxUrl,
@@ -407,7 +408,7 @@ Attendees.datagridUpdate = {
                 processData: false,
                 dataType: 'json',
                 data   : userData,
-                method : 'POST',
+                method : Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
                            console.log("success here is response: ", response);
                            const parser = new URL(window.location);
@@ -703,15 +704,15 @@ Attendees.datagridUpdate = {
                   Attendees.datagridUpdate.attendeeMainDxForm.itemOption("basic-info-container", "items", newBasicInfoItems);
                   Attendees.datagridUpdate.contactPopup.hide();
 
-                // $.ajax({
-                //   url    : ajaxUrl,
-                //   data   : JSON.stringify(userData),
-                //   dataType:'json',
-                //   contentType: "application/json; charset=utf-8",
-                //   method : 'PATCH',
-                //   success: (response) => console.log('599 Success to save data for contact Form in Popup, response: ', response),
-                //   error  : (response) => console.log('600 Failed to save data for contact Form in Popup, response: ', response),
-                // });
+                $.ajax({
+                  url    : Attendees.datagridUpdate.attendeeAjaxUrl,
+                  data   : JSON.stringify({infos: Attendees.datagridUpdate.attendeeMainDxForm.option("formData").infos}),
+                  dataType:'json',
+                  contentType: "application/json; charset=utf-8",
+                  method : 'PATCH',
+                  success: (response) => console.log('712 Success to save data for contact Form in Popup, response: ', response),
+                  error  : (response) => console.log('713 Failed to save data for contact Form in Popup, response: ', response),
+                });
                 }
               },
             },
