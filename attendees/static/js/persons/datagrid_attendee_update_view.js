@@ -699,7 +699,7 @@ Attendees.datagridUpdate = {
                   contentType: 'application/json; charset=utf-8',
                   method : 'PATCH',
                   success: (response) => {
-                    console.log('Success to save data for custom contact in Popup, response: ', response);
+                    Attendees.datagridUpdate.contactPopupDxForm.resetValues();
                     Attendees.datagridUpdate.populateBasicInfoBlock(response.infos.contacts);
                     Attendees.datagridUpdate.contactPopup.hide();
                     DevExpress.ui.notify(
@@ -711,7 +711,7 @@ Attendees.datagridUpdate = {
                           at: 'center',
                           of: window,
                         }
-                      }, "success", 2500);
+                      }, 'success', 2500);
                   },
                   error  : (response) => {
                     console.log('Failed to save data for custom contact in Popup, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
@@ -725,7 +725,7 @@ Attendees.datagridUpdate = {
                           at: 'center',
                           of: window,
                         }
-                      }, "error", 5000);
+                      }, 'error', 5000);
                     },
                 });
                 }
