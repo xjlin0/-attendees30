@@ -34,8 +34,16 @@ class FamilyAttendeeInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    prepopulated_fields = {"slug": ("display_name",)}
-    list_display = ('id', 'display_name', 'slug', 'display_order', 'description', 'modified')
+    prepopulated_fields = {"slug": ("type", "display_name")}
+    list_display = ('id', 'type', 'display_name', 'slug', 'display_order', 'description')
+
+
+class PastAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+    readonly_fields = ['id', 'created', 'modified']
+    list_display = ('subject', 'category', 'display_order', 'display_name', 'infos')
 
 
 class FamilyAdmin(admin.ModelAdmin):
@@ -70,11 +78,14 @@ class AttendeeAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('id', 'full_name')
-    readonly_fields = ['id', 'created', 'modified', 'full_name']
+    search_fields = ('id', 'infos')
+    readonly_fields = ['id', 'created', 'modified']
     inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)
-    list_display = ('id', 'division', 'full_name', 'progressions', 'infos')
+    list_display = ('id', 'full_name', 'progressions', 'infos')
+
+    def full_name(self, obj):
+        return obj.infos.get('names', {}).get('original')
 
     # def get_queryset(self, request):
     #     qs = super().get_queryset(request)
@@ -160,6 +171,7 @@ class AttendingMeetAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Note, NoteAdmin)
+admin.site.register(Past, PastAdmin)
 admin.site.register(Family, FamilyAdmin)
 admin.site.register(Attendee, AttendeeAdmin)
 admin.site.register(FamilyAttendee, FamilyAttendeeAdmin)

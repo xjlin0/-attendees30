@@ -43,7 +43,7 @@ class AttendeeService:
                     # Todo: add all families for data managers
                 ).distinct().order_by(
                     OrderBy(Func(F('id'), function="'{}'=".format(user_checking_id)), descending=True),
-                    'full_name',
+                    'infos__names__original',
                 )
             else:
                 return Attendee.objects.filter(
@@ -52,7 +52,7 @@ class AttendeeService:
                     Q(from_attendee__to_attendee__id=user_attendee.id, from_attendee__scheduler=True)
                 ).distinct().order_by(
                     OrderBy(Func(F('id'), function="'{}'=".format(user_attendee.id)), descending=True),
-                    'full_name',
+                    'infos__names__original',
                 )
 
         else:

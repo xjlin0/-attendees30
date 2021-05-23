@@ -1,3 +1,5 @@
+from opencc import OpenCC
+
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -20,14 +22,12 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
-    # contacts = models.ManyToManyField('whereabouts.Place', through='Locate', related_name='contacts')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, default=None, null=True, blank=True, on_delete=models.SET_NULL)
     families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     first_name2 = models.CharField(max_length=12, db_index=True, null=True, blank=True)
     last_name2 = models.CharField(max_length=8, db_index=True, null=True, blank=True)
-    full_name = models.CharField(max_length=70, db_index=True, null=True, blank=True, help_text='will be replaced by generated column in migration')
     gender = models.CharField(max_length=11, blank=False, null=False, default=GenderEnum.UNSPECIFIED, choices=GenderEnum.choices())
     actual_birthday = models.DateField(blank=True, null=True)
     estimated_birthday = models.DateField(blank=True, null=True)
@@ -95,7 +95,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
                             self.get_relative_emergency_contacts().order_by(
                                 '-to_attendee__relation__display_order',
                             ).values_list(
-                                'full_name',
+                                'infos__names__original',
                                 flat=True
                             )
                         )
@@ -135,5 +135,14 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
             GinIndex(fields=['progressions'], name='attendee_progressions_gin', ),
         ]
 
-    class ReadonlyMeta:
-        readonly = ["full_name"]  # generated column
+    def save(self, *args, **kwargs):  # search works in either language
+        name = f"{self.first_name or ''} {self.last_name or ''}".strip()
+        name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
+        self.infos['names']['original'] = f"{name} {name2}".strip()
+        if settings.OPENCC_CONVERT:
+            self.infos['names']['traditional'] = OpenCC('s2t').convert(name2)
+            self.infos['names']['simplified'] = OpenCC('t2s').convert(name2)
+        super(Attendee, self).save(*args, **kwargs)
+
+    # class ReadonlyMeta:
+    #     readonly = ["full_name"]  # generated column

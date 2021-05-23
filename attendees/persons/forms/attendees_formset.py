@@ -27,7 +27,7 @@ class AttendeesForm(forms.ModelForm):
         instance = kwargs.get('instance', Attendee())
         self.helper.layout = Layout(
             Accordion(
-                AccordionGroup(instance.full_name,
+                AccordionGroup(instance.infos['names']['original'],
                     Row(
                         Column(
                             Field('gender')#, css_class='form-control changeable', disabled=True),

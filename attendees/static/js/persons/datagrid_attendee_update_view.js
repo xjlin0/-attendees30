@@ -54,7 +54,7 @@ Attendees.datagridUpdate = {
 
     if(enabled){
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.full_name", "visible", false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
@@ -64,7 +64,7 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.full_name", "visible", true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
     }
 
@@ -114,9 +114,9 @@ Attendees.datagridUpdate = {
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
-                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{contacts:{}}};
-                 $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name);
-                 window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name;
+                 Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{names:{},contacts:{}}};
+                 $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
+                 window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                  Attendees.datagridUpdate.populateBasicInfoBlock();
                  Attendees.datagridUpdate.initListeners();
@@ -252,7 +252,7 @@ Attendees.datagridUpdate = {
 
               const $personalNewButton = $("<button>", {
                 ...newButtonAttrs,
-                'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name,
+                'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
                 'data-content-type': Attendees.datagridUpdate.placeDefaults.content_type,
                 'data-object-id': Attendees.datagridUpdate.attendeeId,
               });
@@ -263,7 +263,7 @@ Attendees.datagridUpdate = {
               personalPlaces.forEach(place => {
                 const $button = $('<button>', {
                   type: 'button',
-                  'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.full_name,
+                  'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
                   class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                   value: place.id,
                   text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
@@ -1739,15 +1739,15 @@ Attendees.datagridUpdate = {
       },
       {
         caption: 'Full name',
-        dataField: "attendee.full_name",
+        dataField: "attendee.infos.names.original",
         allowEditing: false,
         cellTemplate: (container, rowData) => {
           if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId){
-            $('<span>', {text: rowData.data.attendee.full_name}).appendTo(container);
+            $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
           }else {
             const attrs = {
               "class": "text-info",
-              "text": rowData.data.attendee.full_name,
+              "text": rowData.data.attendee.infos.names.original,
               "href": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
             };
             $('<a>', attrs).appendTo(container);

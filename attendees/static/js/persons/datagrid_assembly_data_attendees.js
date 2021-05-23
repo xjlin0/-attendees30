@@ -120,12 +120,12 @@ Attendees.dataAttendees = {
     {
       caption: "Full name",
       allowSorting: false,
-      dataField: "full_name",
+      dataField: "infos.names.original",
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
         const attrs = {
           "class": "text-info",
-          "text": rowData.data.full_name,
+          "text": rowData.data.infos.names.original,
           "href": Attendees.dataAttendees.attendeeUrn + rowData.data.id,
         };
         $($('<a>', attrs)).appendTo(container);

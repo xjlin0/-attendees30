@@ -92,4 +92,8 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
 ## Todo:
 
-* Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and possibly retire db level full_name. 
+- [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
+- [ ] Move single attendee update page out of data assembly
+- [ ] Create roaster page (no real-time update in v1)
+- [ ] Export directory booklet pdf
+- [ ] Audit log/history/vision of data

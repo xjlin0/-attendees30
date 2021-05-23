@@ -10,7 +10,7 @@ from attendees.persons.models.enum import GenderEnum
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('persons', '0002_note'),
+        ('persons', '0003_past'),
     ]
 
     operations = [
