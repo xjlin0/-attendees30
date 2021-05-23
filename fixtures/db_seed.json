@@ -8091,7 +8091,6 @@
       "last_name": "\u5927\u885b",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "David \u5927\u885b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8100,6 +8099,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "David \u5927\u885b"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8122,7 +8122,6 @@
       "last_name": "Hagar",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "\u590f\u7532 Hagar",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8133,6 +8132,7 @@
       },
       "infos": {
         "fixed": {},
+        "names": {"original": "\u590f\u7532 Hagar"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8155,7 +8155,6 @@
       "last_name": "Samson",
       "first_name2": "\u53c3\u5b6b",
       "last_name2": null,
-      "full_name": "\u53c3\u5b6b Samson \u53c3\u5b6b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8166,6 +8165,7 @@
         "fixed": {
           "nick_name": "\u5f1f\u5144"
         },
+        "names": {"original": "\u53c3\u5b6b Samson \u53c3\u5b6b"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8188,7 +8188,6 @@
       "last_name": "\u4ee5\u5229\u6c99\u4f2f",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Elizabeth \u4ee5\u5229\u6c99\u4f2f",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8199,6 +8198,7 @@
       },
       "infos": {
         "fixed": {},
+        "names": {"original": "Elizabeth \u4ee5\u5229\u6c99\u4f2f"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8221,7 +8221,6 @@
       "last_name": "Abigail",
       "first_name2": "\u4e9e\u6bd4\u8a72",
       "last_name2": null,
-      "full_name": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8232,6 +8231,7 @@
         "fixed": {
           "nick_name": "\u8001\u59ca"
         },
+        "names": {"original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8254,7 +8254,6 @@
       "last_name": "Deborah",
       "first_name2": "\u5e95\u6ce2\u62c9",
       "last_name2": null,
-      "full_name": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8265,6 +8264,7 @@
         "fixed": {
           "nick_name": "\u6230\u795e\u4e48\u4e48"
         },
+        "names": {"original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8287,7 +8287,6 @@
       "last_name": "Esau",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "\u4ee5\u6383 Esau",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8296,6 +8295,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "\u4ee5\u6383 Esau"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8318,7 +8318,6 @@
       "last_name": "\u57fa\u5229\u62bc",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Chileab \u57fa\u5229\u62bc",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8327,6 +8326,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Chileab \u57fa\u5229\u62bc"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8349,7 +8349,6 @@
       "last_name": "Ishmael",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "\u4ee5\u5be6\u746a\u5229 Ishmael",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": "2010-02-04",
@@ -8363,6 +8362,7 @@
           "allergy": "peanuts",
           "nick_name": "\u5927\u5bf6"
         },
+        "names": {"original": "\u4ee5\u5be6\u746a\u5229 Ishmael"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8385,7 +8385,6 @@
       "last_name": "\u5229\u767e\u52a0",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Rebecca \u5229\u767e\u52a0",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8394,6 +8393,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Rebecca \u5229\u767e\u52a0"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8416,7 +8416,6 @@
       "last_name": "\u62ff\u516b",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Nabal \u62ff\u516b",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8425,6 +8424,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Nabal \u62ff\u516b"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8447,7 +8447,6 @@
       "last_name": "system admin1",
       "first_name2": "superuser2",
       "last_name2": "Lastnam2",
-      "full_name": "superuser1 system admin1 Lastnam2superuser2",
       "gender": "MALE",
       "actual_birthday": "1980-01-01",
       "estimated_birthday": null,
@@ -8465,6 +8464,7 @@
           "nick_name": "root",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
+        "names": {"original": "superuser1 system admin1 Lastnam2superuser2"},
         "contacts": {
           "email1": "5greata@email.com",
           "email2": "5greatb@email.com",
@@ -8487,7 +8487,6 @@
       "last_name": "\u4e9e\u4f2f\u62c9\u7f55",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Abraham \u4e9e\u4f2f\u62c9\u7f55",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8496,6 +8495,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Abraham \u4e9e\u4f2f\u62c9\u7f55"},
         "contacts": {
           "email1": "6coola@email.com",
           "email2": "6coolb@email.com",
@@ -8518,7 +8518,6 @@
       "last_name": "\u96c5\u5404",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "James \u96c5\u5404",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8527,6 +8526,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "James \u96c5\u5404"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8549,7 +8549,6 @@
       "last_name": "\u5442\u5e95\u4e9e",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Lydia \u5442\u5e95\u4e9e",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8561,6 +8560,9 @@
       "infos": {
         "fixed": {
           "nick_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
+        },
+        "names": {
+          "original": "Lydia \u5442\u5e95\u4e9e"
         },
         "contacts": {
           "email1": null,
@@ -8584,7 +8586,6 @@
       "last_name": "\u7d04\u7ff0",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "John \u7d04\u7ff0",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8595,6 +8596,7 @@
         "fixed": {
           "nick_name": "\u4f7f\u5f92\u7d04\u7ff0"
         },
+        "names": {"original": "John \u7d04\u7ff0"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8617,7 +8619,6 @@
       "last_name": "\u4ee5\u6492",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Isaac \u4ee5\u6492",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8626,6 +8627,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Isaac \u4ee5\u6492"},
         "contacts": {
           "email1": "7coola@email.com",
           "email2": "7coolb@email.com",
@@ -8648,7 +8650,6 @@
       "last_name": "Esther",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "\u4ee5\u65af\u5e16 Esther",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8659,6 +8660,7 @@
         "fixed": {
           "nick_name": "\u7687\u540e"
         },
+        "names": {"original": "\u4ee5\u65af\u5e16 Esther"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8681,7 +8683,6 @@
       "last_name": "\u6492\u62c9",
       "first_name2": null,
       "last_name2": null,
-      "full_name": "Sarah \u6492\u62c9",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -8690,6 +8691,7 @@
       "progressions": {},
       "infos": {
         "fixed": {},
+        "names": {"original": "Sarah \u6492\u62c9"},
         "contacts": {
           "email1": "8coola@email.com",
           "email2": "8coolb@email.com",

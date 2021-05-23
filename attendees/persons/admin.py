@@ -78,11 +78,14 @@ class AttendeeAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('id', 'full_name')
-    readonly_fields = ['id', 'created', 'modified', 'full_name']
+    search_fields = ('id', 'infos')
+    readonly_fields = ['id', 'created', 'modified']
     inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)
-    list_display = ('id', 'division', 'full_name', 'progressions', 'infos')
+    list_display = ('id', 'full_name', 'progressions', 'infos')
+
+    def full_name(self, obj):
+        return obj.infos.get('names', {}).get('original')
 
     # def get_queryset(self, request):
     #     qs = super().get_queryset(request)

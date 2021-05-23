@@ -26,8 +26,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Attendee',
             fields=[
-                ('user', models.OneToOneField(blank=True, default=None, null=True, on_delete=models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
                 ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
+                ('user', models.OneToOneField(blank=True, default=None, null=True, on_delete=models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
@@ -39,7 +39,6 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(blank=True, db_index=True, max_length=25, null=True)),
                 ('first_name2', models.CharField(blank=True, db_index=True, max_length=12, null=True)),
                 ('last_name2', models.CharField(blank=True, db_index=True, max_length=8, null=True)),
-                ('full_name', models.CharField(blank=True, db_index=True, max_length=70, null=True, help_text='will be replaced by generated column in migration')),
                 ('gender', models.CharField(choices=GenderEnum.choices(), default=GenderEnum.UNSPECIFIED, max_length=11)),
                 ('photo', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='attendee_portrait', verbose_name='Photo')),
                 ('progressions', JSONField(blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data', null=True)),
@@ -51,21 +50,21 @@ class Migration(migrations.Migration):
             },
             bases=(Utility, models.Model),
         ),
-        migrations.RunSQL(
-            sql="""
-                ALTER TABLE persons_attendees DROP COLUMN full_name;
-                ALTER TABLE persons_attendees ADD COLUMN full_name VARCHAR(70)
-                      GENERATED ALWAYS AS (TRIM(
-                        COALESCE(first_name, '') || ' ' ||
-                        COALESCE(last_name, '')  || ' ' ||
-                        COALESCE(last_name2, '')   ||
-                        COALESCE(first_name2, '') 
-                      )) STORED;
-                CREATE INDEX attendee_full_name_raw
-                  ON persons_attendees (full_name);
-                """,
-            # reverse_sql="",
-        ),
+        # migrations.RunSQL(
+        #     sql="""
+        #         ALTER TABLE persons_attendees DROP COLUMN full_name;
+        #         ALTER TABLE persons_attendees ADD COLUMN full_name VARCHAR(70)
+        #               GENERATED ALWAYS AS (TRIM(
+        #                 COALESCE(first_name, '') || ' ' ||
+        #                 COALESCE(last_name, '')  || ' ' ||
+        #                 COALESCE(last_name2, '')   ||
+        #                 COALESCE(first_name2, '')
+        #               )) STORED;
+        #         CREATE INDEX attendee_full_name_raw
+        #           ON persons_attendees (full_name);
+        #         """,
+        #     # reverse_sql="",
+        # ),  # switching to use opencc for language switching
         migrations.AddIndex(
             model_name='attendee',
             index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='attendee_infos_gin'),

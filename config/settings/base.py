@@ -76,7 +76,7 @@ THIRD_PARTY_APPS = [
     "mptt",
     "django_json_widget",
     "private_storage",
-    "django_readonly_field",
+    # "django_readonly_field",
     "address",
     # "reversion",
 ]
@@ -333,3 +333,4 @@ REST_FRAMEWORK = {
 # ------------------------------------------------------------------------------
 CLIENT_DEFAULT_TIME_ZONE = 'America/Los_Angeles'
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'  # For django-address: environment variable will override it
+OPENCC_NAME_CONVERT = True
