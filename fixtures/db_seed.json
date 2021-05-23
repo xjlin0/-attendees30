@@ -1236,7 +1236,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "7",
       "address": 2,
       "address_extra": null,
@@ -1267,7 +1267,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "address": 5,
       "address_extra": null,
@@ -1315,7 +1315,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "address": 3,
       "address_extra": null,
@@ -1338,7 +1338,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "address": 4,
       "address_extra": null,
@@ -1361,7 +1361,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
       "address": 6,
       "address_extra": "#A123",
@@ -1384,7 +1384,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
       "address": 6,
       "address_extra": "#A123",
@@ -1407,7 +1407,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "address": 6,
       "address_extra": "#A123",
@@ -1430,7 +1430,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
       "address": 2,
       "address_extra": null,
@@ -1461,7 +1461,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "4",
       "address": 9,
       "address_extra": null,
@@ -1492,7 +1492,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "6",
       "address": 11,
       "address_extra": null,
@@ -1523,7 +1523,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "5",
       "address": 1,
       "address_extra": null,
@@ -1554,7 +1554,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "3",
       "address": 10,
       "address_extra": null,
@@ -1585,7 +1585,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "1",
       "address": 1,
       "address_extra": null,
@@ -1615,7 +1615,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 51,
+      "content_type": 52,
       "object_id": "2",
       "address": 1,
       "address_extra": null,
@@ -1638,7 +1638,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 45,
+      "content_type": 46,
       "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
       "address": 3,
       "address_extra": null,
@@ -1943,11 +1943,10 @@
       "created": "2021-05-22T22:20:43.067Z",
       "modified": "2021-05-22T22:25:39.965Z",
       "is_removed": false,
-      "slug": "education-college",
+      "infos": {},
       "type": "education",
       "display_name": "College",
-      "display_order": 0,
-      "description": null
+      "display_order": 0
     }
   },
   {
@@ -1957,11 +1956,10 @@
       "created": "2021-05-22T22:25:26.760Z",
       "modified": "2021-05-22T22:25:26.760Z",
       "is_removed": false,
-      "slug": "education-postgraduate",
+      "infos": {},
       "type": "education",
       "display_name": "Postgraduate",
-      "display_order": 0,
-      "description": null
+      "display_order": 0
     }
   },
   {
@@ -1971,11 +1969,10 @@
       "created": "2021-05-23T12:55:51.864Z",
       "modified": "2021-05-23T12:59:01.791Z",
       "is_removed": false,
-      "slug": "faith-believe",
+      "infos": {},
       "type": "faith",
       "display_name": "believe",
-      "display_order": 0,
-      "description": null
+      "display_order": 0
     }
   },
   {
@@ -1985,11 +1982,10 @@
       "created": "2021-05-23T12:56:31.387Z",
       "modified": "2021-05-23T12:59:36.666Z",
       "is_removed": false,
-      "slug": "faith-accept",
+      "infos": {},
       "type": "faith",
       "display_name": "accept",
-      "display_order": 0,
-      "description": null
+      "display_order": 0
     }
   },
   {
@@ -1999,11 +1995,75 @@
       "created": "2021-05-23T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "slug": "faith-baptized",
+      "infos": {},
       "type": "faith",
       "display_name": "baptized",
-      "display_order": 0,
-      "description": null
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 6,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "infos": {},
+      "type": "attendance",
+      "display_name": "scheduled",
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 7,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "infos": {},
+      "type": "attendance",
+      "display_name": "confirmed",
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 8,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "infos": {},
+      "type": "attendance",
+      "display_name": "cancelled",
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 9,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "infos": {},
+      "type": "attendance",
+      "display_name": "attended",
+      "display_order": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 10,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "infos": {},
+      "type": "attendance",
+      "display_name": "absent",
+      "display_order": 0
     }
   },
   {
@@ -6741,7 +6801,7 @@
       "attending": 23,
       "character": 20,
       "free": 0,
-      "category": "scheduled",
+      "category": "attended",
       "display_order": 0,
       "infos": {}
     }

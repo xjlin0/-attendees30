@@ -1,14 +1,15 @@
 from django.db import models
+from django.contrib.postgres.fields.jsonb import JSONField
+from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
 
 class Category(TimeStampedModel, SoftDeletableModel):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    slug = models.SlugField(max_length=50, help_text='uniq key', blank=False, null=False, unique=True)
     type = models.CharField(max_length=25, default='generic', db_index=True, blank=False, null=False, help_text='main type')
-    display_name = models.CharField(max_length=50, blank=True, null=True)
     display_order = models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
+    display_name = models.CharField(max_length=50, blank=False, null=False)
+    infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"icon": "home", "style": "normal"}. Please keep {} here even no data')
 
     def __str__(self):
         return '%s %s' % (self.type, self.display_name)
@@ -17,4 +18,7 @@ class Category(TimeStampedModel, SoftDeletableModel):
         db_table = 'persons_categories'
         verbose_name_plural = 'Categories'
         ordering = ('type', 'display_order')
+        indexes = [
+            GinIndex(fields=['infos'], name='category_infos_gin', ),
+        ]
 
