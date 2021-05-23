@@ -28,7 +28,6 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     first_name2 = models.CharField(max_length=12, db_index=True, null=True, blank=True)
     last_name2 = models.CharField(max_length=8, db_index=True, null=True, blank=True)
-    # full_name = models.CharField(max_length=70, db_index=True, null=True, blank=True, help_text='will be replaced by generated column in migration')
     gender = models.CharField(max_length=11, blank=False, null=False, default=GenderEnum.UNSPECIFIED, choices=GenderEnum.choices())
     actual_birthday = models.DateField(blank=True, null=True)
     estimated_birthday = models.DateField(blank=True, null=True)
@@ -96,7 +95,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
                             self.get_relative_emergency_contacts().order_by(
                                 '-to_attendee__relation__display_order',
                             ).values_list(
-                                'first_name',  # full_name https://stackoverflow.com/a/50631073/4257237
+                                'infos__names__original',
                                 flat=True
                             )
                         )
@@ -140,7 +139,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         name = f"{self.first_name or ''} {self.last_name or ''}".strip()
         name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
         self.infos['names']['original'] = f"{name} {name2}".strip()
-        if settings.OPENCC_NAME_CONVERT:
+        if settings.OPENCC_CONVERT:
             self.infos['names']['traditional'] = OpenCC('s2t').convert(name2)
             self.infos['names']['simplified'] = OpenCC('t2s').convert(name2)
         super(Attendee, self).save(*args, **kwargs)
