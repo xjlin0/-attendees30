@@ -43,7 +43,7 @@ class PastAdmin(admin.ModelAdmin):
         fields.JSONField: {'widget': JSONEditorWidget},
     }
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('subject', 'category', 'display_order', 'display_name', 'infos')
+    list_display = ('subject', 'category', 'display_order', 'display_name', 'start')
 
 
 class FamilyAdmin(admin.ModelAdmin):

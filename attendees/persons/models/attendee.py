@@ -18,6 +18,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     # RELATIVES_KEYWORDS = ['parent', 'mother', 'guardian', 'father', 'caregiver']
     # AS_PARENT_KEYWORDS = ['notifier', 'caregiver']  # to find attendee's parents/caregiver in cowokers view of all activities
     # BE_LISTED_KEYWORDS = ['care receiver']  # let the attendee's attendance showed in their parent/caregiver account
+    pasts = GenericRelation('persons.Past')
     places = GenericRelation('whereabouts.Place')
     notes = GenericRelation(Note)
     related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to+')

@@ -1965,6 +1965,148 @@
     }
   },
   {
+    "model": "persons.category",
+    "pk": 3,
+    "fields": {
+      "created": "2021-05-23T12:55:51.864Z",
+      "modified": "2021-05-23T12:59:01.791Z",
+      "is_removed": false,
+      "slug": "faith-believe",
+      "type": "faith",
+      "display_name": "believe",
+      "display_order": 0,
+      "description": null
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 4,
+    "fields": {
+      "created": "2021-05-23T12:56:31.387Z",
+      "modified": "2021-05-23T12:59:36.666Z",
+      "is_removed": false,
+      "slug": "faith-accept",
+      "type": "faith",
+      "display_name": "accept",
+      "display_order": 0,
+      "description": null
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 5,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "slug": "faith-baptized",
+      "type": "faith",
+      "display_name": "baptized",
+      "display_order": 0,
+      "description": null
+    }
+  },
+  {
+    "model": "persons.past",
+    "pk": "070ade81-dbf4-47c4-a1e0-046f553021b8",
+    "fields": {
+      "created": "2021-05-23T13:03:48.096Z",
+      "modified": "2021-05-23T13:11:31.627Z",
+      "is_removed": false,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "start": "2021-05-23T13:03:32Z",
+      "finish": null,
+      "category": 2,
+      "file": null,
+      "display_order": 30000,
+      "display_name": "where, major, advisor",
+      "infos": {
+        "show_secret": {}
+      }
+    }
+  },
+  {
+    "model": "persons.past",
+    "pk": "12387723-6a81-4889-93c0-76c937714aaf",
+    "fields": {
+      "created": "2021-05-23T13:03:28.804Z",
+      "modified": "2021-05-23T13:11:11.686Z",
+      "is_removed": false,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "start": "2021-05-23T13:02:45Z",
+      "finish": null,
+      "category": 1,
+      "file": null,
+      "display_order": 30000,
+      "display_name": "where and major",
+      "infos": {
+        "show_secret": {}
+      }
+    }
+  },
+  {
+    "model": "persons.past",
+    "pk": "413f86b6-4f4c-4293-a2b1-f6ede5ddf60c",
+    "fields": {
+      "created": "2021-05-23T13:14:49.684Z",
+      "modified": "2021-05-23T13:14:49.684Z",
+      "is_removed": false,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "start": "2021-05-23T13:14:15Z",
+      "finish": null,
+      "category": 5,
+      "file": null,
+      "display_order": 30000,
+      "display_name": "baptized at where by whom",
+      "infos": {
+        "show_secret": {}
+      }
+    }
+  },
+  {
+    "model": "persons.past",
+    "pk": "c79ee1c6-7a50-45ba-9ce0-d2bc2cc3bd72",
+    "fields": {
+      "created": "2021-05-23T13:10:51.374Z",
+      "modified": "2021-05-23T13:10:51.374Z",
+      "is_removed": false,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "start": "2021-05-23T13:10:23Z",
+      "finish": null,
+      "category": 4,
+      "file": null,
+      "display_order": 30000,
+      "display_name": "accept at where by whom",
+      "infos": {
+        "show_secret": {}
+      }
+    }
+  },
+  {
+    "model": "persons.past",
+    "pk": "ef2cd5eb-2016-4eb4-a1be-247b70661bff",
+    "fields": {
+      "created": "2021-05-23T13:05:34.202Z",
+      "modified": "2021-05-23T13:09:48.778Z",
+      "is_removed": false,
+      "content_type": 46,
+      "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "start": "2021-05-23T13:03:51Z",
+      "finish": null,
+      "category": 3,
+      "file": null,
+      "display_order": 30000,
+      "display_name": "believe at where by whom",
+      "infos": {
+        "show_secret": {}
+      }
+    }
+  },
+  {
     "model": "persons.family",
     "pk": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
     "fields": {

@@ -7,7 +7,9 @@ from django.db import migrations, models
 
 import django.utils.timezone
 import model_utils.fields
-import uuid
+from private_storage.fields import PrivateFileField
+from private_storage.storage.files import PrivateFileSystemStorage
+from uuid import uuid4
 
 
 class Migration(migrations.Migration):
@@ -20,23 +22,23 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Past',
             fields=[
-                ('id', model_utils.fields.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
                 ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
                 ('object_id', models.CharField(max_length=36)),
                 ('category', models.ForeignKey(help_text="subtype: for education it's primary/high/college sub-types etc", on_delete=models.SET(0), to='persons.Category')),
-                ('type', models.CharField(default='generic', help_text='main type: education/job/faith, etc', db_index=True, max_length=25)),
                 ('display_order', models.SmallIntegerField(db_index=True, default=30000)),
                 ('start', models.DateTimeField(blank=True, default=attendees.persons.models.utility.Utility.now_with_timezone, null=True)),
                 ('finish', models.DateTimeField(blank=True, null=True)),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
+                ('file', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='past_files', verbose_name='File')),
                 ('infos', django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=attendees.persons.models.utility.Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data', null=True)),
             ],
             options={
                 'db_table': 'persons_pasts',
-                'ordering': ('type', 'display_order',),
+                'ordering': ('category__type', 'display_order', 'start'),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),

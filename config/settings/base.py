@@ -78,7 +78,7 @@ THIRD_PARTY_APPS = [
     "private_storage",
     # "django_readonly_field",
     "address",
-    # "reversion",
+    # "reversion",  # django-pghistory can version a superset of models
 ]
 
 LOCAL_APPS = [
