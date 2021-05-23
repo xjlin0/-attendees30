@@ -159,6 +159,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 4,
         itemType: "group",
+        cssClass: 'h6',
         caption: "Photo",
         items: [
 
@@ -222,6 +223,7 @@ Attendees.datagridUpdate = {
         colCount: 21,
         itemType: "group",
         name: "basic-info-container",
+        cssClass: 'h6',
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [],  // will populate later for dynamic contacts
       },
@@ -229,6 +231,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         caption: "Addresses",
+        cssClass: 'h6',
         itemType: "group",
         items: [
           {
@@ -304,6 +307,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         caption: "Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
         itemType: "group",
         items: [
           {
@@ -352,6 +356,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         caption: "Groups",
+        cssClass: 'h6',
         itemType: "group",
         items: [
 
@@ -400,7 +405,7 @@ Attendees.datagridUpdate = {
               const userData = new FormData($('form#attendee-update-form')[0]);
               if(!$('input[name="photo"]')[0].value){userData.delete('photo')}
               const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
-              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValue(userInfos.contacts);  // remove emptied contacts
+              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
               userData.set('infos', JSON.stringify(userInfos));
               // userData._method = userData.id ? 'PUT' : 'POST';
 
@@ -561,7 +566,7 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: 'infos.contacts.nick_name',
+        dataField: 'infos.names.nick',
         label: {
           text: 'nick name',
         },
@@ -684,9 +689,9 @@ Attendees.datagridUpdate = {
                 if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
                   const currentInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos;
                   const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
-                  const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
-                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValue(currentInfos.contacts);  // remove emptied contacts
-                  currentInfos.contacts[trimmedContact.contactKey] = trimmedContact.contactValue;
+                  const trimmedNewContact = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(newContact);
+                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(currentInfos.contacts);  // remove emptied contacts
+                  currentInfos.contacts[trimmedNewContact.contactKey] = trimmedNewContact.contactValue;
 
                 $.ajax({
                   url    : Attendees.datagridUpdate.attendeeAjaxUrl,

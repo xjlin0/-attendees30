@@ -8364,10 +8364,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "fixed": {
-          "nick_name": "\u5f1f\u5144"
-        },
-        "names": {"original": "\u53c3\u5b6b Samson \u53c3\u5b6b"},
+        "fixed": {},
+        "names": {
+          "nick": "\u5f1f\u5144",
+          "original": "\u53c3\u5b6b Samson \u53c3\u5b6b"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8430,10 +8430,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "fixed": {
-          "nick_name": "\u8001\u59ca"
-        },
-        "names": {"original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"},
+        "fixed": {},
+        "names": {
+          "nick": "\u8001\u59ca",
+          "original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8463,10 +8463,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "fixed": {
-          "nick_name": "\u6230\u795e\u4e48\u4e48"
-        },
-        "names": {"original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"},
+        "fixed": {},
+        "names": {
+          "nick": "\u6230\u795e\u4e48\u4e48",
+          "original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8561,10 +8561,11 @@
       },
       "infos": {
         "fixed": {
-          "allergy": "peanuts",
-          "nick_name": "\u5927\u5bf6"
+          "allergy": "peanuts"
         },
-        "names": {"original": "\u4ee5\u5be6\u746a\u5229 Ishmael"},
+        "names": {
+          "nick": "\u5927\u5bf6",
+          "original": "\u4ee5\u5be6\u746a\u5229 Ishmael"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8663,10 +8664,11 @@
       },
       "infos": {
         "fixed": {
-          "nick_name": "root",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
-        "names": {"original": "superuser1 system admin1 Lastnam2superuser2"},
+        "names": {
+          "nick": "root",
+          "original": "superuser1 system admin1 Lastnam2superuser2"},
         "contacts": {
           "email1": "5greata@email.com",
           "email2": "5greatb@email.com",
@@ -8760,10 +8762,9 @@
         "belief": "baptized"
       },
       "infos": {
-        "fixed": {
-          "nick_name": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e"
-        },
+        "fixed": {},
         "names": {
+          "nick": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e",
           "original": "Lydia \u5442\u5e95\u4e9e"
         },
         "contacts": {
@@ -8795,10 +8796,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "fixed": {
-          "nick_name": "\u4f7f\u5f92\u7d04\u7ff0"
-        },
-        "names": {"original": "John \u7d04\u7ff0"},
+        "fixed": {},
+        "names": {
+          "nick": "\u4f7f\u5f92\u7d04\u7ff0",
+          "original": "John \u7d04\u7ff0"},
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8859,10 +8860,10 @@
       "photo": "",
       "progressions": {},
       "infos": {
-        "fixed": {
-          "nick_name": "\u7687\u540e"
-        },
-        "names": {"original": "\u4ee5\u65af\u5e16 Esther"},
+        "fixed": {},
+        "names": {
+          "nick": "\u7687\u540e",
+          "original": "\u4ee5\u65af\u5e16 Esther"},
         "contacts": {
           "email1": null,
           "email2": null,
