@@ -120,7 +120,9 @@ Attendees.dataAttendees = {
     {
       caption: "Full name",
       allowSorting: false,
-      dataField: "infos.names.original",
+      dataField: "infos.names",
+      name: 'infos.names.original',
+      dataType: "string",
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
         const attrs = {
