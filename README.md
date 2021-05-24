@@ -98,6 +98,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 - [x] Personal & family Address of Attendee update page
 - [x] Dynamic contacts of Attendee update page
 - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
+- [ ] implement secret/private relation/past general
 - [ ] Create new instance of Attendee update page
 - [ ] Move single attendee update page out of data assembly
 - [ ] Create roaster page (no real-time update in v1)

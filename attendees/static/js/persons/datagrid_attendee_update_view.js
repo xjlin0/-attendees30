@@ -355,6 +355,25 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
+        caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "relationship_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => Attendees.datagridUpdate.initRelationshipDatagrid(data, itemElement),
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
         caption: "Groups",
         cssClass: 'h6',
         itemType: "group",
@@ -2029,6 +2048,201 @@ Attendees.datagridUpdate = {
 
 
 
+  },
+
+
+
+  ///////////////////////  Relationship Datagrid in main DxForm  ///////////////////////
+
+
+  initRelationshipDatagrid: (data, itemElement) => {
+    const $relationshipDatagrid = $("<div id='relationship-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.relationshipDatagridConfig);
+    itemElement.append($relationshipDatagrid);
+    Attendees.datagridUpdate.relationshipDatagrid = $relationshipDatagrid.dxDataGrid("instance");
+  },
+
+  relationshipDatagridConfig: {
+    dataSource: {
+      store: new DevExpress.data.CustomStore({
+        key: "id",
+        load: () => {
+          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint);
+        },
+        byKey: (key) => {
+          const d = new $.Deferred();
+          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/')
+            .done((result) => {
+              d.resolve(result.data);
+            });
+          return d.promise();
+        },
+        update: (key, values) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            method: "PATCH",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "update success, please reload page if changing family",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
+        },
+        insert: function (values) {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint,
+            method: "POST",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "Create success, please find the new relationship in the table",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
+        },
+      }),
+    },
+    onInitNewRow: (e) => {
+      DevExpress.ui.notify(
+        {
+          message: "Let's create a relationship, click away or hit Enter to save. Hit Esc to quit without save",
+          width: 500,
+          position: {
+            my: 'center',
+            at: 'center',
+            of: window,
+          }
+        }, "info", 3000);
+    },
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
+    columnResizingMode: 'nextColumn',
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    loadPanel: {
+      message: 'Fetching...',
+      enabled: true,
+    },
+    wordWrapEnabled: true,
+    grouping: {
+      autoExpandAll: true,
+    },
+    editing: {
+      mode: "cell",
+      allowUpdating: Attendees.utilities.editingEnabled,
+      allowAdding: Attendees.utilities.editingEnabled,
+      allowDeleting: false,
+    },
+    columns: [
+      {
+        dataField: "relation",
+        validationRules: [{ type: "required" }],
+        caption: 'Role',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "title",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 100});
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {relation_id: key})
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "to_attendee",
+        validationRules: [{ type: "required" }],
+        caption: 'Attendee',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "infos.names.original",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint);
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint + key + '/')
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "in_family",
+        validationRules: [{ type: "required" }],
+        caption: 'Family',
+        groupIndex: 0,
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint),
+              byKey: (key) => {
+                if(key) {
+                  $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint + key + '/');
+                }
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "scheduler",
+        caption: "Can change main attendee's schedule",
+        dataType: "boolean",
+      },
+      {
+        dataField: "emergency_contact",
+        caption: 'Contact when Main attendee in emergency',
+        dataType: "boolean",
+      },
+      {
+        dataField: "start",
+        dataType: "date",
+      },
+      {
+        dataField: "finish",
+        dataType: "date",
+      },
+    ],
   },
 };
 
