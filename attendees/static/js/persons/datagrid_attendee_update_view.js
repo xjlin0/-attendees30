@@ -2190,10 +2190,12 @@ Attendees.datagridUpdate = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: "id",
-              load: () => {
+              load: (e) => {
+                console.log("hi 2194, here is e: ", e);
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint);
               },
               byKey: (key) => {
+                console.log("hi 2198 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint + key + '/')
                   .done((result) => {

@@ -1,5 +1,5 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg
-from django.db.models import Q, F, Func, Value
+from django.db.models import Q, F, Func, Case, When, Value
 from django.db.models.expressions import OrderBy
 from django.http import Http404
 
@@ -62,6 +62,41 @@ class AttendeeService:
     def details(current_user, attendee_id):
 
         return []
+
+    @staticmethod
+    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
+        """
+        return target_attendee's related ones according to current_user permissions
+        :param current_user:
+        :param target_attendee:
+        :param querying_attendee_id:
+        :param filters_list:
+        :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
+        """
+
+        # # Todo: need filter on attending_meet finish_date
+
+        if querying_attendee_id:
+            if current_user.privileged:
+                qs = Attendee.objects
+
+            else:
+                qs = target_attendee.related_ones
+
+            return qs.filter(
+                    pk=querying_attendee_id,
+                    division__organization=current_user.organization,
+                    )
+        else:
+            init_query = Q(division__organization=current_user.organization)
+            final_query = init_query.add(AttendeeService.filter_parser(filters_list, None), Q.AND)
+
+            if current_user.privileged:
+                return Attendee.objects.filter(final_query).order_by(
+                    Case(When(id__in=target_attendee.related_ones.values_list('id'), then=0), default=1)
+                )  # https://stackoverflow.com/a/52047221/4257237
+            else:
+                return target_attendee.related_ones.all()
 
     @staticmethod
     def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
@@ -145,11 +180,11 @@ class AttendeeService:
         :return: string of fields in database
         """
         field_converter = {
-            'self_phone_numbers': 'contacts__fields',
-            'self_email_addresses': 'contacts__fields',
+            'self_phone_numbers': 'infos__contacts',
+            'self_email_addresses': 'infos__contacts',
         }
-
-        for meet in Meet.objects.filter(assembly__slug=assembly_slug):
-            field_converter[meet.slug] = 'attendings__meets__display_name'
+        if assembly_slug:
+            for meet in Meet.objects.filter(assembly__slug=assembly_slug):
+                field_converter[meet.slug] = 'attendings__meets__display_name'
 
         return field_converter.get(query_field, query_field).replace('.', '__')

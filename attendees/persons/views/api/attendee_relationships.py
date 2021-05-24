@@ -18,9 +18,15 @@ class ApiAttendeeRelationshipsViewsSet(LoginRequiredMixin, SpyGuard, viewsets.Mo
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         target_relationship_id = self.kwargs.get('pk')
         if target_relationship_id:
-            return Relationship.objects.filter(pk=target_relationship_id)
+            return Relationship.objects.filter(
+                pk=target_relationship_id,
+                to_attendee__division__organization=target_attendee.division.organization,
+            )
         else:
-            return Relationship.objects.filter(from_attendee=target_attendee)
+            return Relationship.objects.filter(
+                from_attendee=target_attendee,
+                to_attendee__division__organization=target_attendee.division.organization,
+            )
 
 
 api_attendee_relationships_viewset = ApiAttendeeRelationshipsViewsSet

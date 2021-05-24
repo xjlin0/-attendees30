@@ -26,7 +26,7 @@ class RouteGuard(UserPassesTestMixin):
 class SpyGuard(UserPassesTestMixin):
 
     def test_func(self):  # Superusers can still access such attendee in admin UI
-        targeting_attendee_id = self.kwargs.get('attendee_id', None)
+        targeting_attendee_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', self.kwargs.get('attendee_id'))
         current_attendee = self.request.user.attendee
         if targeting_attendee_id:
             if current_attendee:
