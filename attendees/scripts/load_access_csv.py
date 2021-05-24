@@ -369,6 +369,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             'access_people_values': people,
                         },
                         'contacts': contacts,
+                        'names': {},
                     }
                 }
 
@@ -424,7 +425,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             display_order = 10
 
                         some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('access_household_values', {}).get(access_header)) is not None}
-                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts}
+                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {})}
 
                         attendee.save()
                         FamilyAttendee.objects.update_or_create(

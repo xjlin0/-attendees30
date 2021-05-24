@@ -2184,7 +2184,9 @@ Attendees.datagridUpdate = {
         caption: 'Attendee',
         lookup: {
           valueExpr: "id",
-          displayExpr: "infos.names.original",
+          displayExpr: (item) => {
+            return item ? '(' + item.gender[0] + ") " + item.infos.names.original : null;
+          },
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: "id",
