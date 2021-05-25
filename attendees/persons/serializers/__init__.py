@@ -1,4 +1,6 @@
 # order matters
+from .category_serializer import CategorySerializer
+from .past_serializer import PastSerializer
 from .relation_serializer import RelationSerializer
 from .attendee import AttendeeSerializer
 from .attending import AttendingSerializer

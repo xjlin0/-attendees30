@@ -380,6 +380,27 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
+        caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_education_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'education');
+            },
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
         caption: "Groups",
         cssClass: 'h6',
         itemType: "group",
@@ -2263,6 +2284,152 @@ Attendees.datagridUpdate = {
         dataType: "date",
       },
     ],
+  },
+
+
+  ///////////////////////  Past Datagrids (dynamic) in main DxForm  ///////////////////////
+
+  initPastDatagrid: (data, itemElement, type) => {
+    const $pastDatagrid = $("<div id='" + type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(type));
+    itemElement.append($pastDatagrid);
+    return $pastDatagrid.dxDataGrid("instance");
+  },
+
+  pastDatagridConfig: (type) => {
+    return {
+      dataSource: {
+        store: new DevExpress.data.CustomStore({
+          key: "id",
+          load: () => {
+            params = {category__type: type};
+            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, params);
+          },
+          byKey: (key) => {
+            const d = new $.Deferred();
+            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/')
+              .done((result) => {
+                d.resolve(result.data);
+              });
+            return d.promise();
+          },
+          update: (key, values) => {
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/',
+              method: "PATCH",
+              dataType: 'json',
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify(values),
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'update ' + type + ' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    }
+                  }, "success", 2000);
+              },
+            });
+          },
+          insert: function (values) {
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
+              method: "POST",
+              dataType: 'json',
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify(values),
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'Create ' + type + ' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    }
+                  }, "success", 2000);
+              },
+            });
+          },
+        }),
+      },
+      onInitNewRow: (e) => {
+        DevExpress.ui.notify(
+          {
+            message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",
+            width: 500,
+            position: {
+              my: 'center',
+              at: 'center',
+              of: window,
+            }
+          }, "info", 3000);
+      },
+      allowColumnReordering: true,
+      columnAutoWidth: true,
+      allowColumnResizing: true,
+      columnResizingMode: 'nextColumn',
+      rowAlternationEnabled: true,
+      hoverStateEnabled: true,
+      loadPanel: {
+        message: 'Fetching...',
+        enabled: true,
+      },
+      wordWrapEnabled: true,
+      grouping: {
+        autoExpandAll: true,
+      },
+      editing: {
+        mode: "cell",
+        allowUpdating: Attendees.utilities.editingEnabled,
+        allowAdding: Attendees.utilities.editingEnabled,
+        allowDeleting: false,
+      },
+      columns: [
+        {
+          dataField: "category",
+          validationRules: [{type: "required"}],
+          lookup: {
+            valueExpr: "id",
+            displayExpr: "display_name",
+            dataSource: {
+              store: new DevExpress.data.CustomStore({
+                key: "id",
+                load: () => {
+                  return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
+                    take: 100,
+                    type: type,
+                  });
+                },
+                byKey: (key) => {
+                  const d = new $.Deferred();
+                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint + key + '/')
+                    .done((result) => {
+                      d.resolve(result.data);
+                    });
+                  return d.promise();
+                },
+              }),
+            },
+          },
+        },
+
+        {
+          dataField: "display_name",
+        },
+        {
+          dataField: "start",
+          dataType: "date",
+        },
+        {
+          dataField: "finish",
+          dataType: "date",
+        },
+      ],
+    };
   },
 };
 

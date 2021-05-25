@@ -2,7 +2,9 @@ from django.urls import path, include
 from rest_framework import routers
 
 from attendees.persons.views import (
+    api_all_categories_viewset,
     api_all_relations_viewset,
+    api_categorized_pasts_viewset,
     api_assembly_meet_attendings_viewset,
     api_attendee_families_viewset,
     api_data_attendings_viewset,
@@ -88,6 +90,16 @@ router.register(
     'api/attendee_relationships',
     api_attendee_relationships_viewset,
     basename='relationship',
+)
+router.register(
+    'api/categorized_pasts',
+    api_categorized_pasts_viewset,
+    basename='past',
+)
+router.register(
+    'api/all_categories',
+    api_all_categories_viewset,
+    basename='category',
 )
 router.register(
     'api/related_attendees',
