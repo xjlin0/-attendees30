@@ -41,6 +41,7 @@ class PastAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
+    search_fields = ('id', 'display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('subject', 'category', 'display_order', 'display_name', 'start')
 

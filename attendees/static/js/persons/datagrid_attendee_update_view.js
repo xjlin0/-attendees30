@@ -80,7 +80,7 @@ Attendees.datagridUpdate = {
     };
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
-
+    Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
   },
 
   displayNotifiers: ()=> {
@@ -1600,7 +1600,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1369 ajax error here is response: ', response);
+          console.log('hi 1604 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1613,7 +1613,7 @@ Attendees.datagridUpdate = {
 //        return [Attendees.datagridUpdate.placePopupDxFormData.address];
 //      }else{
         const d = new $.Deferred();
-//        console.log("hi 1195 here is state key: ", key);
+//        console.log("hi 1617 here is state key: ", key);
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint, {id: key})
             .done((result) => {
                 d.resolve(result.data);
@@ -2148,6 +2148,7 @@ Attendees.datagridUpdate = {
       }),
     },
     onInitNewRow: (e) => {
+      console.log("hi 2151 could you init the default value of schedular? here is e: ", e);
       DevExpress.ui.notify(
         {
           message: "Let's create a relationship, click away or hit Enter to save. Hit Esc to quit without save",
@@ -2275,20 +2276,24 @@ Attendees.datagridUpdate = {
       {
         dataField: "scheduler",
         caption: "Can change main attendee's schedule",
-        dataType: "boolean",
+        dataType: "boolean", // Todo: 20210525 it's undefined when create new, causing display disturbance
       },
       {
         dataField: "emergency_contact",
         caption: 'Contact when Main attendee in emergency',
-        dataType: "boolean",
+        dataType: "boolean",  // Todo: 20210525 it's undefined when create new, causing display disturbance
       },
       {
         caption: 'Secret shared with you',
         dataField: 'infos.show_secret',
         calculateCellValue: (rowData) => {
-          const showSecret = rowData.infos.show_secret;
-          const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
-          return result;
+          if (rowData.infos){
+            const showSecret = rowData.infos.show_secret;
+            const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
+            return result;
+          } else {
+            return false;
+          }
         },
         dataType: 'boolean',
       },
@@ -2318,8 +2323,7 @@ Attendees.datagridUpdate = {
         store: new DevExpress.data.CustomStore({
           key: "id",
           load: () => {
-            params = {category__type: type};
-            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, params);
+            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: type});
           },
           byKey: (key) => {
             const d = new $.Deferred();
@@ -2331,7 +2335,7 @@ Attendees.datagridUpdate = {
           },
           update: (key, values) => {
             return $.ajax({
-              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/',
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
               method: "PATCH",
               dataType: 'json',
               contentType: "application/json; charset=utf-8",
@@ -2351,12 +2355,16 @@ Attendees.datagridUpdate = {
             });
           },
           insert: function (values) {
+            const contentType = {
+              content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
+              object_id: Attendees.datagridUpdate.attendeeId,
+            };
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
               method: "POST",
               dataType: 'json',
               contentType: "application/json; charset=utf-8",
-              data: JSON.stringify(values),
+              data: JSON.stringify({...values, ...contentType}),
               success: (result) => {
                 DevExpress.ui.notify(
                   {
@@ -2405,6 +2413,18 @@ Attendees.datagridUpdate = {
         allowAdding: Attendees.utilities.editingEnabled,
         allowDeleting: false,
       },
+      onRowUpdating: (rowData) => {
+        if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
+          const showSecret = rowData.oldData.infos.show_secret;
+          const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
+          if (isRelationshipSecretForCurrentUser) {
+            showSecret[Attendees.datagridUpdate.attendeeId] = rowData.newData.infos.show_secret;
+          } else {
+            delete showSecret[Attendees.datagridUpdate.attendeeId];
+          }
+          rowData.newData.infos.show_secret = showSecret;
+        }
+      },
       columns: [
         {
           dataField: "category",
@@ -2437,7 +2457,25 @@ Attendees.datagridUpdate = {
         {
           dataField: "display_name",
         },
-
+        {
+          caption: 'Secret shared with you',
+          dataField: 'infos.show_secret',
+          calculateCellValue: (rowData) => {
+            if (rowData.infos){
+              const showSecret = rowData.infos.show_secret;
+              const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
+              return result;
+            } else {
+              return false;
+            }
+          },
+          dataType: 'boolean',
+        },
+        {
+          dataField: "infos.comment",
+          caption: 'Comment',
+          dataType: "string",
+        },
         {
           dataField: "start",
           dataType: "date",

@@ -14,10 +14,11 @@ class ApiAllCategoriesViewsSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         categories_id = self.kwargs.get('pk')
+        type = self.request.query_params.get('type')
         if categories_id:
             return Category.objects.filter(pk=categories_id)
         else:
-            return Category.objects.order_by('display_order')
+            return Category.objects.filter(type=type).order_by('display_order')
 
 
 api_all_categories_viewset = ApiAllCategoriesViewsSet
