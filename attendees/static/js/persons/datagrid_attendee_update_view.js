@@ -59,6 +59,8 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
+
+      Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
     } else {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
@@ -66,14 +68,18 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
+
+      Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", {
-      mode: "cell",
+    editingArgs = {
+      mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
       allowDeleting: false,
-    });
+    };
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
 
   },
 
