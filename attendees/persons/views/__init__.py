@@ -2,8 +2,10 @@ from .api.all_relations import api_all_relations_viewset
 from .api.assembly_meet_attendings import api_assembly_meet_attendings_viewset
 from .api.data_attendings import api_data_attendings_viewset
 from .api.attendee_families import api_attendee_families_viewset
+from .api.attendee_relationships import api_attendee_relationships_viewset
 from .api.attendee_attendings import api_attendee_attendings_viewset
 from .api.datagrid_data_attendees import api_datagrid_data_attendees_viewset
+from .api.related_attendees import api_related_attendees_viewset
 from .api.datagrid_data_attendingmeet import api_datagrid_data_attendingmeet_viewset
 from .api.datagrid_data_attendee import api_datagrid_data_attendee_viewset
 from .api.datagrid_data_familyattendees import api_datagrid_data_familyattendees_viewset

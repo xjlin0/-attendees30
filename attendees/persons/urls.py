@@ -8,9 +8,11 @@ from attendees.persons.views import (
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
     api_datagrid_data_attendee_viewset,
+    api_related_attendees_viewset,
     api_datagrid_data_attendingmeet_viewset,
     api_assembly_meet_attendees_viewset,
     api_datagrid_data_familyattendees_viewset,
+    api_attendee_relationships_viewset,
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
@@ -81,6 +83,16 @@ router.register(
     'api/all_relations',
     api_all_relations_viewset,
     basename='relation',
+)
+router.register(
+    'api/attendee_relationships',
+    api_attendee_relationships_viewset,
+    basename='relationship',
+)
+router.register(
+    'api/related_attendees',
+    api_related_attendees_viewset,
+    basename='attendee',
 )
 router.register(
     'api/attendee_families',

@@ -44,12 +44,12 @@ Attendees.utilities = {
       });
   },  // jQuery toggle() from https://supportcenter.devexpress.com/ticket/details/t525231
 
-  trimBothKeyAndValue: (obj, keepEmpties=false) => {
+  trimBothKeyAndValueButKeepBasicContacts: (obj, keepEmpties=false) => {
     return Object.entries(obj).reduce((acc, curr) => {
       const [key, value] = curr;
-      const trimmedValue = value.trim();
+      const trimmedValue = value ? value.trim() : null;
 
-      if(keepEmpties || trimmedValue) {  // Will retain a single empty string as the only one empty key
+      if(keepEmpties || trimmedValue || trimmedValue in Attendees.utilities.basicContacts) {  // Will retain a single empty string as the only one empty key
         acc[key.trim()] = trimmedValue;  // acc[key.trim()] = typeof obj[key] == 'string'? obj[key].trim() : trimObj(obj[key]);
       }
       return acc;

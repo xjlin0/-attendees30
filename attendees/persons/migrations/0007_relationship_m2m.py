@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attendee',
             name='related_ones',
-            field=models.ManyToManyField(related_name='_attendee_relations_+', through='persons.Relationship', to='persons.Attendee'),
+            field=models.ManyToManyField(related_name='related_to', through='persons.Relationship', to='persons.Attendee'),
         ),
         migrations.AddConstraint(
             model_name='relationship',

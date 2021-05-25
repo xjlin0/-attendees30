@@ -59,6 +59,8 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
+
+      Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
     } else {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
@@ -66,14 +68,18 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
+
+      Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", {
-      mode: "cell",
+    editingArgs = {
+      mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
       allowDeleting: false,
-    });
+    };
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
 
   },
 
@@ -159,6 +165,7 @@ Attendees.datagridUpdate = {
       {
         colSpan: 4,
         itemType: "group",
+        cssClass: 'h6',
         caption: "Photo",
         items: [
 
@@ -222,6 +229,7 @@ Attendees.datagridUpdate = {
         colCount: 21,
         itemType: "group",
         name: "basic-info-container",
+        cssClass: 'h6',
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [],  // will populate later for dynamic contacts
       },
@@ -229,6 +237,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         caption: "Addresses",
+        cssClass: 'h6',
         itemType: "group",
         items: [
           {
@@ -304,6 +313,7 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         caption: "Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
         itemType: "group",
         items: [
           {
@@ -351,7 +361,27 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
+        caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "relationship_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => Attendees.datagridUpdate.initRelationshipDatagrid(data, itemElement),
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
         caption: "Groups",
+        cssClass: 'h6',
         itemType: "group",
         items: [
 
@@ -400,7 +430,7 @@ Attendees.datagridUpdate = {
               const userData = new FormData($('form#attendee-update-form')[0]);
               if(!$('input[name="photo"]')[0].value){userData.delete('photo')}
               const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
-              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValue(userInfos.contacts);  // remove emptied contacts
+              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
               userData.set('infos', JSON.stringify(userInfos));
               // userData._method = userData.id ? 'PUT' : 'POST';
 
@@ -561,7 +591,7 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: 'infos.contacts.nick_name',
+        dataField: 'infos.names.nick',
         label: {
           text: 'nick name',
         },
@@ -684,9 +714,9 @@ Attendees.datagridUpdate = {
                 if (Attendees.datagridUpdate.contactPopupDxForm.validate().isValid){
                   const currentInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos;
                   const newContact = Attendees.datagridUpdate.contactPopupDxForm.option('formData');
-                  const trimmedContact = Attendees.utilities.trimBothKeyAndValue(newContact);
-                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValue(currentInfos.contacts);  // remove emptied contacts
-                  currentInfos.contacts[trimmedContact.contactKey] = trimmedContact.contactValue;
+                  const trimmedNewContact = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(newContact);
+                  currentInfos.contacts = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(currentInfos.contacts);  // remove emptied contacts
+                  currentInfos.contacts[trimmedNewContact.contactKey] = trimmedNewContact.contactValue;
 
                 $.ajax({
                   url    : Attendees.datagridUpdate.attendeeAjaxUrl,
@@ -2024,6 +2054,215 @@ Attendees.datagridUpdate = {
 
 
 
+  },
+
+
+
+  ///////////////////////  Relationship Datagrid in main DxForm  ///////////////////////
+
+
+  initRelationshipDatagrid: (data, itemElement) => {
+    const $relationshipDatagrid = $("<div id='relationship-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.relationshipDatagridConfig);
+    itemElement.append($relationshipDatagrid);
+    Attendees.datagridUpdate.relationshipDatagrid = $relationshipDatagrid.dxDataGrid("instance");
+  },
+
+  relationshipDatagridConfig: {
+    dataSource: {
+      store: new DevExpress.data.CustomStore({
+        key: "id",
+        load: () => {
+          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint);
+        },
+        byKey: (key) => {
+          const d = new $.Deferred();
+          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/')
+            .done((result) => {
+              d.resolve(result.data);
+            });
+          return d.promise();
+        },
+        update: (key, values) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            method: "PATCH",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "update success, please reload page if changing family",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
+        },
+        insert: function (values) {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint,
+            method: "POST",
+            dataType:'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: "Create success, please find the new relationship in the table",
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, "success", 2000);
+            },
+          });
+        },
+      }),
+    },
+    onInitNewRow: (e) => {
+      DevExpress.ui.notify(
+        {
+          message: "Let's create a relationship, click away or hit Enter to save. Hit Esc to quit without save",
+          width: 500,
+          position: {
+            my: 'center',
+            at: 'center',
+            of: window,
+          }
+        }, "info", 3000);
+    },
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
+    columnResizingMode: 'nextColumn',
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    loadPanel: {
+      message: 'Fetching...',
+      enabled: true,
+    },
+    wordWrapEnabled: true,
+    grouping: {
+      autoExpandAll: true,
+    },
+    editing: {
+      mode: "cell",
+      allowUpdating: Attendees.utilities.editingEnabled,
+      allowAdding: Attendees.utilities.editingEnabled,
+      allowDeleting: false,
+    },
+    columns: [
+      {
+        dataField: "relation",
+        validationRules: [{ type: "required" }],
+        caption: 'Role',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "title",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 100});
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {relation_id: key})
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "to_attendee",
+        validationRules: [{ type: "required" }],
+        caption: 'Attendee',
+        lookup: {
+          valueExpr: "id",
+          displayExpr: (item) => {
+            return item ? '(' + item.gender[0] + ") " + item.infos.names.original : null;
+          },
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: (searchOpts) => {
+                const params = {};
+                if (searchOpts.searchValue) {
+                  const searchCondition = ['infos__names', searchOpts.searchOperation, searchOpts.searchValue];
+                  params.filter = JSON.stringify(searchCondition);
+                }
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint, params);
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint + key + '/')
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "in_family",
+        editorOptions: {
+          showClearButton: true,
+        },
+        caption: 'Family',
+        groupIndex: 0,
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint),
+              byKey: (key) => {
+                if(key) {
+                  $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint + key + '/');
+                }
+              },
+            }),
+          },
+        },
+      },
+      {
+        dataField: "scheduler",
+        caption: "Can change main attendee's schedule",
+        dataType: "boolean",
+      },
+      {
+        dataField: "emergency_contact",
+        caption: 'Contact when Main attendee in emergency',
+        dataType: "boolean",
+      },
+      {
+        caption: 'secret',
+        name: 'secret',
+        dataType: 'boolean',
+      },
+      {
+        dataField: "start",
+        dataType: "date",
+      },
+      {
+        dataField: "finish",
+        dataType: "date",
+      },
+    ],
   },
 };
 

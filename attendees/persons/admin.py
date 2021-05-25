@@ -34,8 +34,7 @@ class FamilyAttendeeInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    prepopulated_fields = {"slug": ("type", "display_name")}
-    list_display = ('id', 'type', 'display_name', 'slug', 'display_order', 'description')
+    list_display = ('id', 'type', 'display_name', 'display_order', 'infos')
 
 
 class PastAdmin(admin.ModelAdmin):
