@@ -2179,6 +2179,18 @@ Attendees.datagridUpdate = {
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
     },
+    onRowUpdating: (rowData) => {
+      if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
+        const showSecret = rowData.oldData.infos.show_secret;
+        const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
+        if (isRelationshipSecretForCurrentUser) {
+          showSecret[Attendees.datagridUpdate.attendeeId] = rowData.newData.infos.show_secret;
+        } else {
+          delete showSecret[Attendees.datagridUpdate.attendeeId];
+        }
+        rowData.newData.infos.show_secret = showSecret;
+      }
+    },
     columns: [
       {
         dataField: "relation",
@@ -2271,8 +2283,13 @@ Attendees.datagridUpdate = {
         dataType: "boolean",
       },
       {
-        caption: 'secret',
-        name: 'secret',
+        caption: 'Secret shared with you',
+        dataField: 'infos.show_secret',
+        calculateCellValue: (rowData) => {
+          const showSecret = rowData.infos.show_secret;
+          const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
+          return result;
+        },
         dataType: 'boolean',
       },
       {
@@ -2420,6 +2437,7 @@ Attendees.datagridUpdate = {
         {
           dataField: "display_name",
         },
+
         {
           dataField: "start",
           dataType: "date",
