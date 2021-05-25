@@ -74,7 +74,7 @@ class AttendeeService:
         :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
         """
 
-        # # Todo: need filter on attending_meet finish_date
+        # Todo: need filter on relationship finish_date?
 
         if querying_attendee_id:
             if current_user.privileged:

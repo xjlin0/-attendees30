@@ -2196,12 +2196,15 @@ Attendees.datagridUpdate = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: "id",
-              load: (e) => {
-                console.log("hi 2194, here is e: ", e);
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint);
+              load: (searchOpts) => {
+                const params = {};
+                if (searchOpts.searchValue) {
+                  const searchCondition = ['infos__names', searchOpts.searchOperation, searchOpts.searchValue];
+                  params.filter = JSON.stringify(searchCondition);
+                }
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint, params);
               },
               byKey: (key) => {
-                console.log("hi 2198 here is key: ", key);
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint + key + '/')
                   .done((result) => {
@@ -2215,7 +2218,9 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "in_family",
-        validationRules: [{ type: "required" }],
+        editorOptions: {
+          showClearButton: true,
+        },
         caption: 'Family',
         groupIndex: 0,
         lookup: {
@@ -2243,6 +2248,11 @@ Attendees.datagridUpdate = {
         dataField: "emergency_contact",
         caption: 'Contact when Main attendee in emergency',
         dataType: "boolean",
+      },
+      {
+        caption: 'secret',
+        name: 'secret',
+        dataType: 'boolean',
       },
       {
         dataField: "start",
