@@ -81,6 +81,7 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
   },
 
   displayNotifiers: ()=> {
@@ -394,6 +395,27 @@ Attendees.datagridUpdate = {
             },
             template: (data, itemElement) => {
               Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'education');
+            },
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_faith_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.faithDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'faith');
             },
           }
         ],
