@@ -631,6 +631,13 @@ Attendees.datagridUpdate = {
           text: 'email2',
         },
       },
+      {
+        colSpan: 7,
+        dataField: 'infos.fixed.allergy',
+        label: {
+          text: 'allergy',
+        },
+      },
     ];
 
     for (const contactKey in allContacts) {
@@ -1725,7 +1732,7 @@ Attendees.datagridUpdate = {
       allowDeleting: false,
     },
     onEditingStart: (info) => {
-      if (info.data.attendee.id === Attendees.datagridUpdate.attendeeId ) {
+      if (info.data.attendee && info.data.attendee.id === Attendees.datagridUpdate.attendeeId ) {
         info.cancel = true;
       }
     },
@@ -2147,8 +2154,11 @@ Attendees.datagridUpdate = {
         },
       }),
     },
+    onRowInserted: (e) => {
+      Attendees.datagridUpdate.relationshipDatagrid.refresh();  // or the new inserted to_attendee dxlookup won't show
+    },
     onInitNewRow: (e) => {
-      console.log("hi 2151 could you init the default value of schedular? here is e: ", e);
+      e.data.from_attendee = Attendees.datagridUpdate.attendeeId;
       DevExpress.ui.notify(
         {
           message: "Let's create a relationship, click away or hit Enter to save. Hit Esc to quit without save",
@@ -2276,12 +2286,18 @@ Attendees.datagridUpdate = {
       {
         dataField: "scheduler",
         caption: "Can change main attendee's schedule",
-        dataType: "boolean", // Todo: 20210525 it's undefined when create new, causing display disturbance
+        dataType: "boolean",
+        calculateCellValue: (rowData) => {
+          return rowData.scheduler ? rowData.scheduler : false;
+        },
       },
       {
         dataField: "emergency_contact",
         caption: 'Contact when Main attendee in emergency',
-        dataType: "boolean",  // Todo: 20210525 it's undefined when create new, causing display disturbance
+        dataType: "boolean",
+        calculateCellValue: (rowData) => {
+          return rowData.scheduler ? rowData.scheduler : false;
+        },
       },
       {
         caption: 'Secret shared with you',
