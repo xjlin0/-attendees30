@@ -8573,7 +8573,7 @@
       },
       "infos": {
         "fixed": {
-          "allergy": "peanuts"
+          "food_pref": "peanut allergy"
         },
         "names": {
           "nick": "\u5927\u5bf6",

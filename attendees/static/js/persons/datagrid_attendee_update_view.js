@@ -655,9 +655,9 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: 'infos.fixed.allergy',
+        dataField: 'infos.fixed.food_pref',
         label: {
-          text: 'allergy',
+          text: 'Food pref',
         },
       },
     ];
