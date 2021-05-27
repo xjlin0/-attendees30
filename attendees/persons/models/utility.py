@@ -34,6 +34,17 @@ class Utility:
         return {"fixed": {}, "contacts": {}}
 
     @staticmethod
+    def organization_infos():
+        return {
+                    "flags": {
+                      "attendance_to_past_keywords":  {}
+                    },
+                    "contacts": {},
+                    "counselor": [],
+                    "data_admins": []
+                  }
+
+    @staticmethod
     def attendee_infos():
         return {"names": {}, "fixed": {}, "contacts": {}}
 

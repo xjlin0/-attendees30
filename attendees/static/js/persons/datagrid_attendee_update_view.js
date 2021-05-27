@@ -136,7 +136,7 @@ Attendees.datagridUpdate = {
   },
 
   attachContactAddButton: () => {
-    $('<span>', {class: 'extra-contacts', css: {'margin-left': '1rem'}})
+    $('<span>', {class: 'extra-contacts float-right'})
       .dxButton({
         disabled: !Attendees.utilities.editingEnabled,
         elementAttr: {

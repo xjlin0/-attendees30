@@ -1203,6 +1203,12 @@
       "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "Chinese for Christ Church of Hayward",
       "infos": {
+        "flags": {
+          "opencc_convert": true,
+          "attendance_to_past_keywords":  {
+            "baptisee": 5,
+          }
+        },
         "contacts": {},
         "hostname": "192.168.99.100",
         "counselor": [
@@ -1225,7 +1231,12 @@
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
         "contacts": {},
-        "hostname": "heaven.heaven"
+        "flags": {
+          "attendance_to_past_keywords": {}
+        },
+        "hostname": "heaven.heaven",
+        "counselor": [],
+        "data_admins": []
       }
     }
   },

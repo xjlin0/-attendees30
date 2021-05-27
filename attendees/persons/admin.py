@@ -158,7 +158,7 @@ class RelationshipAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    search_fields = ('id', 'infos')
+    search_fields = ('id', 'infos', 'from_attendee__id', 'to_attendee__id')
     list_display_links = ('relation',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
