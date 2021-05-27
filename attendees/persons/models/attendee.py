@@ -136,13 +136,15 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
             GinIndex(fields=['progressions'], name='attendee_progressions_gin', ),
         ]
 
-    def save(self, *args, **kwargs):  # search works in either language
+    def save(self, *args, **kwargs):
         name = f"{self.first_name or ''} {self.last_name or ''}".strip()
         name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
         self.infos['names']['original'] = f"{name} {name2}".strip()
-        if settings.OPENCC_CONVERT:
+        if self.division.organization.infos.flags.opencc_convert: # Let search work in either language
             self.infos['names']['traditional'] = OpenCC('s2t').convert(name2)
             self.infos['names']['simplified'] = OpenCC('t2s').convert(name2)
+        # if self.division.organization.infos.flags.accent_convert:  # For Spanish, Not in V1
+        #     self.infos['names']['unaccented'] = converter(name)
         super(Attendee, self).save(*args, **kwargs)
 
     # class ReadonlyMeta:

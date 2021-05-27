@@ -1232,6 +1232,7 @@
       "infos": {
         "contacts": {},
         "flags": {
+          "opencc_convert": true,
           "attendance_to_past_keywords": {}
         },
         "hostname": "heaven.heaven",
