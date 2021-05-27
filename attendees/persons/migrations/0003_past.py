@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'persons_pasts',
-                'ordering': ('category__type', 'display_order', 'start'),
+                'ordering': ('category__type', 'display_order', 'category__display_order', 'start'),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),

@@ -80,7 +80,8 @@ Attendees.datagridUpdate = {
     };
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
-
+    Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
   },
 
   displayNotifiers: ()=> {
@@ -135,7 +136,7 @@ Attendees.datagridUpdate = {
   },
 
   attachContactAddButton: () => {
-    $('<span>', {class: 'extra-contacts', css: {'margin-left': '1rem'}})
+    $('<span>', {class: 'extra-contacts float-right'})
       .dxButton({
         disabled: !Attendees.utilities.editingEnabled,
         elementAttr: {
@@ -380,6 +381,48 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
+        caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_education_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'education');
+            },
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_faith_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.faithDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'faith');
+            },
+          }
+        ],
+      },
+      {
+        colSpan: 24,
+        colCount: 24,
         caption: "Groups",
         cssClass: 'h6',
         itemType: "group",
@@ -608,6 +651,13 @@ Attendees.datagridUpdate = {
         dataField: 'infos.contacts.email2',
         label: {
           text: 'email2',
+        },
+      },
+      {
+        colSpan: 7,
+        dataField: 'infos.fixed.allergy',
+        label: {
+          text: 'allergy',
         },
       },
     ];
@@ -1579,7 +1629,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1369 ajax error here is response: ', response);
+          console.log('hi 1604 ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1592,7 +1642,7 @@ Attendees.datagridUpdate = {
 //        return [Attendees.datagridUpdate.placePopupDxFormData.address];
 //      }else{
         const d = new $.Deferred();
-//        console.log("hi 1195 here is state key: ", key);
+//        console.log("hi 1617 here is state key: ", key);
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint, {id: key})
             .done((result) => {
                 d.resolve(result.data);
@@ -1704,7 +1754,7 @@ Attendees.datagridUpdate = {
       allowDeleting: false,
     },
     onEditingStart: (info) => {
-      if (info.data.attendee.id === Attendees.datagridUpdate.attendeeId ) {
+      if (info.data.attendee && info.data.attendee.id === Attendees.datagridUpdate.attendeeId ) {
         info.cancel = true;
       }
     },
@@ -2126,7 +2176,11 @@ Attendees.datagridUpdate = {
         },
       }),
     },
+    onRowInserted: (e) => {
+      Attendees.datagridUpdate.relationshipDatagrid.refresh();  // or the new inserted to_attendee dxlookup won't show
+    },
     onInitNewRow: (e) => {
+      e.data.from_attendee = Attendees.datagridUpdate.attendeeId;
       DevExpress.ui.notify(
         {
           message: "Let's create a relationship, click away or hit Enter to save. Hit Esc to quit without save",
@@ -2157,6 +2211,18 @@ Attendees.datagridUpdate = {
       allowUpdating: Attendees.utilities.editingEnabled,
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
+    },
+    onRowUpdating: (rowData) => {
+      if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
+        const showSecret = rowData.oldData.infos.show_secret;
+        const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
+        if (isRelationshipSecretForCurrentUser) {
+          showSecret[Attendees.datagridUpdate.attendeeId] = rowData.newData.infos.show_secret;
+        } else {
+          delete showSecret[Attendees.datagridUpdate.attendeeId];
+        }
+        rowData.newData.infos.show_secret = showSecret;
+      }
     },
     columns: [
       {
@@ -2243,15 +2309,30 @@ Attendees.datagridUpdate = {
         dataField: "scheduler",
         caption: "Can change main attendee's schedule",
         dataType: "boolean",
+        calculateCellValue: (rowData) => {
+          return rowData.scheduler ? rowData.scheduler : false;
+        },
       },
       {
         dataField: "emergency_contact",
         caption: 'Contact when Main attendee in emergency',
         dataType: "boolean",
+        calculateCellValue: (rowData) => {
+          return rowData.scheduler ? rowData.scheduler : false;
+        },
       },
       {
-        caption: 'secret',
-        name: 'secret',
+        caption: 'Secret shared with you',
+        dataField: 'infos.show_secret',
+        calculateCellValue: (rowData) => {
+          if (rowData.infos){
+            const showSecret = rowData.infos.show_secret;
+            const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
+            return result;
+          } else {
+            return false;
+          }
+        },
         dataType: 'boolean',
       },
       {
@@ -2263,6 +2344,186 @@ Attendees.datagridUpdate = {
         dataType: "date",
       },
     ],
+  },
+
+
+  ///////////////////////  Past Datagrids (dynamic) in main DxForm  ///////////////////////
+
+  initPastDatagrid: (data, itemElement, type) => {
+    const $pastDatagrid = $("<div id='" + type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(type));
+    itemElement.append($pastDatagrid);
+    return $pastDatagrid.dxDataGrid("instance");
+  },
+
+  pastDatagridConfig: (type) => {
+    return {
+      dataSource: {
+        store: new DevExpress.data.CustomStore({
+          key: "id",
+          load: () => {
+            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: type});
+          },
+          byKey: (key) => {
+            const d = new $.Deferred();
+            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/')
+              .done((result) => {
+                d.resolve(result.data);
+              });
+            return d.promise();
+          },
+          update: (key, values) => {
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
+              method: "PATCH",
+              dataType: 'json',
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify(values),
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'update ' + type + ' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    }
+                  }, "success", 2000);
+              },
+            });
+          },
+          insert: function (values) {
+            const contentType = {
+              content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
+              object_id: Attendees.datagridUpdate.attendeeId,
+            };
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
+              method: "POST",
+              dataType: 'json',
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify({...values, ...contentType}),
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'Create ' + type + ' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    }
+                  }, "success", 2000);
+              },
+            });
+          },
+        }),
+      },
+      onInitNewRow: (e) => {
+        DevExpress.ui.notify(
+          {
+            message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",
+            width: 500,
+            position: {
+              my: 'center',
+              at: 'center',
+              of: window,
+            }
+          }, "info", 3000);
+      },
+      allowColumnReordering: true,
+      columnAutoWidth: true,
+      allowColumnResizing: true,
+      columnResizingMode: 'nextColumn',
+      rowAlternationEnabled: true,
+      hoverStateEnabled: true,
+      loadPanel: {
+        message: 'Fetching...',
+        enabled: true,
+      },
+      wordWrapEnabled: true,
+      grouping: {
+        autoExpandAll: true,
+      },
+      editing: {
+        mode: "cell",
+        allowUpdating: Attendees.utilities.editingEnabled,
+        allowAdding: Attendees.utilities.editingEnabled,
+        allowDeleting: false,
+      },
+      onRowUpdating: (rowData) => {
+        if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
+          const showSecret = rowData.oldData.infos.show_secret;
+          const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
+          if (isRelationshipSecretForCurrentUser) {
+            showSecret[Attendees.datagridUpdate.attendeeId] = rowData.newData.infos.show_secret;
+          } else {
+            delete showSecret[Attendees.datagridUpdate.attendeeId];
+          }
+          rowData.newData.infos.show_secret = showSecret;
+        }
+      },
+      columns: [
+        {
+          dataField: "category",
+          validationRules: [{type: "required"}],
+          lookup: {
+            valueExpr: "id",
+            displayExpr: "display_name",
+            dataSource: {
+              store: new DevExpress.data.CustomStore({
+                key: "id",
+                load: () => {
+                  return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
+                    take: 100,
+                    type: type,
+                  });
+                },
+                byKey: (key) => {
+                  const d = new $.Deferred();
+                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint + key + '/')
+                    .done((result) => {
+                      d.resolve(result.data);
+                    });
+                  return d.promise();
+                },
+              }),
+            },
+          },
+        },
+
+        {
+          dataField: "display_name",
+        },
+        {
+          caption: 'Secret shared with you',
+          dataField: 'infos.show_secret',
+          calculateCellValue: (rowData) => {
+            if (rowData.infos){
+              const showSecret = rowData.infos.show_secret;
+              const result = !!(showSecret && showSecret[Attendees.datagridUpdate.attendeeId]);
+              return result;
+            } else {
+              return false;
+            }
+          },
+          dataType: 'boolean',
+        },
+        {
+          dataField: "infos.comment",
+          caption: 'Comment',
+          dataType: "string",
+        },
+        {
+          dataField: "start",
+          dataType: "date",
+        },
+        {
+          dataField: "finish",
+          dataType: "date",
+        },
+      ],
+    };
   },
 };
 

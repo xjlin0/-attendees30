@@ -101,6 +101,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 - [ ] implement secret/private relation/past general
 - [ ] Create new instance of Attendee update page
 - [ ] Move single attendee update page out of data assembly
+- [ ] Modularize bigger JS code in pages such as  single attendee update page, i.e. different blocks/user-settings for different groups
 - [ ] Create roaster page (no real-time update in v1)
-- [ ] Export directory booklet pdf
 - [ ] Audit log/history/vision of data
+- [ ] Export directory booklet pdf

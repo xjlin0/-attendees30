@@ -23,7 +23,7 @@ class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'persons_pasts'
-        ordering = ('category__type', 'display_order', 'start')
+        ordering = ('category__type', 'display_order', 'category__display_order', 'start')
         indexes = [
             GinIndex(fields=['infos'], name='past_infos_gin', ),
         ]

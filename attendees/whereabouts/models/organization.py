@@ -12,7 +12,7 @@ class Organization(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True, help_text="alphanumeric only")
     display_name = models.CharField(max_length=50, blank=False, null=False)
-    infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"hostname": "where the app deployed"}. Please keep {} here even no data')
+    infos = JSONField(null=True, blank=True, default=Utility.organization_infos, help_text='Example: {"hostname": "where the app deployed"}. Please keep {} here even no data')
 
     class Meta:
         db_table = 'whereabouts_organizations'
