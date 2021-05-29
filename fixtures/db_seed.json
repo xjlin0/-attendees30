@@ -30,7 +30,7 @@
     "pk": 1,
     "fields": {
       "event": 1,
-      "content_type": 51,
+      "content_type": 55,
       "object_id": 1,
       "distinction": "normal"
     }

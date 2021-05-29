@@ -92,16 +92,20 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
 ## Todo:
 
-- [x] server side process of Attendees list & search page
-- [x] AttendingMeet form of Attendee update page
-- [x] FamilyAttendee datagrid of Attendee update page
-- [x] Personal & family Address of Attendee update page
-- [x] Dynamic contacts of Attendee update page
-- [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
-- [ ] implement secret/private relation/past general
-- [ ] Create new instance of Attendee update page
+- [ ] attendee detail page
+  - [x] server side process of Attendees list & search page
+  - [x] AttendingMeet form of Attendee update page
+  - [x] FamilyAttendee datagrid of Attendee update page
+  - [x] Personal & family Address of Attendee update page
+  - [x] Dynamic contacts of Attendee update page
+  - [ ] Modularize bigger JS code in pages such as  single attendee update page, i.e. different blocks/user-settings for different groups
+  - [ ] Create new instance of Attendee & attending update page with params with meet
+  - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
+  - [x] implement secret/private relation/past general
 - [ ] Move single attendee update page out of data assembly
-- [ ] Modularize bigger JS code in pages such as  single attendee update page, i.e. different blocks/user-settings for different groups
+- [ ] Gathering list (new design with server side processing)
+- [ ] Attendance list (new design with server side processing)
+- [ ] Attending list (new design with server side processing)
 - [ ] Create roaster page (no real-time update in v1)
 - [ ] Audit log/history/vision of data
 - [ ] Export directory booklet pdf
