@@ -140,7 +140,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         name = f"{self.first_name or ''} {self.last_name or ''}".strip()
         name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
         self.infos['names']['original'] = f"{name} {name2}".strip()
-        if self.division.organization.infos.flags.opencc_convert: # Let search work in either language
+        if self.division.organization.infos.get('flags', {}).get('opencc_convert'):  # Let search work in either language
             self.infos['names']['traditional'] = OpenCC('s2t').convert(name2)
             self.infos['names']['simplified'] = OpenCC('t2s').convert(name2)
         # if self.division.organization.infos.flags.accent_convert:  # For Spanish, Not in V1
