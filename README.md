@@ -107,5 +107,6 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 - [ ] Attendance list (new design with server side processing)
 - [ ] Attending list (new design with server side processing)
 - [ ] Create roaster page (no real-time update in v1)
+- [ ] Coworker roaster, X: characters, Y: dates(gatherings)
 - [ ] Audit log/history/vision of data
 - [ ] Export directory booklet pdf
