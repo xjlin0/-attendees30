@@ -91,7 +91,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
 ## Todo:
-
+- [ ] make auth group not organization specific
 - [ ] attendee detail page
   - [x] server side process of Attendees list & search page
   - [x] AttendingMeet form of Attendee update page
