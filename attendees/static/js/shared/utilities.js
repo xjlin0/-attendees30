@@ -1,8 +1,10 @@
 Attendees.utilities = {
   editingEnabled: false,
+  userAuthGroups: {},
 
   init: () => {
     console.log("attendees/static/js/shared/utilities.js");
+    Attendees.utilities.userAuthGroups = $('body').data('user-auth-groups');
   },
 
   toggleEditingAndReturnStatus: (event) => {
