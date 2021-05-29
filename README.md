@@ -108,5 +108,10 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 - [ ] Attending list (new design with server side processing)
 - [ ] Create roaster page (no real-time update in v1)
 - [ ] Coworker roaster, X: characters, Y: dates(gatherings)
-- [ ] Audit log/history/vision of data
+- [ ] Audit log/history/vision of data: django-pghistory maybe
+- [ ] upgrade to Django 3.2LTS or 4
+   -[ ] use Django JSONField instead of Postgres JSONField
+   -[ ] decide async or not (uvicorn high CPU usage)
+- [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
+- [ ] i18n Translation on model data, django-parler maybe?
