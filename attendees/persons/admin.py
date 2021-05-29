@@ -41,6 +41,7 @@ class PastAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
+    # Todo 20210528  combine with NoteAdmin's show_secret
     search_fields = ('id', 'display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('subject', 'category', 'display_order', 'display_name', 'start')
@@ -149,7 +150,7 @@ class NoteAdmin(SummernoteModelAdmin):
                         (Q(category='counseling') and (Q(infos__can_access__contains=request.user.attendee_uuid_str())
                                                        |
                                                        Q(infos__can_access__contains=Note.ALL_COUNSELORS))
-                         )
+                         )  # Todo 20210528 need to combine with Past.infos.show_secret and organization check
             )
         return qs.exclude(category=Note.COUNSELING)
 

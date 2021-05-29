@@ -13,6 +13,7 @@ class Division(TimeStampedModel, SoftDeletableModel, Utility):
     display_name = models.CharField(max_length=50, blank=False, null=False)
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True)
     audience_auth_group = models.ForeignKey('auth.Group', null=False, blank=False, help_text='which auth group does the joining general participant belong to?', on_delete=models.SET(0))
+    #  Todo 20210529: rename division of "data" to "organizational"
 
     class Meta:
         db_table = 'whereabouts_divisions'
