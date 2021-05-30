@@ -122,6 +122,7 @@ Attendees.datagridUpdate = {
     $.ajax({
       url    : Attendees.datagridUpdate.attendeeAjaxUrl,
       success: (response) => {
+                 Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
                  Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{names:{},contacts:{}}};
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
                  Attendees.datagridUpdate.showSecretKey = Attendees.utilities.userAttendeeId + Attendees.datagridUpdate.attendeeFormConfigs.formData.organization_slug;
@@ -156,15 +157,8 @@ Attendees.datagridUpdate = {
       }).appendTo($('span.dx-form-group-caption')[1]);  // basic info block is at index 1
   },
 
-  attendeeFormConfigs: {
-    readOnly: !Attendees.utilities.editingEnabled,
-    onContentReady: () => {
-      $('div.spinner-border').hide();
-      Attendees.utilities.toggleDxFormGroups();
-    },
-    colCount: 24,
-    formData: null, // will be fetched
-    items: [
+  getAttendeeFormConfigs: () => {
+    const originalItems = [
       {
         colSpan: 4,
         itemType: "group",
@@ -180,12 +174,15 @@ Attendees.datagridUpdate = {
               showColon: false,
             },
             template: (data, itemElement) => {
-              if (data.editorOptions && data.editorOptions.value){
+              if (data.editorOptions && data.editorOptions.value) {
                 const $img = $('<img>', {src: data.editorOptions.value, class: 'attendee-photo-img'});
                 const $imgLink = $('<a>', {href: data.editorOptions.value, target: '_blank'});
                 itemElement.append($imgLink.append($img));
                 // Todo: add check/uncheck photo-clear feature, store img link in data attributes when marking deleted
-                const $inputDiv = $('<div>', {class: 'form-check', title: "If checked, it'll be deleted when you save"});
+                const $inputDiv = $('<div>', {
+                  class: 'form-check',
+                  title: "If checked, it'll be deleted when you save"
+                });
                 const $clearInput = $('<input>', {
                   id: 'photo-clear',
                   disabled: !Attendees.utilities.editingEnabled,
@@ -194,33 +191,40 @@ Attendees.datagridUpdate = {
                   class: 'form-check-input',
                   onclick: "return confirm('Are you sure?')"
                 });
-                const $clearInputLabel = $('<label>', {for: 'photo-clear', text: 'delete photo', class: 'form-check-label'});
+                const $clearInputLabel = $('<label>', {
+                  for: 'photo-clear',
+                  text: 'delete photo',
+                  class: 'form-check-label'
+                });
                 $inputDiv.append($clearInput);
                 $inputDiv.append($clearInputLabel);
                 itemElement.append($inputDiv);
               } else {
-                $('<img>', {src: Attendees.datagridUpdate.attendeeAttrs.dataset.emptyImageLink, class: 'attendee-photo-img'}).appendTo(itemElement);
+                $('<img>', {
+                  src: Attendees.datagridUpdate.attendeeAttrs.dataset.emptyImageLink,
+                  class: 'attendee-photo-img'
+                }).appendTo(itemElement);
               }
             },
           },
           {
             template: (data, itemElement) => {
               photoFileUploader = $("<div>").attr("id", "dxfu1").dxFileUploader(
-              {
-                name: 'photo',
-                disabled: !Attendees.utilities.editingEnabled,
-                selectButtonText: "Select photo",
-//                  labelText: "hi5",
-                accept: "image/*",
-                multiple: false,
-                uploadMode: "useForm",
-                onValueChanged: (e) => {
-                  if (e.value.length) {
-                    $('img.attendee-photo-img')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
-                    Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
-                  }
-                },
-              });
+                {
+                  name: 'photo',
+                  disabled: !Attendees.utilities.editingEnabled,
+                  selectButtonText: "Select photo",
+                  //                  labelText: "hi5",
+                  accept: "image/*",
+                  multiple: false,
+                  uploadMode: "useForm",
+                  onValueChanged: (e) => {
+                    if (e.value.length) {
+                      $('img.attendee-photo-img')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
+                      Attendees.datagridUpdate.attendeeFormConfigs.formData['photo'] = e.value[0];
+                    }
+                  },
+                });
               Attendees.datagridUpdate.attendeePhotoFileUploader = photoFileUploader.dxFileUploader("instance");
               itemElement.append(photoFileUploader);
             },
@@ -278,7 +282,7 @@ Attendees.datagridUpdate = {
                   'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
                   class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                   value: place.id,
-                  text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
+                  text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
                 });
                 $personalLi = $personalLi.append($button);
               });
@@ -293,7 +297,10 @@ Attendees.datagridUpdate = {
                   'data-object-id': family.id,
                 });
 
-                let $familyLi = $('<li>', {class: 'list-group-item', text: family.display_name}).append($familyNewButton);
+                let $familyLi = $('<li>', {
+                  class: 'list-group-item',
+                  text: family.display_name
+                }).append($familyNewButton);
 
                 familyattendee.family.places.forEach(place => {
                   const $button = $('<button>', {
@@ -301,7 +308,7 @@ Attendees.datagridUpdate = {
                     'data-level': 'family address of ' + family.display_name,
                     class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                     value: place.id,
-                    text: (place.display_name ? place.display_name + ': ' : '' ) + (place.street || '').replace(', USA', ''),
+                    text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
                   });
                   $familyLi = $familyLi.append($button);
                 });
@@ -334,7 +341,7 @@ Attendees.datagridUpdate = {
                 type: 'button',
                 class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
               }).appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
+              if (data.editorOptions && data.editorOptions.value) {
                 data.editorOptions.value.forEach(familyAttendee => {
                   if (familyAttendee && typeof familyAttendee === 'object') {
                     $("<button>", {
@@ -362,6 +369,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
+        onlyShowsToGroups: ['children_organizer', 'data_counselor'],
         colSpan: 24,
         colCount: 24,
         caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -381,6 +389,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
+        onlyShowsToGroups: ['children_organizer', 'data_counselor'],
         colSpan: 24,
         colCount: 24,
         caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -402,6 +411,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
+        onlyShowsToGroups: ['data_counselor'],
         colSpan: 24,
         colCount: 24,
         caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -437,8 +447,13 @@ Attendees.datagridUpdate = {
               text: 'joins',
             },
             template: (data, itemElement) => {
-              $("<button>").attr({disabled: !Attendees.utilities.editingEnabled, title: "+ Add a new meet", type: 'button', class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "}).text("Attend new +").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value){
+              $("<button>").attr({
+                disabled: !Attendees.utilities.editingEnabled,
+                title: "+ Add a new meet",
+                type: 'button',
+                class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "
+              }).text("Attend new +").appendTo(itemElement);
+              if (data.editorOptions && data.editorOptions.value) {
                 data.editorOptions.value.forEach(attending => {
                   if (attending && attending.attendingmeet_id) {
                     const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
@@ -470,48 +485,71 @@ Attendees.datagridUpdate = {
           type: "default",
           useSubmitBehavior: false,
           onClick: (e) => {
-            if (confirm("Are you sure?")){
+            if (confirm("Are you sure?")) {
 
               const userData = new FormData($('form#attendee-update-form')[0]);
-              if(!$('input[name="photo"]')[0].value){userData.delete('photo')}
+              if (!$('input[name="photo"]')[0].value) {
+                userData.delete('photo')
+              }
               const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
               userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
               userData.set('infos', JSON.stringify(userInfos));
               // userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
-                url    : Attendees.datagridUpdate.attendeeAjaxUrl,
+                url: Attendees.datagridUpdate.attendeeAjaxUrl,
                 contentType: false,
                 processData: false,
                 dataType: 'json',
-                data   : userData,
-                method : Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
+                data: userData,
+                method: Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
-                           console.log("success here is response: ", response);
-                           const parser = new URL(window.location);
-                           parser.searchParams.set('success', 'Saving attendee success');
-                           window.location = parser.href;
-                         },
-                error  : (response) => {
-                           console.log('Failed to save data for main AttendeeForm, error: ', response);
-                           console.log('formData: ', [...userData]);
-                           DevExpress.ui.notify(
-                             {
-                               message: "saving attendee error",
-                               width: 500,
-                               position: {
-                                my: 'center',
-                                at: 'center',
-                                of: window,
-                               }
-                              }, "error", 5000);
+                  console.log("success here is response: ", response);
+                  const parser = new URL(window.location);
+                  parser.searchParams.set('success', 'Saving attendee success');
+                  window.location = parser.href;
+                },
+                error: (response) => {
+                  console.log('Failed to save data for main AttendeeForm, error: ', response);
+                  console.log('formData: ', [...userData]);
+                  DevExpress.ui.notify(
+                    {
+                      message: "saving attendee error",
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      }
+                    }, "error", 5000);
                 },
               });
             }
           }
         },
       },
-    ]
+    ];
+    return {
+      readOnly: !Attendees.utilities.editingEnabled,
+      onContentReady: () => {
+        $('div.spinner-border').hide();
+        Attendees.utilities.toggleDxFormGroups();
+      },
+      colCount: 24,
+      formData: null, // will be fetched
+      items: originalItems.filter(item => {
+        let allowed = true;
+        if ('onlyShowsToGroups' in item){
+          allowed = false;
+          item.onlyShowsToGroups.forEach(allowedGroup => {
+            if (allowedGroup in Attendees.utilities.userAuthGroups) {
+              return true;
+            }
+          });
+        }
+        return allowed;
+      }),
+    };
   },
 
   populateBasicInfoBlock: (allContacts=Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts) => {
