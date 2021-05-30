@@ -40,8 +40,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='attendance',
-            constraint=models.UniqueConstraint(fields=('gathering', 'attending', 'character', 'team'),
-                                               name='gathering_attending_character_team'),
+            constraint=models.UniqueConstraint(fields=('gathering', 'attending', 'character', 'team'), condition=models.Q(is_removed=False), name='gathering_attending_character_team'),
         ),
         migrations.AddIndex(
             model_name='attendance',

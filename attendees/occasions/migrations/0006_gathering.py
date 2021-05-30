@@ -40,6 +40,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='gathering',
-            constraint=models.UniqueConstraint(fields=('meet_id', 'site_type_id', 'site_id', 'start'), name='uniq_meet_location_time'),
+            constraint=models.UniqueConstraint(fields=('meet_id', 'site_type_id', 'site_id', 'start'), condition=models.Q(is_removed=False), name='uniq_meet_location_time'),
         ),
     ]

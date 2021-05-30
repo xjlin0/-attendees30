@@ -44,5 +44,5 @@ class MenuAuthGroup(TimeStampedModel, SoftDeletableModel):
     class Meta:
         db_table = 'users_menu_auth_groups'
         constraints = [
-            models.UniqueConstraint(fields=['auth_group', 'menu'], name="auth_group_menu")
+            models.UniqueConstraint(fields=['auth_group', 'menu'], condition=models.Q(is_removed=False), name="auth_group_menu")
         ]

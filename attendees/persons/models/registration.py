@@ -34,7 +34,7 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'persons_registrations'
         ordering = ('assembly', 'main_attendee__last_name', 'main_attendee__first_name')
         constraints = [
-            models.UniqueConstraint(fields=['assembly', 'main_attendee'], name="assembly_main_attendee")
+            models.UniqueConstraint(fields=['assembly', 'main_attendee'], condition=models.Q(is_removed=False), name="assembly_main_attendee")
         ]
         indexes = [
             GinIndex(fields=['infos'], name='registration_infos_gin', ),

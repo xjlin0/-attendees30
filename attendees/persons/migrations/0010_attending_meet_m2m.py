@@ -40,6 +40,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='attendingmeet',
-            constraint=models.UniqueConstraint(fields=('attending', 'meet'), name='attending_meet'),
+            constraint=models.UniqueConstraint(fields=('attending', 'meet'), condition=models.Q(is_removed=False), name='attending_meet'),
         ),
     ]

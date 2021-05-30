@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='familyattendee',
-            constraint=models.UniqueConstraint(fields=('family', 'attendee'), name='family_attendee'),
+            constraint=models.UniqueConstraint(fields=('family', 'attendee'), condition=models.Q(is_removed=False), name='family_attendee'),
         ),
         migrations.AddField(
             model_name='family',

@@ -21,7 +21,7 @@ class AttendingMeet(TimeStampedModel, SoftDeletableModel, Utility):
     class Meta:
         db_table = 'persons_attending_meets'
         constraints = [
-            models.UniqueConstraint(fields=['attending', 'meet'], name="attending_meet")
+            models.UniqueConstraint(fields=['attending', 'meet'], condition=models.Q(is_removed=False), name="attending_meet")
         ]
 
     def __str__(self):

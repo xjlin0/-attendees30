@@ -94,7 +94,7 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
     class Meta:
         db_table = 'users_menus'
         # constraints = [
-        #     models.UniqueConstraint(fields=['organization', 'category', 'html_type', 'url_name'], name="organization_category_html_type_url_name")
+        #     models.UniqueConstraint(fields=['organization', 'category', 'html_type', 'url_name'], condition=models.Q(is_removed=False), name="organization_category_html_type_url_name")
         # ]
 
 # Todo: Raise ValueError if the instance.get_level() > 1 due to Boostrap 4 dropdown-submenu limit, or smartmenus will be needed.

@@ -18,5 +18,5 @@ class FamilyAttendee(TimeStampedModel, SoftDeletableModel):
         db_table = 'persons_family_attendees'
         ordering = ('display_order', )
         constraints = [
-            models.UniqueConstraint(fields=['family', 'attendee'], name="family_attendee")
+            models.UniqueConstraint(fields=['family', 'attendee'], condition=models.Q(is_removed=False), name="family_attendee")
         ]

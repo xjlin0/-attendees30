@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='menuauthgroup',
-            constraint=models.UniqueConstraint(fields=('auth_group', 'menu'), name='auth_group_menu'),
+            constraint=models.UniqueConstraint(fields=('auth_group', 'menu'), condition=models.Q(is_removed=False), name='auth_group_menu'),
         ),
         migrations.AddField(
             model_name='menu',

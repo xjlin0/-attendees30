@@ -43,6 +43,6 @@ class Migration(migrations.Migration):
         ),
         # migrations.AddConstraint(
         #     model_name='menu',
-        #     constraint=models.UniqueConstraint(fields=('organization', 'category', 'html_type', 'url_name'), name='organization_category_html_type_url_name'),
+        #     constraint=models.UniqueConstraint(fields=('organization', 'category', 'html_type', 'url_name'), condition=models.Q(is_removed=False), name='organization_category_html_type_url_name'),
         # ),
     ]

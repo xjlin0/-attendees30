@@ -28,7 +28,7 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'whereabouts_places'
         ordering = ('content_type', 'object_id', 'display_order',)
         constraints = [
-            models.UniqueConstraint(fields=['content_type', 'object_id', 'address', 'address_extra'], name="address_object")
+            models.UniqueConstraint(fields=['content_type', 'object_id', 'address', 'address_extra'], condition=models.Q(is_removed=False), name="address_object")
         ]
         indexes = [
             GinIndex(fields=['infos'], name='place_infos_gin', ),

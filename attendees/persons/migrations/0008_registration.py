@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='registration',
-            constraint=models.UniqueConstraint(fields=('assembly', 'main_attendee'), name='assembly_main_attendee'),
+            constraint=models.UniqueConstraint(fields=('assembly', 'main_attendee'), condition=models.Q(is_removed=False), name='assembly_main_attendee'),
         ),
         migrations.AddIndex(
             model_name='registration',
