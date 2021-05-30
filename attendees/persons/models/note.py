@@ -5,10 +5,12 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from model_utils.models import UUIDModel, TimeStampedModel, SoftDeletableModel
 
+from attendees.persons.models import Utility
+
 
 class Note(UUIDModel, TimeStampedModel, SoftDeletableModel):
     COUNSELING = 'counseling'  # for private data, and only assigned counselors
-    ALL_COUNSELORS = 'all_counselors'  # for private data, but accessible to all counselors
+    ALL_COUNSELORS = 'all_counselors_'  # for private data, but accessible to all counselors
 
     content_type = models.ForeignKey(ContentType, on_delete=models.SET(0))
     object_id = models.CharField(max_length=36)
@@ -16,7 +18,7 @@ class Note(UUIDModel, TimeStampedModel, SoftDeletableModel):
     category = models.CharField(max_length=20, default='normal', blank=False, null=False, db_index=True, help_text="normal, for-address, etc")
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
     body = models.TextField()
-    infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"owner": "John"}. Please keep {} here even no data')
+    infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"owner": "John"}. Please keep {} here even no data')
 
     def __str__(self):
         return '%s %s %s' % (self.content_type, self.content_object, self.category)

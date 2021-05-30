@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='relationship',
-            constraint=models.UniqueConstraint(fields=('from_attendee', 'to_attendee', 'relation'), name='attendee_relation'),
+            constraint=models.UniqueConstraint(fields=('from_attendee', 'to_attendee', 'relation'), condition=models.Q(is_removed=False), name='attendee_relation'),
         ),
         migrations.AddIndex(
             model_name='relationship',

@@ -10,8 +10,10 @@ from attendees.users.authorization.route_guard import SpyGuard
 class ApiCategorizedPastsViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewSet):
     """
     API endpoint that allows Past(history/experience) to be viewed or edited.
+    Todo 20210529 need to check user menu auth groups before showing/changing data
     """
     serializer_class = PastSerializer
+    menu_name = 'api_categorized_pasts_viewset'  # for checking permissions
 
     def get_queryset(self):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))

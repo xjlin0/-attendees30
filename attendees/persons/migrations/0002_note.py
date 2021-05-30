@@ -6,6 +6,8 @@ from django.contrib.postgres.fields.jsonb import JSONField
 import django.utils.timezone
 import model_utils.fields
 
+from attendees.persons.models import Utility
+
 
 class Migration(migrations.Migration):
 
@@ -26,7 +28,7 @@ class Migration(migrations.Migration):
                 ('object_id', models.CharField(max_length=36)),
                 ('category', models.CharField(default='normal', help_text='normal, for-address, etc', max_length=20, blank=False, null=False, db_index=True)),
                 ('body', models.TextField()),
-                ('infos', JSONField(blank=True, default=dict, help_text='Example: {"owner": "John"}. Please keep {} here even no data', null=True)),
+                ('infos', JSONField(blank=True, default=Utility.relationship_infos, help_text='Example: {"owner": "John"}. Please keep {} here even no data', null=True)),
             ],
             options={
                 'db_table': 'persons_notes',
