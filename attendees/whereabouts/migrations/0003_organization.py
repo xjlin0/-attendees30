@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('slug', models.SlugField(help_text='alphanumeric only', max_length=50, unique=True)),
                 ('display_name', models.CharField(max_length=50)),
-                ('infos', JSONField(blank=True, default=dict, help_text='Example: {"hostname": "where the app deployed"}. Please keep {} here even no data', null=True)),
+                ('infos', JSONField(blank=True, default=attendees.persons.models.utility.Utility.organization_infos, help_text='Example: {"hostname": "where the app deployed"}. Please keep {} here even no data', null=True)),
             ],
             options={
                 'db_table': 'whereabouts_organizations',

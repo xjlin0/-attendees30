@@ -46,6 +46,17 @@ class PastAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('subject', 'category', 'display_order', 'display_name', 'start')
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
+        return qs.filter(
+            Q(**requester_permission)
+            |
+            Q(infos__show_secret={})
+        )
+
 
 class FamilyAdmin(admin.ModelAdmin):
     formfield_overrides = {
@@ -144,13 +155,15 @@ class NoteAdmin(SummernoteModelAdmin):
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
         if request.user.is_counselor():
+            requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
+            counselor_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS + request.user.organization.slug: True}
             return qs.filter(
-                        ~Q(category='counseling')
+                        ~Q(category=Note.COUNSELING)
                           |
-                        (Q(category='counseling') and (Q(infos__can_access__contains=request.user.attendee_uuid_str())
-                                                       |
-                                                       Q(infos__can_access__contains=Note.ALL_COUNSELORS))
-                         )  # Todo 20210528 need to combine with Past.infos.show_secret and organization check
+                        (Q(category=Note.COUNSELING) and (Q(**requester_permission)
+                                                          |
+                                                          Q(**counselor_permission))
+                         )
             )
         return qs.exclude(category=Note.COUNSELING)
 

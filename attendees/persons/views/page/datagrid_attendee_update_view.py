@@ -28,7 +28,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
-        current_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
+        targeting_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
@@ -47,7 +47,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'attendee_families_endpoint': f"/persons/api/attendee_families/",
             'attendings_endpoint': '/persons/api/attendee_attendings/',
             'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
-            'targeting_attendee_id': current_attendee_id,
+            'targeting_attendee_id': targeting_attendee_id,
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,

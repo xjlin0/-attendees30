@@ -21,7 +21,7 @@ class Relationship(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     class Meta:
         db_table = 'persons_relationships'
         constraints = [
-            models.UniqueConstraint(fields=['from_attendee', 'to_attendee', 'relation'], name="attendee_relation")
+            models.UniqueConstraint(fields=['from_attendee', 'to_attendee', 'relation'], condition=models.Q(is_removed=False), name="attendee_relation")
         ]
         indexes = [
             GinIndex(fields=['infos'], name='relationship_infos_gin', ),
