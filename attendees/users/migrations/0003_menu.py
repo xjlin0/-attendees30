@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
-                ('category', models.CharField(default='main', help_text="Type of menu, such as 'main', 'side', etc", max_length=32)),
+                ('category', models.CharField(default='main', help_text="Type of menu, such as 'main', 'side', etc", db_index=True, max_length=32)),
                 ('html_type', models.CharField(blank=False, help_text="HTML tags such as div or a", max_length=50, null=False)),
                 ('urn', models.CharField(blank=True, help_text="use relative path (including leading & ending slash '/') such as /app/division/assembly/page-name", max_length=255, null=True)),
                 ('url_name', models.SlugField(blank=False, null=False, db_index=True, help_text="view name of the path, such as 'assembly_attendances', 'divider between index and register links', etc", max_length=255)),

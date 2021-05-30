@@ -786,7 +786,7 @@
       },
       "lft": 1,
       "rght": 18,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 0
     }
   },
@@ -811,7 +811,7 @@
       },
       "lft": 16,
       "rght": 17,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -836,7 +836,7 @@
       },
       "lft": 14,
       "rght": 15,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -864,7 +864,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 2,
+      "tree_id": 5,
       "level": 0
     }
   },
@@ -888,7 +888,7 @@
       },
       "lft": 10,
       "rght": 11,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -913,7 +913,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 2,
+      "tree_id": 5,
       "level": 1
     }
   },
@@ -938,7 +938,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 2,
+      "tree_id": 5,
       "level": 1
     }
   },
@@ -962,7 +962,7 @@
       },
       "lft": 12,
       "rght": 13,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -986,7 +986,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 2,
+      "tree_id": 5,
       "level": 1
     }
   },
@@ -1014,7 +1014,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 3,
+      "tree_id": 6,
       "level": 0
     }
   },
@@ -1039,7 +1039,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 3,
+      "tree_id": 6,
       "level": 1
     }
   },
@@ -1064,7 +1064,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 3,
+      "tree_id": 6,
       "level": 1
     }
   },
@@ -1089,7 +1089,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 3,
+      "tree_id": 6,
       "level": 1
     }
   },
@@ -1114,7 +1114,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -1139,7 +1139,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -1164,7 +1164,7 @@
       },
       "lft": 8,
       "rght": 9,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
     }
   },
@@ -1189,8 +1189,74 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 20,
+    "fields": {
+      "created": "2021-05-30T22:58:10.048Z",
+      "modified": "2021-05-30T22:58:10.048Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "api",
+      "parent": null,
+      "html_type": "api",
+      "urn": "/persons/api/attendee_relationships/",
+      "url_name": "api_attendee_relationships_viewset",
+      "display_name": "api_attendee_relationships_viewset",
+      "display_order": 0,
+      "infos": {},
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 1,
+      "level": 0
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 21,
+    "fields": {
+      "created": "2021-05-30T23:04:38.258Z",
+      "modified": "2021-05-30T23:04:38.258Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "api",
+      "parent": null,
+      "html_type": "api",
+      "urn": "/persons/api/categorized_pasts/?category__type=education",
+      "url_name": "api_categorized_pasts_viewset_education",
+      "display_name": "api_categorized_pasts_viewset_education",
+      "display_order": 0,
+      "infos": {},
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 2,
+      "level": 0
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 22,
+    "fields": {
+      "created": "2021-05-30T23:05:59.529Z",
+      "modified": "2021-05-30T23:05:59.529Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "api",
+      "parent": null,
+      "html_type": "api",
+      "urn": "/persons/api/categorized_pasts/?category__type=faith",
+      "url_name": "api_categorized_pasts_viewset_faith",
+      "display_name": "api_categorized_pasts_viewset_faith",
+      "display_order": 0,
+      "infos": {},
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 3,
+      "level": 0
     }
   },
   {
@@ -1205,7 +1271,7 @@
       "infos": {
         "flags": {
           "opencc_convert": true,
-          "attendance_to_past_keywords":  {
+          "attendance_to_past_keywords": {
             "baptisee": 5
           }
         },
@@ -1230,11 +1296,11 @@
       "slug": "faBd6C_heaven",
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
-        "contacts": {},
         "flags": {
           "opencc_convert": true,
           "attendance_to_past_keywords": {}
         },
+        "contacts": {},
         "hostname": "heaven.heaven",
         "counselor": [],
         "data_admins": []
@@ -1955,10 +2021,10 @@
       "created": "2021-05-22T22:20:43.067Z",
       "modified": "2021-05-22T22:25:39.965Z",
       "is_removed": false,
-      "infos": {},
       "type": "education",
+      "display_order": 0,
       "display_name": "College",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -1968,10 +2034,10 @@
       "created": "2021-05-22T22:25:26.760Z",
       "modified": "2021-05-22T22:25:26.760Z",
       "is_removed": false,
-      "infos": {},
       "type": "education",
+      "display_order": 0,
       "display_name": "Postgraduate",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -1981,10 +2047,10 @@
       "created": "2021-05-23T12:55:51.864Z",
       "modified": "2021-05-23T12:59:01.791Z",
       "is_removed": false,
-      "infos": {},
       "type": "faith",
+      "display_order": 0,
       "display_name": "believe",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -1994,10 +2060,10 @@
       "created": "2021-05-23T12:56:31.387Z",
       "modified": "2021-05-23T12:59:36.666Z",
       "is_removed": false,
-      "infos": {},
       "type": "faith",
+      "display_order": 0,
       "display_name": "accept",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2007,10 +2073,10 @@
       "created": "2021-05-23T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "faith",
+      "display_order": 0,
       "display_name": "baptized",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2020,10 +2086,10 @@
       "created": "2021-05-20T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "attendance",
+      "display_order": 0,
       "display_name": "scheduled",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2033,10 +2099,10 @@
       "created": "2021-05-20T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "attendance",
+      "display_order": 0,
       "display_name": "confirmed",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2046,10 +2112,10 @@
       "created": "2021-05-20T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "attendance",
+      "display_order": 0,
       "display_name": "cancelled",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2059,10 +2125,10 @@
       "created": "2021-05-20T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "attendance",
+      "display_order": 0,
       "display_name": "attended",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2072,10 +2138,10 @@
       "created": "2021-05-20T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "infos": {},
       "type": "attendance",
+      "display_order": 0,
       "display_name": "absent",
-      "display_order": 0
+      "infos": {}
     }
   },
   {
@@ -2090,14 +2156,14 @@
       "start": "2021-05-23T13:03:32Z",
       "finish": null,
       "category": 2,
-      "file": null,
       "display_order": 30000,
       "display_name": "secret to hagar(if user#2 created)",
+      "file": "",
       "infos": {
-        "organization": "d7c8Fd_cfcc_hayward",
         "show_secret": {
           "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9d7c8Fd_cfcc_hayward": true
-        }
+        },
+        "organization": "d7c8Fd_cfcc_hayward"
       }
     }
   },
@@ -2113,12 +2179,12 @@
       "start": "2021-05-23T13:02:45Z",
       "finish": null,
       "category": 1,
-      "file": null,
       "display_order": 30000,
       "display_name": "where and major",
+      "file": "",
       "infos": {
-        "organization": "d7c8Fd_cfcc_hayward",
-        "show_secret": {}
+        "show_secret": {},
+        "organization": "d7c8Fd_cfcc_hayward"
       }
     }
   },
@@ -2134,12 +2200,12 @@
       "start": "2021-05-23T13:14:15Z",
       "finish": null,
       "category": 5,
-      "file": null,
       "display_order": 30000,
       "display_name": "baptized at where by whom",
+      "file": "",
       "infos": {
-        "organization": "d7c8Fd_cfcc_hayward",
-        "show_secret": {}
+        "show_secret": {},
+        "organization": "d7c8Fd_cfcc_hayward"
       }
     }
   },
@@ -2155,12 +2221,12 @@
       "start": "2021-05-23T13:10:23Z",
       "finish": null,
       "category": 4,
-      "file": null,
       "display_order": 30000,
       "display_name": "accept at where by whom",
+      "file": "",
       "infos": {
-        "organization": "d7c8Fd_cfcc_hayward",
-        "show_secret": {}
+        "show_secret": {},
+        "organization": "d7c8Fd_cfcc_hayward"
       }
     }
   },
@@ -2176,12 +2242,12 @@
       "start": "2021-05-23T13:03:51Z",
       "finish": null,
       "category": 3,
-      "file": null,
       "display_order": 30000,
       "display_name": "believe at where by whom",
+      "file": "",
       "infos": {
-        "organization": "d7c8Fd_cfcc_hayward",
-        "show_secret": {}
+        "show_secret": {},
+        "organization": "d7c8Fd_cfcc_hayward"
       }
     }
   },
@@ -8217,6 +8283,84 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 55,
+    "fields": {
+      "created": "2021-05-30T22:58:10.078Z",
+      "modified": "2021-05-30T22:58:10.078Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 20
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 56,
+    "fields": {
+      "created": "2021-05-30T22:58:10.079Z",
+      "modified": "2021-05-30T22:58:10.079Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 20
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 57,
+    "fields": {
+      "created": "2021-05-30T23:04:38.288Z",
+      "modified": "2021-05-30T23:04:38.288Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 21
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 58,
+    "fields": {
+      "created": "2021-05-30T23:04:38.293Z",
+      "modified": "2021-05-30T23:04:38.293Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 21
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 59,
+    "fields": {
+      "created": "2021-05-30T23:05:59.546Z",
+      "modified": "2021-05-30T23:05:59.546Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 22
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 60,
+    "fields": {
+      "created": "2021-05-30T23:05:59.549Z",
+      "modified": "2021-05-30T23:05:59.549Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 22
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -8328,7 +8472,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "David \u5927\u885b"},
+        "names": {
+          "original": "David \u5927\u885b"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8361,7 +8507,9 @@
       },
       "infos": {
         "fixed": {},
-        "names": {"original": "\u590f\u7532 Hagar"},
+        "names": {
+          "original": "\u590f\u7532 Hagar"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8394,7 +8542,8 @@
         "fixed": {},
         "names": {
           "nick": "\u5f1f\u5144",
-          "original": "\u53c3\u5b6b Samson \u53c3\u5b6b"},
+          "original": "\u53c3\u5b6b Samson \u53c3\u5b6b"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8427,7 +8576,9 @@
       },
       "infos": {
         "fixed": {},
-        "names": {"original": "Elizabeth \u4ee5\u5229\u6c99\u4f2f"},
+        "names": {
+          "original": "Elizabeth \u4ee5\u5229\u6c99\u4f2f"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8460,7 +8611,8 @@
         "fixed": {},
         "names": {
           "nick": "\u8001\u59ca",
-          "original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"},
+          "original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8493,7 +8645,8 @@
         "fixed": {},
         "names": {
           "nick": "\u6230\u795e\u4e48\u4e48",
-          "original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"},
+          "original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8524,7 +8677,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "\u4ee5\u6383 Esau"},
+        "names": {
+          "original": "\u4ee5\u6383 Esau"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8555,7 +8710,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Chileab \u57fa\u5229\u62bc"},
+        "names": {
+          "original": "Chileab \u57fa\u5229\u62bc"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8592,7 +8749,8 @@
         },
         "names": {
           "nick": "\u5927\u5bf6",
-          "original": "\u4ee5\u5be6\u746a\u5229 Ishmael"},
+          "original": "\u4ee5\u5be6\u746a\u5229 Ishmael"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8623,7 +8781,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Rebecca \u5229\u767e\u52a0"},
+        "names": {
+          "original": "Rebecca \u5229\u767e\u52a0"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8654,7 +8814,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Nabal \u62ff\u516b"},
+        "names": {
+          "original": "Nabal \u62ff\u516b"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8695,7 +8857,8 @@
         },
         "names": {
           "nick": "root",
-          "original": "superuser1 system admin1 Lastnam2superuser2"},
+          "original": "superuser1 system admin1 Lastnam2superuser2"
+        },
         "contacts": {
           "email1": "5greata@email.com",
           "email2": "5greatb@email.com",
@@ -8726,7 +8889,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Abraham \u4e9e\u4f2f\u62c9\u7f55"},
+        "names": {
+          "original": "Abraham \u4e9e\u4f2f\u62c9\u7f55"
+        },
         "contacts": {
           "email1": "6coola@email.com",
           "email2": "6coolb@email.com",
@@ -8757,7 +8922,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "James \u96c5\u5404"},
+        "names": {
+          "original": "James \u96c5\u5404"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8826,7 +8993,8 @@
         "fixed": {},
         "names": {
           "nick": "\u4f7f\u5f92\u7d04\u7ff0",
-          "original": "John \u7d04\u7ff0"},
+          "original": "John \u7d04\u7ff0"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8857,7 +9025,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Isaac \u4ee5\u6492"},
+        "names": {
+          "original": "Isaac \u4ee5\u6492"
+        },
         "contacts": {
           "email1": "7coola@email.com",
           "email2": "7coolb@email.com",
@@ -8890,7 +9060,8 @@
         "fixed": {},
         "names": {
           "nick": "\u7687\u540e",
-          "original": "\u4ee5\u65af\u5e16 Esther"},
+          "original": "\u4ee5\u65af\u5e16 Esther"
+        },
         "contacts": {
           "email1": null,
           "email2": null,
@@ -8921,7 +9092,9 @@
       "progressions": {},
       "infos": {
         "fixed": {},
-        "names": {"original": "Sarah \u6492\u62c9"},
+        "names": {
+          "original": "Sarah \u6492\u62c9"
+        },
         "contacts": {
           "email1": "8coola@email.com",
           "email2": "8coolb@email.com",

@@ -1,11 +1,11 @@
 Attendees.utilities = {
   editingEnabled: false,
-  userAuthGroups: {},
+  userApiAllowedUrlNames: {},
   userAttendeeId: '',
 
   init: () => {
     console.log("attendees/static/js/shared/utilities.js");
-    Attendees.utilities.userAuthGroups = $('body').data('user-auth-groups');
+    Attendees.utilities.userApiAllowedUrlNames = $('body').data('user-api-allowed-url-names');
     Attendees.utilities.userAttendeeId = $('body').data('user-attendee-id');
   },
 

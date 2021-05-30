@@ -28,6 +28,7 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
         max_length=32,
         null=False,
         blank=False,
+        db_index=True,
         default="main",
         help_text="Type of menu, such as 'main', 'side', etc"
     )

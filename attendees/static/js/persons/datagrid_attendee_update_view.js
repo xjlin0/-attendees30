@@ -61,7 +61,7 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
 
-      Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
+      Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
     } else {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
@@ -70,7 +70,7 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
 
-      Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
+      Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
     editingArgs = {
@@ -80,9 +80,9 @@ Attendees.datagridUpdate = {
       allowDeleting: false,
     };
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.faithDatagrid && Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
   },
 
   displayNotifiers: ()=> {
@@ -369,7 +369,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        onlyShowsToGroups: ['children_organizer', 'data_counselor'],
+        apiUrlName: 'api_attendee_relationships_viewset',
         colSpan: 24,
         colCount: 24,
         caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -389,7 +389,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        onlyShowsToGroups: ['children_organizer', 'data_counselor'],
+        apiUrlName: 'api_categorized_pasts_viewset_education',
         colSpan: 24,
         colCount: 24,
         caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -411,7 +411,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        onlyShowsToGroups: ['data_counselor'],
+        apiUrlName: 'api_categorized_pasts_viewset_faith',
         colSpan: 24,
         colCount: 24,
         caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -538,16 +538,7 @@ Attendees.datagridUpdate = {
       colCount: 24,
       formData: null, // will be fetched
       items: originalItems.filter(item => {
-        let allowed = true;
-        if ('onlyShowsToGroups' in item){
-          allowed = false;
-          item.onlyShowsToGroups.forEach(allowedGroup => {
-            if (allowedGroup in Attendees.utilities.userAuthGroups) {
-              return true;
-            }
-          });
-        }
-        return allowed;
+        return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
   },
