@@ -86,9 +86,11 @@ class AttendeeService:
             return qs.filter(
                     pk=querying_attendee_id,
                     division__organization=current_user.organization,
+                    is_removed=False,
                     )
         else:
-            init_query = Q(division__organization=current_user.organization)
+            init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
+                         Q(is_removed=False), Q.AND)
             final_query = init_query.add(AttendeeService.filter_parser(filters_list, None), Q.AND)
 
             if current_user.privileged:

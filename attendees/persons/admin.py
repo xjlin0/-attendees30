@@ -52,9 +52,8 @@ class PastAdmin(admin.ModelAdmin):
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
         requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
         return qs.filter(
-            Q(**requester_permission)
-            |
-            Q(infos__show_secret={})
+            Q(infos__organization=request.user.organization.slug),
+            ( Q(**requester_permission) | Q(infos__show_secret={}) ),
         )
 
 
@@ -73,6 +72,12 @@ class FamilyAdmin(admin.ModelAdmin):
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(infos__organization=request.user.organization.slug)
 
 
 class FamilyAttendeeAdmin(admin.ModelAdmin):
@@ -99,14 +104,11 @@ class AttendeeAdmin(admin.ModelAdmin):
     def full_name(self, obj):
         return obj.infos.get('names', {}).get('original')
 
-    # def get_queryset(self, request):
-    #     qs = super().get_queryset(request)
-    #     if not request.user.is_superuser and request.resolver_match.func.__name__ == 'changelist_view':
-    #         messages.warning(request, 'Not all, but only attendees in your organization will be shown here.')
-    #     Todo: maybe if their families in the other organization?
-    #         return qs.filter(division__organization=request.user.organization)
-    #     else:
-    #         return qs
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(division__organization=request.user.organization)
 
 
 class RegistrationAdmin(admin.ModelAdmin):
@@ -150,22 +152,23 @@ class NoteAdmin(SummernoteModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'category', 'content_object', 'display_order', 'modified')
 
-    def get_queryset(self, request):
+    def get_queryset(self, request):  # even super user cannot see all in DjangoAdmin
         qs = super().get_queryset(request)
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
         if request.user.is_counselor():
             requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
-            counselor_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS + request.user.organization.slug: True}
+            counselors_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS + request.user.organization.slug: True}
             return qs.filter(
-                        ~Q(category=Note.COUNSELING)
-                          |
-                        (Q(category=Note.COUNSELING) and (Q(**requester_permission)
-                                                          |
-                                                          Q(**counselor_permission))
-                         )
+                Q(infos__organization=request.user.organization.slug),
+                (~Q(category=Note.COUNSELING)
+                  |
+                (Q(category=Note.COUNSELING) and (Q(**requester_permission)
+                                                  |
+                                                  Q(**counselors_permission))
+                 )),
             )
-        return qs.exclude(category=Note.COUNSELING)
+        return qs.filter(infos__organization=request.user.organization.slug).exclude(category=Note.COUNSELING)
 
 
 class RelationshipAdmin(admin.ModelAdmin):
@@ -176,6 +179,20 @@ class RelationshipAdmin(admin.ModelAdmin):
     list_display_links = ('relation',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
+        return qs.filter(
+            (Q(from_attendee__division__organization=request.user.organization)
+             |
+             Q(to_attendee__division__organization=request.user.organization) ),
+            (Q(**requester_permission)
+             |
+             Q(infos__show_secret={}) ),
+        )
 
 
 class AttendingMeetAdmin(admin.ModelAdmin):

@@ -2092,9 +2092,12 @@
       "category": 2,
       "file": null,
       "display_order": 30000,
-      "display_name": "where, major, advisor",
+      "display_name": "secret to hagar(if user#2 created)",
       "infos": {
-        "show_secret": {}
+        "organization": "d7c8Fd_cfcc_hayward",
+        "show_secret": {
+          "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9d7c8Fd_cfcc_hayward": true
+        }
       }
     }
   },
@@ -2114,6 +2117,7 @@
       "display_order": 30000,
       "display_name": "where and major",
       "infos": {
+        "organization": "d7c8Fd_cfcc_hayward",
         "show_secret": {}
       }
     }
@@ -2134,6 +2138,7 @@
       "display_order": 30000,
       "display_name": "baptized at where by whom",
       "infos": {
+        "organization": "d7c8Fd_cfcc_hayward",
         "show_secret": {}
       }
     }
@@ -2154,6 +2159,7 @@
       "display_order": 30000,
       "display_name": "accept at where by whom",
       "infos": {
+        "organization": "d7c8Fd_cfcc_hayward",
         "show_secret": {}
       }
     }
@@ -2174,6 +2180,7 @@
       "display_order": 30000,
       "display_name": "believe at where by whom",
       "infos": {
+        "organization": "d7c8Fd_cfcc_hayward",
         "show_secret": {}
       }
     }
@@ -2188,7 +2195,9 @@
       "division": 1,
       "display_name": "Abraham & Sarah",
       "display_order": 0,
-      "infos": {}
+      "infos": {
+        "organization": "d7c8Fd_cfcc_hayward"
+      }
     }
   },
   {
@@ -2201,7 +2210,9 @@
       "division": 2,
       "display_name": "David&Abigail",
       "display_order": 0,
-      "infos": {}
+      "infos": {
+        "organization": "d7c8Fd_cfcc_hayward"
+      }
     }
   },
   {
@@ -2214,7 +2225,9 @@
       "division": 1,
       "display_name": "Issac & Rebecca",
       "display_order": 0,
-      "infos": {}
+      "infos": {
+        "organization": "d7c8Fd_cfcc_hayward"
+      }
     }
   },
   {
@@ -2227,7 +2240,9 @@
       "division": 2,
       "display_name": "Hagar & Ishmael",
       "display_order": 0,
-      "infos": {}
+      "infos": {
+        "organization": "d7c8Fd_cfcc_hayward"
+      }
     }
   },
   {

@@ -1320,7 +1320,7 @@ Attendees.datagridUpdate = {
                     onValueChanged: (e) => {
                       if (e.previousValue && e.previousValue !== e.value){
                         const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                        console.log("hi 946 here is selectedState: ", selectedState);
+                        console.log("hi 1323 here is selectedState: ", selectedState);
                       }
                     },
                   },
@@ -1391,7 +1391,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('1129 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('1394 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -1483,7 +1483,7 @@ Attendees.datagridUpdate = {
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")){
-                    console.log("Hi 1221 Todo 20210515: Please implement this function")
+                    console.log("Hi 1486 Todo 20210515: Please implement this function")
                   }
                 },
               },
@@ -1506,7 +1506,7 @@ Attendees.datagridUpdate = {
 //                useSubmitBehavior: false,
 //                onClick: (clickEvent) => {
 //                  if(confirm("Are you sure to copy the attendee's first family? (not implement yet)")){
-//                    console.log("Hi 1244 Todo 20210515: Please implement this function")
+//                    console.log("Hi 1509 Todo 20210515: Please implement this function")
 //                  }
 //                },
 //              },
@@ -1575,7 +1575,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1313 ajax error here is response: ', response);
+          console.log('ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1631,7 +1631,7 @@ Attendees.datagridUpdate = {
           });
         },
         error: (response) => {
-          console.log('hi 1604 ajax error here is response: ', response);
+          console.log('ajax error here is response: ', response);
           deferred.reject("Data Loading Error, probably time out?");
         },
         timeout: 7000,
@@ -1644,7 +1644,7 @@ Attendees.datagridUpdate = {
 //        return [Attendees.datagridUpdate.placePopupDxFormData.address];
 //      }else{
         const d = new $.Deferred();
-//        console.log("hi 1617 here is state key: ", key);
+//        console.log("hi 1647 here is state key: ", key);
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint, {id: key})
             .done((result) => {
                 d.resolve(result.data);
@@ -2059,7 +2059,7 @@ Attendees.datagridUpdate = {
                           }, "success", 2500);
                       },
                       error  : (response) => {
-                        console.log('1801 Failed to save data for Family attr Form in Popup, error: ', response);
+                        console.log('2062 Failed to save data for Family attr Form in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
@@ -2215,7 +2215,11 @@ Attendees.datagridUpdate = {
       allowDeleting: false,
     },
     onRowInserting: (rowData) => {
-      rowData.data.infos = rowData.data.infos && rowData.data.infos.show_secret ? {show_secret: {[Attendees.datagridUpdate.showSecretKey]: true}} : {show_secret:{}};
+      const infos = {show_secret:{}};
+      if(rowData.data.infos && rowData.data.infos.show_secret){
+        infos.show_secret[Attendees.datagridUpdate.showSecretKey] = true;
+      }
+      rowData.data.infos = infos;
     },
     onRowUpdating: (rowData) => {
       if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
@@ -2425,7 +2429,11 @@ Attendees.datagridUpdate = {
         }),
       },
       onRowInserting: (rowData) => {
-        rowData.data.infos = rowData.data.infos && rowData.data.infos.show_secret ? {show_secret: {[Attendees.datagridUpdate.showSecretKey]: true}} : {show_secret:{}};
+        const infos = {organization: Attendees.datagridUpdate.attendeeFormConfigs.formData.organization_slug, show_secret:{}};
+        if(rowData.data.infos && rowData.data.infos.show_secret){
+          infos.show_secret = {[Attendees.datagridUpdate.showSecretKey]: true};
+        }
+        rowData.data.infos = infos;
       },
       onInitNewRow: (e) => {
         DevExpress.ui.notify(

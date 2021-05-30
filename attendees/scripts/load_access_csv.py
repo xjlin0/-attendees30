@@ -201,6 +201,7 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
+    organization = division1.organization
     family_content_type = ContentType.objects.get(model='family')
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
@@ -224,6 +225,7 @@ def import_households(households, division1_slug, division2_slug):
                         'access_household_values': household,
                         'last_update': Utility.presence(household.get('LastUpdate')),
                         'contacts': {},
+                        'organization': organization.slug,
                     }
                 }
 
@@ -263,7 +265,7 @@ def import_households(households, division1_slug, division2_slug):
                                     'access_address_id': address_id,  # str
                                     'contacts': {
                                         'phone1': add_int_code(phone1),  # Todo: check if repeating run adding extra country code such as +1+1+1-510-123-4567
-                                        'phone2': add_int_code(phone2),
+                                        'phone2': add_int_code(phone2),  # Todo: need to remove contacts from Place since it's across organizations
                                     },
                                     'fixed': {}
                                 },
@@ -562,6 +564,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'emergency_contact': husband_role.emergency_contact,
                         'scheduler': husband_role.scheduler,
                         'finish': Utility.forever(),
+                        'infos': {
+                            'show_secret': {},
+                        },
                     }
                 )
 
@@ -574,6 +579,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'emergency_contact': wife_role.emergency_contact,
                         'scheduler': wife_role.scheduler,
                         'finish': Utility.forever(),
+                        'infos': {
+                            'show_secret': {},
+                        },
                     }
                 )
                 successfully_processed_count += 2
@@ -615,6 +623,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                                 'emergency_contact': False,
                                 'scheduler': False,
                                 'finish': Utility.forever(),
+                                'infos': {
+                                    'show_secret': {},
+                                },
                              }
                 )
                 successfully_processed_count += 1
@@ -638,6 +649,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'emergency_contact': child_role.emergency_contact,
                             'scheduler': child_role.scheduler,
                             'finish': Utility.forever(),
+                            'infos': {
+                                'show_secret': {},
+                            },
                         }
                     )
 
@@ -650,6 +664,9 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'emergency_contact': parent_role.emergency_contact,
                             'scheduler': parent_role.scheduler,
                             'finish': Utility.forever(),
+                            'infos': {
+                                'show_secret': {},
+                            },
                         }
                     )
                     successfully_processed_count += 2
