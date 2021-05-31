@@ -89,7 +89,7 @@ class User(AbstractUser):
         else:
             return []
 
-    def allowed_url_names(self, menu_category='api'):
+    def allowed_url_names(self, menu_category='API'):
         return self.groups.filter(
             menuauthgroup__menu__organization=self.organization,
             menuauthgroup__menu__category=menu_category,

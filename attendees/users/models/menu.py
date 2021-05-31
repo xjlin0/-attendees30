@@ -43,9 +43,9 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
 
     html_type = models.CharField(
         max_length=50,
-        blank=False,
+        blank=True,
         null=False,
-        help_text="HTML tags such as div or a",
+        help_text="HTML tags such as div or a. For API it can be blank",
     )
 
     urn = models.CharField(
@@ -60,7 +60,7 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
         blank=False,
         null=False,
         db_index=True,
-        help_text="view name of the path, such as 'assembly_attendances', 'divider between index and register links', etc",
+        help_text="view name of the path, such as 'assembly_attendances', 'divider between index and register links', etc. For API it's class name",
     )
 
     display_name = models.CharField(

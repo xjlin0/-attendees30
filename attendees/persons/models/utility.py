@@ -1,4 +1,4 @@
-import pytz
+import pytz, re
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 
@@ -108,6 +108,13 @@ class Utility:
                     return value
         else:
             return original_value
+
+    @staticmethod
+    def underscore(word):  # https://inflection.readthedocs.io/en/latest/_modules/inflection.html
+        word = re.sub(r"([A-Z]+)([A-Z][a-z])", r'\1_\2', word)
+        word = re.sub(r"([a-z\d])([A-Z])", r'\1_\2', word)
+        word = word.replace("-", "_")
+        return word.lower()
 
     # @property
     # def notes(self):

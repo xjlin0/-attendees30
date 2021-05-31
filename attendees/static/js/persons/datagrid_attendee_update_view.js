@@ -369,7 +369,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        apiUrlName: 'api_attendee_relationships_viewset',
+        apiUrlName: 'api_attendee_relationships_view_set',
         colSpan: 24,
         colCount: 24,
         caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -389,7 +389,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        apiUrlName: 'api_categorized_pasts_viewset_education',
+        apiUrlName: 'api_categorized_pasts_view_set_education',
         colSpan: 24,
         colCount: 24,
         caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
@@ -411,7 +411,7 @@ Attendees.datagridUpdate = {
         ],
       },
       {
-        apiUrlName: 'api_categorized_pasts_viewset_faith',
+        apiUrlName: 'api_categorized_pasts_view_set_faith',
         colSpan: 24,
         colCount: 24,
         caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",

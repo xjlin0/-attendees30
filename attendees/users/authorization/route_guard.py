@@ -1,8 +1,8 @@
-import time
+import time, re
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse
 
-from attendees.users.models import Menu
+from attendees.users.models import Menu, MenuAuthGroup
 
 
 class RouteGuard(UserPassesTestMixin):
