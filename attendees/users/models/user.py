@@ -88,3 +88,9 @@ class User(AbstractUser):
             return self.attendee.attending_set.values_list('division__slug', flat=True)
         else:
             return []
+
+    def allowed_url_names(self, menu_category='API'):
+        return self.groups.filter(
+            menuauthgroup__menu__organization=self.organization,
+            menuauthgroup__menu__category=menu_category,
+        ).values_list('menuauthgroup__menu__url_name', flat=True)

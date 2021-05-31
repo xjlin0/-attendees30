@@ -98,7 +98,8 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
   - [x] FamilyAttendee datagrid of Attendee update page
   - [x] Personal & family Address of Attendee update page
   - [x] Dynamic contacts of Attendee update page
-  - [ ] Modularize bigger JS code in pages such as  single attendee update page, i.e. different blocks/user-settings for different groups
+  - [x] Permission controlled blocks in single attendee update page, i.e. different blocks/user-settings for different groups
+  - [ ] Generic models such as Note, Place, Past need to have organization column instead of infos 
   - [ ] Create new instance of Attendee & attending update page with params with meet
   - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] implement secret/private relation/past general

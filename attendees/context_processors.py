@@ -23,7 +23,7 @@ def common_variables(request):  # TODO move organization info to view
         'timezone_name': datetime.now(timezone(parse.unquote(tzname))).tzname(),
         'user_organization_name': user_organization_name,
         'user_organization_name_slug': user_organization_name_slug,
-        'user_auth_groups': json.dumps({name: True for name in request.user.groups.values_list('name', flat=True)}),
+        'user_api_allowed_url_name': json.dumps({name: True for name in request.user.allowed_url_names()} if hasattr(request.user, 'allowed_url_names') else {}),
         'user_attendee_id': request.user.attendee_uuid_str() if hasattr(request.user, 'attendee_uuid_str') else None,  # could be different when admin browser others
         'main_menus': main_menus,
     }
