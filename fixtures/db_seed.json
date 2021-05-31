@@ -1261,6 +1261,27 @@
   },
   {
     "model": "whereabouts.organization",
+    "pk": 0,
+    "fields": {
+      "created": "2021-04-11T18:15:20.284Z",
+      "modified": "2021-04-12T05:55:41.743Z",
+      "is_removed": false,
+      "slug": "a8dE2e_none",
+      "display_name": "No organization",
+      "infos": {
+        "flags": {
+          "opencc_convert": true,
+          "attendance_to_past_keywords": {}
+        },
+        "contacts": {},
+        "hostname": "organization.none",
+        "counselor": [],
+        "data_admins": []
+      }
+    }
+  },
+  {
+    "model": "whereabouts.organization",
     "pk": 1,
     "fields": {
       "created": "2020-04-11T18:15:06.495Z",

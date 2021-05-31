@@ -16,6 +16,7 @@ class Note(UUIDModel, TimeStampedModel, SoftDeletableModel):
     object_id = models.CharField(max_length=36)
     content_object = GenericForeignKey('content_type', 'object_id')
     category = models.CharField(max_length=20, default='normal', blank=False, null=False, db_index=True, help_text="normal, for-address, etc")
+    organization = models.ForeignKey('whereabouts.Organization', null=False, blank=False, on_delete=models.SET(0))
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
     body = models.TextField()
     infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"owner": "John"}. Please keep {} here even no data')
@@ -25,7 +26,7 @@ class Note(UUIDModel, TimeStampedModel, SoftDeletableModel):
 
     class Meta:
         db_table = 'persons_notes'
-        ordering = ('display_order', '-modified',)
+        ordering = ('organization', 'content_type', 'display_order', '-modified',)
         indexes = [
             GinIndex(fields=['infos'], name='note_infos_gin', ),
         ]

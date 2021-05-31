@@ -25,6 +25,7 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('content_type', models.ForeignKey(on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('display_order', models.SmallIntegerField(blank=False, default=0, null=False)),
+                ('organization', models.ForeignKey(on_delete=models.SET(0), to='whereabouts.Organization')),
                 ('object_id', models.CharField(max_length=36)),
                 ('category', models.CharField(default='normal', help_text='normal, for-address, etc', max_length=20, blank=False, null=False, db_index=True)),
                 ('body', models.TextField()),
@@ -32,7 +33,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'persons_notes',
-                'ordering': ('display_order', '-modified',),
+                'ordering': ('organization', 'content_type', 'display_order', '-modified',),
             },
         ),
         migrations.AddIndex(
