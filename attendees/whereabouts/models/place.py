@@ -11,9 +11,10 @@ from attendees.persons.models import Utility
 
 
 class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=False, blank=False)
-    object_id = models.CharField(max_length=36, null=False, blank=False)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=0, null=False, blank=False)
+    object_id = models.CharField(max_length=36, null=False, blank=False, default='0')
     subject = GenericForeignKey('content_type', 'object_id')
+    organization = models.ForeignKey('whereabouts.Organization', default=0, null=False, blank=False, on_delete=models.SET(0))
     address = AddressField(related_name='place', blank=True, null=True)
     address_extra = models.CharField(max_length=50, blank=True, null=True, help_text='i.e. Apartment number')
     address_type = models.CharField(max_length=20, default='street', blank=True, null=True, help_text='mailing, remote or street address')
@@ -26,9 +27,9 @@ class Place(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'whereabouts_places'
-        ordering = ('content_type', 'object_id', 'display_order',)
+        ordering = ('organization', 'content_type', 'object_id', 'display_order',)
         constraints = [
-            models.UniqueConstraint(fields=['content_type', 'object_id', 'address', 'address_extra'], condition=models.Q(is_removed=False), name="address_object")
+            models.UniqueConstraint(fields=['organization', 'content_type', 'object_id', 'address', 'address_extra'], condition=models.Q(is_removed=False), name="address_object")
         ]
         indexes = [
             GinIndex(fields=['infos'], name='place_infos_gin', ),

@@ -18,12 +18,12 @@ class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     category = models.ForeignKey('persons.Category', null=False, blank=False, on_delete=models.SET(0), help_text="subtype: for education it's primary/high/college sub-types etc")
     display_order = models.SmallIntegerField(default=30000, blank=False, null=False, db_index=True)
     display_name = models.CharField(max_length=50, blank=True, null=True)
-    file = PrivateFileField("File", blank=True, null=True, upload_to="past_files")
+    organization = models.ForeignKey('whereabouts.Organization', null=False, blank=False, on_delete=models.SET(0))
     infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data')  # compare to NoteAdmin
 
     class Meta:
         db_table = 'persons_pasts'
-        ordering = ('category__type', 'display_order', 'category__display_order', 'start')
+        ordering = ('organization', 'category__type', 'display_order', 'category__display_order', 'start')
         indexes = [
             GinIndex(fields=['infos'], name='past_infos_gin', ),
         ]

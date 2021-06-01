@@ -2,7 +2,6 @@ Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
   attendeeAttrs: null,  // will be assigned later
   attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
-  showSecretKey: '',
   attendeeAjaxUrl: null,
   attendeePhotoFileUploader: null,
   attendingmeetPopupDxForm: null,  // for getting formData
@@ -125,7 +124,6 @@ Attendees.datagridUpdate = {
                  Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
                  Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {infos:{names:{},contacts:{}}};
                  $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
-                 Attendees.datagridUpdate.showSecretKey = Attendees.utilities.userAttendeeId + Attendees.datagridUpdate.attendeeFormConfigs.formData.organization_slug;
                  window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
                  Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
                  Attendees.datagridUpdate.populateBasicInfoBlock();
@@ -2246,7 +2244,7 @@ Attendees.datagridUpdate = {
     onRowInserting: (rowData) => {
       const infos = {show_secret:{}};
       if(rowData.data.infos && rowData.data.infos.show_secret){
-        infos.show_secret[Attendees.datagridUpdate.showSecretKey] = true;
+        infos.show_secret[Attendees.utilities.userAttendeeId] = true;
       }
       rowData.data.infos = infos;
     },
@@ -2255,9 +2253,9 @@ Attendees.datagridUpdate = {
         const showSecret = rowData.oldData.infos.show_secret;
         const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
         if (isRelationshipSecretForCurrentUser) {
-          showSecret[Attendees.datagridUpdate.showSecretKey] = true;
+          showSecret[Attendees.utilities.userAttendeeId] = true;
         } else {
-          delete showSecret[Attendees.datagridUpdate.showSecretKey];
+          delete showSecret[Attendees.utilities.userAttendeeId];
         }
         rowData.newData.infos.show_secret = showSecret;
       }
@@ -2365,7 +2363,7 @@ Attendees.datagridUpdate = {
         calculateCellValue: (rowData) => {
           if (rowData.infos){
             const showSecret = rowData.infos.show_secret;
-            const result = !!(showSecret && showSecret[Attendees.datagridUpdate.showSecretKey]);
+            const result = !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
             return result;
           } else {
             return false;
@@ -2460,7 +2458,7 @@ Attendees.datagridUpdate = {
       onRowInserting: (rowData) => {
         const infos = {organization: Attendees.datagridUpdate.attendeeFormConfigs.formData.organization_slug, show_secret:{}};
         if(rowData.data.infos && rowData.data.infos.show_secret){
-          infos.show_secret = {[Attendees.datagridUpdate.showSecretKey]: true};
+          infos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
         }
         rowData.data.infos = infos;
       },
@@ -2501,9 +2499,9 @@ Attendees.datagridUpdate = {
           const showSecret = rowData.oldData.infos.show_secret;
           const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
           if (isRelationshipSecretForCurrentUser) {
-            showSecret[Attendees.datagridUpdate.showSecretKey] = true;
+            showSecret[Attendees.utilities.userAttendeeId] = true;
           } else {
-            delete showSecret[Attendees.datagridUpdate.showSecretKey];
+            delete showSecret[Attendees.utilities.userAttendeeId];
           }
           rowData.newData.infos.show_secret = showSecret;
         }
@@ -2546,7 +2544,7 @@ Attendees.datagridUpdate = {
           calculateCellValue: (rowData) => {
             if (rowData.infos){
               const showSecret = rowData.infos.show_secret;
-              const result = !!(showSecret && showSecret[Attendees.datagridUpdate.showSecretKey]);
+              const result = !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
               return result;
             } else {
               return false;

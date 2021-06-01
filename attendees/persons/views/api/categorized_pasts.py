@@ -33,10 +33,11 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
 
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         past_id = self.kwargs.get('pk')
-        requester_permission = {'infos__show_secret__' + self.request.user.attendee_uuid_str() + self.request.user.organization.slug: True}
+        requester_permission = {'infos__show_secret__' + self.request.user.attendee_uuid_str(): True}
 
         if past_id:
             return target_attendee.pasts.filter(
+                Q(organization=self.request.user.organization),
                 Q(pk=past_id),
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
@@ -45,6 +46,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
             )
         else:
             return target_attendee.pasts.filter(
+                Q(organization=self.request.user.organization),
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
                     |

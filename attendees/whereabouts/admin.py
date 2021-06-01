@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.postgres import fields
 from django_json_widget.widgets import JSONEditorWidget
 from attendees.occasions.models import *
@@ -14,6 +14,12 @@ class PlaceAdmin(admin.ModelAdmin):
     list_display_links = ('id',)
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'display_name', 'subject', 'street')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(organization=request.user.organization)
 
 
 class DivisionAdmin(admin.ModelAdmin):

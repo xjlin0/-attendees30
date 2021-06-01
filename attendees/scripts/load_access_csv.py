@@ -62,7 +62,7 @@ def import_household_people_address(
         initial_family_count = Family.objects.count()
         initial_attendee_count = Attendee.objects.count()
         initial_relationship_count = Relationship.objects.count()
-        upserted_address_count = import_addresses(addresses, california)
+        upserted_address_count = import_addresses(addresses, california, division1_slug)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
         upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug)
 
@@ -100,7 +100,7 @@ def import_household_people_address(
 
 
 # Todo: Add created by notes in every instance in notes/infos
-def import_addresses(addresses, california):
+def import_addresses(addresses, california, division1_slug):
     """
     Importer of addresses from MS Access.
     :param addresses: file content of address accessible by headers, from MS Access
@@ -111,6 +111,7 @@ def import_addresses(addresses, california):
     print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
     address_content_type = ContentType.objects.get(model='address')
+    organization = Division.objects.get(pk=division1_slug).organization
     for address_dict in addresses:
         try:
             print('.', end='')
@@ -142,6 +143,7 @@ def import_addresses(addresses, california):
                         'country_code': 'US',
                         'raw': f"{street}, {city}, {state} {zip_code}",
                     },
+                    'organization': organization,
                     'address_extra': Utility.presence(address_extra),
                     'infos': {
                         **Utility.default_infos(),
@@ -201,7 +203,6 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    organization = division1.organization
     family_content_type = ContentType.objects.get(model='family')
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
@@ -225,7 +226,6 @@ def import_households(households, division1_slug, division2_slug):
                         'access_household_values': household,
                         'last_update': Utility.presence(household.get('LastUpdate')),
                         'contacts': {},
-                        'organization': organization.slug,
                     }
                 }
 
