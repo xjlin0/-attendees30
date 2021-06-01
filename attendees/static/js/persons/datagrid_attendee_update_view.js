@@ -116,6 +116,7 @@ Attendees.datagridUpdate = {
       headers: {
         "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
         "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
+        "X-Target-Contenttype-Id": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
       }
     });
     $.ajax({
@@ -2456,13 +2457,16 @@ Attendees.datagridUpdate = {
         }),
       },
       onRowInserting: (rowData) => {
-        const infos = {organization: Attendees.datagridUpdate.attendeeFormConfigs.formData.organization_slug, show_secret:{}};
+        console.log("hi 2459 here is rowData: ", rowData);
+        const infos = {show_secret:{}};
         if(rowData.data.infos && rowData.data.infos.show_secret){
           infos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
         }
         rowData.data.infos = infos;
       },
       onInitNewRow: (e) => {
+        console.log("hi 2467 here is e: ", e);
+        e.data = {infos: {show_secret:{}, comment:''}};
         DevExpress.ui.notify(
           {
             message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",

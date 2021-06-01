@@ -1,5 +1,7 @@
 import time
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from django.db.models import Q
@@ -52,6 +54,20 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                     |
                     Q(**requester_permission)),
             )
+
+    def perform_create(self, serializer):
+        target_object_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID')
+        target_contenttype = get_object_or_404(ContentType, pk=self.request.META.get('HTTP_X_TARGET_CONTENTTYPE_ID'))
+
+        if not target_object_id or not target_contenttype:
+            time.sleep(2)
+            raise Http404("Can't find the associated target_object_id or target_contenttype_id !!")
+
+        serializer.save(
+            object_id=target_object_id,
+            content_type=target_contenttype,
+            organization=self.request.user.organization
+        )
 
 
 api_categorized_pasts_viewset = ApiCategorizedPastsViewSet
