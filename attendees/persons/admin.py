@@ -2,8 +2,7 @@ from django.db.models import Q
 from django_summernote.admin import SummernoteModelAdmin
 from django.contrib.postgres import fields
 from django_json_widget.widgets import JSONEditorWidget
-from django.contrib import messages
-from django.contrib import admin
+from django.contrib import admin, messages
 from attendees.occasions.models import *
 from attendees.whereabouts.models import *
 from .models import *
@@ -50,9 +49,9 @@ class PastAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
-        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
+        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
         return qs.filter(
-            Q(infos__organization=request.user.organization.slug),
+            Q(organization=request.user.organization),
             ( Q(**requester_permission) | Q(infos__show_secret={}) ),
         )
 
@@ -77,7 +76,7 @@ class FamilyAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
-        return qs.filter(infos__organization=request.user.organization.slug)
+        return qs.filter(division__organization=request.user.organization)
 
 
 class FamilyAttendeeAdmin(admin.ModelAdmin):
@@ -157,10 +156,10 @@ class NoteAdmin(SummernoteModelAdmin):
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
         if request.user.is_counselor():
-            requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
-            counselors_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS + request.user.organization.slug: True}
+            requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
+            counselors_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS: True}
             return qs.filter(
-                Q(infos__organization=request.user.organization.slug),
+                Q(organization=request.user.organization),
                 (~Q(category=Note.COUNSELING)
                   |
                 (Q(category=Note.COUNSELING) and (Q(**requester_permission)
@@ -168,7 +167,7 @@ class NoteAdmin(SummernoteModelAdmin):
                                                   Q(**counselors_permission))
                  )),
             )
-        return qs.filter(infos__organization=request.user.organization.slug).exclude(category=Note.COUNSELING)
+        return qs.filter(organization=request.user.organization).exclude(category=Note.COUNSELING)
 
 
 class RelationshipAdmin(admin.ModelAdmin):
@@ -184,7 +183,7 @@ class RelationshipAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
-        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str() + request.user.organization.slug: True}
+        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
         return qs.filter(
             (Q(from_attendee__division__organization=request.user.organization)
              |
