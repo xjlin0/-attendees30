@@ -1335,6 +1335,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "7",
       "address": 2,
@@ -1366,6 +1367,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
       "address": 5,
@@ -1389,6 +1391,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 38,
       "object_id": "1",
       "address": 1,
@@ -1414,6 +1417,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "address": 3,
@@ -1437,6 +1441,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "address": 4,
@@ -1460,6 +1465,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
       "address": 6,
@@ -1483,6 +1489,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
       "address": 6,
@@ -1506,6 +1513,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "address": 6,
@@ -1529,6 +1537,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
       "address": 2,
@@ -1560,6 +1569,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "4",
       "address": 9,
@@ -1591,6 +1601,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "6",
       "address": 11,
@@ -1622,6 +1633,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "5",
       "address": 1,
@@ -1653,6 +1665,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "3",
       "address": 10,
@@ -1684,6 +1697,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "1",
       "address": 1,
@@ -1714,6 +1728,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 52,
       "object_id": "2",
       "address": 1,
@@ -1737,6 +1752,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
       "address": 3,
@@ -2172,6 +2188,7 @@
       "created": "2021-05-23T13:03:48.096Z",
       "modified": "2021-05-23T13:11:31.627Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "start": "2021-05-23T13:03:32Z",
@@ -2179,12 +2196,10 @@
       "category": 2,
       "display_order": 30000,
       "display_name": "secret to hagar(if user#2 created)",
-      "file": "",
       "infos": {
         "show_secret": {
-          "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9d7c8Fd_cfcc_hayward": true
-        },
-        "organization": "d7c8Fd_cfcc_hayward"
+          "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9": true
+        }
       }
     }
   },
@@ -2195,6 +2210,7 @@
       "created": "2021-05-23T13:03:28.804Z",
       "modified": "2021-05-23T13:11:11.686Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "start": "2021-05-23T13:02:45Z",
@@ -2202,10 +2218,8 @@
       "category": 1,
       "display_order": 30000,
       "display_name": "where and major",
-      "file": "",
       "infos": {
-        "show_secret": {},
-        "organization": "d7c8Fd_cfcc_hayward"
+        "show_secret": {}
       }
     }
   },
@@ -2216,6 +2230,7 @@
       "created": "2021-05-23T13:14:49.684Z",
       "modified": "2021-05-23T13:14:49.684Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "start": "2021-05-23T13:14:15Z",
@@ -2223,10 +2238,8 @@
       "category": 5,
       "display_order": 30000,
       "display_name": "baptized at where by whom",
-      "file": "",
       "infos": {
-        "show_secret": {},
-        "organization": "d7c8Fd_cfcc_hayward"
+        "show_secret": {}
       }
     }
   },
@@ -2237,6 +2250,7 @@
       "created": "2021-05-23T13:10:51.374Z",
       "modified": "2021-05-23T13:10:51.374Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "start": "2021-05-23T13:10:23Z",
@@ -2244,10 +2258,8 @@
       "category": 4,
       "display_order": 30000,
       "display_name": "accept at where by whom",
-      "file": "",
       "infos": {
-        "show_secret": {},
-        "organization": "d7c8Fd_cfcc_hayward"
+        "show_secret": {}
       }
     }
   },
@@ -2258,6 +2270,7 @@
       "created": "2021-05-23T13:05:34.202Z",
       "modified": "2021-05-23T13:09:48.778Z",
       "is_removed": false,
+      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "start": "2021-05-23T13:03:51Z",
@@ -2265,10 +2278,8 @@
       "category": 3,
       "display_order": 30000,
       "display_name": "believe at where by whom",
-      "file": "",
       "infos": {
-        "show_secret": {},
-        "organization": "d7c8Fd_cfcc_hayward"
+        "show_secret": {}
       }
     }
   },
@@ -2282,9 +2293,7 @@
       "division": 1,
       "display_name": "Abraham & Sarah",
       "display_order": 0,
-      "infos": {
-        "organization": "d7c8Fd_cfcc_hayward"
-      }
+      "infos": {}
     }
   },
   {
@@ -2297,9 +2306,7 @@
       "division": 2,
       "display_name": "David&Abigail",
       "display_order": 0,
-      "infos": {
-        "organization": "d7c8Fd_cfcc_hayward"
-      }
+      "infos": {}
     }
   },
   {
@@ -2312,9 +2319,7 @@
       "division": 1,
       "display_name": "Issac & Rebecca",
       "display_order": 0,
-      "infos": {
-        "organization": "d7c8Fd_cfcc_hayward"
-      }
+      "infos": {}
     }
   },
   {
@@ -2327,9 +2332,7 @@
       "division": 2,
       "display_name": "Hagar & Ishmael",
       "display_order": 0,
-      "infos": {
-        "organization": "d7c8Fd_cfcc_hayward"
-      }
+      "infos": {}
     }
   },
   {
