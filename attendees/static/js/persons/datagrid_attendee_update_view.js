@@ -1939,10 +1939,16 @@ Attendees.datagridUpdate = {
       {
         dataField: "start",
         dataType: "date",
+        editorOptions: {
+          dateSerializationFormat: "yyyy-MM-dd",
+        },
       },
       {
         dataField: "finish",
         dataType: "date",
+        editorOptions: {
+          dateSerializationFormat: "yyyy-MM-dd",
+        },
       },
     ],
   },
@@ -2373,11 +2379,13 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "start",
-        dataType: "date",
+        dataType: "datetime",
+        format: "MM/dd/yyyy",
       },
       {
         dataField: "finish",
-        dataType: "date",
+        dataType: "datetime",
+        format: "MM/dd/yyyy",
       },
     ],
   },
