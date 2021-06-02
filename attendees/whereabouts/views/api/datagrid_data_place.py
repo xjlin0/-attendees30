@@ -27,5 +27,8 @@ class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from Gen
         querying_place_id = self.kwargs.get('place_id')
         return Place.objects.filter(pk=querying_place_id, organization=self.request.user.organization)
 
+    # def perform_create(self, serializer):  #forget SpyGuard ??
+    #     serializer.save(organization=self.request.user.organization)
+
 
 api_datagrid_data_place_viewset = ApiDatagridDataPlaceViewSet

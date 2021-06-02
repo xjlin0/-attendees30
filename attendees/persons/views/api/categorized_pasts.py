@@ -1,5 +1,7 @@
 import time
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from django.db.models import Q
@@ -20,7 +22,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
 
     def get_queryset(self):
         category__type = self.request.query_params.get('category__type', '')
-        menu_name = self.__class__.__name__ + category__type.capitalize()
+        menu_name = self.__class__.__name__ + category__type.capitalize()  # self.get_view_name() => Api Categorized Pasts List
         url_name = Utility.underscore(menu_name)
 
         if not MenuAuthGroup.objects.filter(
@@ -42,6 +44,8 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
                     |
+                    Q(infos__show_secret__isnull=True)
+                    |
                     Q(**requester_permission)),
             )
         else:
@@ -50,8 +54,13 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
                     |
+                    Q(infos__show_secret__isnull=True)
+                    |
                     Q(**requester_permission)),
             )
+
+    def perform_create(self, serializer):  #SpyGuard ensured requester & target_attendee belongs to the same org.
+        serializer.save(organization=self.request.user.organization)
 
 
 api_categorized_pasts_viewset = ApiCategorizedPastsViewSet
