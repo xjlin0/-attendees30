@@ -2408,8 +2408,6 @@ Attendees.datagridUpdate = {
             return d.promise();
           },
           update: (key, values) => {
-console.log("hi 2411 here is values: ", values);  //{infos: {comment: "cccc"}}
-// if 'infos' in values, get
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
               method: "PATCH",
@@ -2431,17 +2429,16 @@ console.log("hi 2411 here is values: ", values);  //{infos: {comment: "cccc"}}
             });
           },
           insert: function (values) {
-            const contentType = {
+            const subject = {
               content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
               object_id: Attendees.datagridUpdate.attendeeId,
             };
-console.log("hi 2438 here is values: ", values);
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
               method: "POST",
               dataType: 'json',
               contentType: "application/json; charset=utf-8",
-              data: JSON.stringify({...values, ...contentType}),
+              data: JSON.stringify({...values, ...subject}),
               success: (result) => {
                 DevExpress.ui.notify(
                   {
@@ -2459,20 +2456,13 @@ console.log("hi 2438 here is values: ", values);
         }),
       },
       onRowInserting: (rowData) => {
-console.log("hi 2462 here is rowData: ", rowData);
         const infos = {show_secret: {}, comment: rowData.data.infos && rowData.data.infos.comment};
         if(rowData.data.infos && rowData.data.infos.show_secret){
           infos.show_secret[Attendees.utilities.userAttendeeId] = true;
-          // infos.show_secret = {
-          //   [Attendees.utilities.userAttendeeId]: true,
-          //   comment: rowData.data.infos.comment,
-          // };
         }
         rowData.data.infos = infos;
       },
-      onInitNewRow: (e) => {
-console.log("hi 2473 here is e: ", e);
-        e.data = {infos: {show_secret:{}, comment:''}};
+      onInitNewRow: (e) => {  // don't assign e.data or show_secret somehow messed up
         DevExpress.ui.notify(
           {
             message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",
@@ -2505,7 +2495,6 @@ console.log("hi 2473 here is e: ", e);
         allowDeleting: false,
       },
       onRowUpdating: (rowData) => {
-console.log("hi 2508 here is onRowUpdating rowData: ", rowData);
         if(rowData.newData.infos){
           const updatingInfos = rowData.oldData.infos; // may contains both keys of show_secret and comment
           if('show_secret' in rowData.newData.infos){
