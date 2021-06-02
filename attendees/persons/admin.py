@@ -52,7 +52,7 @@ class PastAdmin(admin.ModelAdmin):
         requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
         return qs.filter(
             Q(organization=request.user.organization),
-            ( Q(**requester_permission) | Q(infos__show_secret={}) ),
+            ( Q(**requester_permission) | Q(infos__show_secret={}) | Q(infos__show_secret__isnull=True) ),
         )
 
 

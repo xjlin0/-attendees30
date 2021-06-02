@@ -116,7 +116,6 @@ Attendees.datagridUpdate = {
       headers: {
         "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
         "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
-        "X-Target-Contenttype-Id": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
       }
     });
     $.ajax({
@@ -2409,6 +2408,8 @@ Attendees.datagridUpdate = {
             return d.promise();
           },
           update: (key, values) => {
+console.log("hi 2411 here is values: ", values);  //{infos: {comment: "cccc"}}
+// if 'infos' in values, get
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
               method: "PATCH",
@@ -2434,6 +2435,7 @@ Attendees.datagridUpdate = {
               content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
               object_id: Attendees.datagridUpdate.attendeeId,
             };
+console.log("hi 2438 here is values: ", values);
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
               method: "POST",
@@ -2457,15 +2459,19 @@ Attendees.datagridUpdate = {
         }),
       },
       onRowInserting: (rowData) => {
-        console.log("hi 2459 here is rowData: ", rowData);
-        const infos = {show_secret:{}};
+console.log("hi 2462 here is rowData: ", rowData);
+        const infos = {show_secret: {}, comment: rowData.data.infos && rowData.data.infos.comment};
         if(rowData.data.infos && rowData.data.infos.show_secret){
-          infos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
+          infos.show_secret[Attendees.utilities.userAttendeeId] = true;
+          // infos.show_secret = {
+          //   [Attendees.utilities.userAttendeeId]: true,
+          //   comment: rowData.data.infos.comment,
+          // };
         }
         rowData.data.infos = infos;
       },
       onInitNewRow: (e) => {
-        console.log("hi 2467 here is e: ", e);
+console.log("hi 2473 here is e: ", e);
         e.data = {infos: {show_secret:{}, comment:''}};
         DevExpress.ui.notify(
           {
@@ -2499,15 +2505,24 @@ Attendees.datagridUpdate = {
         allowDeleting: false,
       },
       onRowUpdating: (rowData) => {
-        if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
-          const showSecret = rowData.oldData.infos.show_secret;
-          const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
-          if (isRelationshipSecretForCurrentUser) {
-            showSecret[Attendees.utilities.userAttendeeId] = true;
-          } else {
-            delete showSecret[Attendees.utilities.userAttendeeId];
+console.log("hi 2508 here is onRowUpdating rowData: ", rowData);
+        if(rowData.newData.infos){
+          const updatingInfos = rowData.oldData.infos; // may contains both keys of show_secret and comment
+          if('show_secret' in rowData.newData.infos){
+            const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
+            if(isRelationshipSecretForCurrentUser){
+              if (typeof(updatingInfos.show_secret)==="object") {
+                updatingInfos.show_secret[Attendees.utilities.userAttendeeId] = true;
+              } else {
+                updatingInfos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
+              }
+            } else {
+              delete updatingInfos.show_secret[Attendees.utilities.userAttendeeId];
+            }
+            rowData.newData.infos = updatingInfos;
+          } else {  // for updating infos.comment
+            rowData.newData.infos = {...updatingInfos, ...rowData.newData.infos};
           }
-          rowData.newData.infos.show_secret = showSecret;
         }
       },
       columns: [

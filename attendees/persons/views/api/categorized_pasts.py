@@ -22,7 +22,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
 
     def get_queryset(self):
         category__type = self.request.query_params.get('category__type', '')
-        menu_name = self.__class__.__name__ + category__type.capitalize()
+        menu_name = self.__class__.__name__ + category__type.capitalize()  # self.get_view_name() => Api Categorized Pasts List
         url_name = Utility.underscore(menu_name)
 
         if not MenuAuthGroup.objects.filter(
@@ -44,6 +44,8 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
                     |
+                    Q(infos__show_secret__isnull=True)
+                    |
                     Q(**requester_permission)),
             )
         else:
@@ -52,22 +54,13 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
                     |
+                    Q(infos__show_secret__isnull=True)
+                    |
                     Q(**requester_permission)),
             )
 
-    def perform_create(self, serializer):
-        target_object_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID')
-        target_contenttype = get_object_or_404(ContentType, pk=self.request.META.get('HTTP_X_TARGET_CONTENTTYPE_ID'))
-
-        if not target_object_id or not target_contenttype:
-            time.sleep(2)
-            raise Http404("Can't find the associated target_object_id or target_contenttype_id !!")
-
-        serializer.save(
-            object_id=target_object_id,
-            content_type=target_contenttype,
-            organization=self.request.user.organization
-        )
+    def perform_create(self, serializer):  #SpyGuard ensured requester & target_attendee belongs to the same org.
+        serializer.save(organization=self.request.user.organization)
 
 
 api_categorized_pasts_viewset = ApiCategorizedPastsViewSet
