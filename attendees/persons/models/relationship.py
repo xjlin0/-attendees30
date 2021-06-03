@@ -15,7 +15,7 @@ class Relationship(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
     scheduler = models.BooleanField('to_attendee is the scheduler?', null=False, blank=False, default=False, help_text="[from_attendee decide:] to_attendee can view/change the schedules of the from_attendee?")
     in_family = models.ForeignKey('persons.Family', null=True, blank=True, on_delete=models.SET_NULL, related_name="in_family")
     start = models.DateTimeField(null=True, blank=True)
-    finish = models.DateTimeField(blank=False, null=False, default=Utility.forever, help_text="The relation will be ended at when")
+    finish = models.DateTimeField(blank=True, null=True, help_text="The relation will be ended at when")
     infos = JSONField(null=True, blank=True, default=Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data')  # compare to NoteAdmin
 
     class Meta:

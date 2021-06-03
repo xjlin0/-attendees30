@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('from_attendee', models.ForeignKey(on_delete=models.CASCADE, related_name='from_attendee', to='persons.Attendee')),
                 ('to_attendee', models.ForeignKey(on_delete=models.CASCADE, related_name='to_attendee', to='persons.Attendee')),
                 ('start', models.DateTimeField(blank=True, null=True)),
-                ('finish', models.DateTimeField(null=False, blank=False, default=Utility.forever, help_text='The relation will be ended at when')),
+                ('finish', models.DateTimeField(null=True, blank=True, help_text='The relation will be ended at when')),
                 ('in_family', models.ForeignKey(blank=True, null=True, on_delete=models.SET_NULL, related_name='in_family', to='persons.Family')),
                 ('infos', JSONField(blank=True, null=True, default=Utility.relationship_infos, help_text='Example: {"show_secret": {"attendee1id": true, "attendee2id": false}}. Please keep {} here even no data')),
             ],
