@@ -2182,6 +2182,47 @@
     }
   },
   {
+    "model": "persons.category",
+    "pk": 11,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "note",
+      "display_order": 0,
+      "display_name": "public",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 12,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "note",
+      "display_order": 0,
+      "display_name": "for coworkers",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 13,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "note",
+      "display_order": 0,
+      "display_name": "counseling",
+      "infos": {
+        "note": "private to assigners"
+      }
+    }
+  },
+  {
     "model": "persons.past",
     "pk": "070ade81-dbf4-47c4-a1e0-046f553021b8",
     "fields": {

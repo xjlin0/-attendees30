@@ -153,6 +153,8 @@ class NoteAdmin(SummernoteModelAdmin):
 
     def get_queryset(self, request):  # even super user cannot see all in DjangoAdmin
         qs = super().get_queryset(request)
+        counseling_category = Category.objects.get(type='note', display_name=Note.COUNSELING)
+
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
         if request.user.is_counselor():
@@ -160,14 +162,14 @@ class NoteAdmin(SummernoteModelAdmin):
             counselors_permission = {'infos__show_secret__' + Note.ALL_COUNSELORS: True}
             return qs.filter(
                 Q(organization=request.user.organization),
-                (~Q(category=Note.COUNSELING)
+                (~Q(category=counseling_category)
                   |
-                (Q(category=Note.COUNSELING) and (Q(**requester_permission)
+                (Q(category=counseling_category) and (Q(**requester_permission)
                                                   |
                                                   Q(**counselors_permission))
                  )),
             )
-        return qs.filter(organization=request.user.organization).exclude(category=Note.COUNSELING)
+        return qs.filter(organization=request.user.organization).exclude(category=counseling_category)
 
 
 class RelationshipAdmin(admin.ModelAdmin):
