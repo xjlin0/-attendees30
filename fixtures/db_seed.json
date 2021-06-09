@@ -1003,7 +1003,7 @@
       "html_type": "a",
       "urn": "#",
       "url_name": "congregation_data",
-      "display_name": "congregation data \u6703\u773e\u8cc7\u6599",
+      "display_name": "general data 通用資料",
       "display_order": 3000,
       "infos": {
         "role": "tab",
