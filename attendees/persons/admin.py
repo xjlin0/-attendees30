@@ -43,7 +43,7 @@ class PastAdmin(admin.ModelAdmin):
     # Todo 20210528  combine with NoteAdmin's show_secret
     search_fields = ('id', 'display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('subject', 'category', 'display_order', 'display_name', 'start')
+    list_display = ('subject', 'category', 'display_order', 'display_name', 'when')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

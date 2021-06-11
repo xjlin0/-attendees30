@@ -1248,9 +1248,9 @@
       "category": "API",
       "parent": null,
       "html_type": "faith",
-      "urn": "/persons/api/categorized_pasts/?category__type=faith",
-      "url_name": "api_categorized_pasts_view_set_faith",
-      "display_name": "api_categorized_pasts_view_set_faith",
+      "urn": "/persons/api/categorized_pasts/?category__type=status",
+      "url_name": "api_categorized_pasts_view_set_status",
+      "display_name": "api_categorized_pasts_view_set_status",
       "display_order": 0,
       "infos": {},
       "lft": 1,
@@ -2084,7 +2084,7 @@
       "created": "2021-05-23T12:55:51.864Z",
       "modified": "2021-05-23T12:59:01.791Z",
       "is_removed": false,
-      "type": "faith",
+      "type": "status",
       "display_order": 0,
       "display_name": "believe",
       "infos": {}
@@ -2097,7 +2097,7 @@
       "created": "2021-05-23T12:56:31.387Z",
       "modified": "2021-05-23T12:59:36.666Z",
       "is_removed": false,
-      "type": "faith",
+      "type": "status",
       "display_order": 0,
       "display_name": "accept",
       "infos": {}
@@ -2110,7 +2110,7 @@
       "created": "2021-05-23T13:01:21.838Z",
       "modified": "2021-05-23T13:01:21.838Z",
       "is_removed": false,
-      "type": "faith",
+      "type": "status",
       "display_order": 0,
       "display_name": "baptized",
       "infos": {}
@@ -2223,6 +2223,32 @@
     }
   },
   {
+    "model": "persons.category",
+    "pk": 14,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "call",
+      "display_order": 0,
+      "display_name": "public",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 15,
+    "fields": {
+      "created": "2021-05-20T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "call",
+      "display_order": 0,
+      "display_name": "private",
+      "infos": {}
+    }
+  },
+  {
     "model": "persons.past",
     "pk": "070ade81-dbf4-47c4-a1e0-046f553021b8",
     "fields": {
@@ -2232,7 +2258,7 @@
       "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "start": "2021-05-23T13:03:32Z",
+      "when": "2021-05-23T13:03:32Z",
       "finish": null,
       "category": 2,
       "display_order": 30000,
@@ -2255,7 +2281,7 @@
       "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "start": "2021-05-23T13:02:45Z",
+      "when": "2021-05-23T13:02:45Z",
       "finish": null,
       "category": 1,
       "display_order": 30000,
@@ -2276,7 +2302,7 @@
       "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "start": "2021-05-23T13:14:15Z",
+      "when": "2021-05-23T13:14:15Z",
       "finish": null,
       "category": 5,
       "display_order": 30000,
@@ -2297,7 +2323,7 @@
       "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "start": "2021-05-23T13:10:23Z",
+      "when": "2021-05-23T13:10:23Z",
       "finish": null,
       "category": 4,
       "display_order": 30000,
@@ -2318,7 +2344,7 @@
       "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "start": "2021-05-23T13:03:51Z",
+      "when": "2021-05-23T13:03:51Z",
       "finish": null,
       "category": 3,
       "display_order": 30000,
@@ -5999,25 +6025,6 @@
       "infos": {},
       "site_type": 36,
       "site_id": 11
-    }
-  },
-  {
-    "model": "occasions.meet",
-    "pk": 16,
-    "fields": {
-      "created": "2020-05-09T22:36:23.046Z",
-      "modified": "2021-04-08T16:35:56.640Z",
-      "is_removed": false,
-      "assembly": 5,
-      "shown_audience": false,
-      "audience_editable": false,
-      "start": "2020-05-12T14:54:35Z",
-      "finish": "2099-05-12T15:54:36Z",
-      "display_name": "\u95dc\u61f7 care",
-      "slug": "d7c8Fd_cfcch_congregation_care",
-      "infos": {},
-      "site_type": 36,
-      "site_id": 1
     }
   },
   {

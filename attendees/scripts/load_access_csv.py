@@ -564,9 +564,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'emergency_contact': husband_role.emergency_contact,
                         'scheduler': husband_role.scheduler,
                         # 'finish': Utility.forever(),
-                        'infos': {
-                            'show_secret': {},
-                        },
+                        'infos': Utility.relationship_infos(),
+                        #{
+                        #    'show_secret': {},
+                       # },
                     }
                 )
 
@@ -579,9 +580,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'emergency_contact': wife_role.emergency_contact,
                         'scheduler': wife_role.scheduler,
                         # 'finish': Utility.forever(),
-                        'infos': {
-                            'show_secret': {},
-                        },
+                        'infos': Utility.relationship_infos(),
+                        #{
+                        #    'show_secret': {},
+                        #},
                     }
                 )
                 successfully_processed_count += 2
@@ -623,9 +625,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                                 'emergency_contact': False,
                                 'scheduler': False,
                                 # 'finish': Utility.forever(),
-                                'infos': {
-                                    'show_secret': {},
-                                },
+                                'infos': Utility.relationship_infos(),
+                                #{
+                                #    'show_secret': {},
+                                #},
                              }
                 )
                 successfully_processed_count += 1
@@ -649,9 +652,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'emergency_contact': child_role.emergency_contact,
                             'scheduler': child_role.scheduler,
                             # 'finish': Utility.forever(),
-                            'infos': {
-                                'show_secret': {},
-                            },
+                            'infos': Utility.relationship_infos(),
+                            #{
+                            #    'show_secret': {},
+                            #},
                         }
                     )
 
@@ -664,9 +668,10 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'emergency_contact': parent_role.emergency_contact,
                             'scheduler': parent_role.scheduler,
                             # 'finish': Utility.forever(),
-                            'infos': {
-                                'show_secret': {},
-                            },
+                            'infos': Utility.relationship_infos(),
+                            #{
+                            #    'show_secret': {},
+                            #},
                         }
                     )
                     successfully_processed_count += 2

@@ -81,7 +81,7 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
     Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.faithDatagrid && Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option("editing", editingArgs);
   },
 
   displayNotifiers: ()=> {
@@ -403,29 +403,29 @@ Attendees.datagridUpdate = {
               showColon: false,
             },
             template: (data, itemElement) => {
-              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'education');
+              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {type: 'education'});
             },
           }
         ],
       },
       {
-        apiUrlName: 'api_categorized_pasts_view_set_faith',
+        apiUrlName: 'api_categorized_pasts_view_set_status',
         colSpan: 24,
         colCount: 24,
-        caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: "Status: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
         cssClass: 'h6',
         itemType: "group",
         items: [
           {
             colSpan: 24,
-            dataField: "past_faith_set",
+            dataField: "past_status_set",
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
               showColon: false,
             },
             template: (data, itemElement) => {
-              Attendees.datagridUpdate.faithDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'faith');
+              Attendees.datagridUpdate.statusDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {type: 'status'});
             },
           }
         ],
@@ -2257,8 +2257,8 @@ Attendees.datagridUpdate = {
     onRowUpdating: (rowData) => {
       if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
         const showSecret = rowData.oldData.infos.show_secret;
-        const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
-        if (isRelationshipSecretForCurrentUser) {
+        const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
+        if (isItSecretWithCurrentUser) {
           showSecret[Attendees.utilities.userAttendeeId] = true;
         } else {
           delete showSecret[Attendees.utilities.userAttendeeId];
@@ -2393,19 +2393,19 @@ Attendees.datagridUpdate = {
 
   ///////////////////////  Past Datagrids (dynamic) in main DxForm  ///////////////////////
 
-  initPastDatagrid: (data, itemElement, type) => {
-    const $pastDatagrid = $("<div id='" + type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(type));
+  initPastDatagrid: (data, itemElement, args) => {
+    const $pastDatagrid = $("<div id='" + args.type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(args));
     itemElement.append($pastDatagrid);
     return $pastDatagrid.dxDataGrid("instance");
   },
 
-  pastDatagridConfig: (type) => {
+  pastDatagridConfig: (args) => { // {type: 'education', dataFields: ['display_name', 'start'], extraDatagridOpts:{editing:{mode:'popup'}}}
     return {
       dataSource: {
         store: new DevExpress.data.CustomStore({
           key: "id",
           load: () => {
-            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: type});
+            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: args.type});
           },
           byKey: (key) => {
             const d = new $.Deferred();
@@ -2417,7 +2417,7 @@ Attendees.datagridUpdate = {
           },
           update: (key, values) => {
             return $.ajax({
-              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
               method: "PATCH",
               dataType: 'json',
               contentType: "application/json; charset=utf-8",
@@ -2425,7 +2425,7 @@ Attendees.datagridUpdate = {
               success: (result) => {
                 DevExpress.ui.notify(
                   {
-                    message: 'update ' + type + ' success',
+                    message: 'update ' + args.type + ' success',
                     width: 500,
                     position: {
                       my: 'center',
@@ -2450,7 +2450,7 @@ Attendees.datagridUpdate = {
               success: (result) => {
                 DevExpress.ui.notify(
                   {
-                    message: 'Create ' + type + ' success',
+                    message: 'Create ' + args.type + ' success',
                     width: 500,
                     position: {
                       my: 'center',
@@ -2473,7 +2473,7 @@ Attendees.datagridUpdate = {
       onInitNewRow: (e) => {  // don't assign e.data or show_secret somehow messed up
         DevExpress.ui.notify(
           {
-            message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",
+            message: "Let's create a " + args.type + ", click away or hit Enter to save. Hit Esc to quit without save",
             width: 500,
             position: {
               my: 'center',
@@ -2506,8 +2506,8 @@ Attendees.datagridUpdate = {
         if(rowData.newData.infos){
           const updatingInfos = rowData.oldData.infos; // may contains both keys of show_secret and comment
           if('show_secret' in rowData.newData.infos){
-            const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
-            if(isRelationshipSecretForCurrentUser){
+            const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
+            if(isItSecretWithCurrentUser){
               if (typeof(updatingInfos.show_secret)==="object") {
                 updatingInfos.show_secret[Attendees.utilities.userAttendeeId] = true;
               } else {
@@ -2535,7 +2535,7 @@ Attendees.datagridUpdate = {
                 load: () => {
                   return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
                     take: 100,
-                    type: type,
+                    type: args.type,
                   });
                 },
                 byKey: (key) => {
@@ -2560,8 +2560,7 @@ Attendees.datagridUpdate = {
           calculateCellValue: (rowData) => {
             if (rowData.infos){
               const showSecret = rowData.infos.show_secret;
-              const result = !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
-              return result;
+              return !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
             } else {
               return false;
             }
@@ -2574,7 +2573,7 @@ Attendees.datagridUpdate = {
           dataType: "string",
         },
         {
-          dataField: "start",
+          dataField: "when",
           dataType: "date",
         },
         {

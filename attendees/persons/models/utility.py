@@ -50,7 +50,7 @@ class Utility:
 
     @staticmethod
     def relationship_infos():
-        return {"show_secret": {}, "comment": None}
+        return {"show_secret": {}, "comment": None, "body": None}
 
     @staticmethod
     def forever():  # 1923 years from now
