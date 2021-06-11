@@ -431,6 +431,28 @@ Attendees.datagridUpdate = {
         ],
       },
       {
+        apiUrlName: 'api_categorized_pasts_view_set_note',
+        colSpan: 24,
+        colCount: 24,
+        caption: "Other notes",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_note_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.statusDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {type: 'note'});
+            },
+          }
+        ],
+      },
+      {
         colSpan: 24,
         colCount: 24,
         caption: "Groups",

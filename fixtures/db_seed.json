@@ -786,7 +786,7 @@
       },
       "lft": 1,
       "rght": 18,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 0
     }
   },
@@ -811,7 +811,7 @@
       },
       "lft": 16,
       "rght": 17,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -836,7 +836,7 @@
       },
       "lft": 14,
       "rght": 15,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -864,7 +864,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 5,
+      "tree_id": 9,
       "level": 0
     }
   },
@@ -888,7 +888,7 @@
       },
       "lft": 10,
       "rght": 11,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -913,7 +913,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 5,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -938,7 +938,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 5,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -962,7 +962,7 @@
       },
       "lft": 12,
       "rght": 13,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -986,7 +986,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 5,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1003,7 +1003,7 @@
       "html_type": "a",
       "urn": "#",
       "url_name": "congregation_data",
-      "display_name": "general data 通用資料",
+      "display_name": "general data \u901a\u7528\u8cc7\u6599",
       "display_order": 3000,
       "infos": {
         "role": "tab",
@@ -1014,7 +1014,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 6,
+      "tree_id": 10,
       "level": 0
     }
   },
@@ -1039,7 +1039,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 6,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1064,7 +1064,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 6,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1089,7 +1089,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 6,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1114,7 +1114,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -1139,7 +1139,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -1164,7 +1164,7 @@
       },
       "lft": 8,
       "rght": 9,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -1173,7 +1173,7 @@
     "pk": 19,
     "fields": {
       "created": "2020-12-14T04:43:29Z",
-      "modified": "2021-04-08T18:09:01.674Z",
+      "modified": "2021-06-11T16:31:40.749Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
@@ -1181,7 +1181,7 @@
       "html_type": "a",
       "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/",
       "url_name": "datagrid_attendee_update_view",
-      "display_name": "update attendee \u66f4\u65b0\u8cc7\u6599",
+      "display_name": "update attendee \u500b\u4eba\u8cc7\u6599",
       "display_order": 725,
       "infos": {
         "class": "dropdown-item",
@@ -1189,7 +1189,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 4,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -1198,7 +1198,7 @@
     "pk": 20,
     "fields": {
       "created": "2021-05-30T22:58:10.048Z",
-      "modified": "2021-05-30T22:58:10.048Z",
+      "modified": "2021-06-11T16:36:02.122Z",
       "is_removed": false,
       "organization": 1,
       "category": "API",
@@ -1211,7 +1211,7 @@
       "infos": {},
       "lft": 1,
       "rght": 2,
-      "tree_id": 1,
+      "tree_id": 4,
       "level": 0
     }
   },
@@ -1220,7 +1220,7 @@
     "pk": 21,
     "fields": {
       "created": "2021-05-30T23:04:38.258Z",
-      "modified": "2021-05-30T23:04:38.258Z",
+      "modified": "2021-06-11T16:36:10.238Z",
       "is_removed": false,
       "organization": 1,
       "category": "API",
@@ -1233,7 +1233,7 @@
       "infos": {},
       "lft": 1,
       "rght": 2,
-      "tree_id": 2,
+      "tree_id": 5,
       "level": 0
     }
   },
@@ -1242,12 +1242,12 @@
     "pk": 22,
     "fields": {
       "created": "2021-05-30T23:05:59.529Z",
-      "modified": "2021-05-30T23:05:59.529Z",
+      "modified": "2021-06-11T16:43:51.181Z",
       "is_removed": false,
       "organization": 1,
       "category": "API",
       "parent": null,
-      "html_type": "faith",
+      "html_type": "status",
       "urn": "/persons/api/categorized_pasts/?category__type=status",
       "url_name": "api_categorized_pasts_view_set_status",
       "display_name": "api_categorized_pasts_view_set_status",
@@ -1255,7 +1255,29 @@
       "infos": {},
       "lft": 1,
       "rght": 2,
-      "tree_id": 3,
+      "tree_id": 7,
+      "level": 0
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 23,
+    "fields": {
+      "created": "2021-06-11T16:45:14.949Z",
+      "modified": "2021-06-11T16:45:14.949Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "API",
+      "parent": null,
+      "html_type": "note",
+      "urn": "/persons/api/categorized_pasts/?category__type=note",
+      "url_name": "api_categorized_pasts_view_set_note",
+      "display_name": "api_categorized_pasts_view_set_note",
+      "display_order": 0,
+      "infos": {},
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 6,
       "level": 0
     }
   },
@@ -1335,9 +1357,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "7",
+      "organization": 1,
       "address": 2,
       "address_extra": null,
       "address_type": "street",
@@ -1367,9 +1389,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
+      "organization": 1,
       "address": 5,
       "address_extra": null,
       "address_type": "street",
@@ -1391,9 +1413,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 38,
       "object_id": "1",
+      "organization": 1,
       "address": 1,
       "address_extra": null,
       "address_type": "street",
@@ -1417,9 +1439,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "organization": 1,
       "address": 3,
       "address_extra": null,
       "address_type": "street",
@@ -1441,9 +1463,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "organization": 1,
       "address": 4,
       "address_extra": null,
       "address_type": "street",
@@ -1465,9 +1487,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "f3b780ad-c736-490e-8731-58b96dfd81f8",
+      "organization": 1,
       "address": 6,
       "address_extra": "#A123",
       "address_type": "street",
@@ -1489,9 +1511,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "ffd3881a-7a77-437a-ba11-c90610839523",
+      "organization": 1,
       "address": 6,
       "address_extra": "#A123",
       "address_type": "street",
@@ -1513,9 +1535,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "organization": 1,
       "address": 6,
       "address_extra": "#A123",
       "address_type": "street",
@@ -1537,9 +1559,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
+      "organization": 1,
       "address": 2,
       "address_extra": null,
       "address_type": "street",
@@ -1569,9 +1591,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "4",
+      "organization": 1,
       "address": 9,
       "address_extra": null,
       "address_type": "street",
@@ -1601,9 +1623,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "6",
+      "organization": 1,
       "address": 11,
       "address_extra": null,
       "address_type": "street",
@@ -1633,9 +1655,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "5",
+      "organization": 1,
       "address": 1,
       "address_extra": null,
       "address_type": "street",
@@ -1665,9 +1687,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "3",
+      "organization": 1,
       "address": 10,
       "address_extra": null,
       "address_type": "street",
@@ -1697,9 +1719,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "1",
+      "organization": 1,
       "address": 1,
       "address_extra": null,
       "address_type": "street",
@@ -1728,9 +1750,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 52,
       "object_id": "2",
+      "organization": 1,
       "address": 1,
       "address_extra": null,
       "address_type": "street",
@@ -1752,9 +1774,9 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
+      "organization": 1,
       "address": 3,
       "address_extra": null,
       "address_type": "street",
@@ -2255,7 +2277,6 @@
       "created": "2021-05-23T13:03:48.096Z",
       "modified": "2021-05-23T13:11:31.627Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "when": "2021-05-23T13:03:32Z",
@@ -2263,6 +2284,7 @@
       "category": 2,
       "display_order": 30000,
       "display_name": "secret to hagar(if user#2 created)",
+      "organization": 1,
       "infos": {
         "comment": null,
         "show_secret": {
@@ -2278,7 +2300,6 @@
       "created": "2021-05-23T13:03:28.804Z",
       "modified": "2021-05-23T13:11:11.686Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "when": "2021-05-23T13:02:45Z",
@@ -2286,6 +2307,7 @@
       "category": 1,
       "display_order": 30000,
       "display_name": "where and major",
+      "organization": 1,
       "infos": {
         "comment": null,
         "show_secret": {}
@@ -2297,16 +2319,16 @@
     "pk": "413f86b6-4f4c-4293-a2b1-f6ede5ddf60c",
     "fields": {
       "created": "2021-05-23T13:14:49.684Z",
-      "modified": "2021-05-23T13:14:49.684Z",
+      "modified": "2021-06-11T16:23:58.098Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "when": "2021-05-23T13:14:15Z",
       "finish": null,
       "category": 5,
       "display_order": 30000,
-      "display_name": "baptized at where by whom",
+      "display_name": "baptized at where by whom hhh",
+      "organization": 1,
       "infos": {
         "comment": null,
         "show_secret": {}
@@ -2320,7 +2342,6 @@
       "created": "2021-05-23T13:10:51.374Z",
       "modified": "2021-05-23T13:10:51.374Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "when": "2021-05-23T13:10:23Z",
@@ -2328,6 +2349,7 @@
       "category": 4,
       "display_order": 30000,
       "display_name": "accept at where by whom",
+      "organization": 1,
       "infos": {
         "comment": null,
         "show_secret": {}
@@ -2341,7 +2363,6 @@
       "created": "2021-05-23T13:05:34.202Z",
       "modified": "2021-05-23T13:09:48.778Z",
       "is_removed": false,
-      "organization": 1,
       "content_type": 46,
       "object_id": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "when": "2021-05-23T13:03:51Z",
@@ -2349,6 +2370,7 @@
       "category": 3,
       "display_order": 30000,
       "display_name": "believe at where by whom",
+      "organization": 1,
       "infos": {
         "comment": null,
         "show_secret": {}
@@ -8470,6 +8492,84 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 61,
+    "fields": {
+      "created": "2021-06-11T16:32:43.206Z",
+      "modified": "2021-06-11T16:32:43.206Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 20
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 62,
+    "fields": {
+      "created": "2021-06-11T16:33:33.306Z",
+      "modified": "2021-06-11T16:33:33.306Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 22
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 63,
+    "fields": {
+      "created": "2021-06-11T16:34:01.817Z",
+      "modified": "2021-06-11T16:34:01.817Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 21
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 64,
+    "fields": {
+      "created": "2021-06-11T16:45:14.972Z",
+      "modified": "2021-06-11T16:45:14.972Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 23
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 65,
+    "fields": {
+      "created": "2021-06-11T16:45:14.974Z",
+      "modified": "2021-06-11T16:45:14.974Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 23
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 66,
+    "fields": {
+      "created": "2021-06-11T16:45:14.978Z",
+      "modified": "2021-06-11T16:45:14.978Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 23
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -8982,24 +9082,28 @@
     "pk": "aa24758f-cc70-4353-b1d7-9c616b3db425",
     "fields": {
       "created": "1999-04-11T19:38:16.323Z",
-      "modified": "2020-11-16T16:03:43.463Z",
+      "modified": "2021-06-11T16:23:02.070Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Abraham",
       "last_name": "\u4e9e\u4f2f\u62c9\u7f55",
-      "first_name2": null,
-      "last_name2": null,
+      "first_name2": "",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "photo": "",
+      "photo": "attendee_portrait/Rembrandt_Harmensz._van_Rijn__Abraham_XWWPY8I.jpg",
       "progressions": {},
       "infos": {
-        "fixed": {},
+        "fixed": {
+          "food_pref": "\u611b\u5403BBQ"
+        },
         "names": {
-          "original": "Abraham \u4e9e\u4f2f\u62c9\u7f55"
+          "original": "Abraham \u4e9e\u4f2f\u62c9\u7f55",
+          "simplified": "",
+          "traditional": ""
         },
         "contacts": {
           "email1": "6coola@email.com",
