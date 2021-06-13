@@ -72,17 +72,17 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
-    const editingArgs = {
+    const cellEditingArgs = {
       mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
       allowDeleting: false,
     };
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.noteDatagrid && Attendees.datagridUpdate.noteDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.noteDatagrid && Attendees.datagridUpdate.noteDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.noteEditingArgs});
   },
 
   displayNotifiers: ()=> {
@@ -471,7 +471,7 @@ Attendees.datagridUpdate = {
                 type: 'note',
                 dataFieldAndOpts:{
                   category: {},
-                  display_name: {},
+                  display_name: {caption: 'Title'},
                   'infos.show_secret': {},
                   'infos.comment': {},
                   when: {},
@@ -2607,29 +2607,21 @@ Attendees.datagridUpdate = {
       grouping: {
         autoExpandAll: true,
       },
-      editing: {
-        mode: "cell",
-        allowUpdating: Attendees.utilities.editingEnabled,
-        allowAdding: Attendees.utilities.editingEnabled,
-        allowDeleting: false,
-      },
-      onRowUpdating: (rowData) => {if(rowData.newData.infos){
-          const updatingInfos = rowData.oldData.infos; // may contains both keys of show_secret and comment
-          if('show_secret' in rowData.newData.infos){
-            const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
-            if(isItSecretWithCurrentUser){
-              if (typeof(updatingInfos.show_secret)==="object") {
-                updatingInfos.show_secret[Attendees.utilities.userAttendeeId] = true;
-              } else {
-                updatingInfos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
-              }
-            } else {
-              delete updatingInfos.show_secret[Attendees.utilities.userAttendeeId];
-            }
-            rowData.newData.infos = updatingInfos;
-          } else {  // for updating infos.comment
-            rowData.newData.infos = {...updatingInfos, ...rowData.newData.infos};
+      // editing: {
+      //   mode: "cell",
+      //   allowUpdating: Attendees.utilities.editingEnabled,
+      //   allowAdding: Attendees.utilities.editingEnabled,
+      //   allowDeleting: false,
+      // },
+      onRowUpdating: (rowData) => {
+        if(rowData.newData.infos && 'show_secret' in rowData.newData.infos){  // new show_secret may be false from UI, or it maybe infos.comment
+          let updatingShowSecret = rowData.oldData.infos && typeof(rowData.oldData.infos.show_secret)==='object' && rowData.oldData.infos.show_secret || {};
+          if(rowData.newData.infos.show_secret){  // boolean from UI but db needs to store attendee
+            updatingShowSecret[Attendees.utilities.userAttendeeId] = true;
+          } else {
+            delete updatingShowSecret[Attendees.utilities.userAttendeeId];
           }
+          rowData.newData.infos.show_secret = updatingShowSecret;
         }
       },
       columns: columns.flatMap(column => {
@@ -2640,6 +2632,38 @@ Attendees.datagridUpdate = {
         }
       }),
     };
+  },
+
+  noteEditingArgs: {
+    mode: "popup",
+    popup: {
+      showTitle: true,
+      title: "Editing note of Attendee"
+    },
+    form: {
+      items: [
+        {
+          dataField: "category",
+        },
+        {
+          dataField: "display_name",
+        },
+        {
+          dataField: 'infos.show_secret',
+        },
+        {
+          dataField: "when",
+        },
+        {
+          dataField: "infos.comment",
+          editorType: "dxTextArea",
+          colSpan: 2,
+          editorOptions: {
+            autoResizeEnabled: true,
+          }
+        },
+      ],
+    },
   },
 };
 
