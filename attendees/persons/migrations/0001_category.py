@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('is_removed', models.BooleanField(default=False)),
                 ('display_order', models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)),
                 ('type', models.CharField(blank=False, max_length=25, db_index=True, null=False, default='generic', help_text='main type')),
-                ('display_name', models.CharField(blank=False, max_length=50, null=False)),
+                ('display_name', models.CharField(blank=False, max_length=50, null=False, db_index=True)),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"icon": "home", "style": "normal"}. Please keep {} here even no data', null=True)),
             ],
             options={

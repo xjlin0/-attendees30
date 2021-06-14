@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from django.db.models import Q
 from rest_framework.exceptions import PermissionDenied
 
-from attendees.persons.models import Attendee, Utility
+from attendees.persons.models import Attendee, Utility, Past
 from attendees.persons.serializers import PastSerializer
 from attendees.users.authorization.route_guard import SpyGuard
 from attendees.users.models import MenuAuthGroup
@@ -38,7 +38,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
         requester_permission = {'infos__show_secret__' + self.request.user.attendee_uuid_str(): True}
 
         if past_id:
-            return target_attendee.pasts.filter(
+            qs = target_attendee.pasts.filter(
                 Q(organization=self.request.user.organization),
                 Q(pk=past_id),
                 Q(category__type=category__type),
@@ -49,7 +49,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                     Q(**requester_permission)),
             )
         else:
-            return target_attendee.pasts.filter(
+            qs = target_attendee.pasts.filter(
                 Q(organization=self.request.user.organization),
                 Q(category__type=category__type),
                 (   Q(infos__show_secret={})
@@ -58,6 +58,11 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
                     |
                     Q(**requester_permission)),
             )
+
+        if self.request.user.is_counselor():
+            return qs
+        else:
+            return qs.exclude(category__display_name=Past.COUNSELING)
 
     def perform_create(self, serializer):  #SpyGuard ensured requester & target_attendee belongs to the same org.
         serializer.save(organization=self.request.user.organization)

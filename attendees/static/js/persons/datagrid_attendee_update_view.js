@@ -2486,6 +2486,7 @@ Attendees.datagridUpdate = {
       {
         caption: 'Secret shared with you',
         dataField: 'infos.show_secret',
+        width: '18%',
         calculateCellValue: (rowData) => {
           if (rowData.infos){
             const showSecret = rowData.infos.show_secret;
@@ -2500,6 +2501,7 @@ Attendees.datagridUpdate = {
         dataField: "infos.comment",
         caption: 'Comment',
         dataType: "string",
+        width: '32%',
       },
       {
         dataField: "when",
@@ -2603,7 +2605,8 @@ Attendees.datagridUpdate = {
         message: 'Fetching...',
         enabled: true,
       },
-      wordWrapEnabled: true,
+      wordWrapEnabled: false,
+      width: '100%',
       grouping: {
         autoExpandAll: true,
       },
