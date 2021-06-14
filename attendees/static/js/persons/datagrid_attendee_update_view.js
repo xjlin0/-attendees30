@@ -2614,14 +2614,21 @@ Attendees.datagridUpdate = {
       //   allowDeleting: false,
       // },
       onRowUpdating: (rowData) => {
-        if(rowData.newData.infos && 'show_secret' in rowData.newData.infos){  // new show_secret may be false from UI, or it maybe infos.comment
-          let updatingShowSecret = rowData.oldData.infos && typeof(rowData.oldData.infos.show_secret)==='object' && rowData.oldData.infos.show_secret || {};
-          if(rowData.newData.infos.show_secret){  // boolean from UI but db needs to store attendee
-            updatingShowSecret[Attendees.utilities.userAttendeeId] = true;
-          } else {
-            delete updatingShowSecret[Attendees.utilities.userAttendeeId];
+        if(rowData.newData.infos){ // could be comment or show_secret or both
+          const updatingInfos = rowData.oldData.infos || {};
+          if ('show_secret' in rowData.newData.infos) {  // infos.show_secret could be false or true
+            let updatingShowSecret = typeof(updatingInfos.show_secret)==='object' && updatingInfos.show_secret || {};  // could show_secret to others
+            if(rowData.newData.infos.show_secret){  // boolean from UI but db needs to store attendee
+              updatingShowSecret[Attendees.utilities.userAttendeeId] = true;
+            } else {
+              delete updatingShowSecret[Attendees.utilities.userAttendeeId];
+            }
+            updatingInfos.show_secret = updatingShowSecret;
           }
-          rowData.newData.infos.show_secret = updatingShowSecret;
+          if ('comment' in rowData.newData.infos) {  // UI may send this or not
+            updatingInfos.comment = rowData.newData.infos.comment;
+          }
+          rowData.newData.infos = updatingInfos;
         }
       },
       columns: columns.flatMap(column => {
