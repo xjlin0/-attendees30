@@ -72,16 +72,17 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
-    editingArgs = {
+    const cellEditingArgs = {
       mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
       allowDeleting: false,
     };
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", editingArgs);
-    Attendees.datagridUpdate.faithDatagrid && Attendees.datagridUpdate.faithDatagrid.option("editing", editingArgs);
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option("editing", cellEditingArgs);
+    Attendees.datagridUpdate.noteDatagrid && Attendees.datagridUpdate.noteDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.noteEditingArgs});
   },
 
   displayNotifiers: ()=> {
@@ -403,29 +404,79 @@ Attendees.datagridUpdate = {
               showColon: false,
             },
             template: (data, itemElement) => {
-              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'education');
+              Attendees.datagridUpdate.educationDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {
+                type: 'education',
+                dataFieldAndOpts:{
+                  category: {},
+                  display_name: {},
+                  'infos.show_secret': {},
+                  'infos.comment': {},
+                  when: {caption: 'Start'},
+                  finish: {},
+                },
+              });
             },
           }
         ],
       },
       {
-        apiUrlName: 'api_categorized_pasts_view_set_faith',
+        apiUrlName: 'api_categorized_pasts_view_set_status',
         colSpan: 24,
         colCount: 24,
-        caption: "Faith: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: "Status: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
         cssClass: 'h6',
         itemType: "group",
         items: [
           {
             colSpan: 24,
-            dataField: "past_faith_set",
+            dataField: "past_status_set",
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
               showColon: false,
             },
             template: (data, itemElement) => {
-              Attendees.datagridUpdate.faithDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, 'faith');
+              Attendees.datagridUpdate.statusDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {
+                type: 'status',
+                dataFieldAndOpts:{
+                  category: {},
+                  display_name: {},
+                  'infos.show_secret': {},
+                  'infos.comment': {},
+                  when: {},
+                },
+              });
+            },
+          }
+        ],
+      },
+      {
+        apiUrlName: 'api_categorized_pasts_view_set_note',
+        colSpan: 24,
+        colCount: 24,
+        caption: "Other notes",
+        cssClass: 'h6',
+        itemType: "group",
+        items: [
+          {
+            colSpan: 24,
+            dataField: "past_note_set",
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => {
+              Attendees.datagridUpdate.noteDatagrid = Attendees.datagridUpdate.initPastDatagrid(data, itemElement, {
+                type: 'note',
+                dataFieldAndOpts:{
+                  category: {},
+                  display_name: {caption: 'Title'},
+                  'infos.show_secret': {},
+                  'infos.comment': {},
+                  when: {},
+                },
+              });
             },
           }
         ],
@@ -1248,8 +1299,8 @@ Attendees.datagridUpdate = {
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
 //                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
                     Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
-//                    console.log("hi 847 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
-//                    console.log("hi 848 here is selectedAddress: ", selectedAddress);
+//                    console.log("hi 1302 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
+//                    console.log("hi 1303 here is selectedAddress: ", selectedAddress);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
@@ -1347,7 +1398,7 @@ Attendees.datagridUpdate = {
                     onValueChanged: (e) => {
                       if (e.previousValue && e.previousValue !== e.value){
                         const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                        console.log("hi 1323 here is selectedState: ", selectedState);
+                        console.log("hi 1401 here is selectedState: ", selectedState);
                       }
                     },
                   },
@@ -1418,7 +1469,7 @@ Attendees.datagridUpdate = {
                                     }, "success", 2500);
                       },
                       error  : (response) => {
-                                 console.log('1394 Failed to save data for place Form in Popup, error: ', response);
+                                 console.log('1472 Failed to save data for place Form in Popup, error: ', response);
                                  console.log('formData: ', userData);
                                  DevExpress.ui.notify(
                                    {
@@ -1510,7 +1561,7 @@ Attendees.datagridUpdate = {
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if(confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")){
-                    console.log("Hi 1486 Todo 20210515: Please implement this function")
+                    console.log("Hi 1564 Todo 20210515: Please implement this function")
                   }
                 },
               },
@@ -1939,10 +1990,16 @@ Attendees.datagridUpdate = {
       {
         dataField: "start",
         dataType: "date",
+        editorOptions: {
+          dateSerializationFormat: "yyyy-MM-dd",
+        },
       },
       {
         dataField: "finish",
         dataType: "date",
+        editorOptions: {
+          dateSerializationFormat: "yyyy-MM-dd",
+        },
       },
     ],
   },
@@ -2251,8 +2308,8 @@ Attendees.datagridUpdate = {
     onRowUpdating: (rowData) => {
       if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
         const showSecret = rowData.oldData.infos.show_secret;
-        const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
-        if (isRelationshipSecretForCurrentUser) {
+        const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
+        if (isItSecretWithCurrentUser) {
           showSecret[Attendees.utilities.userAttendeeId] = true;
         } else {
           delete showSecret[Attendees.utilities.userAttendeeId];
@@ -2373,11 +2430,13 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: "start",
-        dataType: "date",
+        dataType: "datetime",
+        format: "MM/dd/yyyy",
       },
       {
         dataField: "finish",
-        dataType: "date",
+        dataType: "datetime",
+        format: "MM/dd/yyyy",
       },
     ],
   },
@@ -2385,19 +2444,79 @@ Attendees.datagridUpdate = {
 
   ///////////////////////  Past Datagrids (dynamic) in main DxForm  ///////////////////////
 
-  initPastDatagrid: (data, itemElement, type) => {
-    const $pastDatagrid = $("<div id='" + type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(type));
+  initPastDatagrid: (data, itemElement, args) => {
+    const $pastDatagrid = $("<div id='" + args.type + "-past-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.pastDatagridConfig(args));
     itemElement.append($pastDatagrid);
     return $pastDatagrid.dxDataGrid("instance");
   },
 
-  pastDatagridConfig: (type) => {
+  pastDatagridConfig: (args) => { // {type: 'education', dataFields: {display_name: 'display_name', start: 'start'}, extraDatagridOpts:{editing:{mode:'popup'}}}
+    const columns = [
+      {
+        dataField: "category",
+        validationRules: [{type: "required"}],
+        lookup: {
+          valueExpr: "id",
+          displayExpr: "display_name",
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: "id",
+              load: () => {
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
+                  take: 100,
+                  type: args.type,
+                });
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint + key + '/')
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        },
+      },
+
+      {
+        dataField: "display_name",
+      },
+      {
+        caption: 'Secret shared with you',
+        dataField: 'infos.show_secret',
+        calculateCellValue: (rowData) => {
+          if (rowData.infos){
+            const showSecret = rowData.infos.show_secret;
+            return !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
+          } else {
+            return false;
+          }
+        },
+        dataType: 'boolean',
+      },
+      {
+        dataField: "infos.comment",
+        caption: 'Comment',
+        dataType: "string",
+      },
+      {
+        dataField: "when",
+        dataType: "date",
+      },
+      {
+        dataField: "finish",
+        dataType: "date",
+      },
+    ];
+
     return {
       dataSource: {
         store: new DevExpress.data.CustomStore({
           key: "id",
           load: () => {
-            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: type});
+            return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: args.type});
           },
           byKey: (key) => {
             const d = new $.Deferred();
@@ -2409,7 +2528,7 @@ Attendees.datagridUpdate = {
           },
           update: (key, values) => {
             return $.ajax({
-              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: type}),
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
               method: "PATCH",
               dataType: 'json',
               contentType: "application/json; charset=utf-8",
@@ -2417,7 +2536,7 @@ Attendees.datagridUpdate = {
               success: (result) => {
                 DevExpress.ui.notify(
                   {
-                    message: 'update ' + type + ' success',
+                    message: 'update ' + args.type + ' success',
                     width: 500,
                     position: {
                       my: 'center',
@@ -2442,7 +2561,7 @@ Attendees.datagridUpdate = {
               success: (result) => {
                 DevExpress.ui.notify(
                   {
-                    message: 'Create ' + type + ' success',
+                    message: 'Create ' + args.type + ' success',
                     width: 500,
                     position: {
                       my: 'center',
@@ -2465,7 +2584,7 @@ Attendees.datagridUpdate = {
       onInitNewRow: (e) => {  // don't assign e.data or show_secret somehow messed up
         DevExpress.ui.notify(
           {
-            message: "Let's create a " + type + ", click away or hit Enter to save. Hit Esc to quit without save",
+            message: "Let's create a " + args.type + ", click away or hit Enter to save. Hit Esc to quit without save",
             width: 500,
             position: {
               my: 'center',
@@ -2488,93 +2607,70 @@ Attendees.datagridUpdate = {
       grouping: {
         autoExpandAll: true,
       },
-      editing: {
-        mode: "cell",
-        allowUpdating: Attendees.utilities.editingEnabled,
-        allowAdding: Attendees.utilities.editingEnabled,
-        allowDeleting: false,
-      },
+      // editing: {
+      //   mode: "cell",
+      //   allowUpdating: Attendees.utilities.editingEnabled,
+      //   allowAdding: Attendees.utilities.editingEnabled,
+      //   allowDeleting: false,
+      // },
       onRowUpdating: (rowData) => {
-        if(rowData.newData.infos){
-          const updatingInfos = rowData.oldData.infos; // may contains both keys of show_secret and comment
-          if('show_secret' in rowData.newData.infos){
-            const isRelationshipSecretForCurrentUser = rowData.newData.infos.show_secret;
-            if(isRelationshipSecretForCurrentUser){
-              if (typeof(updatingInfos.show_secret)==="object") {
-                updatingInfos.show_secret[Attendees.utilities.userAttendeeId] = true;
-              } else {
-                updatingInfos.show_secret = {[Attendees.utilities.userAttendeeId]: true};
-              }
+        if(rowData.newData.infos){ // could be comment or show_secret or both
+          const updatingInfos = rowData.oldData.infos || {};
+          if ('show_secret' in rowData.newData.infos) {  // infos.show_secret could be false or true
+            let updatingShowSecret = typeof(updatingInfos.show_secret)==='object' && updatingInfos.show_secret || {};  // could show_secret to others
+            if(rowData.newData.infos.show_secret){  // boolean from UI but db needs to store attendee
+              updatingShowSecret[Attendees.utilities.userAttendeeId] = true;
             } else {
-              delete updatingInfos.show_secret[Attendees.utilities.userAttendeeId];
+              delete updatingShowSecret[Attendees.utilities.userAttendeeId];
             }
-            rowData.newData.infos = updatingInfos;
-          } else {  // for updating infos.comment
-            rowData.newData.infos = {...updatingInfos, ...rowData.newData.infos};
+            updatingInfos.show_secret = updatingShowSecret;
           }
+          if ('comment' in rowData.newData.infos) {  // UI may send this or not
+            updatingInfos.comment = rowData.newData.infos.comment;
+          }
+          rowData.newData.infos = updatingInfos;
         }
       },
-      columns: [
+      columns: columns.flatMap(column => {
+        if(column.dataField in args.dataFieldAndOpts){
+          return [{...column, ...args.dataFieldAndOpts[column.dataField]}];
+        }else{
+          return [];
+        }
+      }),
+    };
+  },
+
+  noteEditingArgs: {
+    mode: "popup",
+    popup: {
+      showTitle: true,
+      title: "Editing note of Attendee"
+    },
+    form: {
+      items: [
         {
           dataField: "category",
-          validationRules: [{type: "required"}],
-          lookup: {
-            valueExpr: "id",
-            displayExpr: "display_name",
-            dataSource: {
-              store: new DevExpress.data.CustomStore({
-                key: "id",
-                load: () => {
-                  return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
-                    take: 100,
-                    type: type,
-                  });
-                },
-                byKey: (key) => {
-                  const d = new $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint + key + '/')
-                    .done((result) => {
-                      d.resolve(result.data);
-                    });
-                  return d.promise();
-                },
-              }),
-            },
-          },
         },
-
         {
           dataField: "display_name",
         },
         {
-          caption: 'Secret shared with you',
           dataField: 'infos.show_secret',
-          calculateCellValue: (rowData) => {
-            if (rowData.infos){
-              const showSecret = rowData.infos.show_secret;
-              const result = !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
-              return result;
-            } else {
-              return false;
-            }
-          },
-          dataType: 'boolean',
+        },
+        {
+          dataField: "when",
         },
         {
           dataField: "infos.comment",
-          caption: 'Comment',
-          dataType: "string",
-        },
-        {
-          dataField: "start",
-          dataType: "date",
-        },
-        {
-          dataField: "finish",
-          dataType: "date",
+          editorType: "dxTextArea",
+          colSpan: 2,
+          editorOptions: {
+            autoResizeEnabled: true,
+          }
         },
       ],
-    };
+    },
   },
 };
 

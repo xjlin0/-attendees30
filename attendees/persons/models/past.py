@@ -4,16 +4,17 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
 from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
-from private_storage.fields import PrivateFileField
-from . import Utility, Note
+from . import Utility#, Note
 
 
 class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
-    notes = GenericRelation(Note)
+    COUNSELING = 'counseling'  # for private data, and only assigned counselors
+    ALL_COUNSELORS = 'all_counselors_'  # for private data, but accessible to all counselors
+    #notes = GenericRelation(Note)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=False, blank=False)
     object_id = models.CharField(max_length=36, null=False, blank=False)
     subject = GenericForeignKey('content_type', 'object_id')
-    start = models.DateTimeField(null=True, blank=True, default=Utility.now_with_timezone)
+    when = models.DateTimeField(null=True, blank=True, default=Utility.now_with_timezone)
     finish = models.DateTimeField(null=True, blank=True)
     category = models.ForeignKey('persons.Category', null=False, blank=False, on_delete=models.SET(0), help_text="subtype: for education it's primary/high/college sub-types etc")
     display_order = models.SmallIntegerField(default=30000, blank=False, null=False, db_index=True)
@@ -23,7 +24,7 @@ class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
 
     class Meta:
         db_table = 'persons_pasts'
-        ordering = ('organization', 'category__type', 'display_order', 'category__display_order', 'start')
+        ordering = ('organization', 'category__type', 'display_order', 'category__display_order', 'when')
         indexes = [
             GinIndex(fields=['infos'], name='past_infos_gin', ),
         ]

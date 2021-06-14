@@ -110,8 +110,8 @@ def import_addresses(addresses, california, division1_slug):
 
     print("\n\nRunning import_addresses:\n")
     successfully_processed_count = 0  # addresses.line_num always advances despite of processing success
-    address_content_type = ContentType.objects.get(model='address')
-    organization = Division.objects.get(pk=division1_slug).organization
+    address_content_type = ContentType.objects.get_for_model(Address)  # ContentType.objects.get(model='address')
+    organization = Division.objects.get(slug=division1_slug).organization
     for address_dict in addresses:
         try:
             print('.', end='')
@@ -203,7 +203,7 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    family_content_type = ContentType.objects.get(model='family')
+    family_content_type = ContentType.objects.get_for_model(Family)
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     pdt = pytz.timezone('America/Los_Angeles')
@@ -330,7 +330,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     pdt = pytz.timezone('America/Los_Angeles')
     member_character = Character.objects.get(slug=member_character_slug)
     general_character = Character.objects.get(slug=data_general_character_slug)
-    attendee_content_type = ContentType.objects.get(model='attendee')
+    # attendee_content_type = ContentType.objects.get_for_model(Attendee)
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -436,7 +436,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             defaults={
                                 'display_order': display_order,
                                 'role': relation,
-                                'start': '1850-01-01',
+                                # 'start': '1850-01-01',
                             }
                         )
                         #
@@ -563,10 +563,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'in_family': family,
                         'emergency_contact': husband_role.emergency_contact,
                         'scheduler': husband_role.scheduler,
-                        'finish': Utility.forever(),
-                        'infos': {
-                            'show_secret': {},
-                        },
+                        # 'finish': Utility.forever(),
+                        'infos': Utility.relationship_infos(),
+                        #{
+                        #    'show_secret': {},
+                       # },
                     }
                 )
 
@@ -578,10 +579,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         'in_family': family,
                         'emergency_contact': wife_role.emergency_contact,
                         'scheduler': wife_role.scheduler,
-                        'finish': Utility.forever(),
-                        'infos': {
-                            'show_secret': {},
-                        },
+                        # 'finish': Utility.forever(),
+                        'infos': Utility.relationship_infos(),
+                        #{
+                        #    'show_secret': {},
+                        #},
                     }
                 )
                 successfully_processed_count += 2
@@ -622,10 +624,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                                 'in_family': family,
                                 'emergency_contact': False,
                                 'scheduler': False,
-                                'finish': Utility.forever(),
-                                'infos': {
-                                    'show_secret': {},
-                                },
+                                # 'finish': Utility.forever(),
+                                'infos': Utility.relationship_infos(),
+                                #{
+                                #    'show_secret': {},
+                                #},
                              }
                 )
                 successfully_processed_count += 1
@@ -648,10 +651,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'in_family': family,
                             'emergency_contact': child_role.emergency_contact,
                             'scheduler': child_role.scheduler,
-                            'finish': Utility.forever(),
-                            'infos': {
-                                'show_secret': {},
-                            },
+                            # 'finish': Utility.forever(),
+                            'infos': Utility.relationship_infos(),
+                            #{
+                            #    'show_secret': {},
+                            #},
                         }
                     )
 
@@ -663,10 +667,11 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                             'in_family': family,
                             'emergency_contact': parent_role.emergency_contact,
                             'scheduler': parent_role.scheduler,
-                            'finish': Utility.forever(),
-                            'infos': {
-                                'show_secret': {},
-                            },
+                            # 'finish': Utility.forever(),
+                            'infos': Utility.relationship_infos(),
+                            #{
+                            #    'show_secret': {},
+                            #},
                         }
                     )
                     successfully_processed_count += 2
@@ -784,7 +789,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             'attending': data_attending,
             'meet': member_meet,
             'character': member_character,
-            'category': 'tertiary',
+            'category': 'active',
             'start': Utility.parsedate_or_now(attendee.progressions.get('member_since')),
             'finish': member_meet.finish,
         }
@@ -805,6 +810,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'attending': data_attending,
                 'character': member_character,
                 'team': None,
+                'category': 'active',  # membership can be inactive temporarily
                 'start': member_attending_meet_default['start'],
                 'finish': member_gathering.finish,
                 'infos': {
