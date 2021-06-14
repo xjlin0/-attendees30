@@ -47,13 +47,29 @@ class PastAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+        counseling_category = Category.objects.get(type='note', display_name=Past.COUNSELING)
+
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
         requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
-        return qs.filter(
-            Q(organization=request.user.organization),
-            ( Q(**requester_permission) | Q(infos__show_secret={}) | Q(infos__show_secret__isnull=True) ),
-        )
+
+        if request.user.is_counselor():
+            counselors_permission = {'infos__show_secret__' + Past.ALL_COUNSELORS: True}
+            return qs.filter(
+                Q(organization=request.user.organization),
+                (~Q(category=counseling_category)
+                 |
+                 (Q(category=counseling_category) and (Q(**requester_permission)
+                                                       |
+                                                       Q(**counselors_permission))
+                  )),
+            )
+
+        else:
+            return qs.filter(
+                Q(organization=request.user.organization),
+                ( Q(**requester_permission) | Q(infos__show_secret={}) | Q(infos__show_secret__isnull=True) ),
+            ).exclude(category=counseling_category)
 
 
 class FamilyAdmin(admin.ModelAdmin):

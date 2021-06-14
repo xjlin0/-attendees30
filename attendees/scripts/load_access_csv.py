@@ -789,7 +789,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
             'attending': data_attending,
             'meet': member_meet,
             'character': member_character,
-            'category': 'tertiary',
+            'category': 'active',
             'start': Utility.parsedate_or_now(attendee.progressions.get('member_since')),
             'finish': member_meet.finish,
         }
@@ -810,6 +810,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'attending': data_attending,
                 'character': member_character,
                 'team': None,
+                'category': 'active',  # membership can be inactive temporarily
                 'start': member_attending_meet_default['start'],
                 'finish': member_gathering.finish,
                 'infos': {
