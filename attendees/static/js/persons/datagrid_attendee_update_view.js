@@ -8,6 +8,7 @@ Attendees.datagridUpdate = {
   attendingmeetPopupDxFormData: {},  // for storing formData
   attendingmeetPopupDxFormCharacterSelect: null,
   attendingmeetPopup: null,  // for show/hide popup
+  attendingmeetsData: {},
   attendingmeetDefaults: {
     category: 'primary',
     start: new Date().toISOString(),
@@ -488,33 +489,22 @@ Attendees.datagridUpdate = {
         cssClass: 'h6',
         itemType: "group",
         items: [
-
           {
             colSpan: 24,
-            dataField: "joined_meets",
+            dataField: "attendingmeets",
+            cssClass: 'attendingmeets-buttons',
             label: {
               text: 'joins',
             },
             template: (data, itemElement) => {
-              $("<button>").attr({
-                disabled: !Attendees.utilities.editingEnabled,
-                title: "+ Add a new meet",
-                type: 'button',
-                class: "attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm "
-              }).text("Attend new +").appendTo(itemElement);
-              if (data.editorOptions && data.editorOptions.value) {
-                data.editorOptions.value.forEach(attending => {
-                  if (attending && attending.attendingmeet_id) {
-                    const buttonClass = Date.now() < Date.parse(attending.attending_finish) ? 'btn-outline-success' : 'btn-outline-secondary';
-                    $("<button>", {
-                      text: attending.meet_name,
-                      title: "since " + attending.attending_start,
-                      type: 'button', class: buttonClass + " attendingmeet-button btn button btn-sm ",
-                      value: attending.attendingmeet_id
-                    }).appendTo(itemElement);
-                  }
-                });
-              }
+              const attendingmeets = data.editorOptions && data.editorOptions.value || [];
+              Attendees.datagridUpdate.attendingmeetsData = attendingmeets.reduce((sum, now) => {
+                return {
+                  ...sum,
+                  [now.id]: now,
+                };
+              }, {});
+              Attendees.datagridUpdate.populateAttendingmeetButtons(Object.values(Attendees.datagridUpdate.attendingmeetsData), itemElement);
             }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
           },
         ],
@@ -590,6 +580,29 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  populateAttendingmeetButtons: (attendingmeets, itemElement) => {
+    itemElement.empty();
+
+    $('<button>').attr({
+      disabled: !Attendees.utilities.editingEnabled,
+      title: '+ Add a new meet',
+      type: 'button',
+      class: 'attendingmeet-button-new attendingmeet-button btn-outline-primary btn button btn-sm '
+    }).text('Attend new +').appendTo(itemElement);
+
+    attendingmeets.forEach(attendingmeet => {
+      if (attendingmeet && attendingmeet.id) {
+        const buttonClass = Date.now() < Date.parse(attendingmeet.finish) ? 'btn-outline-success' : 'btn-outline-secondary';
+        $('<button>', {
+          text: attendingmeet.meet_name,
+          title: 'since ' + attendingmeet.start,
+          type: 'button', class: buttonClass + ' attendingmeet-button btn button btn-sm ',
+          value: attendingmeet.id
+        }).appendTo(itemElement);
+      }
+    });
   },
 
   populateBasicInfoBlock: (allContacts=Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts) => {
@@ -1118,6 +1131,7 @@ Attendees.datagridUpdate = {
                       method : userData.id ? 'PUT' : 'POST',
                       success: (response) => {
                                  Attendees.datagridUpdate.attendingmeetPopup.hide();
+console.log('success here is response: ', response);
                                  DevExpress.ui.notify(
                                    {
                                      message: "saving attendingmeet success",
