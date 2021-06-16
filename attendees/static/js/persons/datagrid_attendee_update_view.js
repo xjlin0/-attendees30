@@ -909,8 +909,8 @@ Attendees.datagridUpdate = {
       $.ajax({
         url    : $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
         success: (response) => {
-                   Attendees.datagridUpdate.attendingmeetPopupDxFormData = response.data[0];
-                   Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response.data[0]);
+                   Attendees.datagridUpdate.attendingmeetPopupDxFormData = response;
+                   Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response);
                    Attendees.datagridUpdate.attendingmeetPopupDxForm.option('onFieldDataChanged', (e) => {e.component.validate()});
                  },
         error  : (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
@@ -919,7 +919,7 @@ Attendees.datagridUpdate = {
   },
 
   attendingmeetPopupDxFormConfig: (meetButton) => {
-    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/';
+    const ajaxUrl=$('form#attendingmeet-update-popup-form').attr('action') + (meetButton.value ? meetButton.value + '/' : '');
     return {
       visible: true,
       title: meetButton.value ? 'Viewing participation' : 'Creating participation',
@@ -1109,12 +1109,11 @@ Attendees.datagridUpdate = {
                 onClick: (clickEvent) => {
                   if(confirm('are you sure to submit the popup attendingMeetForm?')){
                     const userData = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData');
-                    userData._method = userData.id ? 'PUT' : 'POST';
 
                     $.ajax({
                       url    : ajaxUrl,
                       data   : userData,
-                      method : 'POST',
+                      method : userData.id ? 'PUT' : 'POST',
                       success: (response) => {
                                  Attendees.datagridUpdate.attendingmeetPopup.hide();
                                  DevExpress.ui.notify(

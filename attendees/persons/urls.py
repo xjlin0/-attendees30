@@ -72,7 +72,7 @@ router.register(
     basename='attendee',
 )
 router.register(
-    'api/datagrid_data_attendingmeet/(?P<attendingmeet_id>.+)',
+    'api/datagrid_data_attendingmeet',
     api_datagrid_data_attendingmeet_viewset,
     basename='attendingmeet',
 )
