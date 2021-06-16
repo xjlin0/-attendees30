@@ -10,8 +10,8 @@ Attendees.datagridUpdate = {
   attendingmeetPopup: null,  // for show/hide popup
   attendingmeetDefaults: {
     category: 'primary',
-    start: new Date(),
-    finish: new Date().setFullYear(new Date().getFullYear() + 1), // 1 years from now
+    start: new Date().toISOString(),
+    finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
   },
   addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
@@ -1084,6 +1084,7 @@ Attendees.datagridUpdate = {
               editorType: "dxDateBox",
               editorOptions: {
                 type: "datetime",
+                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
               },
             },
             {
@@ -1091,6 +1092,7 @@ Attendees.datagridUpdate = {
               editorType: "dxDateBox",
               editorOptions: {
                 type: "datetime",
+                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
               },
             },
             {

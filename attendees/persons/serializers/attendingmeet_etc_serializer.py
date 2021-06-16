@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class AttendingMeetEtcSerializer(serializers.ModelSerializer):
-    assembly = serializers.IntegerField()
+    assembly = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = AttendingMeet
@@ -13,9 +13,11 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
         """
         Create or update `AttendingMeet` instance, given the validated data.
         """
-
         attendingmeet_id = self._kwargs['data'].get('id')
-
+        # print("hi 17 hre is attendingmeet_id: ")
+        # print(attendingmeet_id)
+        # print("hi 19 hre is validated_data: ")
+        # print(validated_data)
         obj, created = AttendingMeet.objects.update_or_create(
             id=attendingmeet_id,
             defaults=validated_data,

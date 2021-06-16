@@ -35,21 +35,13 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
     #     serializer = AttendingMeetEtcSerializer(attendee)
     #     return Response(serializer.data)
 
-
-
-
-
-
-
-
     def get_queryset(self):
         """
 
         """
 
         querying_attendingmeet_id = self.kwargs.get('pk')
-        print("hi 51 hre is querying_attendingmeet_id: ")
-        print(querying_attendingmeet_id)
+
         return AttendingMeet.objects.annotate(
                     assembly=F('meet__assembly'),
                 ).filter(pk=querying_attendingmeet_id)
