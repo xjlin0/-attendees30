@@ -1,5 +1,5 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg, JSONBAgg
-
+from django.db.models.functions import Concat, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Func, Value
 from django.db.models.expressions import F
@@ -46,12 +46,15 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
 
         return Attendee.objects.annotate(
                     organization_slug=F('division__organization__slug'),
-                    attendingmeets=JSONBAgg(  # also used by datagrid_assembly_data_attendees.js
+                    attendingmeets=JSONBAgg(  # used by datagrid_assembly_data_attendees.js & datagrid_attendee_update_view.js
                         Func(
-                            Value('id'), 'attendings__attendingmeet__id',
-                            Value('finish'), 'attendings__attendingmeet__finish',
-                            Value('start'), 'attendings__attendingmeet__start',
-                            Value('meet_name'), 'attendings__meets__display_name',
+                            Value('attending_id'), 'attendings__id',
+                            Value('attending_registration'), Trim(
+                                Concat('attendings__registration__assembly__display_name', Value(' '), Trim(Concat(Trim(
+                                    Concat('attendings__registration__main_attendee__first_name', Value(' '),
+                                           'attendings__registration__main_attendee__last_name')), Value(' '), Trim(
+                                    Concat('attendings__registration__main_attendee__last_name2', Value(' '),
+                                           'attendings__registration__main_attendee__first_name2')))))),
                             function='jsonb_build_object'
                         ),
                     ),

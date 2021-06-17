@@ -22,8 +22,6 @@ class ApiUserAssemblyCharactersViewSet(viewsets.ModelViewSet):
         #  Todo: this endpoint is used by datagrid_coworker_organization_attendances (no params) and datagrid_attendee_update_view page (with params). Do check if the editor and the editing target relations and permissions
         if current_user_organization:
             assemblies = self.request.query_params.getlist('assemblies[]', current_user.attendee.attendings.values_list('gathering__meet__assembly', flat=True))
-            print("hi 25 here is assemblies: ")
-            print(assemblies)
             return CharacterService.by_organization_assemblies(
                 organization=current_user_organization,
                 assemblies=assemblies,
