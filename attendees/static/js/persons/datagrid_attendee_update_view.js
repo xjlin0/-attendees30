@@ -2689,7 +2689,30 @@ Attendees.datagridUpdate = {
     form: {
       items: [
         {
-          dataField: "category",
+          dataField: 'category',
+          editorType: 'dxSelectBox',
+          isRequired: true,
+          editorOptions: {
+            valueExpr: 'id',
+            displayExpr: 'display_name',
+            placeholder: 'Select a value...',
+            dataSource: new DevExpress.data.DataSource({
+              store: new DevExpress.data.CustomStore({
+                key: 'id',
+                loadMode: 'raw',
+                load: () => {
+                  const d = $.Deferred();
+                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
+                    type: 'note',
+                    take: 100
+                  }).done((response) => {
+                    d.resolve(response.data);
+                  });
+                  return d.promise();
+                }
+              })
+            }),
+          },
         },
         {
           dataField: "display_name",
@@ -2821,25 +2844,12 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (e) => {
-console.log("hi 2824 load() here is e: ", e);
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint);
-                // const d = $.Deferred();
-                // $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint).done((response) => {
-                //   d.resolve(response.data);
-                // });
-                // return d.promise();
               },
               byKey: (key) => {
-console.log("hi 2828 byKey() here is key: ", key);
                 if (key) {
                   $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint + key + '/');
                 }
-                // const d = new $.Deferred();
-                // $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint + key + '/')
-                //   .done((result) => {
-                //     d.resolve(result.data);
-                //   });
-                // return d.promise();
               },
             }),
           },
@@ -2864,11 +2874,6 @@ console.log("hi 2828 byKey() here is key: ", key);
             }),
           },
         },
-//                 onValueChanged: (e) => {
-//                   const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
-//                   characterSelectBox.getDataSource().reload();
-//                   characterSelectBox.reset();
-//                 },
       },
       {
         dataField: 'meet',
@@ -2908,11 +2913,6 @@ console.log("hi 2828 byKey() here is key: ", key);
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchOpts) => {
-                // const params = {};  // general data assembly may need characters from other assembly!!!!
-                // if (searchOpts.searchValue) {
-                //   const searchCondition = ['display_name', searchOpts.searchOperation, searchOpts.searchValue];
-                //   params.filter = JSON.stringify(searchCondition);
-                // }
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint);
               },
               byKey: (key) => {
@@ -3007,6 +3007,9 @@ console.log("hi 2828 byKey() here is key: ", key);
                 }
               })
             }),
+            onValueChanged: (e) => {
+console.log("hi 3011 here is e: ", e);
+            },
           },
         },
         {
