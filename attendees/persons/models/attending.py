@@ -51,7 +51,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
 
     @property
     def attending_label(self):
-        return f'{self.attendee.display_label} ({self.main_contact.display_label})'
+        return f'{self.attendee.display_label} ({self.registration})'
 
     @cached_property
     def all_addresses(self):

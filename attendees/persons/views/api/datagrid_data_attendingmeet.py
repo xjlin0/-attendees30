@@ -1,22 +1,19 @@
-from django.contrib.postgres.aggregates.general import JSONBAgg
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Func, Value
 from django.db.models.expressions import F
+from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 
-from attendees.persons.models import AttendingMeet
+from attendees.persons.models import AttendingMeet, Attendee
 from attendees.persons.serializers import AttendingMeetEtcSerializer
+from attendees.users.authorization.route_guard import SpyGuard
 
 
-class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
+class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, SpyGuard, ModelViewSet):  # from GenericAPIView
     """
     API endpoint that allows AttendingMeet & Meet to be viewed or edited.
     """
     serializer_class = AttendingMeetEtcSerializer
-    # queryset = AttendingMeet.objects.annotate(assembly=F('meet__assembly'))
 
     # def retrieve(self, request, *args, **kwargs):
     #     attendingmeet_id = self.kwargs.get('pk')
@@ -37,14 +34,20 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # 
 
     def get_queryset(self):
         """
-
+        Return AttendingMeet of the target attendee sent in header, can be further specified by pk in url param
         """
-
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         querying_attendingmeet_id = self.kwargs.get('pk')
-
-        return AttendingMeet.objects.annotate(
+        qs = AttendingMeet.objects.annotate(
                     assembly=F('meet__assembly'),
-                ).filter(pk=querying_attendingmeet_id)
+                ).filter(
+                    attending__attendee=target_attendee,
+                )
+
+        if querying_attendingmeet_id:
+            return qs.filter(pk=querying_attendingmeet_id)
+        else:
+            return qs
 
 
 api_datagrid_data_attendingmeet_viewset = ApiDatagridDataAttendingMeetViewSet

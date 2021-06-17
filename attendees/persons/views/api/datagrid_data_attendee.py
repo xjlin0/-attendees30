@@ -46,7 +46,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
 
         return Attendee.objects.annotate(
                     organization_slug=F('division__organization__slug'),
-                    attendingmeets=JSONBAgg(
+                    attendingmeets=JSONBAgg(  # also used by datagrid_assembly_data_attendees.js
                         Func(
                             Value('id'), 'attendings__attendingmeet__id',
                             Value('finish'), 'attendings__attendingmeet__finish',

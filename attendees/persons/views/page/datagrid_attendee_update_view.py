@@ -35,6 +35,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
+            'attendingmeets_endpoint': '/persons/api/datagrid_data_attendingmeet/',
             'assemblies_endpoint': '/occasions/api/user_assemblies/',
             'divisions_endpoint': '/whereabouts/api/user_divisions/',
             'addresses_endpoint': '/whereabouts/api/all_addresses/',
