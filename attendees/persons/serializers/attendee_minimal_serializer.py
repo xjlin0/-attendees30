@@ -11,7 +11,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
     places = PlaceSerializer(many=True, read_only=True)
     familyattendee_set = FamilyAttendeeSerializer(read_only=True, many=True)
     photo = serializers.ImageField(use_url=True, required=False)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
-    # attendingmeets = serializers.JSONField(read_only=True)
+    attendingmeets = serializers.JSONField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)  # For MVP, Admin UI can handle this use case. Todo: when non admins start to use app, admin need to edit this on UI
     organization_slug = serializers.CharField(read_only=True)
 
@@ -20,7 +20,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
             'organization_slug',
-            # 'attendingmeets',
+            'attendingmeets',
             # 'display_label',
             # 'division_label',
             # 'parents_notifiers_names',
