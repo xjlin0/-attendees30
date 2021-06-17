@@ -5,6 +5,8 @@ Attendees.datagridUpdate = {
   attendeeAjaxUrl: null,
   attendeePhotoFileUploader: null,
   attendingmeetPopupDxFormData: {},
+  relationshipDatagrid: null,
+  attendingMeetDatagrid: null,
   // attendingmeetPopupDxForm: null,  // for getting formData
   // attendingmeetPopupDxFormData: {},  // for storing formData
   // attendingmeetPopupDxFormCharacterSelect: null,
@@ -62,6 +64,7 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
+      // Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.columnOption("attending", "visible", true);
     } else {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
@@ -71,6 +74,7 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
+      // Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.columnOption("attending", "visible", false);
     }
 
     const cellEditingArgs = {
@@ -2508,7 +2512,7 @@ Attendees.datagridUpdate = {
                 const d = new $.Deferred();
                 $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint + key + '/')
                   .done((result) => {
-                    d.resolve(result.data);
+                    d.resolve(result);
                   });
                 return d.promise();
               },
@@ -2691,29 +2695,29 @@ Attendees.datagridUpdate = {
       items: [
         {
           dataField: 'category',
-          editorType: 'dxSelectBox',
-          isRequired: true,
-          editorOptions: {
-            valueExpr: 'id',
-            displayExpr: 'display_name',
-            placeholder: 'Select a value...',
-            dataSource: new DevExpress.data.DataSource({
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                loadMode: 'raw',
-                load: () => {
-                  const d = $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
-                    type: 'note',
-                    take: 100
-                  }).done((response) => {
-                    d.resolve(response.data);
-                  });
-                  return d.promise();
-                }
-              })
-            }),
-          },
+          // editorType: 'dxSelectBox',
+          // isRequired: true,
+          // editorOptions: {
+          //   valueExpr: 'id',
+          //   displayExpr: 'display_name',
+          //   placeholder: 'Select a value...',
+          //   dataSource: new DevExpress.data.DataSource({
+          //     store: new DevExpress.data.CustomStore({
+          //       key: 'id',
+          //       loadMode: 'raw',
+          //       load: () => {
+          //         const d = $.Deferred();
+          //         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
+          //           type: 'note',
+          //           take: 100
+          //         }).done((response) => {
+          //           d.resolve(response.data);
+          //         });
+          //         return d.promise();
+          //       }
+          //     })
+          //   }),
+          // },
         },
         {
           dataField: "display_name",
@@ -2853,7 +2857,11 @@ Attendees.datagridUpdate = {
               },
               byKey: (key) => {
                 if (key) {
-                  $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint + key + '/');
+                  const d = $.Deferred();
+                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint + key + '/').done((response) => {
+                    d.resolve(response);
+                  });
+                  return d.promise();
                 }
               },
             }),
@@ -2965,111 +2973,111 @@ Attendees.datagridUpdate = {
         {
           colSpan: 2,
           dataField: 'attending',
-          editorType: 'dxSelectBox',
-          isRequired: true,
-          editorOptions: {
-            valueExpr: 'id',
-            displayExpr: 'attending_label',
-            placeholder: 'Select a value...',
-            dataSource: new DevExpress.data.DataSource({
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                loadMode: 'raw',
-                load: () => {
-                  const d = $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint).done((response) => {
-                    d.resolve(response.data);
-                  });
-                  return d.promise();
-                }
-              })
-            }),
-          },
+//           editorType: 'dxSelectBox',
+//           isRequired: true,
+//           editorOptions: {
+//             valueExpr: 'id',
+//             displayExpr: 'attending_label',
+//             placeholder: 'Select a value...',
+//             dataSource: new DevExpress.data.DataSource({
+//               store: new DevExpress.data.CustomStore({
+//                 key: 'id',
+//                 loadMode: 'raw',
+//                 load: () => {
+//                   const d = $.Deferred();
+//                   $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint).done((response) => {
+//                     d.resolve(response.data);
+//                   });
+//                   return d.promise();
+//                 }
+//               })
+//             }),
+//           },
         },
         {
           dataField: 'assembly',
-          editorType: 'dxSelectBox',
-          isRequired: true,
-          editorOptions: {
-            valueExpr: 'id',
-            displayExpr: 'display_name',
-            placeholder: 'Select a value...',
-            dataSource: new DevExpress.data.DataSource({
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                loadMode: 'raw',
-                load: () => {
-                  const d = $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.assembliesEndpoint).done((response) => {
-                    d.resolve(response.data);
-                  });
-                  return d.promise();
-                }
-              })
-            }),
-            setCellValue: (rowData, value) => {
-console.log("hi 3011 here is rowData: ", rowData);
-console.log("hi 3012 here is value: ", value);
-              rowData.assembly = value;
-              rowData.meet = null;
-              rowData.character = null;
-            },
-            onValueChanged: (e) => {
+//           editorType: 'dxSelectBox',
+//           isRequired: true,
+//           editorOptions: {
+//             valueExpr: 'id',
+//             displayExpr: 'display_name',
+//             placeholder: 'Select a value...',
+//             dataSource: new DevExpress.data.DataSource({
+//               store: new DevExpress.data.CustomStore({
+//                 key: 'id',
+//                 loadMode: 'raw',
+//                 load: () => {
+//                   const d = $.Deferred();
+//                   $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.assembliesEndpoint).done((response) => {
+//                     d.resolve(response.data);
+//                   });
+//                   return d.promise();
+//                 }
+//               })
+//             }),
+//             setCellValue: (rowData, value) => {
+// console.log("hi 3011 here is rowData: ", rowData);
+// console.log("hi 3012 here is value: ", value);
+//               rowData.assembly = value;
+//               rowData.meet = null;
+//               rowData.character = null;
+//             },
+//             onValueChanged: (e) => {
 // console.log("hi 3018 here is e: ", e);
-              // Attendees.datagridUpdate.attendingmeetPopupDxFormData.assembly = e.value;
-              // Attendees.datagridUpdate.attendingMeetDatagrid.option('editing').form.items[2].editorOptions.dataSource.reload(); // meet dropdown
-            },
-          },
+//               // Attendees.datagridUpdate.attendingmeetPopupDxFormData.assembly = e.value;
+//               // Attendees.datagridUpdate.attendingMeetDatagrid.option('editing').form.items[2].editorOptions.dataSource.reload(); // meet dropdown
+//             },
+//           },
         },
         {
           dataField: 'meet',
-          editorType: 'dxSelectBox',
-          isRequired: true,
-          editorOptions: {
-            valueExpr: 'id',
-            displayExpr: 'display_name',
-            placeholder: 'Select a value...',
-            dataSource: new DevExpress.data.DataSource({
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                loadMode: 'raw',
-                load: () => {
-                  const d = $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint).done((response) => {
-                    d.resolve(response.data);
-                  });
-                  return d.promise();
-                }
-              }),
-            }),
-            // onValueChanged: (e) => {
-            //   console.log("hi 3040 here is e: ", e);
-            //   Attendees.datagridUpdate.attendingmeetPopupDxFormData.meet = e.value;
-            // },
-          },
+//           editorType: 'dxSelectBox',
+//           isRequired: true,
+//           editorOptions: {
+//             valueExpr: 'id',
+//             displayExpr: 'display_name',
+//             placeholder: 'Select a value...',
+//             dataSource: new DevExpress.data.DataSource({
+//               store: new DevExpress.data.CustomStore({
+//                 key: 'id',
+//                 loadMode: 'raw',
+//                 load: () => {
+//                   const d = $.Deferred();
+//                   $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint).done((response) => {
+//                     d.resolve(response.data);
+//                   });
+//                   return d.promise();
+//                 }
+//               }),
+//             }),
+//             // onValueChanged: (e) => {
+//             //   console.log("hi 3040 here is e: ", e);
+//             //   Attendees.datagridUpdate.attendingmeetPopupDxFormData.meet = e.value;
+//             // },
+//           },
         },
         {
           dataField: 'character',
-          editorType: 'dxSelectBox',
-          isRequired: true,
-          editorOptions: {
-            valueExpr: 'id',
-            displayExpr: 'display_name',
-            placeholder: 'Select a value...',
-            dataSource: new DevExpress.data.DataSource({
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                loadMode: 'raw',
-                load: () => {
-                  const d = $.Deferred();
-                  $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint).done((response) => {
-                    d.resolve(response.data);
-                  });
-                  return d.promise();
-                }
-              })
-            }),
-          },
+//           editorType: 'dxSelectBox',
+//           isRequired: true,
+//           editorOptions: {
+//             valueExpr: 'id',
+//             displayExpr: 'display_name',
+//             placeholder: 'Select a value...',
+//             dataSource: new DevExpress.data.DataSource({
+//               store: new DevExpress.data.CustomStore({
+//                 key: 'id',
+//                 loadMode: 'raw',
+//                 load: () => {
+//                   const d = $.Deferred();
+//                   $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint).done((response) => {
+//                     d.resolve(response.data);
+//                   });
+//                   return d.promise();
+//                 }
+//               })
+//             }),
+//           },
         },
         {
           dataField: 'category',
