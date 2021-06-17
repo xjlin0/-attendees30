@@ -4,6 +4,7 @@ Attendees.datagridUpdate = {
   attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
   attendeePhotoFileUploader: null,
+  attendingmeetPopupDxFormData: {},
   // attendingmeetPopupDxForm: null,  // for getting formData
   // attendingmeetPopupDxFormData: {},  // for storing formData
   // attendingmeetPopupDxFormCharacterSelect: null,
@@ -2804,7 +2805,11 @@ Attendees.datagridUpdate = {
       }),
     },
     onRowInserted: (e) => {
-      Attendees.datagridUpdate.attendingMeetDatagrid.refresh();  // or the new inserted to_attendee dxlookup won't show
+      Attendees.datagridUpdate.attendingMeetDatagrid.refresh();
+    },
+    onEditorPreparing: (e) => {
+      console.log("hi 2811 here is e: ", e);
+      Attendees.datagridUpdate.attendingmeetPopupDxFormData = e.row.data;
     },
     onInitNewRow: (e) => {
       DevExpress.ui.notify(
@@ -2885,11 +2890,6 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchOpts) => {
-                // const params = {};
-                // if (searchOpts.searchValue) {
-                //   const searchCondition = ['display_name', searchOpts.searchOperation, searchOpts.searchValue];
-                //   params.filter = JSON.stringify(searchCondition);
-                // }
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint);
               },
               byKey: (key) => {
@@ -3007,8 +3007,17 @@ Attendees.datagridUpdate = {
                 }
               })
             }),
+            setCellValue: (rowData, value) => {
+console.log("hi 3011 here is rowData: ", rowData);
+console.log("hi 3012 here is value: ", value);
+              rowData.assembly = value;
+              rowData.meet = null;
+              rowData.character = null;
+            },
             onValueChanged: (e) => {
-console.log("hi 3011 here is e: ", e);
+// console.log("hi 3018 here is e: ", e);
+              // Attendees.datagridUpdate.attendingmeetPopupDxFormData.assembly = e.value;
+              // Attendees.datagridUpdate.attendingMeetDatagrid.option('editing').form.items[2].editorOptions.dataSource.reload(); // meet dropdown
             },
           },
         },
@@ -3031,8 +3040,12 @@ console.log("hi 3011 here is e: ", e);
                   });
                   return d.promise();
                 }
-              })
+              }),
             }),
+            // onValueChanged: (e) => {
+            //   console.log("hi 3040 here is e: ", e);
+            //   Attendees.datagridUpdate.attendingmeetPopupDxFormData.meet = e.value;
+            // },
           },
         },
         {
