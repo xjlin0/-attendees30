@@ -6,16 +6,16 @@ Attendees.datagridUpdate = {
   attendeePhotoFileUploader: null,
   relationshipDatagrid: null,
   attendingMeetDatagrid: null,
-  // attendingmeetPopupDxForm: null,  // for getting formData
-  // attendingmeetPopupDxFormData: {},  // for storing formData
-  // attendingmeetPopupDxFormCharacterSelect: null,
-  // attendingmeetPopup: null,  // for show/hide popup
+  attendingPopupDxForm: null,  // for getting formData
+  attendingPopupDxFormData: {},  // for storing formData
+  // attendingPopupDxFormCharacterSelect: null,
+  attendingPopup: null,  // for show/hide popup
   // attendingmeetsData: {},
-  attendingmeetDefaults: {
-    assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
+  attendingDefaults: {
+    // assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
     category: 'primary',
-    start: new Date().toISOString(),
-    finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
+    // start: new Date().toISOString(),
+    // finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
   },
   addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
@@ -605,9 +605,12 @@ Attendees.datagridUpdate = {
 
     attendings.forEach(attending => {
       if (attending && attending.attending_id) {
+        const registrant_name = attending.registrant.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self');
+        const label = attending.registration_assembly ? attending.registration_assembly + ' ' + registrant_name : 'Generic ' + registrant_name;
         $('<button>', {
-          text: attending.attending_registration ? attending.attending_registration.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self') : 'Generic Self',
+          text: label,
           type: 'button',
+          title: attending.registrant,
           class: 'attending-button btn button btn-sm btn-outline-success',
           value: attending.attending_id,
         }).appendTo(itemElement);
@@ -922,19 +925,19 @@ Attendees.datagridUpdate = {
 
 
   initAttendingPopupDxForm: (event) => {
-    const meetButton = event.target;
-    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attending-update").dxPopup(Attendees.datagridUpdate.attendingPopupDxFormConfig(meetButton)).dxPopup("instance");
-    Attendees.datagridUpdate.fetchAttendingFormData(meetButton);
+    const attendingButton = event.target;
+    Attendees.datagridUpdate.attendingPopup = $("div.popup-attending-update").dxPopup(Attendees.datagridUpdate.attendingPopupDxFormConfig(attendingButton)).dxPopup('instance');
+    Attendees.datagridUpdate.fetchAttendingFormData(attendingButton);
   },
 
-  fetchAttendingFormData: (meetButton) => {
-    if (meetButton.value) {
+  fetchAttendingFormData: (attendingButton) => {
+    if (attendingButton.value) {
       $.ajax({
-        url: $('form#attending-update-popup-form').attr('action') + meetButton.value + '/',
+        url: $('form#attending-update-popup-form').attr('action') + attendingButton.value + '/',
         success: (response) => {
           Attendees.datagridUpdate.attendingPopupDxFormData = response;
           Attendees.datagridUpdate.attendingPopupDxForm.option('formData', response);
-          Attendees.datagridUpdate.attendingPopupDxForm.option('onFieldDataChanged', (e) => e.component.validate());
+          // Attendees.datagridUpdate.attendingPopupDxForm.option('onFieldDataChanged', (e) => e.component.validate());
         },
         error: (response) => console.log('Failed to fetch data for AttendingForm in Popup, error: ', response),
       });
@@ -953,62 +956,40 @@ Attendees.datagridUpdate = {
         at: 'center',
         of: window,
       },
+      onHiding: () => {
+        const $existingAttendeeSelector = $('div.attendee-lookup-search').dxLookup('instance');
+        if ($existingAttendeeSelector) $existingAttendeeSelector.close();
+      },
       dragEnabled: true,
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingForm">');
-        Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
+        Attendees.datagridUpdate.attendingPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
-          formData: Attendees.datagridUpdate.attendingmeetDefaults,
+          formData: Attendees.datagridUpdate.attendingDefaults,
           colCount: 2,
           scrollingEnabled: true,
           showColonAfterLabel: false,
-          requiredMark: "*",
-          labelLocation: "top",
-          minColWidth: "20%",
+          requiredMark: '*',
+          labelLocation: 'top',
+          minColWidth: '20%',
           showValidationSummary: true,
           items: [
             {
-              colSpan: 2,
-              dataField: "attending",
-              editorType: "dxSelectBox",
-//              disabled: true,
-              editorOptions: {
-                valueExpr: "id",
-                displayExpr: "attending_label",
-                placeholder: "Select a value...",
-                dataSource: new DevExpress.data.DataSource({
-                  store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
-                    load: () => {
-                      const d = $.Deferred();
-                      const attendeeData = {'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
-                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint, attendeeData).done((response) => {
-                        d.resolve(response.data)
-                      });
-                      return d.promise();
-                    },
-                  })
-                }),
-              },
-            },
-            {
-              dataField: "assembly",
-              editorType: "dxSelectBox",
-//              disabled: true,
-              isRequired: true,
+              dataField: 'registration.assembly',
+              editorType: 'dxSelectBox',
               label: {
                 text: 'Belonging Group (Assembly)',
                 showColon: true,
               },
               editorOptions: {
-                valueExpr: "id",
-                displayExpr: "division_assembly_name",
-                placeholder: "Select a value...",
+                valueExpr: 'id',
+                displayExpr: 'division_assembly_name',
+                placeholder: 'Select a value...',
+                showClearButton: true,
                 dataSource: new DevExpress.data.DataSource({
                   store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
+                    key: 'id',
+                    loadMode: 'raw',
                     load: () => {
                       const d = $.Deferred();
                       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.assembliesEndpoint).done((response) => {
@@ -1018,104 +999,36 @@ Attendees.datagridUpdate = {
                     },
                   })
                 }),
-                onValueChanged: (e) => {
-                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
-                  const meetSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("meet");
-                  meetSelectBox.getDataSource().reload();
-                  meetSelectBox.reset();
-                  characterSelectBox.getDataSource().reload();
-                  characterSelectBox.reset();
-                },
               },
             },
             {
-              dataField: "meet",
-              editorType: "dxSelectBox",
-              colSpan: 3,
-              isRequired: true,
-              label: {
-                text: 'Participating activity',
-                showColon: true,
-              },
-              editorOptions: {
-                showClearButton: true,
-                valueExpr: "id",
-                displayExpr: "display_name",
-                placeholder: "Select a value...",
-                dataSource: new DevExpress.data.DataSource({
-                  store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
-                    load: () => {
-                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
-                      if (selectedAssemblyId) {
-                        const d = $.Deferred();
-                        const data = {'assemblies[]': selectedAssemblyId};
-                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, data).done((response) => {
-                          d.resolve(response.data);
-                        });
-                        return d.promise();
-                      }
-                    }
-                  })
-                }),
-                onValueChanged: (e) => {
-                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
-                  characterSelectBox.getDataSource().reload();
-                  characterSelectBox.reset();
-                },
-              },
-            },
-            {
-              dataField: "character",
-              editorType: "dxSelectBox",
-              label: {
-                text: '(Optional) Participating character',
-                showColon: true,
-              },
-              editorOptions: {
-                showClearButton: true,
-                valueExpr: "id",
-                displayExpr: "display_name",
-                placeholder: "Select a value...",
-                dataSource: new DevExpress.data.DataSource({
-                  store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
-                    load: () => {
-                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
-                      if (selectedAssemblyId) {
-                        const d = $.Deferred();
-                        const data = {'assemblies[]': selectedAssemblyId};
-                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint, data).done((response) => {
-                          d.resolve(response.data);
-                        });
-                        return d.promise();
-                      }
-                    },
-                  }),
-                }),
-              },
-            },
-            {
-              dataField: "category",
+              dataField: 'category',
               helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
               isRequired: true,
             },
             {
-              dataField: "start",
-              editorType: "dxDateBox",
-              editorOptions: {
-                type: "datetime",
-                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+              dataField: "registration.main_attendee",
+              name: "existingAttendeeSelector",
+              label: {
+                text: 'Registrant',
               },
-            },
-            {
-              dataField: "finish",
-              editorType: "dxDateBox",
+              editorType: "dxLookup",
               editorOptions: {
-                type: "datetime",
-                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+                elementAttr: {
+                  class: 'attendee-lookup-search',  // calling closing by the parent
+                },
+                valueExpr: 'id',
+                displayExpr: 'infos.names.original',
+                placeholder: "Select a value...",
+                // searchExpr: ['first_name', 'last_name'],
+                searchPlaceholder: 'Search attendee',
+                minSearchLength: 3,  // cause values disappeared in drop down
+                searchTimeout: 200,  // cause values disappeared in drop down
+                dropDownOptions: {
+                  showTitle: false,
+                  closeOnOutsideClick: true,
+                },
+                dataSource: Attendees.datagridUpdate.attendeeSource,
               },
             },
             {
@@ -1126,46 +1039,46 @@ Attendees.datagridUpdate = {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Participation",
+                text: "Save Attending",
                 icon: "save",
-                hint: "save attendingmeet data in the popup",
+                hint: "save attending data in the popup",
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if (confirm('are you sure to submit the popup attendingForm?')) {
-                    const userData = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData');
+                    const userData = Attendees.datagridUpdate.attendingPopupDxForm.option('formData');
 
                     $.ajax({
                       url: ajaxUrl,
                       data: userData,
                       method: userData.id ? 'PUT' : 'POST',
                       success: (response) => {
-                        Attendees.datagridUpdate.attendingmeetPopup.hide();
+                        Attendees.datagridUpdate.attendingPopup.hide();
                         console.log('success here is response: ', response);
                         DevExpress.ui.notify(
                           {
-                            message: "saving attendingmeet success",
+                            message: "saving attending success",
                             width: 500,
                             position: {
                               my: 'center',
                               at: 'center',
                               of: window,
                             }
-                          }, "success", 2500);
+                          }, 'success', 2500);
                       },
                       error: (response) => {
                         console.log('Failed to save data for AttendingForm in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
-                            message: "saving attendingmeet error",
+                            message: "saving attending error",
                             width: 500,
                             position: {
                               my: 'center',
                               at: 'center',
                               of: window,
                             }
-                          }, "error", 5000);
+                          }, 'error', 5000);
                       },
                     });
                   }
@@ -1173,11 +1086,67 @@ Attendees.datagridUpdate = {
               },
             },
           ]
-        }).dxForm("instance");
+        }).dxForm('instance');
         e.append(formContainer);
       }
     };
   },
+
+  attendeeSource: new DevExpress.data.CustomStore({
+    key: 'id',
+    load: (loadOptions) => {
+      // if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee];
+
+      const deferred = $.Deferred();
+      const args = {};
+
+      [
+        "skip",
+        "take",
+        "sort",
+        "filter",
+        "searchExpr",
+        "searchOperation",
+        "searchValue",
+        "group",
+      ].forEach((i) => {
+        if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+          args[i] = loadOptions[i];
+      });
+
+      $.ajax({
+        url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint,
+        dataType: 'json',
+        data: args,
+        success: (result) => {
+          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee]), {
+            totalCount: result.totalCount,
+            summary: result.summary,
+            groupCount: result.groupCount
+          });
+        },
+        error: (response) => {
+          console.log('ajax error here is response: ', response);
+          deferred.reject('Data Loading Error, probably time out?');
+        },
+        timeout: 7000,
+      });
+
+      return deferred.promise();
+    },
+    byKey: (key) => {
+      // if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.placePopupDxFormData) {
+      //   return [Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee];
+      // } else {
+        const d = new $.Deferred();
+        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + key + '/')
+          .done((result) => {
+            d.resolve(result);
+          });
+        return d.promise();
+      // }
+    },
+  }),
 
 
   ///////////////////////  Place (Address) Popup and DxForm  ///////////////////////
@@ -2946,6 +2915,9 @@ Attendees.datagridUpdate = {
         },
         {
           dataField: 'character',
+          editorOptions: {
+            showClearButton: true,
+          }
         },
         {
           dataField: 'category',
