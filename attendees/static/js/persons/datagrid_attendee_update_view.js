@@ -40,7 +40,7 @@ Attendees.datagridUpdate = {
 
   initListeners: () => {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
-    // $("div.form-container").on("click", "button.attendingmeet-button", e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
+    $("div.form-container").on("click", "button.attending-button", e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
     $("div.form-container").on("click", "button.attendee-place-button", e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
     $("div.form-container").on("click", "button.family-button", e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
     Attendees.datagridUpdate.attachContactAddButton();
@@ -492,10 +492,22 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Usually joins",
+        caption: "Usually joins: register groups by buttons, or click 'edit' to join activities",
         cssClass: 'h6',
         itemType: "group",
         items: [
+          {
+            colSpan: 24,
+            dataField: "attendingmeets",
+            cssClass: 'attendingmeets-buttons',
+            label: {
+              text: 'group/registrant',
+            },
+            template: (data, itemElement) => {
+              const attendings = data.editorOptions && data.editorOptions.value || [];
+              Attendees.datagridUpdate.populateAttendingButtons(attendings, itemElement);
+            },
+          },
           {
             colSpan: 24,
             dataField: "attendingmeets_set",
@@ -505,25 +517,7 @@ Attendees.datagridUpdate = {
               showColon: false,
             },
             template: (data, itemElement) => Attendees.datagridUpdate.initAttendingMeetsDatagrid(data, itemElement),
-          }
-          // {
-          //   colSpan: 24,
-          //   dataField: "attendingmeets",
-          //   cssClass: 'attendingmeets-buttons',
-          //   label: {
-          //     text: 'joins',
-          //   },
-          //   template: (data, itemElement) => {
-          //     const attendingmeets = data.editorOptions && data.editorOptions.value || [];
-          //     Attendees.datagridUpdate.attendingmeetsData = attendingmeets.reduce((sum, now) => {
-          //       return {
-          //         ...sum,
-          //         [now.id]: now,
-          //       };
-          //     }, {});
-          //     Attendees.datagridUpdate.populateAttendingmeetButtons(Object.values(Attendees.datagridUpdate.attendingmeetsData), itemElement);
-          //   }, // try this next https://supportcenter.devexpress.com/ticket/details/t717702
-          // },
+          },
         ],
       },
       { // https://supportcenter.devexpress.com/ticket/details/t681806
@@ -597,6 +591,28 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  populateAttendingButtons: (attendings, itemElement) => {
+    itemElement.empty();
+
+    $('<button>').attr({
+      disabled: !Attendees.utilities.editingEnabled,
+      title: '+ Add a new attending',
+      type: 'button',
+      class: 'attending-button-new attending-button btn-outline-primary btn button btn-sm'
+    }).text('+ New group').appendTo(itemElement);
+
+    attendings.forEach(attending => {
+      if (attending && attending.attending_id) {
+        $('<button>', {
+          text: attending.attending_registration,
+          type: 'button',
+          class: 'attending-button btn button btn-sm btn-outline-success',
+          value: attending.attending_id,
+        }).appendTo(itemElement);
+      }
+    });
   },
 
   populateBasicInfoBlock: (allContacts = Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos.contacts) => {
@@ -899,6 +915,270 @@ Attendees.datagridUpdate = {
       }).dxForm("instance");
       e.append(formContainer);
     },
+  },
+
+
+  ///////////////////////  Attending Popup and DxForm  ///////////////////////
+
+
+  initAttendingPopupDxForm: (event) => {
+    const meetButton = event.target;
+    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingPopupDxFormConfig(meetButton)).dxPopup("instance");
+    Attendees.datagridUpdate.fetchAttendingFormData(meetButton);
+  },
+
+  fetchAttendingFormData: (meetButton) => {
+    if (meetButton.value) {
+      $.ajax({
+        url: $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
+        success: (response) => {
+          Attendees.datagridUpdate.attendingmeetPopupDxFormData = response;
+          Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response);
+          Attendees.datagridUpdate.attendingmeetPopupDxForm.option('onFieldDataChanged', (e) => {
+            e.component.validate()
+          });
+        },
+        error: (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
+      });
+    }
+  },
+
+  attendingPopupDxFormConfig: (meetButton) => {
+    const ajaxUrl = $('form#attendingmeet-update-popup-form').attr('action') + (meetButton.value ? meetButton.value + '/' : '');
+    return {
+      visible: true,
+      title: meetButton.value ? 'Viewing participation' : 'Creating participation',
+      minwidth: "20%",
+      minheight: "30%",
+      position: {
+        my: 'center',
+        at: 'center',
+        of: window,
+      },
+      dragEnabled: true,
+      contentTemplate: (e) => {
+        const formContainer = $('<div class="attendingMeetForm">');
+        Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
+          readOnly: !Attendees.utilities.editingEnabled,
+          formData: Attendees.datagridUpdate.attendingmeetDefaults,
+          colCount: 2,
+          scrollingEnabled: true,
+          showColonAfterLabel: false,
+          requiredMark: "*",
+          labelLocation: "top",
+          minColWidth: "20%",
+          showValidationSummary: true,
+          items: [
+            {
+              colSpan: 2,
+              dataField: "attending",
+              editorType: "dxSelectBox",
+//              disabled: true,
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "attending_label",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      const attendeeData = {'attendee-id': Attendees.datagridUpdate.attendeeId}; // maybe header is safer
+                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingsEndpoint, attendeeData).done((response) => {
+                        d.resolve(response.data)
+                      });
+                      return d.promise();
+                    },
+                  })
+                }),
+              },
+            },
+            {
+              dataField: "assembly",
+              editorType: "dxSelectBox",
+//              disabled: true,
+              isRequired: true,
+              label: {
+                text: 'Belonging Group (Assembly)',
+                showColon: true,
+              },
+              editorOptions: {
+                valueExpr: "id",
+                displayExpr: "division_assembly_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const d = $.Deferred();
+                      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.assembliesEndpoint).done((response) => {
+                        d.resolve(response.data);
+                      });
+                      return d.promise();
+                    },
+                  })
+                }),
+                onValueChanged: (e) => {
+                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
+                  const meetSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("meet");
+                  meetSelectBox.getDataSource().reload();
+                  meetSelectBox.reset();
+                  characterSelectBox.getDataSource().reload();
+                  characterSelectBox.reset();
+                },
+              },
+            },
+            {
+              dataField: "meet",
+              editorType: "dxSelectBox",
+              colSpan: 3,
+              isRequired: true,
+              label: {
+                text: 'Participating activity',
+                showColon: true,
+              },
+              editorOptions: {
+                showClearButton: true,
+                valueExpr: "id",
+                displayExpr: "display_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
+                      if (selectedAssemblyId) {
+                        const d = $.Deferred();
+                        const data = {'assemblies[]': selectedAssemblyId};
+                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, data).done((response) => {
+                          d.resolve(response.data);
+                        });
+                        return d.promise();
+                      }
+                    }
+                  })
+                }),
+                onValueChanged: (e) => {
+                  const characterSelectBox = Attendees.datagridUpdate.attendingmeetPopupDxForm.getEditor("character");
+                  characterSelectBox.getDataSource().reload();
+                  characterSelectBox.reset();
+                },
+              },
+            },
+            {
+              dataField: "character",
+              editorType: "dxSelectBox",
+              label: {
+                text: '(Optional) Participating character',
+                showColon: true,
+              },
+              editorOptions: {
+                showClearButton: true,
+                valueExpr: "id",
+                displayExpr: "display_name",
+                placeholder: "Select a value...",
+                dataSource: new DevExpress.data.DataSource({
+                  store: new DevExpress.data.CustomStore({
+                    key: "id",
+                    loadMode: "raw",
+                    load: () => {
+                      const selectedAssemblyId = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData').assembly;
+                      if (selectedAssemblyId) {
+                        const d = $.Deferred();
+                        const data = {'assemblies[]': selectedAssemblyId};
+                        $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.charactersEndpoint, data).done((response) => {
+                          d.resolve(response.data);
+                        });
+                        return d.promise();
+                      }
+                    },
+                  }),
+                }),
+              },
+            },
+            {
+              dataField: "category",
+              helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
+              isRequired: true,
+            },
+            {
+              dataField: "start",
+              editorType: "dxDateBox",
+              editorOptions: {
+                type: "datetime",
+                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+              },
+            },
+            {
+              dataField: "finish",
+              editorType: "dxDateBox",
+              editorOptions: {
+                type: "datetime",
+                dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+              },
+            },
+            {
+              itemType: "button",
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: "Save Participation",
+                icon: "save",
+                hint: "save attendingmeet data in the popup",
+                type: "default",
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if (confirm('are you sure to submit the popup attendingMeetForm?')) {
+                    const userData = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData');
+
+                    $.ajax({
+                      url: ajaxUrl,
+                      data: userData,
+                      method: userData.id ? 'PUT' : 'POST',
+                      success: (response) => {
+                        Attendees.datagridUpdate.attendingmeetPopup.hide();
+                        console.log('success here is response: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: "saving attendingmeet success",
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, "success", 2500);
+                      },
+                      error: (response) => {
+                        console.log('Failed to save data for AttendingmeetForm in Popup, error: ', response);
+                        console.log('formData: ', userData);
+                        DevExpress.ui.notify(
+                          {
+                            message: "saving attendingmeet error",
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, "error", 5000);
+                      },
+                    });
+                  }
+                }
+              },
+            },
+          ]
+        }).dxForm("instance");
+        e.append(formContainer);
+      }
+    };
   },
 
 
@@ -2569,6 +2849,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: 'meet',
+        caption: 'Activity (Meet)',
         validationRules: [{type: 'required'}],
         lookup: {
           valueExpr: 'id',
