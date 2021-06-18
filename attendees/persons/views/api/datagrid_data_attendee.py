@@ -53,7 +53,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
                                 Concat('attendings__registration__assembly__display_name', Value(' '), Trim(Concat(Trim(
                                     Concat('attendings__registration__main_attendee__first_name', Value(' '),
                                            'attendings__registration__main_attendee__last_name')), Value(' '), Trim(
-                                    Concat('attendings__registration__main_attendee__last_name2', Value(' '),
+                                    Concat('attendings__registration__main_attendee__last_name2',
                                            'attendings__registration__main_attendee__first_name2')))))),
                             function='jsonb_build_object'
                         ),

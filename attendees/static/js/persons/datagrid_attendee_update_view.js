@@ -40,7 +40,7 @@ Attendees.datagridUpdate = {
 
   initListeners: () => {
     $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
-    $("div.form-container").on("click", "button.attending-button", e => Attendees.datagridUpdate.initAttendingmeetPopupDxForm(e));
+    $("div.form-container").on("click", "button.attending-button", e => Attendees.datagridUpdate.initAttendingPopupDxForm(e));
     $("div.form-container").on("click", "button.attendee-place-button", e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
     $("div.form-container").on("click", "button.family-button", e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
     Attendees.datagridUpdate.attachContactAddButton();
@@ -601,12 +601,12 @@ Attendees.datagridUpdate = {
       title: '+ Add a new attending',
       type: 'button',
       class: 'attending-button-new attending-button btn-outline-primary btn button btn-sm'
-    }).text('+ New group').appendTo(itemElement);
+    }).text('+ Register group').appendTo(itemElement);
 
     attendings.forEach(attending => {
       if (attending && attending.attending_id) {
         $('<button>', {
-          text: attending.attending_registration,
+          text: attending.attending_registration ? attending.attending_registration.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self') : 'Generic Self',
           type: 'button',
           class: 'attending-button btn button btn-sm btn-outline-success',
           value: attending.attending_id,
@@ -923,33 +923,31 @@ Attendees.datagridUpdate = {
 
   initAttendingPopupDxForm: (event) => {
     const meetButton = event.target;
-    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attendingmeet-update").dxPopup(Attendees.datagridUpdate.attendingPopupDxFormConfig(meetButton)).dxPopup("instance");
+    Attendees.datagridUpdate.attendingmeetPopup = $("div.popup-attending-update").dxPopup(Attendees.datagridUpdate.attendingPopupDxFormConfig(meetButton)).dxPopup("instance");
     Attendees.datagridUpdate.fetchAttendingFormData(meetButton);
   },
 
   fetchAttendingFormData: (meetButton) => {
     if (meetButton.value) {
       $.ajax({
-        url: $('form#attendingmeet-update-popup-form').attr('action') + meetButton.value + '/',
+        url: $('form#attending-update-popup-form').attr('action') + meetButton.value + '/',
         success: (response) => {
-          Attendees.datagridUpdate.attendingmeetPopupDxFormData = response;
-          Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData', response);
-          Attendees.datagridUpdate.attendingmeetPopupDxForm.option('onFieldDataChanged', (e) => {
-            e.component.validate()
-          });
+          Attendees.datagridUpdate.attendingPopupDxFormData = response;
+          Attendees.datagridUpdate.attendingPopupDxForm.option('formData', response);
+          Attendees.datagridUpdate.attendingPopupDxForm.option('onFieldDataChanged', (e) => e.component.validate());
         },
-        error: (response) => console.log("Failed to fetch data for AttendingmeetForm in Popup, error: ", response),
+        error: (response) => console.log('Failed to fetch data for AttendingForm in Popup, error: ', response),
       });
     }
   },
 
-  attendingPopupDxFormConfig: (meetButton) => {
-    const ajaxUrl = $('form#attendingmeet-update-popup-form').attr('action') + (meetButton.value ? meetButton.value + '/' : '');
+  attendingPopupDxFormConfig: (attendingButton) => {
+    const ajaxUrl = $('form#attending-update-popup-form').attr('action') + (attendingButton.value ? attendingButton.value + '/' : '');
     return {
       visible: true,
-      title: meetButton.value ? 'Viewing participation' : 'Creating participation',
-      minwidth: "20%",
-      minheight: "30%",
+      title: attendingButton.value ? 'Viewing attending' : 'Creating attending',
+      minwidth: '20%',
+      minheight: '30%',
       position: {
         my: 'center',
         at: 'center',
@@ -957,7 +955,7 @@ Attendees.datagridUpdate = {
       },
       dragEnabled: true,
       contentTemplate: (e) => {
-        const formContainer = $('<div class="attendingMeetForm">');
+        const formContainer = $('<div class="attendingForm">');
         Attendees.datagridUpdate.attendingmeetPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.attendingmeetDefaults,
@@ -1134,7 +1132,7 @@ Attendees.datagridUpdate = {
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm('are you sure to submit the popup attendingMeetForm?')) {
+                  if (confirm('are you sure to submit the popup attendingForm?')) {
                     const userData = Attendees.datagridUpdate.attendingmeetPopupDxForm.option('formData');
 
                     $.ajax({
@@ -1156,7 +1154,7 @@ Attendees.datagridUpdate = {
                           }, "success", 2500);
                       },
                       error: (response) => {
-                        console.log('Failed to save data for AttendingmeetForm in Popup, error: ', response);
+                        console.log('Failed to save data for AttendingForm in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
