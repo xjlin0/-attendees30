@@ -10,7 +10,7 @@ Attendees.datagridUpdate = {
   attendingPopupDxFormData: {},  // for storing formData
   // attendingPopupDxFormCharacterSelect: null,
   attendingPopup: null,  // for show/hide popup
-  // attendingmeetsData: {},
+  attendingsData: {},
   attendingDefaults: {
     // assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
     category: 'primary',
@@ -499,13 +499,19 @@ Attendees.datagridUpdate = {
           {
             colSpan: 24,
             dataField: "attendingmeets",
-            cssClass: 'attendingmeets-buttons',
+            cssClass: 'attendings-buttons',
             label: {
-              text: 'group/registrant',
+              text: 'registrant/group',
             },
             template: (data, itemElement) => {
-              const attendings = data.editorOptions && data.editorOptions.value || [];
-              Attendees.datagridUpdate.populateAttendingButtons(attendings, itemElement);
+                  const attendings = data.editorOptions && data.editorOptions.value || [];
+                  Attendees.datagridUpdate.attendingsData = attendings.reduce((sum, now) => {
+                    return {
+                      ...sum,
+                      [now.attending_id]: now,
+                    };
+                  }, {});
+                  Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), itemElement);
             },
           },
           {
@@ -605,12 +611,20 @@ Attendees.datagridUpdate = {
 
     attendings.forEach(attending => {
       if (attending && attending.attending_id) {
-        const registrant_name = attending.registrant.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self');
-        const label = attending.registration_assembly ? attending.registration_assembly + ' ' + registrant_name : 'Generic ' + registrant_name;
+        let label, title;
+        if (attending.attending_label){
+          const originalLabel = (attending.attending_label).match(/\(([^)]+)\)/).pop();  // get substring between parentheses
+          label = originalLabel.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self');
+          title = label;
+        } else {
+          const registrant_name = attending.registrant.replace(Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original, 'Self');
+          label = attending.registration_assembly ? registrant_name + ' ' + attending.registration_assembly : registrant_name + ' Generic';
+          title = attending.registrant;
+        }
         $('<button>', {
           text: label,
           type: 'button',
-          title: attending.registrant,
+          title: title,
           class: 'attending-button btn button btn-sm btn-outline-success',
           value: attending.attending_id,
         }).appendTo(itemElement);
@@ -1067,6 +1081,9 @@ Attendees.datagridUpdate = {
                               of: window,
                             }
                           }, 'success', 2500);
+                        response.attending_id = response.id;
+                        Attendees.datagridUpdate.attendingsData[response.id] = response;
+                        Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), $('div.attendings-buttons > div.dx-field-item-content'));
                       },
                       error: (response) => {
                         console.log('Failed to save data for AttendingForm in Popup, error: ', response);
