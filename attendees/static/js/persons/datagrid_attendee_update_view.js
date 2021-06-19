@@ -50,7 +50,7 @@ Attendees.datagridUpdate = {
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
-    $('button.attendingmeet-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
+    $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
 
@@ -1050,7 +1050,9 @@ Attendees.datagridUpdate = {
 
                     $.ajax({
                       url: ajaxUrl,
-                      data: userData,
+                      data: JSON.stringify(userData),
+                      dataType: 'json',
+                      contentType: "application/json; charset=utf-8",
                       method: userData.id ? 'PUT' : 'POST',
                       success: (response) => {
                         Attendees.datagridUpdate.attendingPopup.hide();
