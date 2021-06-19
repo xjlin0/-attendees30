@@ -991,6 +991,7 @@ Attendees.datagridUpdate = {
             {
               dataField: 'registration.assembly',
               editorType: 'dxSelectBox',
+              helpText: 'Same Group/Registrant can only register once',  // need UI validation
               label: {
                 text: 'Belonging Group (Assembly)',
                 showColon: true,
@@ -1022,12 +1023,14 @@ Attendees.datagridUpdate = {
             },
             {
               dataField: "registration.main_attendee",
-              name: "existingAttendeeSelector",
+              // name: "existingAttendeeSelector",
+              helpText: 'Same Group/Registrant can only register once',  // need UI validation
               label: {
                 text: 'Registrant',
               },
               editorType: "dxLookup",
               editorOptions: {
+                showClearButton: true,
                 elementAttr: {
                   class: 'attendee-lookup-search',  // calling closing by the parent
                 },
@@ -1066,14 +1069,14 @@ Attendees.datagridUpdate = {
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
                       dataType: 'json',
-                      contentType: "application/json; charset=utf-8",
+                      contentType: 'application/json; charset=utf-8',
                       method: userData.id ? 'PUT' : 'POST',
                       success: (response) => {
                         Attendees.datagridUpdate.attendingPopup.hide();
                         console.log('success here is response: ', response);
                         DevExpress.ui.notify(
                           {
-                            message: "saving attending success",
+                            message: 'saving attending success',
                             width: 500,
                             position: {
                               my: 'center',
@@ -1138,7 +1141,9 @@ Attendees.datagridUpdate = {
         dataType: 'json',
         data: args,
         success: (result) => {
-          deferred.resolve(result.data.concat([Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee]), {
+          const main_attendee = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee || null;
+          const resulting_attendees = main_attendee ? result.data.concat([main_attendee]) : result.data;
+          deferred.resolve(resulting_attendees, {
             totalCount: result.totalCount,
             summary: result.summary,
             groupCount: result.groupCount
@@ -1155,7 +1160,8 @@ Attendees.datagridUpdate = {
     },
     byKey: (key) => {
       // if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.placePopupDxFormData) {
-      //   return [Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee];
+      //   const mainAttendee = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee || null;
+      //   return mainAttendee ? [mainAttendee] : [];
       // } else {
         const d = new $.Deferred();
         $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + key + '/')

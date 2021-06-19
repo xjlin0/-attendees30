@@ -51,7 +51,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
 
     @property
     def attending_label(self):
-        return f'({self.registration}) {self.attendee.display_label}'
+        return f'({self.registration}) {self.attendee.display_label}'  # parentheses needed in datagrid_attendee_update_view.js
 
     @cached_property
     def all_addresses(self):

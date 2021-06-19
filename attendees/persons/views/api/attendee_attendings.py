@@ -47,5 +47,14 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
             time.sleep(2)
             raise AuthenticationFailed(detail='Are you data admin or counselor?')
 
+    def perform_create(self, serializer):
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        if target_attendee.under_same_org_with(self.request.user.attendee and self.request.user.attendee.id):
+            serializer.save(attendee=target_attendee)
+
+        else:
+            time.sleep(2)
+            raise AuthenticationFailed(detail="Can't create attending across different organization")
+
 
 api_attendee_attendings_viewset = ApiAttendeeAttendingsViewSet
