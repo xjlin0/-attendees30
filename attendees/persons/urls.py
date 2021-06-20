@@ -4,6 +4,7 @@ from rest_framework import routers
 from attendees.persons.views import (
     api_all_categories_viewset,
     api_all_relations_viewset,
+    api_all_registrations_viewset,
     api_categorized_pasts_viewset,
     api_assembly_meet_attendings_viewset,
     api_attendee_families_viewset,
@@ -72,7 +73,7 @@ router.register(
     basename='attendee',
 )
 router.register(
-    'api/datagrid_data_attendingmeet/(?P<attendingmeet_id>.+)',
+    'api/datagrid_data_attendingmeet',
     api_datagrid_data_attendingmeet_viewset,
     basename='attendingmeet',
 )
@@ -100,6 +101,11 @@ router.register(
     'api/all_categories',
     api_all_categories_viewset,
     basename='category',
+)
+router.register(
+    'api/all_registrations',
+    api_all_registrations_viewset,
+    basename='registration',
 )
 router.register(
     'api/related_attendees',

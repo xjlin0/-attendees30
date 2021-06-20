@@ -105,6 +105,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
   - [ ] Create new instance of Attendee & attending update page with params with meet
   - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] implement secret/private relation/past general
+  - [ ] delete note/relationship/related_attendee for human error?
 - [ ] Move single attendee update page out of data assembly
 - [ ] Gathering list (new design with server side processing)
 - [ ] Attendance list (new design with server side processing)

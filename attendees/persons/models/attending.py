@@ -14,7 +14,7 @@ from . import Note, Utility, Attendee, Registration
 class Attending(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    registration = models.ForeignKey(Registration, null=True, on_delete=models.SET_NULL)
+    registration = models.ForeignKey(Registration, null=True, blank=True, on_delete=models.SET_NULL)
     attendee = models.ForeignKey(Attendee, null=False, blank=False, on_delete=models.CASCADE, related_name="attendings")
     gatherings = models.ManyToManyField('occasions.Gathering', through='occasions.Attendance')
     category = models.CharField(max_length=20, null=False, blank=False, default="normal", help_text="normal, not_going, coworker, etc")
@@ -25,7 +25,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
     def clean(self):
         # fetching birthday from attendee record first
         # Todo: check if meets' assemblies under attendee's organization
-        if self.registration.assembly.need_age and self.infos.bed_needs < 1 and self.info.age is None:
+        if self.registration and self.registration.assembly.need_age and self.infos.bed_needs < 1 and self.info.age is None:
             raise ValidationError("You must specify age for the participant")
 
     def get_absolute_url(self):
@@ -51,7 +51,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
 
     @property
     def attending_label(self):
-        return f'{self.attendee.display_label} ({self.main_contact.display_label})'
+        return f'({self.registration}) {self.attendee.display_label}'  # parentheses needed in datagrid_attendee_update_view.js
 
     @cached_property
     def all_addresses(self):

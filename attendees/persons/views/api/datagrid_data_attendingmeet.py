@@ -1,54 +1,53 @@
-from django.contrib.postgres.aggregates.general import JSONBAgg
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Func, Value
 from django.db.models.expressions import F
 from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 
-from attendees.persons.models import AttendingMeet
+from attendees.persons.models import AttendingMeet, Attendee
 from attendees.persons.serializers import AttendingMeetEtcSerializer
+from attendees.users.authorization.route_guard import SpyGuard
 
 
-class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, ModelViewSet):  # from GenericAPIView
+class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, SpyGuard, ModelViewSet):  # from GenericAPIView
     """
     API endpoint that allows AttendingMeet & Meet to be viewed or edited.
     """
     serializer_class = AttendingMeetEtcSerializer
-    # queryset = AttendingMeet.objects.annotate(assembly=F('meet__assembly'))
 
-    def retrieve(self, request, *args, **kwargs):
-        attendingmeet_id = self.request.query_params.get('attendingmeet_id')
-        attendee = AttendingMeet.objects.annotate(
-            joined_meets=JSONBAgg(
-                Func(
-                    Value('slug'), 'attendings__meets__slug',
-                    Value('display_name'), 'attendings__meets__display_name',
-                    function='jsonb_build_object'
-                ),
-            )
-                   ).filter(pk=attendingmeet_id).first()
-        serializer = AttendingMeetEtcSerializer(attendee)
-        return Response(serializer.data)
-
-
-
-
-
-
-
+    # def retrieve(self, request, *args, **kwargs):
+    #     attendingmeet_id = self.kwargs.get('pk')
+    #     print("hi 23 hre is attendingmeet_id: ")
+    #     print(attendingmeet_id)
+    #     attendee = AttendingMeet.objects.annotate(
+    #         assembly=F('meet__assembly'),
+    #         joined_meets=JSONBAgg(
+    #             Func(
+    #                 Value('slug'), 'attending__meets__slug',
+    #                 Value('display_name'), 'attending__meets__display_name',
+    #                 function='jsonb_build_object'
+    #             ),
+    #         )
+    #                ).filter(pk=attendingmeet_id).first()
+    #     serializer = AttendingMeetEtcSerializer(attendee)
+    #     return Response(serializer.data)
 
     def get_queryset(self):
         """
-
+        Return AttendingMeet of the target attendee sent in header, can be further specified by pk in url param
         """
-
-        querying_attendingmeet_id = self.kwargs.get('attendingmeet_id')
-        return AttendingMeet.objects.annotate(
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        querying_attendingmeet_id = self.kwargs.get('pk')
+        qs = AttendingMeet.objects.annotate(
                     assembly=F('meet__assembly'),
-                ).filter(pk=querying_attendingmeet_id)
+                ).filter(
+                    attending__attendee=target_attendee,
+                )
+
+        if querying_attendingmeet_id:
+            return qs.filter(pk=querying_attendingmeet_id)
+        else:
+            return qs
 
 
 api_datagrid_data_attendingmeet_viewset = ApiDatagridDataAttendingMeetViewSet

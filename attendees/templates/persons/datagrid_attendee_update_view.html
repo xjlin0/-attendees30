@@ -76,6 +76,7 @@
          data-family-contenttype-id="{{family_contenttype_id}}"
          data-empty-image-link="{{empty_image_link}}"
          data-meets-endpoint="{{meets_endpoint}}"
+         data-attendingmeets-endpoint="{{attendingmeets_endpoint}}"
          data-characters-endpoint="{{characters_endpoint}}"
          data-divisions-endpoint="{{divisions_endpoint}}"
          data-addresses-endpoint="{{addresses_endpoint}}"
@@ -84,6 +85,7 @@
          data-relationships-endpoint="{{relationships_endpoint}}"
          data-pasts-endpoint="{{pasts_endpoint}}"
          data-categories-endpoint="{{categories_endpoint}}"
+         data-registrations-endpoint="{{registrations_endpoint}}"
          data-related-attendees-endpoint="{{related_attendees_endpoint}}"
          data-attendee-families-endpoint="{{attendee_families_endpoint}}"
          data-attendings-endpoint="{{attendings_endpoint}}"
@@ -91,17 +93,17 @@
          data-attendee-endpoint="{{attendee_endpoint}}"
          data-family-attendees-endpoint="{{family_attendees_endpoint}}"
          data-attendee-urn="{{attendee_urn}}"
-         data-assembly="{{current_assembly_slug}}">
+         data-current-assembly-id="{{current_assembly_id}}">
+    </div>
+  </form>
+  <form id="attending-update-popup-form"
+        action="/persons/api/attendee_attendings/"
+        method="post">
+    <div class="popup-attending-update">
     </div>
   </form>
   <form id="popup-more-contacts-form">
     <div class="popup-more-contacts">
-    </div>
-  </form>
-  <form id="attendingmeet-update-popup-form"
-        action="/persons/api/datagrid_data_attendingmeet/"
-        method="post">
-    <div class="popup-attendingmeet-update">
     </div>
   </form>
   <form id="place-update-popup-form"

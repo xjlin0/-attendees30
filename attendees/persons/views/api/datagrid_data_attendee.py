@@ -1,8 +1,8 @@
 from django.contrib.postgres.aggregates.general import ArrayAgg, JSONBAgg
-
+from django.db.models.functions import Concat, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Func, Value
-from django.db.models.expressions import F
+from django.db.models.expressions import F, Q
 from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
@@ -43,20 +43,34 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         """
         current_user = self.request.user  # Todo: guard this API so only admin or scheduler can call it.
         querying_attendee_id = self.kwargs.get('pk')
+        querying_term = self.request.query_params.get('searchValue')
 
-        return Attendee.objects.annotate(
+        if querying_attendee_id:
+            qs = Attendee.objects.annotate(
                     organization_slug=F('division__organization__slug'),
-                    joined_meets=JSONBAgg(
+                    attendingmeets=JSONBAgg(  # used by datagrid_assembly_data_attendees.js & datagrid_attendee_update_view.js
                         Func(
-                            Value('attendingmeet_id'), 'attendings__attendingmeet__id',
-                            Value('attending_finish'), 'attendings__attendingmeet__finish',
-                            Value('attending_start'), 'attendings__attendingmeet__start',
-                            Value('meet_name'), 'attendings__meets__display_name',
+                            Value('attending_id'), 'attendings__id',
+                            Value('registration_assembly'), 'attendings__registration__assembly__display_name',
+                            Value('registrant'), Trim(Concat(
+                                Trim(Concat('attendings__registration__main_attendee__first_name', Value(' '),
+                                           'attendings__registration__main_attendee__last_name')), Value(' '),
+                                Trim(Concat('attendings__registration__main_attendee__last_name2',
+                                           'attendings__registration__main_attendee__first_name2')))),
                             function='jsonb_build_object'
                         ),
                     ),
                     # contacts=ArrayAgg('attendings__meets__slug', distinct=True),
-               ).filter(pk=querying_attendee_id)
+               ).filter(
+                division__organization=current_user.organization,
+                pk=querying_attendee_id
+            )
+        elif querying_term:
+            qs = Attendee.objects.filter(
+                infos__icontains=querying_term,
+            )
+
+        return qs.filter(division__organization=current_user.organization)
 
 
 api_datagrid_data_attendee_viewset = ApiDatagridDataAttendeeViewSet

@@ -5214,6 +5214,27 @@
   },
   {
     "model": "occasions.assembly",
+    "pk": 0,
+    "fields": {
+      "created": "2020-04-11T18:39:30.685Z",
+      "modified": "2021-04-08T13:52:40.549Z",
+      "is_removed": false,
+      "start": null,
+      "finish": null,
+      "category": "normal",
+      "display_name": "未指定unspecified",
+      "display_order": 0,
+      "slug": "cfcch_unspecified",
+      "need_age": false,
+      "division": 0,
+      "infos": {
+        "fixed": {},
+        "contacts": {}
+      }
+    }
+  },
+  {
+    "model": "occasions.assembly",
     "pk": 1,
     "fields": {
       "created": "2020-04-11T18:39:30.685Z",

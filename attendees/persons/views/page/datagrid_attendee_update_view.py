@@ -6,6 +6,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import DetailView, UpdateView
 
+from attendees.occasions.models import Assembly
 from attendees.persons.models import Attendee, Family
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.utils.view_helpers import get_object_or_delayed_403
@@ -27,7 +28,8 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         context = super().get_context_data(**kwargs)
         current_division_slug = self.kwargs.get('division_slug', None)
         current_organization_slug = self.kwargs.get('organization_slug', None)
-        current_assembly_slug = self.kwargs.get('assembly_slug', None)
+        current_assembly_slug = self.kwargs.get('assembly_slug', 'cfcch_unspecified')
+        current_assembly_id = Assembly.objects.get(slug=current_assembly_slug).id
         targeting_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
@@ -35,6 +37,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
+            'attendingmeets_endpoint': '/persons/api/datagrid_data_attendingmeet/',
             'assemblies_endpoint': '/occasions/api/user_assemblies/',
             'divisions_endpoint': '/whereabouts/api/user_divisions/',
             'addresses_endpoint': '/whereabouts/api/all_addresses/',
@@ -42,6 +45,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'relations_endpoint': '/persons/api/all_relations/',
             'pasts_endpoint': '/persons/api/categorized_pasts/',
             'categories_endpoint': '/persons/api/all_categories/',
+            'registrations_endpoint': '/persons/api/all_registrations/',
             'relationships_endpoint': '/persons/api/attendee_relationships/',
             'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not be families
             'attendee_families_endpoint': f"/persons/api/attendee_families/",
@@ -50,7 +54,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'targeting_attendee_id': targeting_attendee_id,
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
-            'current_assembly_slug': current_assembly_slug,
+            'current_assembly_id': current_assembly_id,
             'attendee_urn': f"/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/",
         })
         return context

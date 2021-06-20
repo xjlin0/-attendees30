@@ -216,7 +216,7 @@ Attendees.dataAttendees = {
         dataField: meet.slug,
         allowHeaderFiltering: false,
         calculateCellValue: (rowData) => {
-          if (rowData.joined_meets.includes(meet.slug)) {
+          if (rowData.attendingmeets && rowData.attendingmeets.includes(meet.slug)) {
             return meet.display_name;
           }else{
             return '-';

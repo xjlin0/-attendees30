@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class AttendingMeetEtcSerializer(serializers.ModelSerializer):
-    assembly = serializers.IntegerField()
+    assembly = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = AttendingMeet
@@ -13,9 +13,7 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
         """
         Create or update `AttendingMeet` instance, given the validated data.
         """
-
         attendingmeet_id = self._kwargs['data'].get('id')
-
         obj, created = AttendingMeet.objects.update_or_create(
             id=attendingmeet_id,
             defaults=validated_data,
@@ -28,11 +26,17 @@ class AttendingMeetEtcSerializer(serializers.ModelSerializer):
 
         """
 
-        # instance.title = validated_data.get('title', instance.title)
-        # instance.code = validated_data.get('code', instance.code)
-        # instance.linenos = validated_data.get('linenos', instance.linenos)
-        # instance.language = validated_data.get('language', instance.language)
-        # instance.style = validated_data.get('style', instance.style)
+        if True:  # need validations such as if the assembly matching meet, it's better to validate on UI first
+            instance.meet = validated_data.get('meet', instance.meet)
+            # instance.meet.assembly = validated_data.get('assembly', instance.meet.assembly)
+            instance.meet.save()
+
+        instance.attending = validated_data.get('attending', instance.attending)
+        instance.start = validated_data.get('start', instance.start)
+        instance.finish = validated_data.get('finish', instance.finish)
+        instance.character = validated_data.get('character', instance.character)
+        instance.category = validated_data.get('category', instance.category)
+
         instance.save()
         return instance
 

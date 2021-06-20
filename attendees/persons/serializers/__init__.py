@@ -9,5 +9,6 @@ from .relationship_serializer import RelationshipSerializer
 from .family_attendee_serializer import FamilyAttendeeSerializer
 from .attendee_minimal_serializer import AttendeeMinimalSerializer
 from .attending_attendee_serializer import AttendingAttendeeSerializer
+from .registration_serializer import RegistrationSerializer
 from .attendingmeet_etc_serializer import AttendingMeetEtcSerializer
 
