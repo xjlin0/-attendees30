@@ -10,14 +10,15 @@ def common_variables(request):  # TODO move organization info to view
     tzname = request.COOKIES.get('timezone') or settings.CLIENT_DEFAULT_TIME_ZONE
     user_organization_name = settings.PROJECT_NAME
     user_organization_name_slug = '0_organization_slug'
+    user_organization = request.user.organization if hasattr(request.user, 'organization') else None
     main_menus = Menu.objects.filter(
         auth_groups__in=request.user.groups.all(),
         category='main',
         menuauthgroup__read=True,
-        organization=request.user.organization,  # maybe None
+        organization=user_organization,
         is_removed=False,
     ).distinct()
-    if request.user.is_authenticated and request.user.organization:
+    if request.user.is_authenticated and user_organization:
         user_organization = request.user.organization
         user_organization_name = user_organization.display_name
         user_organization_name_slug = user_organization.slug

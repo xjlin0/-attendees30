@@ -23,18 +23,18 @@ class Migration(migrations.Migration):
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
                 ('assembly', models.ForeignKey(null=True, on_delete=models.deletion.SET_NULL, to='occasions.Assembly')),
-                ('main_attendee', models.ForeignKey(null=True, on_delete=models.deletion.SET_NULL, to='persons.Attendee')),
+                ('registrant', models.ForeignKey(null=True, on_delete=models.deletion.SET_NULL, to='persons.Attendee')),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"price": "150.75", "donation": "85.00", "credit": "35.50", "apply_type": "online", "apply_key": "001"}. Please keep {} here even no data', null=True)),
             ],
             options={
                 'db_table': 'persons_registrations',
-                'ordering': ('assembly', 'main_attendee__last_name', 'main_attendee__first_name'),
+                'ordering': ('assembly', 'registrant__last_name', 'registrant__first_name'),
             },
             bases=(models.Model, attendees.persons.models.utility.Utility),
         ),
         migrations.AddConstraint(
             model_name='registration',
-            constraint=models.UniqueConstraint(fields=('assembly', 'main_attendee'), condition=models.Q(is_removed=False), name='assembly_main_attendee'),
+            constraint=models.UniqueConstraint(fields=('assembly', 'registrant'), condition=models.Q(is_removed=False), name='assembly_registrant'),
         ),
         migrations.AddIndex(
             model_name='registration',

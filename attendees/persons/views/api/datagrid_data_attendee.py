@@ -23,7 +23,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
     # def retrieve(self, request, *args, **kwargs):
     #     attendee_id = self.kwargs.get('pk')
     #     attendee =  Attendee.objects.annotate(
-    #                 joined_meets=JSONBAgg(
+    #                 attendingmeets=JSONBAgg(
     #                     Func(
     #                         Value('attendingmeet_id'), 'attendings__attendingmeet__id',
     #                         Value('attending_finish'), 'attendings__attendingmeet__finish',
@@ -53,10 +53,10 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
                             Value('attending_id'), 'attendings__id',
                             Value('registration_assembly'), 'attendings__registration__assembly__display_name',
                             Value('registrant'), Trim(Concat(
-                                Trim(Concat('attendings__registration__main_attendee__first_name', Value(' '),
-                                           'attendings__registration__main_attendee__last_name')), Value(' '),
-                                Trim(Concat('attendings__registration__main_attendee__last_name2',
-                                           'attendings__registration__main_attendee__first_name2')))),
+                                Trim(Concat('attendings__registration__registrant__first_name', Value(' '),
+                                           'attendings__registration__registrant__last_name')), Value(' '),
+                                Trim(Concat('attendings__registration__registrant__last_name2',
+                                           'attendings__registration__registrant__first_name2')))),
                             function='jsonb_build_object'
                         ),
                     ),

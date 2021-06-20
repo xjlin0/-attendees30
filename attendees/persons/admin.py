@@ -131,8 +131,8 @@ class RegistrationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
-    list_display_links = ('main_attendee',)
-    list_display = ('id', 'main_attendee', 'assembly', 'infos', 'modified')
+    list_display_links = ('registrant',)
+    list_display = ('id', 'registrant', 'assembly', 'infos', 'modified')
 
 
 class AttendanceInline(admin.StackedInline):

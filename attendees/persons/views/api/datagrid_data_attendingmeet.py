@@ -21,7 +21,7 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, SpyGuard, ModelVie
     #     print(attendingmeet_id)
     #     attendee = AttendingMeet.objects.annotate(
     #         assembly=F('meet__assembly'),
-    #         joined_meets=JSONBAgg(
+    #         attendingmeets=JSONBAgg(
     #             Func(
     #                 Value('slug'), 'attending__meets__slug',
     #                 Value('display_name'), 'attending__meets__display_name',

@@ -12,7 +12,7 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     assembly = models.ForeignKey('occasions.Assembly', null=True, on_delete=models.SET_NULL)
-    main_attendee = models.ForeignKey(Attendee, null=True, on_delete=models.SET_NULL)
+    registrant = models.ForeignKey(Attendee, null=True, on_delete=models.SET_NULL)
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"price": "150.75", "donation": "85.00", "credit": "35.50", "apply_type": "online", "apply_key": "001"}. Please keep {} here even no data')
     # Todo 20210619 Q: if assembly is Null, does that mean bad registration which cross organization?
     # @property
@@ -21,20 +21,20 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
     # # TODO: please check if attending_set works !!!!!!!!!
     #
     # def __str__(self):
-    #     return '%s %s %s' % (self.apply_type, self.main_attendee, self.price_sum)
+    #     return '%s %s %s' % (self.apply_type, self.registrant, self.price_sum)
 
     def __str__(self):
-        return '%s %s' % (self.main_attendee, self.assembly)
+        return '%s %s' % (self.registrant, self.assembly)
 
     @property
-    def main_attendee_name(self):
-        return self.main_attendee
+    def registrant_name(self):
+        return self.registrant
 
     class Meta:
         db_table = 'persons_registrations'
-        ordering = ('assembly', 'main_attendee__last_name', 'main_attendee__first_name')
+        ordering = ('assembly', 'registrant__last_name', 'registrant__first_name')
         constraints = [
-            models.UniqueConstraint(fields=['assembly', 'main_attendee'], condition=models.Q(is_removed=False), name="assembly_main_attendee")
+            models.UniqueConstraint(fields=['assembly', 'registrant'], condition=models.Q(is_removed=False), name="assembly_registrant")
         ]
         indexes = [
             GinIndex(fields=['infos'], name='registration_infos_gin', ),

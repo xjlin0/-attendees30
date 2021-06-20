@@ -335,18 +335,18 @@ Attendees.datagridUpdate = {
         items: [
           {
             colSpan: 24,
-            dataField: "familyattendee_set",
-            name: "familyAttrs",
+            dataField: 'familyattendee_set',
+            name: 'familyAttrs',
             label: {
               text: 'families',
             },
             template: (data, itemElement) => {
-              $("<button>", {
-                text: "New family+",
+              $('<button>', {
+                text: 'New family for attendee+',
                 disabled: !Attendees.utilities.editingEnabled,
-                title: "+ Add the attendee to a new family",
+                title: '+ Add the attendee to a new family',
                 type: 'button',
-                class: "family-button-new family-button btn-outline-primary btn button btn-sm ",
+                class: 'family-button-new family-button btn-outline-primary btn button btn-sm ',
               }).appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value) {
                 data.editorOptions.value.forEach(familyAttendee => {
@@ -354,7 +354,7 @@ Attendees.datagridUpdate = {
                     $("<button>", {
                       text: familyAttendee.family.display_name,
                       type: 'button',
-                      class: "btn-outline-success family-button btn button btn-sm ",
+                      class: 'btn-outline-success family-button btn button btn-sm ',
                       value: familyAttendee.family.id,
                     }).appendTo(itemElement);
                   }
@@ -1029,7 +1029,7 @@ Attendees.datagridUpdate = {
               isRequired: true,
             },
             {
-              dataField: 'registration.main_attendee',
+              dataField: 'registration.registrant',
               validationRules: [
                 {
                   type: 'async',
@@ -1137,7 +1137,7 @@ Attendees.datagridUpdate = {
     }else {
       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.registrationsEndpoint, {
         assembly: registration.assembly,
-        main_attendee: registration.main_attendee,
+        registrant: registration.registrant,
       }).done((response) => {
         const registrations = response && response.data || [];
         if (registrations.length < 1){
@@ -1154,7 +1154,7 @@ Attendees.datagridUpdate = {
   attendeeSource: new DevExpress.data.CustomStore({
     key: 'id',
     load: (loadOptions) => {
-      // if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee];
+      // if (!Attendees.utilities.editingEnabled) return [Attendees.datagridUpdate.attendingPopupDxFormData.registration.registrant];
 
       const deferred = $.Deferred();
       const args = {};
@@ -1178,8 +1178,8 @@ Attendees.datagridUpdate = {
         dataType: 'json',
         data: args,
         success: (result) => {
-          const main_attendee = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee || null;
-          const resulting_attendees = main_attendee ? result.data.concat([main_attendee]) : result.data;
+          const registrant = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.registrant || null;
+          const resulting_attendees = registrant ? result.data.concat([registrant]) : result.data;
           deferred.resolve(resulting_attendees, {
             totalCount: result.totalCount,
             summary: result.summary,
@@ -1197,7 +1197,7 @@ Attendees.datagridUpdate = {
     },
     byKey: (key) => {
       // if (!Attendees.utilities.editingEnabled && Attendees.datagridUpdate.placePopupDxFormData) {
-      //   const mainAttendee = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.main_attendee || null;
+      //   const mainAttendee = Attendees.datagridUpdate.attendingPopupDxFormData.registration && Attendees.datagridUpdate.attendingPopupDxFormData.registration.registrant || null;
       //   return mainAttendee ? [mainAttendee] : [];
       // } else {
         const d = new $.Deferred();
@@ -2188,10 +2188,6 @@ Attendees.datagridUpdate = {
                       contentType: "application/json; charset=utf-8",
                       method: 'PUT',
                       success: (savedFamily) => {
-                        const clickedButton = $('button.family-button[value="' + savedFamily.id + '"]');
-                        if (clickedButton.length) {
-                          clickedButton.text(savedFamily.display_name)
-                        }
                         Attendees.datagridUpdate.familyAttrPopup.hide();
                         DevExpress.ui.notify(
                           {
@@ -2203,6 +2199,10 @@ Attendees.datagridUpdate = {
                               of: window,
                             }
                           }, 'success', 2500);
+                        const clickedButton = $('button.family-button[value="' + savedFamily.id + '"]');
+                        if (clickedButton.length) {
+                          clickedButton.text(savedFamily.display_name)
+                        }
                       },
                       error: (response) => {
                         console.log('2062 Failed to save data for Family attr Form in Popup, error: ', response);

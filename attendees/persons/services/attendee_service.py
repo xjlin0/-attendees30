@@ -130,9 +130,9 @@ class AttendeeService:
         :param assembly_slug: assembly_slug
         :return: a List of sorter for order_by()
         """
-        meet_sorters = {meet.slug: Func(F('joined_meets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(assembly__slug=assembly_slug)}
+        meet_sorters = {meet.slug: Func(F('attendingmeets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(assembly__slug=assembly_slug)}
 
-        orderby_list = []  # sort joined_meets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
+        orderby_list = []  # sort attendingmeets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
         for orderby_dict in json.loads(orderby_string):
             field = orderby_dict.get('selector', 'id').replace('.', '__')
             if field in meet_sorters:

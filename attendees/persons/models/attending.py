@@ -43,7 +43,7 @@ class Attending(TimeStampedModel, SoftDeletableModel, Utility):
 
     @property
     def main_contact(self):
-        return self.registration.main_attendee
+        return self.registration.registrant
 
     @cached_property
     def meet_names(self):

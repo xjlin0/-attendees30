@@ -690,9 +690,9 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
     access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
     data_registration, data_registration_created = Registration.objects.update_or_create(
         assembly=data_assembly,
-        main_attendee=attendee,
+        registrant=attendee,
         defaults={
-            'main_attendee': attendee,  # admin/secretary may change for future members.
+            'registrant': attendee,  # admin/secretary may change for future members.
             'assembly': data_assembly,
             'infos': {
                 'access_household_id': access_household_id,
@@ -761,9 +761,9 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
         access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
             assembly=data_assembly,
-            main_attendee=attendee,
+            registrant=attendee,
             defaults={
-                'main_attendee': attendee,  # admin/secretary may change for future members.
+                'registrant': attendee,  # admin/secretary may change for future members.
                 'assembly': data_assembly,
                 'infos': {
                     'access_household_id': access_household_id,
@@ -838,9 +838,9 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
         if househead:
             data_registration, data_registration_created = Registration.objects.update_or_create(
                 assembly=data_assembly,
-                main_attendee=househead,
+                registrant=househead,
                 defaults={
-                    'main_attendee': househead,
+                    'registrant': househead,
                     'assembly': data_assembly,
                     'infos': {
                         'access_household_id': access_household_id,

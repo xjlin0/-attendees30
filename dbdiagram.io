@@ -104,7 +104,7 @@ Table registrations {
   price decimal
   credit decimal [note: "some staff don't have to pay"]
   assembly_id int [ref: > assemblies.id]
-  main_attendee_id int [ref: > attendees.id]
+  registrant int [ref: > attendees.id]
   created datetime
   modified datetime
   is_removed boolean

@@ -124,7 +124,7 @@ Attendees.attendings = {
 //      dataField: "registration",
 //      lookup: {
 //          valueExpr: "id",
-//          displayExpr: "main_attendee",
+//          displayExpr: "registrant",
 //          dataSource: {
 //              store: new DevExpress.data.CustomStore({
 //                  key: "id",
