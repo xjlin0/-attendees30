@@ -991,7 +991,14 @@ Attendees.datagridUpdate = {
             {
               dataField: 'registration.assembly',
               editorType: 'dxSelectBox',
-              helpText: 'Same Group/Registrant can only register once',  // need UI validation
+              validationRules: [
+                {
+                  type: 'async',
+                  message: 'Same Group/Registrant exists, please select other assembly or close the popup to find that registration',
+                  validationCallback: (params) =>  Attendees.datagridUpdate.validateRegistration(params.value),
+                },
+              ],
+              helpText: 'Same Group/Registrant can only register once',
               label: {
                 text: 'Belonging Group (Assembly)',
                 showColon: true,
@@ -1022,13 +1029,19 @@ Attendees.datagridUpdate = {
               isRequired: true,
             },
             {
-              dataField: "registration.main_attendee",
-              // name: "existingAttendeeSelector",
-              helpText: 'Same Group/Registrant can only register once',  // need UI validation
+              dataField: 'registration.main_attendee',
+              validationRules: [
+                {
+                  type: 'async',
+                  message: 'Same Group/Registrant exists, please select other registrant or close the popup to find that registration',
+                  validationCallback: (params) =>  Attendees.datagridUpdate.validateRegistration(params.value),
+                },
+              ],
+              helpText: 'Same Group/Registrant can only register once',
               label: {
                 text: 'Registrant',
               },
-              editorType: "dxLookup",
+              editorType: 'dxLookup',
               editorOptions: {
                 showClearButton: true,
                 elementAttr: {
@@ -1036,7 +1049,7 @@ Attendees.datagridUpdate = {
                 },
                 valueExpr: 'id',
                 displayExpr: 'infos.names.original',
-                placeholder: "Select a value...",
+                placeholder: 'Select a value...',
                 // searchExpr: ['first_name', 'last_name'],
                 searchPlaceholder: 'Search attendee',
                 minSearchLength: 3,  // cause values disappeared in drop down
@@ -1049,61 +1062,63 @@ Attendees.datagridUpdate = {
               },
             },
             {
-              itemType: "button",
-              horizontalAlignment: "left",
+              itemType: 'button',
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Attending",
-                icon: "save",
-                hint: "save attending data in the popup",
-                type: "default",
+                text: 'Save Attending',
+                icon: 'save',
+                hint: 'save attending data in the popup',
+                type: 'default',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm('are you sure to submit the popup attendingForm?')) {
-                    const userData = Attendees.datagridUpdate.attendingPopupDxForm.option('formData');
+                  const validationResult = clickEvent.validationGroup.validate();
+                  validationResult.status === 'pending' && validationResult.complete.then((validation) => {
+                    if (validation.status === 'valid' && confirm('are you sure to submit the popup attendingForm?')) {
+                      const userData = Attendees.datagridUpdate.attendingPopupDxForm.option('formData');
 
-                    $.ajax({
-                      url: ajaxUrl,
-                      data: JSON.stringify(userData),
-                      dataType: 'json',
-                      contentType: 'application/json; charset=utf-8',
-                      method: userData.id ? 'PUT' : 'POST',
-                      success: (response) => {
-                        Attendees.datagridUpdate.attendingPopup.hide();
-                        console.log('success here is response: ', response);
-                        DevExpress.ui.notify(
-                          {
-                            message: 'saving attending success',
-                            width: 500,
-                            position: {
-                              my: 'center',
-                              at: 'center',
-                              of: window,
-                            }
-                          }, 'success', 2500);
-                        response.attending_id = response.id;
-                        Attendees.datagridUpdate.attendingsData[response.id] = response;
-                        Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), $('div.attendings-buttons > div.dx-field-item-content'));
-                      },
-                      error: (response) => {
-                        console.log('Failed to save data for AttendingForm in Popup, error: ', response);
-                        console.log('formData: ', userData);
-                        DevExpress.ui.notify(
-                          {
-                            message: "saving attending error",
-                            width: 500,
-                            position: {
-                              my: 'center',
-                              at: 'center',
-                              of: window,
-                            }
-                          }, 'error', 5000);
-                      },
-                    });
-                  }
+                      $.ajax({
+                        url: ajaxUrl,
+                        data: JSON.stringify(userData),
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        method: userData.id ? 'PUT' : 'POST',
+                        success: (response) => {
+                          Attendees.datagridUpdate.attendingPopup.hide();
+                          DevExpress.ui.notify(
+                            {
+                              message: 'saving attending success',
+                              width: 500,
+                              position: {
+                                my: 'center',
+                                at: 'center',
+                                of: window,
+                              }
+                            }, 'success', 2500);
+                          response.attending_id = response.id;
+                          Attendees.datagridUpdate.attendingsData[response.id] = response;
+                          Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), $('div.attendings-buttons > div.dx-field-item-content'));
+                        },
+                        error: (response) => {
+                          console.log('Failed to save data for AttendingForm in Popup, error: ', response);
+                          console.log('formData: ', userData);
+                          DevExpress.ui.notify(
+                            {
+                              message: 'saving attending error',
+                              width: 500,
+                              position: {
+                                my: 'center',
+                                at: 'center',
+                                of: window,
+                              }
+                            }, 'error', 5000);
+                        },
+                      });
+                    }
+                  });
                 }
               },
             },
@@ -1112,6 +1127,28 @@ Attendees.datagridUpdate = {
         e.append(formContainer);
       }
     };
+  },
+
+  validateRegistration: (value) => {
+    const registration = Attendees.datagridUpdate.attendingPopupDxForm.option('formData') && Attendees.datagridUpdate.attendingPopupDxForm.option('formData').registration || {};
+    var d = $.Deferred();
+    if (!Attendees.utilities.editingEnabled) {
+      d.resolve();
+    }else {
+      $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.registrationsEndpoint, {
+        assembly: registration.assembly,
+        main_attendee: registration.main_attendee,
+      }).done((response) => {
+        const registrations = response && response.data || [];
+        if (registrations.length < 1){
+          d.resolve();
+        } else if(registrations.length < 2){
+          registrations[0].id === registration.id ? d.resolve() : d.reject();
+        }
+        d.reject();
+      });
+    }
+    return d.promise();
   },
 
   attendeeSource: new DevExpress.data.CustomStore({
@@ -1123,14 +1160,14 @@ Attendees.datagridUpdate = {
       const args = {};
 
       [
-        "skip",
-        "take",
-        "sort",
-        "filter",
-        "searchExpr",
-        "searchOperation",
-        "searchValue",
-        "group",
+        'skip',
+        'take',
+        'sort',
+        'filter',
+        'searchExpr',
+        'searchOperation',
+        'searchValue',
+        'group',
       ].forEach((i) => {
         if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
           args[i] = loadOptions[i];

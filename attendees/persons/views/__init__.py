@@ -1,5 +1,6 @@
 from .api.all_relations import api_all_relations_viewset
 from .api.all_categories import api_all_categories_viewset
+from .api.all_registrations import api_all_registrations_viewset
 from .api.categorized_pasts import api_categorized_pasts_viewset
 from .api.assembly_meet_attendings import api_assembly_meet_attendings_viewset
 from .api.data_attendings import api_data_attendings_viewset

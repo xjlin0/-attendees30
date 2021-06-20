@@ -45,6 +45,7 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             'relations_endpoint': '/persons/api/all_relations/',
             'pasts_endpoint': '/persons/api/categorized_pasts/',
             'categories_endpoint': '/persons/api/all_categories/',
+            'registrations_endpoint': '/persons/api/all_registrations/',
             'relationships_endpoint': '/persons/api/attendee_relationships/',
             'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not be families
             'attendee_families_endpoint': f"/persons/api/attendee_families/",

@@ -14,7 +14,7 @@ class Registration(TimeStampedModel, SoftDeletableModel, Utility):
     assembly = models.ForeignKey('occasions.Assembly', null=True, on_delete=models.SET_NULL)
     main_attendee = models.ForeignKey(Attendee, null=True, on_delete=models.SET_NULL)
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"price": "150.75", "donation": "85.00", "credit": "35.50", "apply_type": "online", "apply_key": "001"}. Please keep {} here even no data')
-
+    # Todo 20210619 Q: if assembly is Null, does that mean bad registration which cross organization?
     # @property
     # def price_sum(self):
     #     return sum([attending.price for attending in self.attending_set.all()]) + self.donation
