@@ -2849,6 +2849,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: 'assembly',
+        groupIndex: 0,
         validationRules: [{type: 'required'}],
         caption: 'Group (Assembly)',
         setCellValue: (rowData, value) => {
