@@ -30,7 +30,12 @@ Attendees.datagridUpdate = {
   familyAttendeeDatagrid: null,
   familyAttrPopupDxForm: null,
   familyAttrPopup: null,
-  familyAttrDefaults: {},
+  familyAttrDefaults: {
+    display_order: 0,
+    attendees: [document.querySelector('input[name="attendee-id"]').value],
+    division: 0,
+    display_name: '',
+  },
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
@@ -137,6 +142,8 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
         Attendees.datagridUpdate.populateBasicInfoBlock();
         Attendees.datagridUpdate.initListeners();
+        Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
+        Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
       },
       error: (response) => {
         console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
@@ -351,12 +358,7 @@ Attendees.datagridUpdate = {
               if (data.editorOptions && data.editorOptions.value) {
                 data.editorOptions.value.forEach(familyAttendee => {
                   if (familyAttendee && typeof familyAttendee === 'object') {
-                    $("<button>", {
-                      text: familyAttendee.family.display_name,
-                      type: 'button',
-                      class: 'btn-outline-success family-button btn button btn-sm ',
-                      value: familyAttendee.family.id,
-                    }).appendTo(itemElement);
+                    Attendees.datagridUpdate.familyButtonFactory(familyAttendee.family.id, familyAttendee.family.display_name).appendTo(itemElement);
                   }
                 });
               }
@@ -597,6 +599,15 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  familyButtonFactory: (value, text) => {
+    return $('<button>', {
+      text: text,
+      type: 'button',
+      class: 'btn-outline-success family-button btn button btn-sm ',
+      value: value,
+    });
   },
 
   populateAttendingButtons: (attendings, itemElement) => {
@@ -2074,7 +2085,7 @@ Attendees.datagridUpdate = {
   },
 
   familyAttrPopupDxFormConfig: (familyAttrButton) => {
-    const ajaxUrl = $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/';
+    const ajaxUrl = $('form#family-attr-update-popup-form').attr('action') + (familyAttrButton.value ? familyAttrButton.value + '/': '');
     return {
       visible: true,
       title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
@@ -2178,7 +2189,7 @@ Attendees.datagridUpdate = {
                 type: "default",
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm('are you sure to submit the popup Family attr Form?')) {
+                  if (Attendees.datagridUpdate.familyAttrPopupDxForm.validate().isValid && confirm('are you sure to submit the popup Family attr Form?')) {
                     const userData = Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData');
 
                     $.ajax({
@@ -2186,7 +2197,7 @@ Attendees.datagridUpdate = {
                       data: JSON.stringify(userData),
                       dataType: 'json',
                       contentType: "application/json; charset=utf-8",
-                      method: 'PUT',
+                      method: userData.id ? 'PUT' : 'POST',
                       success: (savedFamily) => {
                         Attendees.datagridUpdate.familyAttrPopup.hide();
                         DevExpress.ui.notify(
@@ -2202,7 +2213,11 @@ Attendees.datagridUpdate = {
                         const clickedButton = $('button.family-button[value="' + savedFamily.id + '"]');
                         if (clickedButton.length) {
                           clickedButton.text(savedFamily.display_name)
+                        } else {
+                          const $lastFamilyButton = $('button.family-button').slice(-1)[0];
+                          Attendees.datagridUpdate.familyButtonFactory(savedFamily.id, savedFamily.display_name).insertAfter($lastFamilyButton);
                         }
+                        Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
                       },
                       error: (response) => {
                         console.log('2062 Failed to save data for Family attr Form in Popup, error: ', response);
