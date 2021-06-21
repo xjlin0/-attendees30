@@ -76,7 +76,10 @@ class PlaceSerializer(serializers.ModelSerializer):
         Update and return an existing `Place` instance, given the validated data.
 
         """
-        # print("hi 40 in PlaceSerializer")
+        print("hi 79 in PlaceSerializer here is instance:")
+        print(instance)
+        print("hi 81 in PlaceSerializer here is validated_data:")
+        print(validated_data)
         # instance.title = validated_data.get('title', instance.title)
         # instance.code = validated_data.get('code', instance.code)
         # instance.linenos = validated_data.get('linenos', instance.linenos)

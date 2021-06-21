@@ -23,7 +23,7 @@ router.register(
     basename='place',
 )
 router.register(
-    'api/datagrid_data_place/(?P<place_id>.+)',
+    'api/datagrid_data_place',
     api_datagrid_data_place_viewset,
     basename='place',
 )

@@ -171,7 +171,7 @@ Attendees.datagridUpdate = {
       }).appendTo($('span.dx-form-group-caption')[1]);  // basic info block is at index 1
   },
 
-  getAttendeeFormConfigs: () => {
+  getAttendeeFormConfigs: () => {  // this is the place to control blocks of AttendeeForm
     const originalItems = [
       {
         colSpan: 4,
@@ -257,13 +257,13 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Addresses",
+        caption: 'Addresses',
         cssClass: 'h6',
         itemType: "group",
         items: [
           {
             colSpan: 24,
-            name: "places",
+            name: 'places',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -1227,12 +1227,12 @@ Attendees.datagridUpdate = {
 
   initPlacePopupDxForm: (event) => {
     const placeButton = event.target;
-    Attendees.datagridUpdate.placePopup = $('div.popup-place-update').dxPopup(Attendees.datagridUpdate.locatePopupDxFormConfig(placeButton)).dxPopup('instance');
+    Attendees.datagridUpdate.placePopup = $('div.popup-place-update').dxPopup(Attendees.datagridUpdate.placePopupDxFormConfig(placeButton)).dxPopup('instance');
     Attendees.datagridUpdate.fetchLocateFormData(placeButton);
   },
 
-  locatePopupDxFormConfig: (placeButton) => {
-    const ajaxUrl = $('form#place-update-popup-form').attr('action') + placeButton.value + '/';
+  placePopupDxFormConfig: (placeButton) => {
+    const ajaxUrl = $('form#place-update-popup-form').attr('action') + (placeButton.value ? placeButton.value + '/' : '');
     return {
       visible: true,
       title: (placeButton.value ? 'Viewing ' : 'Creating ') + placeButton.dataset.level,
@@ -1512,14 +1512,13 @@ Attendees.datagridUpdate = {
                         },
                       }
                     }
-                    userData._method = userData.id ? 'PUT' : 'POST';
 
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
                       dataType: 'json',
-                      contentType: "application/json; charset=utf-8",
-                      method: 'POST',
+                      contentType: 'application/json; charset=utf-8',
+                      method: userData.id ? 'PUT' : 'POST',
                       success: (savedPlace) => {
                         const clickedButton = $('button.attendee-place-button[value="' + savedPlace.id + '"]');
                         if (clickedButton.length) {
@@ -1665,20 +1664,20 @@ Attendees.datagridUpdate = {
     };
   },
 
-  fetchLocateFormData: (locateButton) => {
-    if (locateButton.value) {
+  fetchLocateFormData: (placeButton) => {
+    if (placeButton.value) {
       const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
-      const fetchedPlace = allPlaces.find(x => x.id === locateButton.value);
+      const fetchedPlace = allPlaces.find(x => x.id === placeButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedPlace) {
         Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
         Attendees.datagridUpdate.placePopupDxForm.option('formData', fetchedPlace);
         Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
       } else {
         $.ajax({
-          url: $('form#place-update-popup-form').attr('action') + locateButton.value + '/',
+          url: $('form#place-update-popup-form').attr('action') + placeButton.value + '/',
           success: (response) => {
-            Attendees.datagridUpdate.placePopupDxFormData = response.data[0];
-            Attendees.datagridUpdate.placePopupDxForm.option('formData', response.data[0]);
+            Attendees.datagridUpdate.placePopupDxFormData = response;
+            Attendees.datagridUpdate.placePopupDxForm.option('formData', response);
             Attendees.datagridUpdate.placePopupDxForm.option('onFieldDataChanged', (e) => {
               e.component.validate()
             });
@@ -1714,7 +1713,7 @@ Attendees.datagridUpdate = {
 
       $.ajax({
         url: $('div.datagrid-attendee-update').data('addresses-endpoint'),
-        dataType: "json",
+        dataType: 'json',
         data: args,
         success: (result) => {
           deferred.resolve(result.data.concat([Attendees.datagridUpdate.placePopupDxFormData.place]), {

@@ -18,13 +18,21 @@ class ApiDatagridDataPlaceViewSet(LoginRequiredMixin, ModelViewSet):  # from Gen
     serializer_class = PlaceSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        place_id = self.request.query_params.get('place_id')
+        print("hi 21 here is args:")
+        print(args)
+        print("hi 23 here is kwargs:")
+        print(kwargs)
+        print("hi 25 here is request:")
+        print(request)
+        place_id = self.kwargs.get('pk')
         place = Place.objects.filter(pk=place_id, organization=request.user.organization).first()
         serializer = PlaceSerializer(place)
         return Response(serializer.data)
 
     def get_queryset(self):  # Todo: check if current user are allowed to query this attendee's contact
-        querying_place_id = self.kwargs.get('place_id')
+        print("hi 33 here is self.kwargs:")
+        print(self.kwargs)
+        querying_place_id = self.kwargs.get('pk')
         return Place.objects.filter(pk=querying_place_id, organization=self.request.user.organization)
 
     # def perform_create(self, serializer):  #forget SpyGuard ??
