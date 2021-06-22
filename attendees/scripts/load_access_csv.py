@@ -12,6 +12,7 @@ from address.models import Locality, State, Address
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
      Relationship, Registration, Attending, AttendingMeet
+from attendees.users.admin import User
 from attendees.whereabouts.models import Place, Division
 
 
@@ -47,9 +48,11 @@ def import_household_people_address(
     :param data_general_character_slug: key of data_general_character_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
+    if User.objects.count() < 1:
+        raise Exception("\n\nSorry, no user exits, did superuser created?")
     california = State.objects.filter(code='CA').first()
     if not california:
-        raise Exception("Sorry, California not imported, did db_seed.json loaded?")
+        raise Exception("\n\nSorry, California not imported, did db_seed.json loaded?")
 
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
@@ -141,7 +144,7 @@ def import_addresses(addresses, california, division1_slug):
                         'state_code': california.code,
                         'country': 'USA',
                         'country_code': 'US',
-                        'raw': f"{street}, {city}, {state} {zip_code}",
+                        'raw': f"{' '.join(street_strs)}, {city}, {state} {zip_code}",  # address can't have extra
                     },
                     'organization': organization,
                     'address_extra': Utility.presence(address_extra),

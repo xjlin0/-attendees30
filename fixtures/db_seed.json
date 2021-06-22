@@ -691,7 +691,7 @@
       "street_number": "4",
       "route": "cool lane",
       "locality": 1,
-      "raw": "4 cool lane #A123, Hayward, CA 94541",
+      "raw": "4 cool lane, Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null
@@ -704,7 +704,7 @@
       "street_number": "5",
       "route": "excellent court",
       "locality": 1,
-      "raw": "5 excellent ct. Apt 456, Hayward, CA 94541",
+      "raw": "5 excellent ct., Hayward, CA 94541",
       "formatted": "",
       "latitude": null,
       "longitude": null

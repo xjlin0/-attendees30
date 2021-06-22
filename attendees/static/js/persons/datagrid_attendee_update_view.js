@@ -282,7 +282,7 @@ Attendees.datagridUpdate = {
 
               const $personalNewButton = $("<button>", {
                 ...newButtonAttrs,
-                'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
+                'data-level': 'attendee address (' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original + ')',
                 'data-content-type': Attendees.datagridUpdate.placeDefaults.content_type,
                 'data-object-id': Attendees.datagridUpdate.attendeeId,
               });
@@ -293,7 +293,7 @@ Attendees.datagridUpdate = {
               personalPlaces.forEach(place => {
                 const $button = $('<button>', {
                   type: 'button',
-                  'data-level': 'attendee address of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
+                  'data-level': 'attendee address (' + place.street + ')',
                   class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                   value: place.id,
                   text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
@@ -306,7 +306,7 @@ Attendees.datagridUpdate = {
                 const family = familyattendee.family;
                 const $familyNewButton = $("<button>", {
                   ...newButtonAttrs,
-                  'data-level': 'family address of ' + family.display_name,
+                  'data-level': 'family address (' + family.display_name + ')',
                   'data-content-type': familyContentTypeId,
                   'data-object-id': family.id,
                 });
@@ -319,7 +319,7 @@ Attendees.datagridUpdate = {
                 familyattendee.family.places.forEach(place => {
                   const $button = $('<button>', {
                     type: 'button',
-                    'data-level': 'family address of ' + family.display_name,
+                    'data-level': family.display_name + ' family address (' + place.street + ')',
                     class: "btn-outline-success place-button btn button btn-sm attendee-place-button",
                     value: place.id,
                     text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
@@ -1341,7 +1341,7 @@ Attendees.datagridUpdate = {
               dataField: "address.id",
               name: "existingAddressSelector",
               label: {
-                text: 'Address',
+                text: 'Address without extra',
               },
               editorType: "dxLookup",
               editorOptions: {
@@ -1364,6 +1364,7 @@ Attendees.datagridUpdate = {
                 onValueChanged: (e) => {
                   if (e.previousValue && e.previousValue !== e.value) {
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
+                    Attendees.datagridUpdate.placePopupDxForm.updateData('address_extra', null);
 //                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
                     Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
 //                    console.log("hi 1302 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
@@ -1489,18 +1490,20 @@ Attendees.datagridUpdate = {
                 onClick: (clickEvent) => {
                   if (confirm('are you sure to submit the popup Place Form?')) {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
-                    if (!Attendees.datagridUpdate.addressId) {  // no address id means user creating new address
-                      const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
-                      const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
-                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
-                      const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
-                      const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
-                      const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
+                    const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
+                    const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
+                    const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
+                    const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
+                    const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
+                    const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
+                    const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
 
+                    if (!Attendees.datagridUpdate.addressId) {  // no address id means user creating new address
                       userData.address = {
                         raw: 'new',
                         new_address: {  // special object for creating new django-address instance
-                          raw: newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.text + ' ' + newZIP,
+                          raw: newAddressText,
+                          formatted: newAddressText,
                           street_number: newStreetNumber,
                           route: newRoute,
                           locality: newCity,
@@ -1511,6 +1514,9 @@ Attendees.datagridUpdate = {
                           country_code: newStateAttrs.selectedItem.country_code,
                         },
                       }
+                    } else {
+                      userData.address.formatted = newAddressText;
+                      userData.address.raw = newAddressText;
                     }
 
                     $.ajax({
@@ -1520,10 +1526,6 @@ Attendees.datagridUpdate = {
                       contentType: 'application/json; charset=utf-8',
                       method: userData.id ? 'PUT' : 'POST',
                       success: (savedPlace) => {
-                        const clickedButton = $('button.attendee-place-button[value="' + savedPlace.id + '"]');
-                        if (clickedButton.length) {
-                          clickedButton.text(savedPlace.display_name + ': ' + savedPlace.address.raw)
-                        }
                         Attendees.datagridUpdate.placePopup.hide();
                         DevExpress.ui.notify(
                           {
@@ -1534,10 +1536,16 @@ Attendees.datagridUpdate = {
                               at: 'center',
                               of: window,
                             }
-                          }, "success", 2500);
+                          }, 'success', 2500);
+                        const clickedButtons = $('button.attendee-place-button[value="' + savedPlace.id + '"]');
+                        if (clickedButtons.length) {
+                          const clickedButtonLevelPrefix = clickedButtons[0].dataset.level.split(' (')[0];
+                          clickedButtons[0].dataset.level = clickedButtonLevelPrefix + ' (' + savedPlace.address.raw + ')';
+                          clickedButtons[0].textContent = savedPlace.display_name + ': ' + savedPlace.address.raw;
+                        }
                       },
                       error: (response) => {
-                        console.log('1472 Failed to save data for place Form in Popup, error: ', response);
+                        console.log('Failed to save data for place Form in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
@@ -1548,7 +1556,7 @@ Attendees.datagridUpdate = {
                               at: 'center',
                               of: window,
                             }
-                          }, "error", 5000);
+                          }, 'error', 5000);
                       },
                     });
                   }
