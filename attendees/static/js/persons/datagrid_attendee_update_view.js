@@ -350,7 +350,7 @@ Attendees.datagridUpdate = {
               text: 'families',
             },
             template: (data, itemElement) => {
-              $('<button>', {
+              Attendees.datagridUpdate.familyButtonFactory({
                 text: 'New family for attendee+',
                 disabled: !Attendees.utilities.editingEnabled,
                 title: '+ Add the attendee to a new family',
@@ -360,7 +360,7 @@ Attendees.datagridUpdate = {
               if (data.editorOptions && data.editorOptions.value) {
                 data.editorOptions.value.forEach(familyAttendee => {
                   if (familyAttendee && typeof familyAttendee === 'object') {
-                    Attendees.datagridUpdate.familyButtonFactory(familyAttendee.family.id, familyAttendee.family.display_name).appendTo(itemElement);
+                    Attendees.datagridUpdate.familyButtonFactory({value: familyAttendee.family.id, text: familyAttendee.family.display_name}).appendTo(itemElement);
                   }
                 });
               }
@@ -603,12 +603,11 @@ Attendees.datagridUpdate = {
     };
   },
 
-  familyButtonFactory: (value, text) => {
+  familyButtonFactory: (attrs) => {
     return $('<button>', {
-      text: text,
       type: 'button',
       class: 'btn-outline-success family-button btn button btn-sm ',
-      value: value,
+      ...attrs
     });
   },
 
@@ -2221,12 +2220,11 @@ Attendees.datagridUpdate = {
                               of: window,
                             }
                           }, 'success', 2500);
-                        const clickedButton = $('button.family-button[value="' + savedFamily.id + '"]');
-                        if (clickedButton.length) {
-                          clickedButton.text(savedFamily.display_name)
+
+                        if (familyAttrButton.value) {
+                          familyAttrButton.textContent(savedFamily.display_name)
                         } else {
-                          const $lastFamilyButton = $('button.family-button').slice(-1)[0];
-                          Attendees.datagridUpdate.familyButtonFactory(savedFamily.id, savedFamily.display_name).insertAfter($lastFamilyButton);
+                          Attendees.datagridUpdate.familyButtonFactory({value: savedFamily.id, text: savedFamily.display_name}).insertAfter(familyAttrButton);
                         }
                         Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
                       },
