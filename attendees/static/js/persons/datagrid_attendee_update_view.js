@@ -293,10 +293,10 @@ Attendees.datagridUpdate = {
               personalPlaces.forEach(place => {
                 const $button = $('<button>', {
                   type: 'button',
-                  'data-desc': 'attendee address (' + place.formatted + ')',
+                  'data-desc': 'attendee address (' + place.street + ')',
                   class: 'btn-outline-success place-button btn button btn-sm',
                   value: place.id,
-                  text: (place.display_name ? place.display_name + ': ' : '') + (place.formatted || '').replace(', USA', ''),
+                  text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
                   'data-object-id': Attendees.datagridUpdate.attendeeId,
                 });
                 $personalLi = $personalLi.append($button);
@@ -320,10 +320,10 @@ Attendees.datagridUpdate = {
                 familyattendee.family.places.forEach(place => {
                   const $button = $('<button>', {
                     type: 'button',
-                    'data-desc': family.display_name + ' family address (' + place.formatted + ')',
+                    'data-desc': family.display_name + ' family address (' + place.street + ')',
                     class: 'btn-outline-success place-button btn button btn-sm',
                     value: place.id,
-                    text: (place.display_name ? place.display_name + ': ' : '') + (place.formatted || '').replace(', USA', ''),
+                    text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
                     'data-object-id': family.id,
                   });
                   $familyLi = $familyLi.append($button);
@@ -1346,7 +1346,7 @@ Attendees.datagridUpdate = {
               dataField: "address.id",
               name: "existingAddressSelector",
               label: {
-                text: 'Address without extra',
+                text: 'Address',
               },
               editorType: "dxLookup",
               editorOptions: {
