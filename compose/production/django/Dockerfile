@@ -2,16 +2,17 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
   # dependencies for building Python packages
-  && apt-get install -y build-essential \
+  && apt-get install -y apt-utils build-essential \
   # psycopg2 dependencies
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
   # intall git for pip install by github
-  && apt-get install -y git less \
+  && apt-get install -y git less gdal-bin \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*

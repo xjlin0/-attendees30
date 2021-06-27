@@ -13,7 +13,7 @@ class PlaceAdmin(admin.ModelAdmin):
     search_fields = ('id', 'display_name', 'infos')
     list_display_links = ('id',)
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'display_name', 'subject', 'street')
+    list_display = ('id', 'display_name', 'subject', 'address')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

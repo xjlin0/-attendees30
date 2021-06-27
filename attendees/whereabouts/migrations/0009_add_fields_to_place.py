@@ -31,17 +31,17 @@ class Migration(migrations.Migration):
             name='object_id',
             field=models.CharField(default='0', max_length=36),
         ),
-        migrations.AddField(
-            model_name='place',
-            name='address_type',
-            field=models.CharField(blank=True, default='street', help_text='mailing, remote or street address',
-                                   max_length=20, null=True),
-        ),
-        migrations.AddField(
-            model_name='place',
-            name='address_extra',
-            field=models.CharField(blank=True, help_text='i.e. Apartment number', max_length=50, null=True),
-        ),
+        # migrations.AddField(
+        #     model_name='place',
+        #     name='address_type',
+        #     field=models.CharField(blank=True, default='street', help_text='mailing, remote or street address',
+        #                            max_length=20, null=True),
+        # ),
+        # migrations.AddField(
+        #     model_name='place',
+        #     name='address_extra',
+        #     field=models.CharField(blank=True, help_text='i.e. Apartment number', max_length=50, null=True),
+        # ),
         migrations.AddField(
             model_name='place',
             name='start',
@@ -72,6 +72,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='place',
-            constraint=models.UniqueConstraint(condition=models.Q(is_removed=False), fields=('organization', 'content_type', 'object_id', 'address', 'address_extra'), name='address_object'),
+            constraint=models.UniqueConstraint(condition=models.Q(is_removed=False), fields=('organization', 'content_type', 'object_id', 'address'), name='address_object'),
         ),
     ]
