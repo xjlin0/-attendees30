@@ -37,7 +37,7 @@ class Utility:
     def organization_infos():
         return {
                     "flags": {
-                      "attendance_to_past_keywords":  {}
+                      "attendance_character_to_past_categories":  {}
                     },
                     "contacts": {},
                     "counselor": [],

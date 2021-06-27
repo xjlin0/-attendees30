@@ -33,8 +33,8 @@ Attendees.datagridUpdate = {
   familyAttrDefaults: {
     display_order: 0,
     attendees: [document.querySelector('input[name="attendee-id"]').value],
-    division: 0,
-    display_name: '',
+    division: 0,       // will be assigned later
+    display_name: '',  // will be assigned later
   },
 
   init: () => {
@@ -293,10 +293,10 @@ Attendees.datagridUpdate = {
               personalPlaces.forEach(place => {
                 const $button = $('<button>', {
                   type: 'button',
-                  'data-desc': 'attendee address (' + place.street + ')',
+                  'data-desc': 'attendee address (' + place.formatted + ')',
                   class: 'btn-outline-success place-button btn button btn-sm',
                   value: place.id,
-                  text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
+                  text: (place.display_name ? place.display_name + ': ' : '') + (place.formatted || '').replace(', USA', ''),
                   'data-object-id': Attendees.datagridUpdate.attendeeId,
                 });
                 $personalLi = $personalLi.append($button);
@@ -320,10 +320,10 @@ Attendees.datagridUpdate = {
                 familyattendee.family.places.forEach(place => {
                   const $button = $('<button>', {
                     type: 'button',
-                    'data-desc': family.display_name + ' family address (' + place.street + ')',
+                    'data-desc': family.display_name + ' family address (' + place.formatted + ')',
                     class: 'btn-outline-success place-button btn button btn-sm',
                     value: place.id,
-                    text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
+                    text: (place.display_name ? place.display_name + ': ' : '') + (place.formatted || '').replace(', USA', ''),
                     'data-object-id': family.id,
                   });
                   $familyLi = $familyLi.append($button);
@@ -1495,14 +1495,15 @@ Attendees.datagridUpdate = {
                 onClick: (clickEvent) => {
                   if (confirm('are you sure to submit the popup Place Form?')) {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
+                    const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
+                    const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
                     const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
                     const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
-                    const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
                     const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
                     const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
                     const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
                     const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
-
+console.log("hi 1505 here is newAddressText: ", newAddressText);
                     if (!Attendees.datagridUpdate.addressId) {  // no address id means user creating new address
                       userData.address = {
                         raw: 'new',
@@ -1520,10 +1521,10 @@ Attendees.datagridUpdate = {
                         },
                       }
                     } else {
-                      userData.address.formatted = newAddressText;
-                      userData.address.raw = newAddressText;
+                      userData.address.formatted = newAddressText;    // address level should not know address_extra
+                      userData.address.raw = newAddressText;          // address level should not know address_extra
                     }
-
+console.log("hi 1526 here is userData: ", userData);
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
@@ -1544,8 +1545,8 @@ Attendees.datagridUpdate = {
                           }, 'success', 2500);
 
                         const clickedButtonDescPrefix = placeButton.dataset.desc.split(' (')[0];
-                        placeButton.dataset.desc = clickedButtonDescPrefix + ' (' + savedPlace.address.raw + ')';
-                        placeButton.textContent = savedPlace.display_name + ': ' + savedPlace.address.raw;
+                        placeButton.dataset.desc = clickedButtonDescPrefix + ' (' + savedPlace.address.formatted + ')';
+                        placeButton.textContent = savedPlace.display_name + ': ' + savedPlace.address.formatted;
                       },
                       error: (response) => {
                         console.log('Failed to save data for place Form in Popup, error: ', response);
@@ -1892,7 +1893,7 @@ Attendees.datagridUpdate = {
             at: 'center',
             of: window,
           }
-        }, "info", 3000);
+        }, 'info', 3000);
     },
     allowColumnReordering: true,
     columnAutoWidth: true,
@@ -1914,8 +1915,8 @@ Attendees.datagridUpdate = {
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
     },
-    onEditingStart: (info) => {
-      if (info.data.attendee && info.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
+    onEditingStart: (info) => {  // forbid editing names or names on top of page will be inconsistent.
+      if (info.data.attendee && info.data.attendee.id === Attendees.datagridUpdate.attendeeId && ['attendee.first_name', 'attendee.last_name', 'attendee.first_name2', 'attendee.last_name2'].includes(info.column.dataField)) {
         info.cancel = true;
       }
     },
@@ -2046,7 +2047,7 @@ Attendees.datagridUpdate = {
       {
         dataField: "attendee.division",
         validationRules: [{type: "required"}],
-        caption: 'Division',
+        caption: 'Attendee Division',
         lookup: {
           valueExpr: "id",
           displayExpr: "display_name",
@@ -2135,9 +2136,6 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               dataField: "display_order",
-              label: {
-                text: 'Importance',
-              },
               helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
@@ -2162,7 +2160,7 @@ Attendees.datagridUpdate = {
               editorType: "dxSelectBox",
               isRequired: true,
               label: {
-                text: 'Major Division',
+                text: 'Family major Division',
               },
               editorOptions: {
                 valueExpr: "id",
@@ -2186,17 +2184,17 @@ Attendees.datagridUpdate = {
 
             {
               colSpan: 1,
-              itemType: "button",
+              itemType: 'button',
               horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Family",
-                icon: "save",
-                hint: "save Family attr data in the popup",
-                type: "default",
+                text: 'Save Family',
+                icon: 'save',
+                hint: 'save Family attr data in the popup',
+                type: 'default',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
                   if (Attendees.datagridUpdate.familyAttrPopupDxForm.validate().isValid && confirm('are you sure to submit the popup Family attr Form?')) {
@@ -2206,7 +2204,7 @@ Attendees.datagridUpdate = {
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
                       dataType: 'json',
-                      contentType: "application/json; charset=utf-8",
+                      contentType: 'application/json; charset=utf-8',
                       method: userData.id ? 'PUT' : 'POST',
                       success: (savedFamily) => {
                         Attendees.datagridUpdate.familyAttrPopup.hide();

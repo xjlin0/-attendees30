@@ -1293,7 +1293,7 @@
       "infos": {
         "flags": {
           "opencc_convert": true,
-          "attendance_to_past_keywords": {}
+          "attendance_character_to_past_categories": {}
         },
         "contacts": {},
         "hostname": "organization.none",
@@ -1314,7 +1314,7 @@
       "infos": {
         "flags": {
           "opencc_convert": true,
-          "attendance_to_past_keywords": {
+          "attendance_character_to_past_categories": {
             "baptisee": 5
           }
         },
@@ -1341,7 +1341,7 @@
       "infos": {
         "flags": {
           "opencc_convert": true,
-          "attendance_to_past_keywords": {}
+          "attendance_character_to_past_categories": {}
         },
         "contacts": {},
         "hostname": "heaven.heaven",
