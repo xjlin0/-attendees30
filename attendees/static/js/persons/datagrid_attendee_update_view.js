@@ -291,12 +291,13 @@ Attendees.datagridUpdate = {
               let $personalLi = $('<li>', {class: 'list-group-item', text: 'Personal'}).append($personalNewButton);
 
               personalPlaces.forEach(place => {
+                const addressName = (place.street || '').replace(', USA', '');
                 const $button = $('<button>', {
                   type: 'button',
                   'data-desc': 'attendee address (' + place.street + ')',
                   class: 'btn-outline-success place-button btn button btn-sm',
                   value: place.id,
-                  text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
+                  text: (place.display_name && !addressName.includes(place.display_name) ? place.display_name + ': ' : '') + addressName,
                   'data-object-id': Attendees.datagridUpdate.attendeeId,
                 });
                 $personalLi = $personalLi.append($button);
@@ -318,12 +319,13 @@ Attendees.datagridUpdate = {
                 }).append($familyNewButton);
 
                 familyattendee.family.places.forEach(place => {
+                  const addressName = (place.street || '').replace(', USA', '');
                   const $button = $('<button>', {
                     type: 'button',
                     'data-desc': family.display_name + ' family address (' + place.street + ')',
                     class: 'btn-outline-success place-button btn button btn-sm',
                     value: place.id,
-                    text: (place.display_name ? place.display_name + ': ' : '') + (place.street || '').replace(', USA', ''),
+                    text: (place.display_name && !addressName.includes(place.display_name) ? place.display_name + ': ' : '') + addressName,
                     'data-object-id': family.id,
                   });
                   $familyLi = $familyLi.append($button);

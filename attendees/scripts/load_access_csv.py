@@ -138,16 +138,17 @@ def import_addresses(addresses, california, division1_slug):
                     'address': {
                         'street_number': street_strs[0],
                         'route': ' '.join(street_strs[1:]),
+                        'type': 'street',
+                        'extra': Utility.presence(address_extra),
                         'locality': Utility.presence(address_dict.get('City')),
                         'postal_code': Utility.presence(address_dict.get('Zip')) or '',
                         'state': california.name,
                         'state_code': california.code,
                         'country': 'USA',
                         'country_code': 'US',
-                        'raw': f"{' '.join(street_strs)}, {city}, {state} {zip_code}",  # address can't have extra
+                        'raw': f"{street}, {city}, {state} {zip_code}",
                     },
                     'organization': organization,
-                    'address_extra': Utility.presence(address_extra),
                     'infos': {
                         **Utility.default_infos(),
                         'access_address_id': address_id,
@@ -159,7 +160,6 @@ def import_addresses(addresses, california, division1_slug):
                 if existing_places:
                     for place in existing_places:
                         place.infos = contact_values.get('infos')
-                        place.address_extra = contact_values.get('address_extra')
                         address = place.address
                         address.street_number = contact_values.get('address', {}).get('street_number')
                         address.route = contact_values.get('address', {}).get('route')
@@ -254,16 +254,23 @@ def import_households(households, division1_slug, division2_slug):
 
                         if saved_place.subject == family or saved_place.content_type != family_content_type:
                             potential_new_place_id = saved_place.id
+                        address = saved_place.address
+
+                        if address and not address.name:
+                            full_address_name = display_name + ' family: ' + address.raw
+                            address.name = display_name
+                            address.raw = full_address_name
+                            address.formatted = full_address_name
+                            address.save()
 
                         Place.objects.update_or_create(
                             id=potential_new_place_id,  # infos__access_address_id=address_id,  # multiple households could share the same address
                             # address=address,
                             defaults={
-                                'address': saved_place.address,
+                                'address': address,
                                 'display_name':  display_name,
                                 'content_type': family_content_type,
                                 'object_id': family.id,
-                                'address_extra': saved_place.address_extra,
                                 'infos': {
                                     'access_address_id': address_id,  # str
                                     'contacts': {
