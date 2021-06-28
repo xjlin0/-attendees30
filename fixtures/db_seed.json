@@ -627,8 +627,8 @@
       "route": "Meekland Avenue",
       "locality": 1,
       "type": "street",
-      "raw": "22416 Meekland Ave. Hayward, CA 94541",
-      "formatted": "",
+      "raw": "2",
+      "formatted": "CFCCH 22416 Meekland Ave. Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -641,8 +641,8 @@
       "route": "Burbank Street",
       "locality": 1,
       "type": "street",
-      "raw": "222 Burbank St. Hayward, CA 94541",
-      "formatted": "",
+      "raw": "Burbank Primary School",
+      "formatted": "Burbank Primary School 222 Burbank St. Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -655,8 +655,8 @@
       "route": "pretty street",
       "locality": 1,
       "type": "street",
-      "raw": "1 pretty st. Hayward, CA 94541",
-      "formatted": "",
+      "raw": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
+      "formatted": "Hagar's place: 1 pretty st. Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -669,8 +669,8 @@
       "route": "good street",
       "locality": 1,
       "type": "street",
-      "raw": "2 good street, Hayward, CA 94541",
-      "formatted": "",
+      "raw": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
+      "formatted": "Ishmael's place: 2 good street, Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -683,8 +683,8 @@
       "route": "great road",
       "locality": 1,
       "type": "street",
-      "raw": "3 great rd, Hayward, CA 94541",
-      "formatted": "",
+      "raw": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
+      "formatted": "admin's place: 3 great rd, Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -698,8 +698,8 @@
       "route": "cool lane",
       "locality": 1,
       "type": "street",
-      "raw": "4 cool lane #A123, Hayward, CA 94541",
-      "formatted": "",
+      "raw": "aa24758f-cc70-4353-b1d7-9c616b3db425",
+      "formatted": "Abraham's place: 4 cool lane #A123, Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -712,8 +712,8 @@
       "route": "excellent court",
       "locality": 1,
       "type": "street",
-      "raw": "5 excellent ct., Hayward, CA 94541",
-      "formatted": "",
+      "raw": "null",
+      "formatted": "null: 5 excellent ct., Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -726,8 +726,8 @@
       "route": "beautiful drive",
       "locality": 1,
       "type": "street",
-      "raw": "6 beautiful dr, Hayward, CA 94541",
-      "formatted": "",
+      "raw": "null",
+      "formatted": "null: 6 beautiful dr, Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -740,8 +740,8 @@
       "route": "throne way",
       "locality": 1,
       "type": "street",
-      "raw": "7 throne way, Hayward, CA 94541",
-      "formatted": "",
+      "raw": "4",
+      "formatted": "throne worship: 7 throne way, Hayward, CA 94541",
       "latitude": null,
       "longitude": null
     }
@@ -754,8 +754,8 @@
       "route": "Ketagalan Boulevard",
       "locality": null,
       "type": "street",
-      "raw": "8 Ketagalan Boulevard, Pescadores Islands, TW 88049",
-      "formatted": "",
+      "raw": "3",
+      "formatted": "junior_special_activity: 8 Ketagalan Boulevard, Pescadores Islands, TW 88049",
       "latitude": null,
       "longitude": null
     }
@@ -768,8 +768,8 @@
       "route": "East Cotati Avenue",
       "locality": 2,
       "type": "street",
-      "raw": "1801 E Cotati Ave. Rohnert Park, CA 94928",
-      "formatted": "",
+      "raw": "6",
+      "formatted": "summer_retreat: 1801 E Cotati Ave. Rohnert Park, CA 94928",
       "latitude": null,
       "longitude": null
     }

@@ -259,7 +259,7 @@ def import_households(households, division1_slug, division2_slug):
                         if address and not address.name:
                             full_address_name = display_name + ' family: ' + address.raw
                             address.name = display_name
-                            address.raw = full_address_name
+                            address.raw = str(family.id)
                             address.formatted = full_address_name
                             address.save()
 

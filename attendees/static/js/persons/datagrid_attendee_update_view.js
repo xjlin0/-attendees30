@@ -1345,20 +1345,20 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 12,
-              dataField: "address.id",
-              name: "existingAddressSelector",
+              dataField: 'address.id',
+              name: 'existingAddressSelector',
               label: {
                 text: 'Address',
               },
-              editorType: "dxLookup",
+              editorType: 'dxLookup',
               editorOptions: {
                 elementAttr: {
                   class: 'address-lookup-search',  // calling closing by the parent
                 },
-                valueExpr: "id",
-                displayExpr: "raw",  // 'formatted' does not exist
-                placeholder: "Select a value...",
-                searchExpr: ['street_number', 'raw'],
+                valueExpr: 'id',
+                displayExpr: 'formatted',
+                placeholder: 'Select a value...',
+                searchExpr: ['street_number', 'formatted'],
 //                searchMode: 'startswith',
                 searchPlaceholder: 'Search addresses',
                 minSearchLength: 3,  // cause values disappeared in drop down
