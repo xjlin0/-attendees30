@@ -285,6 +285,7 @@ Attendees.datagridUpdate = {
                 'data-desc': 'attendee address (' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original + ')',
                 'data-content-type': parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
                 'data-object-id': Attendees.datagridUpdate.attendeeId,
+                'data-object-name': Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
               });
               const personalPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places || [];
               const familyattendees = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set || [];
@@ -299,6 +300,7 @@ Attendees.datagridUpdate = {
                   value: place.id,
                   text: (place.display_name && !addressName.includes(place.display_name) ? place.display_name + ': ' : '') + addressName,
                   'data-object-id': Attendees.datagridUpdate.attendeeId,
+                  'data-object-name': Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original,
                 });
                 $personalLi = $personalLi.append($button);
               });
@@ -311,11 +313,12 @@ Attendees.datagridUpdate = {
                   'data-desc': 'family address (' + family.display_name + ')',
                   'data-content-type': familyContentTypeId,
                   'data-object-id': family.id,
+                  'data-object-name': family.display_name,
                 });
 
                 let $familyLi = $('<li>', {
                   class: 'list-group-item',
-                  text: family.display_name
+                  text: family.display_name,
                 }).append($familyNewButton);
 
                 familyattendee.family.places.forEach(place => {
@@ -327,6 +330,7 @@ Attendees.datagridUpdate = {
                     value: place.id,
                     text: (place.display_name && !addressName.includes(place.display_name) ? place.display_name + ': ' : '') + addressName,
                     'data-object-id': family.id,
+                    'data-object-name': family.display_name,
                   });
                   $familyLi = $familyLi.append($button);
                 });
@@ -1498,20 +1502,22 @@ Attendees.datagridUpdate = {
                   if (confirm('are you sure to submit the popup Place Form?')) {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
-                    const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
-                    const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
-                    const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
-                    const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
-                    const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
-                    const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
-                    const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
-console.log("hi 1505 here is newAddressText: ", newAddressText);
+
                     if (!Attendees.datagridUpdate.addressId) {  // no address id means user creating new address
+                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
+                      const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
+                      const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
+                      const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
+                      const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
+                      const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
+                      const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
+
                       userData.address = {
                         raw: 'new',
                         new_address: {  // special object for creating new django-address instance
-                          raw: newAddressText,
-                          formatted: newAddressText,
+                          raw: userData.object_id,
+                          extra: newAddressExtra,
+                          formatted: placeButton.dataset.objectName + ': ' +newAddressText,
                           street_number: newStreetNumber,
                           route: newRoute,
                           locality: newCity,
@@ -1523,10 +1529,9 @@ console.log("hi 1505 here is newAddressText: ", newAddressText);
                         },
                       }
                     } else {
-                      userData.address.formatted = newAddressText;    // address level should not know address_extra
-                      userData.address.raw = newAddressText;          // address level should not know address_extra
+                      // userData.address.formatted = newAddressText;
                     }
-console.log("hi 1526 here is userData: ", userData);
+
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
