@@ -276,11 +276,11 @@ Attendees.datagridUpdate = {
                 text: "Add new address+",
                 disabled: !Attendees.utilities.editingEnabled,
                 title: '+ Add the attendee to a new address',
-                type: 'button',
+                // type: 'button',
                 class: 'place-button-new place-button btn-outline-primary btn button btn-sm ',
               };
 
-              const $personalNewButton = $("<button>", {
+              const $personalNewButton = Attendees.datagridUpdate.familyButtonFactory({
                 ...newButtonAttrs,
                 'data-desc': 'attendee address (' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original + ')',
                 'data-content-type': parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
@@ -293,8 +293,8 @@ Attendees.datagridUpdate = {
 
               personalPlaces.forEach(place => {
                 const addressName = (place.street || '').replace(', USA', '');
-                const $button = $('<button>', {
-                  type: 'button',
+                const $button = Attendees.datagridUpdate.familyButtonFactory({
+                  // type: 'button',
                   'data-desc': 'attendee address (' + place.street + ')',
                   class: 'btn-outline-success place-button btn button btn-sm',
                   value: place.id,
@@ -308,7 +308,7 @@ Attendees.datagridUpdate = {
 
               familyattendees.forEach(familyattendee => {
                 const family = familyattendee.family;
-                const $familyNewButton = $("<button>", {
+                const $familyNewButton = Attendees.datagridUpdate.familyButtonFactory({
                   ...newButtonAttrs,
                   'data-desc': 'family address (' + family.display_name + ')',
                   'data-content-type': familyContentTypeId,
@@ -323,8 +323,8 @@ Attendees.datagridUpdate = {
 
                 familyattendee.family.places.forEach(place => {
                   const addressName = (place.street || '').replace(', USA', '');
-                  const $button = $('<button>', {
-                    type: 'button',
+                  const $button = Attendees.datagridUpdate.familyButtonFactory({
+                    // type: 'button',
                     'data-desc': family.display_name + ' family address (' + place.street + ')',
                     class: 'btn-outline-success place-button btn button btn-sm',
                     value: place.id,
@@ -1513,9 +1513,8 @@ Attendees.datagridUpdate = {
                       const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
                       const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
                       const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
-console.log("hi 1514 before manipulation please check address.id in userData: ", userData);
+
                       if (!(userData.address && userData.address.id)) {
-console.log("hi 1516 in the if block");
                         userData.address = {
                           raw: 'new',     // for bypassing DRF validations from Django-Address model
                           new_address: {  // for creating new django-address instance bypassing DRF model validations
@@ -1533,11 +1532,10 @@ console.log("hi 1516 in the if block");
                           },
                         };
                       }else{
-console.log("hi 1534 in else block");
                         userData.address.formatted = placeButton.dataset.objectName + ': ' + newAddressText;
                       }
                     }
-console.log("hi 1538 after manipulation here is userData: ", userData);
+
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
@@ -1558,8 +1556,23 @@ console.log("hi 1538 after manipulation here is userData: ", userData);
                           }, 'success', 2500);
 
                         const clickedButtonDescPrefix = placeButton.dataset.desc.split(' (')[0];
-                        placeButton.dataset.desc = clickedButtonDescPrefix + ' (' + savedPlace.address.formatted + ')';
-                        placeButton.textContent = savedPlace.display_name + ': ' + savedPlace.address.formatted;
+                        const newDesc = clickedButtonDescPrefix + ' (' + savedPlace.address.formatted + ')';
+                        const newText = savedPlace.display_name + ': ' + savedPlace.address.formatted;
+                        if (placeButton.value) {
+                          placeButton.dataset.desc = newDesc;
+                          placeButton.textContent = newText;
+                        } else {
+                          Attendees.datagridUpdate.familyButtonFactory({
+                            class: placeButton.className.replace('place-button-new', '').replace('btn-outline-primary', 'btn-outline-success'),
+                            value: savedPlace.id,
+                            text: newText,
+                            title: newDesc,
+                            'data-desc': newDesc,
+                            'data-object-id': placeButton.dataset.objectId,
+                            'data-object-name': placeButton.dataset.objectName,
+                            'data-content-type': placeButton.dataset.contentType,
+                          }).insertAfter(placeButton);
+                        }
                       },
                       error: (response) => {
                         console.log('Failed to save data for place Form in Popup, error: ', response);
