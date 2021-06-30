@@ -1235,7 +1235,7 @@ Attendees.datagridUpdate = {
   initPlacePopupDxForm: (event) => {
     const placeButton = event.target;
     Attendees.datagridUpdate.placePopup = $('div.popup-place-update').dxPopup(Attendees.datagridUpdate.placePopupDxFormConfig(placeButton)).dxPopup('instance');
-    Attendees.datagridUpdate.fetchLocateFormData(placeButton);
+    Attendees.datagridUpdate.fetchPlaceFormData(placeButton);
   },
 
   placePopupDxFormConfig: (placeButton) => {
@@ -1375,7 +1375,7 @@ Attendees.datagridUpdate = {
                 onValueChanged: (e) => {
                   if (e.previousValue && e.previousValue !== e.value) {
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                    Attendees.datagridUpdate.placePopupDxForm.updateData('address_extra', null);
+                    // Attendees.datagridUpdate.placePopupDxForm.updateData('address_extra', null);
 //                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
                     Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
 //                    console.log("hi 1302 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
@@ -1418,7 +1418,7 @@ Attendees.datagridUpdate = {
                 },
                 {
                   colSpan: 4,
-                  dataField: "address_extra",
+                  dataField: "address.extra",
                   helpText: 'suite/floor number, etc',
                   label: {
                     text: 'Extra: unit/apt',
@@ -1503,35 +1503,39 @@ Attendees.datagridUpdate = {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
 
-                    if (!Attendees.datagridUpdate.addressId) {  // no address id means user creating new address
-                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value');
+                    if (addressMaybeEdited) {  // no address id means user creating new address
+                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.extra").option('value');
                       const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
                       const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
                       const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
                       const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
                       const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
                       const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
-
-                      userData.address = {
-                        raw: 'new',
-                        new_address: {  // special object for creating new django-address instance
-                          raw: userData.object_id,
-                          extra: newAddressExtra,
-                          formatted: placeButton.dataset.objectName + ': ' +newAddressText,
-                          street_number: newStreetNumber,
-                          route: newRoute,
-                          locality: newCity,
-                          post_code: newZIP,
-                          state: newStateAttrs.selectedItem.name,
-                          state_code: newStateAttrs.selectedItem.code,
-                          country: newStateAttrs.selectedItem.country_name,
-                          country_code: newStateAttrs.selectedItem.country_code,
-                        },
+console.log("hi 1514 before manipulation please check address.id in userData: ", userData);
+                      if (!Attendees.datagridUpdate.addressId) {
+console.log("hi 1516 in the if block");
+                        userData.address = {
+                          raw: 'new',     // for bypassing DRF model validations
+                          new_address: {  // for creating new django-address instance bypassing DRF model validations
+                            raw: userData.object_id,
+                            extra: newAddressExtra,
+                            formatted: placeButton.dataset.objectName + ': ' + newAddressText,
+                            street_number: newStreetNumber,
+                            route: newRoute,
+                            locality: newCity,
+                            post_code: newZIP,
+                            state: newStateAttrs.selectedItem.name,
+                            state_code: newStateAttrs.selectedItem.code,
+                            country: newStateAttrs.selectedItem.country_name,
+                            country_code: newStateAttrs.selectedItem.country_code,
+                          },
+                        };
+                      }else{
+console.log("hi 1534 in else block");
+                        userData.address.formatted = placeButton.dataset.objectName + ': ' + newAddressText;
                       }
-                    } else {
-                      // userData.address.formatted = newAddressText;
                     }
-
+console.log("hi 1538 after manipulation here is userData: ", userData);
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
@@ -1625,6 +1629,7 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
+                    Attendees.datagridUpdate.placePopupDxForm.option('formData').address.id = null;
                     Attendees.datagridUpdate.addressId = null;
                   }
                 },
@@ -1683,7 +1688,7 @@ Attendees.datagridUpdate = {
     };
   },
 
-  fetchLocateFormData: (placeButton) => {
+  fetchPlaceFormData: (placeButton) => {
     if (placeButton.value) {
       const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
       const fetchedPlace = allPlaces.find(x => x.id === placeButton.value);
