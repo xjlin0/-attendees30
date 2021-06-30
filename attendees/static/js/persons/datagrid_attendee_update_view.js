@@ -17,7 +17,7 @@ Attendees.datagridUpdate = {
     // start: new Date().toISOString(),
     // finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
   },
-  addressId: '', // for sending address data by AJAX
+  // addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
   placePopupDxForm: null,  // for getting formData
   placePopupDxFormData: {},  // for storing formData
@@ -1512,10 +1512,10 @@ Attendees.datagridUpdate = {
                       const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
                       const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
 console.log("hi 1514 before manipulation please check address.id in userData: ", userData);
-                      if (!Attendees.datagridUpdate.addressId) {
+                      if (!(userData.address && userData.address.id)) {
 console.log("hi 1516 in the if block");
                         userData.address = {
-                          raw: 'new',     // for bypassing DRF model validations
+                          raw: 'new',     // for bypassing DRF validations from Django-Address model
                           new_address: {  // for creating new django-address instance bypassing DRF model validations
                             raw: userData.object_id,
                             extra: newAddressExtra,
@@ -1630,7 +1630,7 @@ console.log("hi 1538 after manipulation here is userData: ", userData);
                     Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.placePopupDxForm.option('formData').address.id = null;
-                    Attendees.datagridUpdate.addressId = null;
+                    // Attendees.datagridUpdate.addressId = null;
                   }
                 },
               },
@@ -1695,7 +1695,7 @@ console.log("hi 1538 after manipulation here is userData: ", userData);
       if (!Attendees.utilities.editingEnabled && fetchedPlace) {
         Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
         Attendees.datagridUpdate.placePopupDxForm.option('formData', fetchedPlace);
-        Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
+        // Attendees.datagridUpdate.addressId = fetchedPlace.address && fetchedPlace.address.id;
       } else {
         $.ajax({
           url: $('form#place-update-popup-form').attr('action') + placeButton.value + '/',
@@ -1705,7 +1705,7 @@ console.log("hi 1538 after manipulation here is userData: ", userData);
             Attendees.datagridUpdate.placePopupDxForm.option('onFieldDataChanged', (e) => {
               e.component.validate()
             });
-            Attendees.datagridUpdate.addressId = Attendees.datagridUpdate.placePopupDxFormData.address && Attendees.datagridUpdate.placePopupDxFormData.address.id;
+            // Attendees.datagridUpdate.addressId = Attendees.datagridUpdate.placePopupDxFormData.address && Attendees.datagridUpdate.placePopupDxFormData.address.id;
           },
           error: (response) => console.log('Failed to fetch data for Locate Form in Popup, error: ', response),
         });
