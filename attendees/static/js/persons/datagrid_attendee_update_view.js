@@ -1373,11 +1373,13 @@ Attendees.datagridUpdate = {
                 },
                 dataSource: Attendees.datagridUpdate.addressSource,
                 onValueChanged: (e) => {
-                  if (e.previousValue && e.previousValue !== e.value) {
+                  if (e.previousValue !== e.value) {
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
                     // Attendees.datagridUpdate.placePopupDxForm.updateData('address_extra', null);
 //                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
-                    Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+                    if (selectedAddress){
+                      Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+                    }
 //                    console.log("hi 1302 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
 //                    console.log("hi 1303 here is selectedAddress: ", selectedAddress);
                     // Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
