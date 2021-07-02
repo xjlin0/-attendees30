@@ -12,6 +12,7 @@ from address.models import Locality, State, Address
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
      Relationship, Registration, Attending, AttendingMeet
+from attendees.users.admin import User
 from attendees.whereabouts.models import Place, Division
 
 
@@ -47,9 +48,11 @@ def import_household_people_address(
     :param data_general_character_slug: key of data_general_character_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
+    if User.objects.count() < 1:
+        raise Exception("\n\nSorry, no user exits, did superuser created?")
     california = State.objects.filter(code='CA').first()
     if not california:
-        raise Exception("Sorry, California not imported, did db_seed.json loaded?")
+        raise Exception("\n\nSorry, California not imported, did db_seed.json loaded?")
 
     print("\n\n\nStarting import_household_people_address ...\n\n")
     households = csv.DictReader(household_csv)
@@ -135,6 +138,8 @@ def import_addresses(addresses, california, division1_slug):
                     'address': {
                         'street_number': street_strs[0],
                         'route': ' '.join(street_strs[1:]),
+                        'type': 'street',
+                        'extra': Utility.presence(address_extra),
                         'locality': Utility.presence(address_dict.get('City')),
                         'postal_code': Utility.presence(address_dict.get('Zip')) or '',
                         'state': california.name,
@@ -144,7 +149,6 @@ def import_addresses(addresses, california, division1_slug):
                         'raw': f"{street}, {city}, {state} {zip_code}",
                     },
                     'organization': organization,
-                    'address_extra': Utility.presence(address_extra),
                     'infos': {
                         **Utility.default_infos(),
                         'access_address_id': address_id,
@@ -156,7 +160,6 @@ def import_addresses(addresses, california, division1_slug):
                 if existing_places:
                     for place in existing_places:
                         place.infos = contact_values.get('infos')
-                        place.address_extra = contact_values.get('address_extra')
                         address = place.address
                         address.street_number = contact_values.get('address', {}).get('street_number')
                         address.route = contact_values.get('address', {}).get('route')
@@ -251,16 +254,23 @@ def import_households(households, division1_slug, division2_slug):
 
                         if saved_place.subject == family or saved_place.content_type != family_content_type:
                             potential_new_place_id = saved_place.id
+                        address = saved_place.address
+
+                        if address and not address.name:
+                            full_address_name = display_name + ' family: ' + address.raw
+                            address.name = display_name
+                            address.raw = str(family.id)
+                            address.formatted = full_address_name
+                            address.save()
 
                         Place.objects.update_or_create(
                             id=potential_new_place_id,  # infos__access_address_id=address_id,  # multiple households could share the same address
                             # address=address,
                             defaults={
-                                'address': saved_place.address,
+                                'address': address,
                                 'display_name':  display_name,
                                 'content_type': family_content_type,
                                 'object_id': family.id,
-                                'address_extra': saved_place.address_extra,
                                 'infos': {
                                     'access_address_id': address_id,  # str
                                     'contacts': {

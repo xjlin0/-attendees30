@@ -3,6 +3,8 @@ FROM python:3.8-slim-buster
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
+RUN echo "deb http://deb.debian.org/debian buster main" > /etc/apt/sources.list
+
 RUN apt-get update \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
@@ -11,7 +13,7 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   # intall git for pip install by github
-  && apt-get install -y git less \
+  && apt-get install -y git less gdal-bin \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*

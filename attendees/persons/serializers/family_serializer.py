@@ -1,4 +1,4 @@
-from attendees.persons.models import Family
+from attendees.persons.models import Family, FamilyAttendee, Relation, Utility, Attendee
 from attendees.whereabouts.serializers import PlaceSerializer
 
 from rest_framework import serializers
@@ -15,17 +15,30 @@ class FamilySerializer(serializers.ModelSerializer):
         """
         Create or update `Family` instance, given the validated data.
         """
-        family_id = self._kwargs.get('data', {}).get('id')
-        # print("hi 19 here is family_id: ")
-        # print(family_id)
-        # print("hi 21 here is validated_data: ")
-        # print(validated_data)
+        raw_data = self._kwargs.get('data', {})
+        family_id = raw_data.get('id')
 
-        obj, created = Family.objects.update_or_create(
+        family, family_created = Family.objects.update_or_create(
             id=family_id,
             defaults=validated_data,
         )
-        return obj
+
+        if family_created:
+            for attendee_id in raw_data.get('attendees', []):
+                unspecified_role = Relation.objects.filter(title='unspecified').first
+                attendee = Attendee.objects.get(pk=attendee_id)
+                FamilyAttendee.objects.update_or_create(
+                    attendee=attendee,
+                    family=family,
+                    defaults={
+                        'attendee': attendee,
+                        'family': family,
+                        'role': unspecified_role,
+                        'start': Utility.now_with_timezone()
+                    },
+                )
+
+        return family
 
     def update(self, instance, validated_data):
         """
