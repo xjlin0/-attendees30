@@ -1,5 +1,11 @@
 Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
+  attendeeMainDxFormDefault: {
+    infos: {
+      names: {},
+      contacts: {}
+    }
+  },
   attendeeAttrs: null,  // will be assigned later
   attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
@@ -122,36 +128,43 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.attendeeUrn;
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     // Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
-    Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
     $.ajaxSetup({
       headers: {
         "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
         "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
       }
     });
-    $.ajax({
-      url: Attendees.datagridUpdate.attendeeAjaxUrl,
-      success: (response) => {
-        Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
-        Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {
-          infos: {
-            names: {},
-            contacts: {}
-          }
-        };
-        $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
-        window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
-        Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
-        Attendees.datagridUpdate.populateBasicInfoBlock();
-        Attendees.datagridUpdate.initListeners();
-        Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
-        Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
-      },
-      error: (response) => {
-        console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
-      },
-    });
 
+    if (Attendees.datagridUpdate.attendeeId === 'new') {
+      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
+      $('h3.page-title').text('New Attendee: more data can be entered after save');
+      window.top.document.title = 'New Attendee';
+      Attendees.utilities.editingEnabled = true;
+      Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
+      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+      Attendees.datagridUpdate.attendeeFormConfigs.formData = Attendees.datagridUpdate.attendeeMainDxFormDefault;
+      Attendees.datagridUpdate.populateBasicInfoBlock({});
+      document.getElementById("custom-control-edit-checkbox").checked = true;
+    } else {
+      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
+      $.ajax({
+        url: Attendees.datagridUpdate.attendeeAjaxUrl,
+        success: (response) => {
+          Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
+          Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : Attendees.datagridUpdate.attendeeMainDxFormDefault;
+          $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
+          window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
+          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+          Attendees.datagridUpdate.populateBasicInfoBlock();
+          Attendees.datagridUpdate.initListeners();
+          Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
+          Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
+        },
+        error: (response) => {
+          console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
+        },
+      });
+    }
   },
 
   attachContactAddButton: () => {
@@ -174,7 +187,7 @@ Attendees.datagridUpdate = {
   },
 
   getAttendeeFormConfigs: () => {  // this is the place to control blocks of AttendeeForm
-    const originalItems = [
+    const basicItems = [
       {
         colSpan: 4,
         itemType: "group",
@@ -256,6 +269,9 @@ Attendees.datagridUpdate = {
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [],  // will populate later for dynamic contacts
       },
+    ];
+
+    const moreItems = [
       {
         colSpan: 24,
         colCount: 24,
@@ -538,6 +554,9 @@ Attendees.datagridUpdate = {
           },
         ],
       },
+    ];
+
+    const buttonItems = [
       { // https://supportcenter.devexpress.com/ticket/details/t681806
         itemType: "button",
         name: "mainAttendeeFormSubmit",
@@ -553,7 +572,7 @@ Attendees.datagridUpdate = {
           type: "default",
           useSubmitBehavior: false,
           onClick: (e) => {
-            if (confirm("Are you sure?")) {
+            if (Attendees.datagridUpdate.attendeeMainDxForm.validate().isValid && confirm('Are you sure?')) {
 
               const userData = new FormData($('form#attendee-update-form')[0]);
               if (!$('input[name="photo"]')[0].value) {
@@ -570,12 +589,18 @@ Attendees.datagridUpdate = {
                 processData: false,
                 dataType: 'json',
                 data: userData,
-                method: Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
+                method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
                   console.log("success here is response: ", response);
                   const parser = new URL(window.location);
                   parser.searchParams.set('success', 'Saving attendee success');
-                  window.location = parser.href;
+
+                  if (parser.href.split('/').pop().startsWith('new')){
+                    const newAttendeeIdUrl = '/' + response.id;
+                    window.location = parser.href.replace('/new', newAttendeeIdUrl);
+                  }else {
+                    window.location = parser.href;
+                  }
                 },
                 error: (response) => {
                   console.log('Failed to save data for main AttendeeForm, error: ', response);
@@ -597,6 +622,9 @@ Attendees.datagridUpdate = {
         },
       },
     ];
+
+    const originalItems = [...basicItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems ), ...buttonItems];
+
     return {
       readOnly: !Attendees.utilities.editingEnabled,
       onContentReady: () => {
