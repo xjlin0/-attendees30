@@ -578,7 +578,7 @@
     "model": "address.state",
     "pk": 60,
     "fields": {
-      "name": "U.S. Armed Forces \u2013 Americas",
+      "name": "U.S. Armed Forces - Americas",
       "code": "AA",
       "country": 1
     }
@@ -587,7 +587,7 @@
     "model": "address.state",
     "pk": 61,
     "fields": {
-      "name": "U.S. Armed Forces \u2013 Europe",
+      "name": "U.S. Armed Forces - Europe",
       "code": "AE",
       "country": 1
     }
@@ -596,7 +596,7 @@
     "model": "address.state",
     "pk": 62,
     "fields": {
-      "name": "U.S. Armed Forces \u2013 Pacific",
+      "name": "U.S. Armed Forces - Pacific",
       "code": "AP",
       "country": 1
     }

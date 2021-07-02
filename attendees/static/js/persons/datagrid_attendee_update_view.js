@@ -22,9 +22,11 @@ Attendees.datagridUpdate = {
   placePopupDxForm: null,  // for getting formData
   placePopupDxFormData: {},  // for storing formData
   placeDefaults: {
-    address: {},
+    address: {
+      type: 'street',
+    },
     display_order: 0,
-    display_name: 'other',
+    display_name: 'main',
     // content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
   familyAttendeeDatagrid: null,
@@ -1278,10 +1280,10 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               dataField: "display_name",
-              label: {
-                text: 'Type',
-              },
-              helpText: 'what kind of address is this?',
+              // label: {
+              //   text: 'Dwelling Reason',
+              // },
+              helpText: 'Why attendee occupy here',
               isRequired: true,
               editorOptions: {
                 placeholder: "Main/parent/past, etc",
@@ -1290,9 +1292,6 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               dataField: "display_order",
-              label: {
-                text: 'Importance',
-              },
               helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
@@ -1323,9 +1322,6 @@ Attendees.datagridUpdate = {
                 type: "date",
                 showClearButton: true,
                 dateSerializationFormat: "yyyy-MM-dd",
-//                onFocusIn: (e) => {
-//                  if(!e.component.option("value")) {e.component.option("value", new Date())};
-//                },
                 placeholder: "click calendar",
               },
             },
@@ -1341,9 +1337,6 @@ Attendees.datagridUpdate = {
                 type: "date",
                 showClearButton: true,
                 dateSerializationFormat: "yyyy-MM-dd",
-//                onFocusIn: (e) => {
-//                  if(!e.component.option("value")) {e.component.option("value", new Date())};
-//                },
                 placeholder: "click calendar",
               },
             },
@@ -1356,6 +1349,7 @@ Attendees.datagridUpdate = {
               },
               editorType: 'dxLookup',
               editorOptions: {
+                showClearButton: true,
                 elementAttr: {
                   class: 'address-lookup-search',  // calling closing by the parent
                 },
@@ -1375,16 +1369,9 @@ Attendees.datagridUpdate = {
                 onValueChanged: (e) => {
                   if (e.previousValue !== e.value) {
                     const selectedAddress = $('div.address-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                    // Attendees.datagridUpdate.placePopupDxForm.updateData('address_extra', null);
-//                    Attendees.datagridUpdate.placePopupDxForm.option('formData.address', selectedAddress);
                     if (selectedAddress){
-                      Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress); // https://supportcenter.devexpress.com/ticket/details/t443361
+                      Attendees.datagridUpdate.placePopupDxForm.updateData('address', selectedAddress);
                     }
-//                    console.log("hi 1302 here is Attendees.datagridUpdate.placePopupDxFormData", Attendees.datagridUpdate.placePopupDxFormData);
-//                    console.log("hi 1303 here is selectedAddress: ", selectedAddress);
-                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address_extra").option('value', null);
-                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value', selectedAddress.street_number);
-                    // Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value', selectedAddress.route);
                   }
                 },
               },
@@ -1476,12 +1463,12 @@ Attendees.datagridUpdate = {
                       closeOnOutsideClick: true,
                     },
                     dataSource: Attendees.datagridUpdate.stateSource,
-                    onValueChanged: (e) => {
-                      if (e.previousValue && e.previousValue !== e.value) {
-                        const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
-                        console.log("hi 1401 here is selectedState: ", selectedState);
-                      }
-                    },
+                    // onValueChanged: (e) => {
+                    //   if (e.previousValue && e.previousValue !== e.value) {
+                    //     const selectedState = $('div.state-lookup-search').dxLookup('instance')._dataSource._items.find(x => x.id === e.value);
+                    //     console.log("hi 1401 here is selectedState: ", selectedState);
+                    //   }
+                    // },
                   },
                 },
               ],
@@ -1519,6 +1506,7 @@ Attendees.datagridUpdate = {
                           raw: 'new',     // for bypassing DRF validations from Django-Address model
                           new_address: {  // for creating new django-address instance bypassing DRF model validations
                             raw: userData.object_id,
+                            type: 'street',   // use Django-admin to change if needed
                             extra: newAddressExtra,
                             formatted: placeButton.dataset.objectName + ': ' + newAddressText,
                             street_number: newStreetNumber,
