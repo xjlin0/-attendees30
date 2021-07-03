@@ -91,7 +91,7 @@ Attendees.datagridUpdate = {
       mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
-      allowDeleting: false,
+      allowDeleting: enabled,
     };
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", cellEditingArgs);
     Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", cellEditingArgs);
@@ -2400,30 +2400,30 @@ Attendees.datagridUpdate = {
         update: (key, values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
-            method: "PATCH",
+            method: 'PATCH',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: "update success, please reload page if changing family",
+                  message: 'update success, please reload page if changing family',
                   width: 500,
                   position: {
                     my: 'center',
                     at: 'center',
                     of: window,
                   }
-                }, "success", 2000);
+                }, 'success', 2000);
             },
           });
         },
-        insert: function (values) {
+        insert: (values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint,
-            method: "POST",
+            method: 'POST',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
@@ -2435,7 +2435,27 @@ Attendees.datagridUpdate = {
                     at: 'center',
                     of: window,
                   }
-                }, "success", 2000);
+                }, 'success', 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            method: 'DELETE',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'removed success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, 'info', 2000);
             },
           });
         },

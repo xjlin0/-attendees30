@@ -63,13 +63,15 @@
 </details>
 
 ## mockup
-https://marvelapp.com/9dj5heb
+1. https://marvelapp.com/9dj5heb
+2. https://marvelapp.com/prototype/876j52i
 
 ## data models
 https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
 ## How to start dev env
 
+All libraries are included to facilitate offline development
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
 * check local python version, Django coockie cutter is developed with Python 3
 * There is no need to have local Django or Postgres running, but on MacOS you will need Virtualbox from https://www.virtualbox.org
