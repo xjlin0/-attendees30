@@ -31,7 +31,7 @@ Attendees.utilities = {
         const paramsString = searchParams.toString();
         const searchString = paramsString.length > 0 ? '?' + paramsString : '';
         const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + searchString + window.location.hash;
-        history.replaceState(null, document.title, newUrl);
+        history.replaceState(null, window.document.title, newUrl);
       }
     }  // https://stackoverflow.com/a/58128921/4257237
     return paramValue;

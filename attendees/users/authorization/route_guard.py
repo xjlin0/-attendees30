@@ -31,14 +31,12 @@ class SpyGuard(UserPassesTestMixin):
         current_attendee = self.request.user.attendee
 
         if targeting_attendee_id == 'new':
-            can_create_attendee = True  # Todo 20210701 need to add urn in seed data
-            # Menu.objects.filter(
-            #     auth_groups__in=self.request.user.groups.all(),
-            #     url_name=self.request.resolver_match.url_name,
-            #     menuauthgroup__write=True,
-            #     is_removed=False,
-            # ).exists()
-            return can_create_attendee
+            return Menu.objects.filter(
+                auth_groups__in=self.request.user.groups.all(),
+                url_name=self.request.resolver_match.url_name,
+                menuauthgroup__write=True,  # 'new' needs write permission
+                is_removed=False,
+            ).exists()
         if targeting_attendee_id:
             if current_attendee:
                 if current_attendee.under_same_org_with(targeting_attendee_id):

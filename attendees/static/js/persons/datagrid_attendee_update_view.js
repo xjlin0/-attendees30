@@ -568,7 +568,7 @@ Attendees.datagridUpdate = {
           icon: "save",
           hint: "save attendee data in the page",
           type: "default",
-          useSubmitBehavior: false,
+          useSubmitBehavior: true,
           onClick: (e) => {
             if (Attendees.datagridUpdate.attendeeMainDxForm.validate().isValid && confirm('Are you sure?')) {
 
@@ -624,10 +624,14 @@ Attendees.datagridUpdate = {
     const originalItems = [...basicItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems ), ...buttonItems];
 
     return {
+      showValidationSummary: true,
       readOnly: !Attendees.utilities.editingEnabled,
       onContentReady: () => {
         $('div.spinner-border').hide();
         Attendees.utilities.toggleDxFormGroups();
+      },
+      onFieldDataChanged: (e) => {
+        Attendees.datagridUpdate.attendeeMainDxForm.validate();
       },
       colCount: 24,
       formData: null, // will be fetched
@@ -635,6 +639,11 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  attendeeNameValidator: () => {
+    const attendeeFromData = Attendees.datagridUpdate.attendeeMainDxForm.option('formData');
+    return attendeeFromData.first_name || attendeeFromData.last_name || attendeeFromData.first_name2 || attendeeFromData.last_name2;
   },
 
   familyButtonFactory: (attrs) => {
@@ -686,6 +695,20 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: 'English',
         },
+        validationRules: [
+          {
+            type: 'custom',
+            reevaluate: true,
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            reevaluate: true,
+            max: 25,
+            message: "No more than 25 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
@@ -693,6 +716,18 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: 'English',
         },
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 25,
+            message: "No more than 25 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
@@ -724,10 +759,34 @@ Attendees.datagridUpdate = {
       {
         colSpan: 7,
         dataField: 'last_name2',
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 8,
+            message: "No more than 8 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
         dataField: 'first_name2',
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 12,
+            message: "No more than 12 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
