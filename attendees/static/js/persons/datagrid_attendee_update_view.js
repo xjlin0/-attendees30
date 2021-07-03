@@ -18,10 +18,13 @@ Attendees.datagridUpdate = {
   attendingPopup: null,  // for show/hide popup
   attendingsData: {},
   attendingDefaults: {
-    // assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
     category: 'primary',
-    // start: new Date().toISOString(),
-    // finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
+  },
+  attendingmeetDefaults: {
+    assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
+    category: 'primary',
+    start: new Date().toISOString(),
+    finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
   },
   // addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
@@ -2900,7 +2903,7 @@ Attendees.datagridUpdate = {
   attendingMeetDatagridConfig: {
     dataSource: {
       store: new DevExpress.data.CustomStore({
-        key: "id",
+        key: 'id',
         load: () => {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint);
         },
@@ -2933,10 +2936,10 @@ Attendees.datagridUpdate = {
             },
           });
         },
-        insert: function (values) {
+        insert: (values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint,
-            method: "POST",
+            method: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
@@ -2951,6 +2954,26 @@ Attendees.datagridUpdate = {
                     of: window,
                   }
                 }, 'success', 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint + key + '/',
+            method: 'DELETE',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'removed AttendingMeet success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  }
+                }, 'info', 2000);
             },
           });
         },
@@ -3065,6 +3088,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: 'character',
+        validationRules: [{type: 'required'}],
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
