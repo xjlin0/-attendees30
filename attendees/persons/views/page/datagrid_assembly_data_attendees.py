@@ -41,6 +41,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
             'available_characters': available_characters,
             'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
             'allowed_to_create_attendee': allowed_to_create_attendee,
+            'create_attendee_urn': f'/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/new',
         })
         return context
 
