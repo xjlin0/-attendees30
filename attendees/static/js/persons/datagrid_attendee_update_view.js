@@ -2448,7 +2448,7 @@ Attendees.datagridUpdate = {
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: 'removed success',
+                  message: 'removed relationship success',
                   width: 500,
                   position: {
                     my: 'center',
@@ -2652,14 +2652,14 @@ Attendees.datagridUpdate = {
   pastDatagridConfig: (args) => { // {type: 'education', dataFields: {display_name: 'display_name', start: 'start'}, extraDatagridOpts:{editing:{mode:'popup'}}}
     const columns = [
       {
-        dataField: "category",
-        validationRules: [{type: "required"}],
+        dataField: 'category',
+        validationRules: [{type: 'required'}],
         lookup: {
-          valueExpr: "id",
-          displayExpr: "display_name",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
                   take: 100,
@@ -2678,9 +2678,8 @@ Attendees.datagridUpdate = {
           },
         },
       },
-
       {
-        dataField: "display_name",
+        dataField: 'display_name',
       },
       {
         caption: 'Secret shared with you',
@@ -2697,25 +2696,25 @@ Attendees.datagridUpdate = {
         dataType: 'boolean',
       },
       {
-        dataField: "infos.comment",
+        dataField: 'infos.comment',
         caption: 'Comment',
-        dataType: "string",
+        dataType: 'string',
         width: '32%',
       },
       {
-        dataField: "when",
-        dataType: "date",
+        dataField: 'when',
+        dataType: 'date',
       },
       {
-        dataField: "finish",
-        dataType: "date",
+        dataField: 'finish',
+        dataType: 'date',
       },
     ];
 
     return {
       dataSource: {
         store: new DevExpress.data.CustomStore({
-          key: "id",
+          key: 'id',
           load: () => {
             return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: args.type});
           },
@@ -2730,9 +2729,9 @@ Attendees.datagridUpdate = {
           update: (key, values) => {
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
-              method: "PATCH",
+              method: 'PATCH',
               dataType: 'json',
-              contentType: "application/json; charset=utf-8",
+              contentType: 'application/json; charset=utf-8',
               data: JSON.stringify(values),
               success: (result) => {
                 DevExpress.ui.notify(
@@ -2744,7 +2743,7 @@ Attendees.datagridUpdate = {
                       at: 'center',
                       of: window,
                     }
-                  }, "success", 2000);
+                  }, 'success', 2000);
               },
             });
           },
@@ -2757,7 +2756,7 @@ Attendees.datagridUpdate = {
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
               method: "POST",
               dataType: 'json',
-              contentType: "application/json; charset=utf-8",
+              contentType: 'application/json; charset=utf-8',
               data: JSON.stringify({...values, ...subject}),
               success: (result) => {
                 DevExpress.ui.notify(
@@ -2769,7 +2768,27 @@ Attendees.datagridUpdate = {
                       at: 'center',
                       of: window,
                     }
-                  }, "success", 2000);
+                  }, 'success', 2000);
+              },
+            });
+          },
+          remove: (key) => {
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
+              method: 'DELETE',
+              dataType: 'json',
+              contentType: 'application/json; charset=utf-8',
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'removed '+ args.type +' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    }
+                  }, 'info', 2000);
               },
             });
           },
