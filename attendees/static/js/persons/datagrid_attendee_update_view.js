@@ -47,7 +47,7 @@ Attendees.datagridUpdate = {
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
-    Attendees.datagridUpdate.displayNotifiers();
+    Attendees.datagridUpdate.displayNotifierFromSearchParam('success');
     Attendees.datagridUpdate.initAttendeeForm();
   },
 
@@ -101,21 +101,19 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.attendingMeetEditingArgs});
   },
 
-  displayNotifiers: () => {
-    const params = new URLSearchParams(location.search);
-    if (params.has('success')) {
+  displayNotifierFromSearchParam: (successParamName) => {
+    const successParamValue = Attendees.utilities.extractParamAndReplaceHistory(successParamName);
+    if (successParamValue) {
       DevExpress.ui.notify(
         {
-          message: params.get('success'),
+          message: successParamValue,
           width: 500,
           position: {
             my: 'center',
             at: 'center',
             of: window,
           }
-        }, "success", 2500);
-      params.delete('success');
-      history.replaceState(null, '', '?' + params + location.hash);
+        }, 'success', 2500);
     }
   },
 

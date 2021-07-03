@@ -22,6 +22,21 @@ Attendees.utilities = {
       return value !== undefined && value !== null && value !== "";
   },
 
+  extractParamAndReplaceHistory: (paramName) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const paramValue = searchParams.get(paramName);
+    if (searchParams.has(paramName)) {
+      searchParams.delete(paramName);
+      if (history.replaceState) {
+        const paramsString = searchParams.toString();
+        const searchString = paramsString.length > 0 ? '?' + paramsString : '';
+        const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + searchString + window.location.hash;
+        history.replaceState(null, document.title, newUrl);
+      }
+    }  // https://stackoverflow.com/a/58128921/4257237
+    return paramValue;
+  },
+
   toggleDxFormGroups: (animationSpeed="fast") => {
     $(".dx-form-group-caption")
       .each(function () {
