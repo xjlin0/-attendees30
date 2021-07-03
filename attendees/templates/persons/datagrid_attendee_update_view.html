@@ -44,23 +44,26 @@
     </span>
   </div>
   <div class="d-flex align-items-center form-actions">
-    {#  if menu options allow editing #}
-      <a class="add-attendee btn btn-outline-success btn-xs"
-         title="add a new attendee"
-         role="button"
-         href="#">
-        +Add Attendee
-      </a>
-      <div class="custom-switch button btn btn-outline-primary"
-           title="Click toggle to switch editing modes of the entire page">
-        <input type="checkbox"
-               class="custom-control-input"
-               id="custom-control-edit-checkbox">
-        <label class="custom-control-label"
-               for="custom-control-edit-checkbox">
-          Editing
-        </label>
-      </div>
+      {% if allowed_to_create_attendee %}
+        <a class="add-attendee btn btn-outline-success btn-xs"
+           title="add a new attendee"
+           role="button"
+           href="new">
+          +Add Attendee
+        </a>
+      {% endif %}
+      {% if targeting_attendee_id != 'new' %}
+        <div class="custom-switch button btn btn-outline-primary"
+             title="Click toggle to switch editing modes of the entire page">
+          <input type="checkbox"
+                 class="custom-control-input"
+                 id="custom-control-edit-checkbox">
+          <label class="custom-control-label"
+                 for="custom-control-edit-checkbox">
+            Editing
+          </label>
+        </div>
+      {% endif %}
   </div>
 </div>
 

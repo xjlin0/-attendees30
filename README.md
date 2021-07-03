@@ -102,10 +102,10 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
   - [x] Permission controlled blocks in single attendee update page, i.e. different blocks/user-settings for different groups
   - [x] Generic models such as Note, Place, Past need to have organization column instead of infos
   - [x] Add Past as Note
-  - [ ] Create new instance of Attendee & attending update page with params with meet
+  - [x] Create new instance of Attendee & attending update page with params with meet
+  - [ ] delete function for human error
   - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] implement secret/private relation/past general
-  - [ ] delete note/relationship/related_attendee for human error?
 - [ ] Move single attendee update page out of data assembly
 - [ ] Gathering list (new design with server side processing)
 - [ ] Attendance list (new design with server side processing)

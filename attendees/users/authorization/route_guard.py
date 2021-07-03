@@ -12,6 +12,7 @@ class RouteGuard(UserPassesTestMixin):
             auth_groups__in=self.request.user.groups.all(),
             url_name=self.request.resolver_match.url_name,
             menuauthgroup__read=True,
+            is_removed=False,
         ).exists()
         if not whether_user_allowed_to_read_the_page:
             time.sleep(2)
@@ -28,6 +29,9 @@ class SpyGuard(UserPassesTestMixin):
     def test_func(self):  # Superusers can still access such attendee in admin UI
         targeting_attendee_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', self.kwargs.get('attendee_id'))
         current_attendee = self.request.user.attendee
+
+        if targeting_attendee_id == 'new':
+            return Menu.user_can_create_attendee(self.request.user) # assume url is datagrid_attendee_create_view
         if targeting_attendee_id:
             if current_attendee:
                 if current_attendee.under_same_org_with(targeting_attendee_id):

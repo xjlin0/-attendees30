@@ -34,27 +34,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
         Create and return a new `Attendee` instance, given the validated data.
         """
 
-        attendee_id = self._kwargs['data'].get('attendee-id')
-        deleting_photo = self._kwargs['data'].get('photo-clear', None)
-
-        instance = Attendee.objects.get(pk=attendee_id)
-        if instance:
-            if deleting_photo or validated_data.get('photo', None):
-                old_photo = instance.photo
-                if old_photo:
-                    old_file = Path(old_photo.path)
-                    old_file.unlink(missing_ok=True)
-                if deleting_photo:
-                    validated_data['photo'] = None
-
-            obj, created = Attendee.objects.update_or_create(
-                id=attendee_id,
-                defaults=validated_data,
-            )
-
-            return obj
-        else:
-            return None
+        return Attendee.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """

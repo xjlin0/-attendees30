@@ -183,6 +183,11 @@ urlpatterns = [
         name='datagrid_attendee_update_view',
     ),
     path(
+        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/new',
+        view=datagrid_attendee_update_view,
+        name='datagrid_attendee_create_view',  # for permission
+    ),
+    path(
         '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/<str:attendee_id>',
         view=datagrid_attendee_update_view,
         name='datagrid_attendee_update_view',

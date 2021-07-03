@@ -30,6 +30,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
         available_meets = Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
         available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
+        allowed_to_create_attendee = Menu.user_can_create_attendee(self.request.user)
         context.update({
             'current_organization_slug': current_organization_slug,
             'current_division_slug': current_division_slug,
@@ -39,6 +40,8 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
             'available_meets_json': dumps([model_to_dict(m, fields=('id', 'slug', 'display_name')) for m in available_meets]),
             'available_characters': available_characters,
             'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
+            'allowed_to_create_attendee': allowed_to_create_attendee,
+            'create_attendee_urn': f'/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/new',
         })
         return context
 

@@ -1,5 +1,11 @@
 Attendees.datagridUpdate = {
   attendeeMainDxForm: null,  // will be assigned later, may not needed if use native form.submit()?
+  attendeeMainDxFormDefault: {
+    infos: {
+      names: {},
+      contacts: {}
+    }
+  },
   attendeeAttrs: null,  // will be assigned later
   attendeeId: '',  // the attendee is being edited, since it maybe admin/parent editing another attendee
   attendeeAjaxUrl: null,
@@ -41,7 +47,7 @@ Attendees.datagridUpdate = {
 
   init: () => {
     console.log("/static/js/persons/datagrid_attendee_update_view.js");
-    Attendees.datagridUpdate.displayNotifiers();
+    Attendees.datagridUpdate.displayNotifierFromSearchParam('success');
     Attendees.datagridUpdate.initAttendeeForm();
   },
 
@@ -95,21 +101,19 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.attendingMeetEditingArgs});
   },
 
-  displayNotifiers: () => {
-    const params = new URLSearchParams(location.search);
-    if (params.has('success')) {
+  displayNotifierFromSearchParam: (successParamName) => {
+    const successParamValue = Attendees.utilities.extractParamAndReplaceHistory(successParamName);
+    if (successParamValue) {
       DevExpress.ui.notify(
         {
-          message: params.get('success'),
+          message: successParamValue,
           width: 500,
           position: {
             my: 'center',
             at: 'center',
             of: window,
           }
-        }, "success", 2500);
-      params.delete('success');
-      history.replaceState(null, '', '?' + params + location.hash);
+        }, 'success', 2500);
     }
   },
 
@@ -122,36 +126,42 @@ Attendees.datagridUpdate = {
     Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.attendeeUrn;
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     // Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
-    Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
     $.ajaxSetup({
       headers: {
         "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
         "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
       }
     });
-    $.ajax({
-      url: Attendees.datagridUpdate.attendeeAjaxUrl,
-      success: (response) => {
-        Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
-        Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : {
-          infos: {
-            names: {},
-            contacts: {}
-          }
-        };
-        $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
-        window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
-        Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
-        Attendees.datagridUpdate.populateBasicInfoBlock();
-        Attendees.datagridUpdate.initListeners();
-        Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
-        Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
-      },
-      error: (response) => {
-        console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
-      },
-    });
 
+    if (Attendees.datagridUpdate.attendeeId === 'new') {
+      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
+      $('h3.page-title').text('New Attendee: more data can be entered after save');
+      window.top.document.title = 'New Attendee';
+      Attendees.utilities.editingEnabled = true;
+      Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
+      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+      Attendees.datagridUpdate.attendeeFormConfigs.formData = Attendees.datagridUpdate.attendeeMainDxFormDefault;
+      Attendees.datagridUpdate.populateBasicInfoBlock({});
+    } else {
+      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
+      $.ajax({
+        url: Attendees.datagridUpdate.attendeeAjaxUrl,
+        success: (response) => {
+          Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
+          Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : Attendees.datagridUpdate.attendeeMainDxFormDefault;
+          $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
+          window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
+          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+          Attendees.datagridUpdate.populateBasicInfoBlock();
+          Attendees.datagridUpdate.initListeners();
+          Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
+          Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
+        },
+        error: (response) => {
+          console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
+        },
+      });
+    }
   },
 
   attachContactAddButton: () => {
@@ -174,7 +184,7 @@ Attendees.datagridUpdate = {
   },
 
   getAttendeeFormConfigs: () => {  // this is the place to control blocks of AttendeeForm
-    const originalItems = [
+    const basicItems = [
       {
         colSpan: 4,
         itemType: "group",
@@ -256,6 +266,9 @@ Attendees.datagridUpdate = {
         caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [],  // will populate later for dynamic contacts
       },
+    ];
+
+    const moreItems = [
       {
         colSpan: 24,
         colCount: 24,
@@ -538,6 +551,9 @@ Attendees.datagridUpdate = {
           },
         ],
       },
+    ];
+
+    const buttonItems = [
       { // https://supportcenter.devexpress.com/ticket/details/t681806
         itemType: "button",
         name: "mainAttendeeFormSubmit",
@@ -551,9 +567,9 @@ Attendees.datagridUpdate = {
           icon: "save",
           hint: "save attendee data in the page",
           type: "default",
-          useSubmitBehavior: false,
+          useSubmitBehavior: true,
           onClick: (e) => {
-            if (confirm("Are you sure?")) {
+            if (Attendees.datagridUpdate.attendeeMainDxForm.validate().isValid && confirm('Are you sure?')) {
 
               const userData = new FormData($('form#attendee-update-form')[0]);
               if (!$('input[name="photo"]')[0].value) {
@@ -562,7 +578,6 @@ Attendees.datagridUpdate = {
               const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
               userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
               userData.set('infos', JSON.stringify(userInfos));
-              // userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
                 url: Attendees.datagridUpdate.attendeeAjaxUrl,
@@ -570,12 +585,17 @@ Attendees.datagridUpdate = {
                 processData: false,
                 dataType: 'json',
                 data: userData,
-                method: Attendees.datagridUpdate.attendeeId ? 'PUT' : 'POST',
+                method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
-                  console.log("success here is response: ", response);
                   const parser = new URL(window.location);
                   parser.searchParams.set('success', 'Saving attendee success');
-                  window.location = parser.href;
+
+                  if (parser.href.split('/').pop().startsWith('new')){
+                    const newAttendeeIdUrl = '/' + response.id;
+                    window.location = parser.href.replace('/new', newAttendeeIdUrl);
+                  }else {
+                    window.location = parser.href;
+                  }
                 },
                 error: (response) => {
                   console.log('Failed to save data for main AttendeeForm, error: ', response);
@@ -597,11 +617,18 @@ Attendees.datagridUpdate = {
         },
       },
     ];
+
+    const originalItems = [...basicItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems ), ...buttonItems];
+
     return {
+      showValidationSummary: true,
       readOnly: !Attendees.utilities.editingEnabled,
       onContentReady: () => {
         $('div.spinner-border').hide();
         Attendees.utilities.toggleDxFormGroups();
+      },
+      onFieldDataChanged: (e) => {
+        Attendees.datagridUpdate.attendeeMainDxForm.validate();
       },
       colCount: 24,
       formData: null, // will be fetched
@@ -609,6 +636,11 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  attendeeNameValidator: () => {
+    const attendeeFromData = Attendees.datagridUpdate.attendeeMainDxForm.option('formData');
+    return attendeeFromData.first_name || attendeeFromData.last_name || attendeeFromData.first_name2 || attendeeFromData.last_name2;
   },
 
   familyButtonFactory: (attrs) => {
@@ -660,6 +692,20 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: 'English',
         },
+        validationRules: [
+          {
+            type: 'custom',
+            reevaluate: true,
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            reevaluate: true,
+            max: 25,
+            message: "No more than 25 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
@@ -667,6 +713,18 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: 'English',
         },
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 25,
+            message: "No more than 25 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
@@ -698,10 +756,34 @@ Attendees.datagridUpdate = {
       {
         colSpan: 7,
         dataField: 'last_name2',
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 8,
+            message: "No more than 8 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
         dataField: 'first_name2',
+        validationRules: [
+          {
+            type: 'custom',
+            validationCallback: Attendees.datagridUpdate.attendeeNameValidator,
+            message: 'first or last name is required'
+          },
+          {
+            type: "stringLength",
+            max: 12,
+            message: "No more than 12 characters"
+          }
+        ],
       },
       {
         colSpan: 7,
