@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.forms import TextInput
@@ -34,10 +34,16 @@ class MenuAdmin(MPTTModelAdmin):
     }
     mptt_level_indent = 20
     prepopulated_fields = {"url_name": ("display_name",)}
-    list_display = ('display_name', 'is_removed', 'organization_slug', 'category', 'display_order', 'urn')
+    list_display = ('display_name', 'is_removed', 'category', 'display_order', 'urn')
     list_editable = ('is_removed', 'display_order')
     inlines = (MenuAuthGroupInline,)
     list_display_links = ('display_name',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(organization=request.user.organization)
 
 
 @admin.register(MenuAuthGroup)

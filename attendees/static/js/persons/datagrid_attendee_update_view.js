@@ -142,7 +142,6 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
       Attendees.datagridUpdate.attendeeFormConfigs.formData = Attendees.datagridUpdate.attendeeMainDxFormDefault;
       Attendees.datagridUpdate.populateBasicInfoBlock({});
-      document.getElementById("custom-control-edit-checkbox").checked = true;
     } else {
       Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint + Attendees.datagridUpdate.attendeeId + '/';
       $.ajax({
@@ -579,7 +578,6 @@ Attendees.datagridUpdate = {
               const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
               userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
               userData.set('infos', JSON.stringify(userInfos));
-              // userData._method = userData.id ? 'PUT' : 'POST';
 
               $.ajax({
                 url: Attendees.datagridUpdate.attendeeAjaxUrl,
@@ -589,7 +587,6 @@ Attendees.datagridUpdate = {
                 data: userData,
                 method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
                 success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
-                  console.log("success here is response: ", response);
                   const parser = new URL(window.location);
                   parser.searchParams.set('success', 'Saving attendee success');
 

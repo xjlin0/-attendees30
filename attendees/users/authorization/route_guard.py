@@ -31,12 +31,7 @@ class SpyGuard(UserPassesTestMixin):
         current_attendee = self.request.user.attendee
 
         if targeting_attendee_id == 'new':
-            return Menu.objects.filter(
-                auth_groups__in=self.request.user.groups.all(),
-                url_name=self.request.resolver_match.url_name,
-                menuauthgroup__write=True,  # 'new' needs write permission
-                is_removed=False,
-            ).exists()
+            return Menu.user_can_create_attendee(self.request.user) # assume url is datagrid_attendee_create_view
         if targeting_attendee_id:
             if current_attendee:
                 if current_attendee.under_same_org_with(targeting_attendee_id):
