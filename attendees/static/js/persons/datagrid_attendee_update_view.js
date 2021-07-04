@@ -40,6 +40,7 @@ Attendees.datagridUpdate = {
   },
   familyAttendeeDatagrid: null,
   familyAttrPopupDxForm: null,
+  familyAttrPopupDxFormData: {},
   familyAttrPopup: null,
   familyAttrDefaults: {
     display_order: 0,
@@ -362,9 +363,9 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: 'Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save',
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
@@ -392,8 +393,8 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 24,
-            dataField: "familyattendee_set",
-            name: "familyAttendeeDatagrid",
+            dataField: 'familyattendee_set',
+            name: 'familyAttendeeDatagrid',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -1668,54 +1669,54 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "editAddressButton",
+              itemType: 'button',
+              name: 'editAddressButton',
               visible: true,
-              horizontalAlignment: "left",
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Edit the address",
-                icon: "edit",
-                hint: "Modifying the current address, without creating one",
-                type: "success",
+                text: 'Edit the address',
+                icon: 'edit',
+                hint: 'Modifying the current address, without creating one',
+                type: 'success',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to edit the current address?")) {
+                  if (confirm('Are you sure to edit the current address?')) {
                     Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('editAddressButton').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('newAddressButton').option('visible', false);
                   }
                 },
               },
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "newAddressButton",
+              itemType: 'button',
+              name: 'newAddressButton',
               visible: true,
-              horizontalAlignment: "left",
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Add new address",
-                icon: "home",
+                text: 'Add new address',
+                icon: 'home',
                 hint: "Can't find exiting address, add a new one here",
-                type: "normal",
+                type: 'normal',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to add new address?")) {
+                  if (confirm('Are you sure to add new address?')) {
                     Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('newAddressButton').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('editAddressButton').option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.placePopupDxForm.option('formData').address.id = null;
                     // Attendees.datagridUpdate.addressId = null;
@@ -1725,8 +1726,8 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "setFamilyAddressButton",
+              itemType: 'button',
+              name: 'setFamilyAddressButton',
               visible: true,  // only show if family address is different
               horizontalAlignment: "left",
               buttonOptions: {
@@ -1734,14 +1735,14 @@ Attendees.datagridUpdate = {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Overwrite Family Address",
-                icon: "group",
+                text: 'Overwrite Family Address',
+                icon: 'group',
                 hint: "Copy the address to attendee's first family",
-                type: "danger",
+                type: 'danger',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")) {
-                    console.log("Hi 1564 Todo 20210515: Please implement this function")
+                  if (confirm('Are you sure to set the current address to the attendee\'s first family? (not implement yet)')) {
+                    console.log('Hi 1564 Todo 20210515: Please implement this function')
                   }
                 },
               },
@@ -1770,7 +1771,7 @@ Attendees.datagridUpdate = {
 //              },
 //            },
           ],
-        }).dxForm("instance");
+        }).dxForm('instance');
         e.append(formContainer);
       },
     };
@@ -1810,14 +1811,14 @@ Attendees.datagridUpdate = {
       const args = {};
 
       [
-        "skip",
-        "take",
-        "sort",
-        "filter",
-        "searchExpr",
-        "searchOperation",
-        "searchValue",
-        "group",
+        'skip',
+        'take',
+        'sort',
+        'filter',
+        'searchExpr',
+        'searchOperation',
+        'searchValue',
+        'group',
       ].forEach((i) => {
         if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
           args[i] = loadOptions[i];
@@ -2230,46 +2231,46 @@ Attendees.datagridUpdate = {
               helpText: 'what family is this?',
               isRequired: true,
               editorOptions: {
-                placeholder: "Main/parent/past, etc",
+                placeholder: 'Main/parent/past, etc',
               },
             },
             {
               colSpan: 1,
-              dataField: "display_order",
+              dataField: 'display_order',
               helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
-                placeholder: "0/1/2/3, etc",
+                placeholder: '0/1/2/3, etc',
               },
               validationRules: [
                 {
-                  type: "range",
+                  type: 'range',
                   max: 32767,
                   min: 0,
-                  message: "display_order should be between 0 and 32767"
+                  message: 'display_order should be between 0 and 32767'
                 },
                 {
-                  type: "required",
-                  message: "display_order is required"
+                  type: 'required',
+                  message: 'display_order is required'
                 },
               ],
             },
             {
               colSpan: 1,
-              dataField: "division",
-              editorType: "dxSelectBox",
+              dataField: 'division',
+              editorType: 'dxSelectBox',
               isRequired: true,
               label: {
                 text: 'Family major Division',
               },
               editorOptions: {
-                valueExpr: "id",
-                displayExpr: "display_name",
-                placeholder: "Select a value...",
+                valueExpr: 'id',
+                displayExpr: 'display_name',
+                placeholder: 'Select a value...',
                 dataSource: new DevExpress.data.DataSource({
                   store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
+                    key: 'id',
+                    loadMode: 'raw',
                     load: () => {
                       const d = $.Deferred();
                       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
@@ -2281,7 +2282,17 @@ Attendees.datagridUpdate = {
                 }),
               },
             },
-
+            {
+              colSpan: 1,
+              name: 'familyMemberCount',
+              helpText: 'Close the popup and family members are listed in the table',
+              label: {
+                text: 'family member count',
+              },
+              template: (data, itemElement) => {
+                $('<p>', {class: 'family-member-count', text: 0}).appendTo(itemElement);
+              },
+            },
             {
               colSpan: 1,
               itemType: 'button',
@@ -2358,12 +2369,14 @@ Attendees.datagridUpdate = {
       const families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
       const fetchedFamily = families.find(x => x.id === familyAttrButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedFamily) {
+        $('p.family-member-count')[0].textContent = fetchedFamily.attendees.length;
         Attendees.datagridUpdate.familyAttrPopupDxFormData = fetchedFamily;
         Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', fetchedFamily);
       } else {
         $.ajax({
           url: $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/',
           success: (response) => {
+            $('p.family-member-count')[0].textContent = response.attendees.length;
             Attendees.datagridUpdate.familyAttrPopupDxFormData = response;
             Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response);
           },
@@ -2952,7 +2965,7 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, 'success', 2000);
             },
           });
@@ -2972,7 +2985,7 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, 'info', 2000);
             },
           });
