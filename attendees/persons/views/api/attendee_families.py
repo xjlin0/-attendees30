@@ -22,5 +22,10 @@ class ApiAttendeeFamiliesViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVi
         else:
             return attendee.families.order_by('display_order')
 
+    def perform_destroy(self, instance):
+        instance.places.all().delete()
+        instance.familyattendee_set.all().delete()
+        instance.delete()
+
 
 api_attendee_families_viewset = ApiAttendeeFamiliesViewsSet

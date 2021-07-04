@@ -336,7 +336,7 @@ Attendees.datagridUpdate = {
                 });
 
                 let $familyLi = $('<li>', {
-                  class: 'list-group-item',
+                  class: 'list-group-item ' + family.id,
                   text: family.display_name,
                 }).append($familyNewButton);
 
@@ -2338,7 +2338,7 @@ Attendees.datagridUpdate = {
                         Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
                       },
                       error: (response) => {
-                        console.log('2062 Failed to save data for Family attr Form in Popup, error: ', response);
+                        console.log('Failed to save data for Family attr Form in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
@@ -2356,7 +2356,61 @@ Attendees.datagridUpdate = {
                 },
               },
             },
+            {
+              colSpan: 1,
+              itemType: 'button',
+              horizontalAlignment: "left",
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                hide: !familyAttrButton.value,
+                text: 'Delete Family',
+                icon: 'trash',
+                hint: 'delete the Family now in the popup',
+                type: 'danger',
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if (confirm('Are you sure to delete the Family and all its places in the popup?')) {
+                    $.ajax({
+                      url: $('form#family-attr-update-popup-form').attr('action') + Attendees.datagridUpdate.familyAttrPopupDxFormData.id,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.familyAttrPopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'Family deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, 'info', 2500);
 
+                        $('li.'+familyAttrButton.value).remove();
+                        familyAttrButton.remove();
+                        Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
+                      },
+                      error: (response) => {
+                        console.log('Failed to save data for Family attr Form in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'saving locate error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            }
+                          }, 'error', 5000);
+                      },
+                    });
+                  }
+                },
+              },
+            },
           ],
         }).dxForm("instance");
         e.append(formContainer);
@@ -2459,8 +2513,8 @@ Attendees.datagridUpdate = {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
             method: 'DELETE',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
+            // dataType: 'json',
+            // contentType: 'application/json; charset=utf-8',
             success: (result) => {
               DevExpress.ui.notify(
                 {
@@ -2792,8 +2846,8 @@ Attendees.datagridUpdate = {
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
               method: 'DELETE',
-              dataType: 'json',
-              contentType: 'application/json; charset=utf-8',
+              // dataType: 'json',
+              // contentType: 'application/json; charset=utf-8',
               success: (result) => {
                 DevExpress.ui.notify(
                   {
@@ -2974,8 +3028,8 @@ Attendees.datagridUpdate = {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint + key + '/',
             method: 'DELETE',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
+            // dataType: 'json',
+            // contentType: 'application/json; charset=utf-8',
             success: (result) => {
               DevExpress.ui.notify(
                 {
