@@ -2656,6 +2656,7 @@
       "display_order": 20,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2672,6 +2673,7 @@
       "display_order": 21,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2688,6 +2690,7 @@
       "display_order": 25,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2704,6 +2707,7 @@
       "display_order": 26,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2720,6 +2724,7 @@
       "display_order": 1,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2736,6 +2741,7 @@
       "display_order": 2,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2752,6 +2758,7 @@
       "display_order": 70,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2768,6 +2775,7 @@
       "display_order": 50,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2784,6 +2792,7 @@
       "display_order": 50,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2800,6 +2809,7 @@
       "display_order": 90,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2816,6 +2826,7 @@
       "display_order": 90,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -2832,6 +2843,7 @@
       "display_order": 500,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2848,6 +2860,7 @@
       "display_order": 500,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2864,6 +2877,7 @@
       "display_order": 32766,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2880,6 +2894,7 @@
       "display_order": 30,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2896,6 +2911,7 @@
       "display_order": 30,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2912,6 +2928,7 @@
       "display_order": 30000,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2928,6 +2945,7 @@
       "display_order": 10000,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2944,6 +2962,7 @@
       "display_order": 20000,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2960,6 +2979,7 @@
       "display_order": 20000,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -2976,6 +2996,7 @@
       "display_order": 100,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -2992,6 +3013,7 @@
       "display_order": 100,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -3008,6 +3030,7 @@
       "display_order": 200,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -3024,6 +3047,7 @@
       "display_order": 200,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": true
     }
   },
@@ -3040,6 +3064,7 @@
       "display_order": 32767,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -3056,6 +3081,7 @@
       "display_order": 31000,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
     }
   },
@@ -3072,6 +3098,7 @@
       "display_order": 22,
       "emergency_contact": true,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -3088,6 +3115,7 @@
       "display_order": 32767,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -3104,6 +3132,7 @@
       "display_order": 53,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -3120,6 +3149,7 @@
       "display_order": 22,
       "emergency_contact": true,
       "scheduler": true,
+      "consanguinity": true,
       "relative": true
     }
   },
@@ -3136,7 +3166,59 @@
       "display_order": 54,
       "emergency_contact": false,
       "scheduler": false,
+      "consanguinity": false,
       "relative": false
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 32,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "MALE",
+      "reciprocal_ids": "[\"33\", \"34\"]",
+      "title": "step brother",
+      "display_order": 210,
+      "emergency_contact": false,
+      "scheduler": false,
+      "consanguinity": false,
+      "relative": true
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 33,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "FEMALE",
+      "reciprocal_ids": "[\"32\", \"34\"]",
+      "title": "step sister",
+      "display_order": 210,
+      "emergency_contact": false,
+      "scheduler": false,
+      "consanguinity": false,
+      "relative": true
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 34,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "UNSPECIFIED",
+      "reciprocal_ids": "[\"32\", \"33\", \"34\"]",
+      "title": "step sibling",
+      "display_order": 220,
+      "emergency_contact": false,
+      "scheduler": false,
+      "consanguinity": false,
+      "relative": true
     }
   },
   {

@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 
-from attendees.persons.models import Attendee
+from attendees.persons.models import Attendee, Relationship
 from attendees.persons.serializers import FamilySerializer
 from attendees.users.authorization.route_guard import SpyGuard
 
@@ -23,6 +23,8 @@ class ApiAttendeeFamiliesViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVi
             return attendee.families.order_by('display_order')
 
     def perform_destroy(self, instance):
+        Relationship.objects.filter(in_family=instance.id, relation__consanguinity=False).delete()
+        Relationship.objects.filter(in_family=instance.id, relation__consanguinity=True).update(in_family=None)
         instance.places.all().delete()
         instance.familyattendee_set.all().delete()
         instance.delete()

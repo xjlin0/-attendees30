@@ -96,6 +96,9 @@ Attendees.datagridUpdate = {
       allowUpdating: enabled,
       allowAdding: enabled,
       allowDeleting: enabled,
+      texts: {
+        confirmDeleteMessage: 'Are you sure to delete it? Instead, setting the "finish" date is usually enough!',
+      },
     };
     Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", cellEditingArgs);
     Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", cellEditingArgs);
@@ -2284,17 +2287,6 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 1,
-              name: 'familyMemberCount',
-              helpText: 'Close the popup and family members are listed in the table',
-              label: {
-                text: 'family member count',
-              },
-              template: (data, itemElement) => {
-                $('<p>', {class: 'family-member-count', text: 0}).appendTo(itemElement);
-              },
-            },
-            {
-              colSpan: 1,
               itemType: 'button',
               horizontalAlignment: "left",
               buttonOptions: {
@@ -2306,7 +2298,7 @@ Attendees.datagridUpdate = {
                 icon: 'save',
                 hint: 'save Family attr data in the popup',
                 type: 'default',
-                useSubmitBehavior: false,
+                useSubmitBehavior: true,
                 onClick: (clickEvent) => {
                   if (Attendees.datagridUpdate.familyAttrPopupDxForm.validate().isValid && confirm('are you sure to submit the popup Family attr Form?')) {
                     const userData = Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData');
@@ -2359,20 +2351,19 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               itemType: 'button',
-              horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
                 hide: !familyAttrButton.value,
-                text: 'Delete Family',
+                text: 'Delete Family, Places, Relationships',
                 icon: 'trash',
-                hint: 'delete the Family now in the popup',
+                hint: 'delete the Family with their places & marital relationships.',
                 type: 'danger',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm('Are you sure to delete the Family and all its places in the popup?')) {
+                  if (confirm('Are you sure to delete the family and all its places and marital relationships in the popup?  Instead, editing the "finish" date or members is usually enough!')) {
                     $.ajax({
                       url: $('form#family-attr-update-popup-form').attr('action') + Attendees.datagridUpdate.familyAttrPopupDxFormData.id,
                       method: 'DELETE',
@@ -2389,9 +2380,10 @@ Attendees.datagridUpdate = {
                             }
                           }, 'info', 2500);
 
-                        $('li.'+familyAttrButton.value).remove();
-                        familyAttrButton.remove();
                         Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
+                        Attendees.datagridUpdate.relationshipDatagrid.refresh();
+                        $('li.' + familyAttrButton.value).remove();
+                        familyAttrButton.remove();
                       },
                       error: (response) => {
                         console.log('Failed to save data for Family attr Form in Popup, error: ', response);
@@ -2409,6 +2401,17 @@ Attendees.datagridUpdate = {
                     });
                   }
                 },
+              },
+            },
+            {
+              colSpan: 1,
+              name: 'familyMemberCount',
+              helpText: 'Close the popup and family members are listed in the table',
+              label: {
+                text: 'family member count',
+              },
+              template: (data, itemElement) => {
+                $('<p>', {class: 'family-member-count', text: 0}).appendTo(itemElement);
               },
             },
           ],
