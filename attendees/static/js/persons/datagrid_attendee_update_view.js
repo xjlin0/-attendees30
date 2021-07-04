@@ -1565,6 +1565,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: 'button',
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -1672,6 +1673,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: 'button',
+              horizontalAlignment: 'left',
               name: 'editAddressButton',
               visible: true,
               buttonOptions: {
@@ -1698,6 +1700,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: 'button',
+              horizontalAlignment: 'left',
               name: 'newAddressButton',
               visible: true,
               buttonOptions: {
@@ -1726,6 +1729,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: 'button',
+              horizontalAlignment: 'left',
               name: 'deletePlaceButton',
               buttonOptions: {
                 elementAttr: {
@@ -1754,6 +1758,7 @@ Attendees.datagridUpdate = {
                               of: window,
                             },
                           }, 'info', 2500);
+                        placeButton.remove();
                       },
                       error: (response) => {
                         console.log('Failed to delete Place in Popup, error: ', response);
@@ -2288,6 +2293,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               itemType: 'button',
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
