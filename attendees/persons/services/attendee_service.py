@@ -104,14 +104,14 @@ class AttendeeService:
     def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
         """
         :param current_user_organization:
-        :param assembly_slug:
+        :param assembly_slug: attendee participated assembly. Exception: if assembly is in organization's all_access_assemblies, all attendee of the same org will be return
         :param orderby_string:
         :param filters_list:
         :return:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slug)
 
-        init_query = Q(attendings__meets__assembly__slug=assembly_slug)  # assembly_slug is from browser
+        init_query = Q(division__organization=current_user_organization) if assembly_slug in current_user_organization.infos['all_access_assemblies'] else Q(attendings__meets__assembly__slug=assembly_slug)
         # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slug), Q.AND)

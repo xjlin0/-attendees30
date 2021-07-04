@@ -1564,20 +1564,19 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
-              itemType: "button",
-              horizontalAlignment: "left",
+              itemType: 'button',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Place",
-                icon: "save",
-                hint: "save Place data in the popup",
-                type: "default",
-                useSubmitBehavior: false,
+                text: 'Save Place',
+                icon: 'save',
+                hint: 'save Place data in the popup',
+                type: 'default',
+                useSubmitBehavior: true,
                 onClick: (clickEvent) => {
-                  if (confirm('are you sure to submit the popup Place Form?')) {
+                  if (confirm('Are you sure to submit the popup Place Form?')) {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
 
@@ -1675,7 +1674,6 @@ Attendees.datagridUpdate = {
               itemType: 'button',
               name: 'editAddressButton',
               visible: true,
-              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -1702,7 +1700,6 @@ Attendees.datagridUpdate = {
               itemType: 'button',
               name: 'newAddressButton',
               visible: true,
-              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -1710,7 +1707,7 @@ Attendees.datagridUpdate = {
                 disabled: !Attendees.utilities.editingEnabled,
                 text: 'Add new address',
                 icon: 'home',
-                hint: "Can't find exiting address, add a new one here",
+                hint: "Can't find exiting address, add a new address here",
                 type: 'normal',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
@@ -1722,7 +1719,6 @@ Attendees.datagridUpdate = {
                     Attendees.datagridUpdate.placePopupDxForm.getEditor('editAddressButton').option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.placePopupDxForm.option('formData').address.id = null;
-                    // Attendees.datagridUpdate.addressId = null;
                   }
                 },
               },
@@ -1730,49 +1726,53 @@ Attendees.datagridUpdate = {
             {
               colSpan: 3,
               itemType: 'button',
-              name: 'setFamilyAddressButton',
-              visible: true,  // only show if family address is different
-              horizontalAlignment: "left",
+              name: 'deletePlaceButton',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: 'Overwrite Family Address',
-                icon: 'group',
-                hint: "Copy the address to attendee's first family",
+                text: 'Delete Place',
+                icon: 'trash',
+                hint: 'delete the current place in the popup',
                 type: 'danger',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm('Are you sure to set the current address to the attendee\'s first family? (not implement yet)')) {
-                    console.log('Hi 1564 Todo 20210515: Please implement this function')
+                  if (confirm('Are you sure to delete the place? Instead, setting "move out" date is usually enough!')) {
+                    $.ajax({
+                      url: ajaxUrl,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.placePopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'Place deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'info', 2500);
+                      },
+                      error: (response) => {
+                        console.log('Failed to delete Place in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'delete place error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'error', 5000);
+                      },
+                    });
                   }
                 },
               },
             },
-//            {
-//              colSpan: 3,
-//              itemType: "button",
-//              name: "copyFamilyAddressButton",
-//              visible: true, // only show if family address is different
-//              horizontalAlignment: "left",
-//              buttonOptions: {
-//                elementAttr: {
-//                  class: 'attendee-form-submits',    // for toggling editing mode
-//                },
-//                disabled: !Attendees.utilities.editingEnabled,
-//                text: "Copy Family address",
-//                icon: "group",
-//                hint: "Copy address from attendee's first family",
-//                type: "danger",
-//                useSubmitBehavior: false,
-//                onClick: (clickEvent) => {
-//                  if(confirm("Are you sure to copy the attendee's first family? (not implement yet)")){
-//                    console.log("Hi 1509 Todo 20210515: Please implement this function")
-//                  }
-//                },
-//              },
-//            },
           ],
         }).dxForm('instance');
         e.append(formContainer);
@@ -1840,7 +1840,7 @@ Attendees.datagridUpdate = {
         },
         error: (response) => {
           console.log('ajax error here is response: ', response);
-          deferred.reject("Data Loading Error, probably time out?");
+          deferred.reject('Data Loading Error, probably time out?');
         },
         timeout: 7000,
       });
@@ -1870,14 +1870,14 @@ Attendees.datagridUpdate = {
       const args = {};
 
       [
-        "skip",
-        "take",
-        "sort",
-        "filter",
-        "searchExpr",
-        "searchOperation",
-        "searchValue",
-        "group",
+        'skip',
+        'take',
+        'sort',
+        'filter',
+        'searchExpr',
+        'searchOperation',
+        'searchValue',
+        'group',
       ].forEach((i) => {
         if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
           args[i] = loadOptions[i];
@@ -1885,7 +1885,7 @@ Attendees.datagridUpdate = {
 
       $.ajax({
         url: Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint,
-        dataType: "json",
+        dataType: 'json',
         data: args,
         success: (result) => {
           deferred.resolve(result.data, {
@@ -1896,7 +1896,7 @@ Attendees.datagridUpdate = {
         },
         error: (response) => {
           console.log('ajax error here is response: ', response);
-          deferred.reject("Data Loading Error, probably time out?");
+          deferred.reject('Data Loading Error, probably time out?');
         },
         timeout: 7000,
       });
@@ -1931,7 +1931,7 @@ Attendees.datagridUpdate = {
   familyAttendeeDatagridConfig: {
     dataSource: {
       store: new DevExpress.data.CustomStore({
-        key: "id",
+        key: 'id',
         load: () => {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
         },
@@ -1959,7 +1959,7 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, "success", 2000);
             },
           });
@@ -1980,7 +1980,7 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, "success", 2000);
             },
           });
@@ -2288,7 +2288,6 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               itemType: 'button',
-              horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -2334,7 +2333,7 @@ Attendees.datagridUpdate = {
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
-                            message: 'saving locate error',
+                            message: 'saving Family error',
                             width: 500,
                             position: {
                               my: 'center',
@@ -2386,10 +2385,10 @@ Attendees.datagridUpdate = {
                         familyAttrButton.remove();
                       },
                       error: (response) => {
-                        console.log('Failed to save data for Family attr Form in Popup, error: ', response);
+                        console.log('Failed to delete Family in Popup, error: ', response);
                         DevExpress.ui.notify(
                           {
-                            message: 'saving locate error',
+                            message: 'delete Family error',
                             width: 500,
                             position: {
                               my: 'center',
@@ -2406,7 +2405,7 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               name: 'familyMemberCount',
-              helpText: 'Close the popup and family members are listed in the table',
+              helpText: 'Close the popup to see family members in the table',
               label: {
                 text: 'family member count',
               },
@@ -2415,7 +2414,7 @@ Attendees.datagridUpdate = {
               },
             },
           ],
-        }).dxForm("instance");
+        }).dxForm('instance');
         e.append(formContainer);
       }
     };

@@ -1386,6 +1386,9 @@
         },
         "contacts": {},
         "hostname": "192.168.99.100",
+        "all_access_assemblies": [
+          "cfcch_congregation_data"
+        ],
         "counselor": [
           "data_counselor"
         ],
@@ -1834,6 +1837,7 @@
       "created": "2020-04-11T18:32:56.905Z",
       "modified": "2020-06-19T15:44:44.716Z",
       "is_removed": false,
+      "organization": 1,
       "display_name": "CFCC Main",
       "slug": "d7c8Fd_main",
       "infos": {
@@ -1848,6 +1852,7 @@
       "created": "1999-04-11T18:33:36.875Z",
       "modified": "2020-04-20T15:51:39.797Z",
       "is_removed": false,
+      "organization": 2,
       "display_name": "\u5929\u4e0a",
       "slug": "faBd6C_sky",
       "infos": {
@@ -1862,6 +1867,7 @@
       "created": "2020-06-19T15:45:05.925Z",
       "modified": "2020-06-19T15:45:05.925Z",
       "is_removed": false,
+      "organization": 1,
       "display_name": "Sonoma State University",
       "slug": "sonoma_state_university",
       "infos": {

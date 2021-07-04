@@ -95,7 +95,7 @@ All libraries are included to facilitate offline development
 ## Todo:
 - [x] make auth group not organization specific, and counselling note check on organization
 - [ ] Past can replace Note, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance)
-- [ ] attendee detail page
+- [x] attendee detail page
   - [x] server side process of Attendees list & search page
   - [x] AttendingMeet form of Attendee update page
   - [x] FamilyAttendee datagrid of Attendee update page
@@ -105,7 +105,7 @@ All libraries are included to facilitate offline development
   - [x] Generic models such as Note, Place, Past need to have organization column instead of infos
   - [x] Add Past as Note
   - [x] Create new instance of Attendee & attending update page with params with meet
-  - [ ] delete function for human error
+  - [x] delete function for human error
   - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] implement secret/private relation/past general
 - [ ] Move single attendee update page out of data assembly
