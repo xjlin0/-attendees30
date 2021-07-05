@@ -2046,6 +2046,24 @@ Attendees.datagridUpdate = {
             },
           });
         },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
+            method: 'DELETE',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'family member removed',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'info', 2000);
+            },
+          });
+        },
       }),
     },
     onInitNewRow: (e) => {
