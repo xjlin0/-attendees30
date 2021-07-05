@@ -5,9 +5,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.exceptions import PermissionDenied
 
-from attendees.occasions.models import Attendance
 from attendees.persons.models import Attending, Attendee
 from attendees.persons.serializers.attending_minimal_serializer import AttendingMinimalSerializer
+from attendees.persons.services import AttendingService
 
 
 class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
@@ -60,17 +60,11 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         if self.request.user.privileged_to_edit(target_attendee.id):
-            for attendingmeet in instance.attendingmeet_set.all():
-                Attendance.objects.filter(gathering__meet=attendingmeet.meet, attending=attendingmeet.attending).delete()
-            instance.attendingmeet_set.all().delete()
-            registration = instance.registration
-            instance.delete()
-            if not registration.attending_set.exists():
-                registration.delete()
+            AttendingService.destroy_with_associations(instance)
 
         else:
             time.sleep(2)
-            raise PermissionDenied(detail='Not allowed to delete attendings')
+            raise PermissionDenied(detail=f'Not allowed to delete {instance.__class__.__name__}')
 
 
 api_attendee_attendings_viewset = ApiAttendeeAttendingsViewSet

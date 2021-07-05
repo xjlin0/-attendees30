@@ -2425,9 +2425,10 @@ Attendees.datagridUpdate = {
             {
               colSpan: 1,
               itemType: 'button',
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
-                  class: 'attendee-form-submits',    // for toggling editing mode
+                  class: 'attendee-form-submits family-delete-button',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
                 hide: !familyAttrButton.value,
@@ -2501,6 +2502,7 @@ Attendees.datagridUpdate = {
       const fetchedFamily = families.find(x => x.id === familyAttrButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedFamily) {
         $('p.family-member-count')[0].textContent = fetchedFamily.attendees.length;
+        if (fetchedFamily.attendees.length > 1) {$('.family-delete-button').text('Remove attendee from Family')}
         Attendees.datagridUpdate.familyAttrPopupDxFormData = fetchedFamily;
         Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', fetchedFamily);
       } else {
@@ -2508,6 +2510,7 @@ Attendees.datagridUpdate = {
           url: $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/',
           success: (response) => {
             $('p.family-member-count')[0].textContent = response.attendees.length;
+            if (response.attendees.length > 1) {$('.family-delete-button').text('Remove attendee from Family')}
             Attendees.datagridUpdate.familyAttrPopupDxFormData = response;
             Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response);
           },

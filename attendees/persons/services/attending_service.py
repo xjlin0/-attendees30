@@ -1,3 +1,4 @@
+from attendees.occasions.models import Attendance
 from attendees.persons.models import Attending
 from django.db.models.expressions import F
 from django.db.models import Q
@@ -66,3 +67,17 @@ class AttendingService:
                 meets__assembly__slug=assembly_slug,
             ).distinct()
 
+    @staticmethod
+    def destroy_with_associations(attending):
+        """
+        No permission check, delete the attending with attendingmeets and attendances
+        :param attending: an attending object
+        :return: None
+        """
+        for attendingmeet in attending.attendingmeet_set.all():
+            Attendance.objects.filter(gathering__meet=attendingmeet.meet, attending=attendingmeet.attending).delete()
+        attending.attendingmeet_set.all().delete()
+        registration = attending.registration
+        attending.delete()
+        if not registration.attending_set.exists():
+            registration.delete()

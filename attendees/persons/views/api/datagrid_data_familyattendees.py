@@ -24,7 +24,7 @@ class ApiDatagridDataFamilyAttendeesViewsSet(LoginRequiredMixin, SpyGuard, views
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         target_familyattendee_id = self.kwargs.get('pk')
         target_attendee_familyattendees = FamilyAttendee.objects.filter(
-            family__in=target_attendee.families.all()
+            family__in=target_attendee.families.filter(familyattendee__is_removed=False),
         ).order_by(  # Todo: 20210516 order by attendee's family attendee display_order, such as order_by annotate()
             '-family__created', 'role__display_order',
         )  # Todo: 20210515 add filter by start/finish for end users but not data-admins

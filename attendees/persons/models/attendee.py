@@ -147,5 +147,13 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         #     self.infos['names']['unaccented'] = converter(name)
         super(Attendee, self).save(*args, **kwargs)
 
+    def all_names(self):
+        return [
+            self.first_name,
+            self.last_name,
+            self.last_name2,
+            self.first_name2,
+        ] + list(self.infos['names'].values())
+
     # class ReadonlyMeta:
     #     readonly = ["full_name"]  # generated column
