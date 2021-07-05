@@ -3,8 +3,9 @@ import time
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import PermissionDenied
 
+from attendees.occasions.models import Attendance
 from attendees.persons.models import Attending, Attendee
 from attendees.persons.serializers.attending_minimal_serializer import AttendingMinimalSerializer
 
@@ -45,7 +46,7 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
         else:
             time.sleep(2)
-            raise AuthenticationFailed(detail='Are you data admin or counselor?')
+            raise PermissionDenied(detail='Are you data admin or counselor?')
 
     def perform_create(self, serializer):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
@@ -54,7 +55,21 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
         else:
             time.sleep(2)
-            raise AuthenticationFailed(detail="Can't create attending across different organization")
+            raise PermissionDenied(detail="Can't create attending across different organization")
+
+    def perform_destroy(self, instance):
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        if self.request.user.privileged_to_edit(target_attendee.id):
+            for attendingmeet in instance.attendingmeet_set.all():
+                Attendance.objects.filter(gathering__meet=attendingmeet.meet, attending=attendingmeet.attending).delete()
+            instance.attendingmeet_set.all().delete()
+            if instance.registration and len(instance.registration.attending_set.all()) == 1 and instance.registration.attending_set.first() == instance:
+                instance.registration.delete()
+            instance.delete()
+
+        else:
+            time.sleep(2)
+            raise PermissionDenied(detail='Not allowed to delete attendings')
 
 
 api_attendee_attendings_viewset = ApiAttendeeAttendingsViewSet

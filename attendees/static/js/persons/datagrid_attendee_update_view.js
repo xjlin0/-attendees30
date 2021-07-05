@@ -538,10 +538,14 @@ Attendees.datagridUpdate = {
             template: (data, itemElement) => {
                   const attendings = data.editorOptions && data.editorOptions.value || [];
                   Attendees.datagridUpdate.attendingsData = attendings.reduce((sum, now) => {
-                    return {
-                      ...sum,
-                      [now.attending_id]: now,
-                    };
+                    if (now.attending_is_removed) {
+                      return {...sum}
+                    }else {
+                      return {
+                        ...sum,
+                        [now.attending_id]: now,
+                      };
+                    }
                   }, {});
                   Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), itemElement);
             },
@@ -1089,7 +1093,7 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.attendingPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.attendingDefaults,
-          colCount: 2,
+          colCount: 3,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: '*',
@@ -1133,11 +1137,6 @@ Attendees.datagridUpdate = {
               },
             },
             {
-              dataField: 'category',
-              helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
-              isRequired: true,
-            },
-            {
               dataField: 'registration.registrant',
               validationRules: [
                 {
@@ -1169,6 +1168,11 @@ Attendees.datagridUpdate = {
                 },
                 dataSource: Attendees.datagridUpdate.attendeeSource,
               },
+            },
+            {
+              dataField: 'category',
+              helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
+              isRequired: true,
             },
             {
               itemType: 'button',
@@ -1229,6 +1233,58 @@ Attendees.datagridUpdate = {
                     }
                   });
                 }
+              },
+            },
+            {
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              name: 'deleteAttendingButton',
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: 'Delete Attending',
+                icon: 'trash',
+                hint: 'delete the current Attending in the popup',
+                type: 'danger',
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if (confirm('Are you sure to delete the attending and all its registrations&activities? Instead, setting "finish" dates in all its activities in the table is usually enough!')) {
+                    $.ajax({
+                      url: ajaxUrl,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.attendingPopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'attending deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'info', 2500);
+                        attendingButton.remove();
+                        Attendees.datagridUpdate.attendingMeetDatagrid.refresh();
+                      },
+                      error: (response) => {
+                        console.log('Failed to delete attending in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'delete attending error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'error', 5000);
+                      },
+                    });
+                  }
+                },
               },
             },
           ]
@@ -3220,6 +3276,9 @@ Attendees.datagridUpdate = {
     popup: {
       showTitle: true,
       title: 'Editing Attendee activities'
+    },
+    texts: {
+      confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
     },
     form: {
       items: [
