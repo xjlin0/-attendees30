@@ -619,7 +619,7 @@ Attendees.datagridUpdate = {
                         at: 'center',
                         of: window,
                       },
-                    }, "error", 5000);
+                    }, 'error', 5000);
                 },
               });
             }
@@ -1583,12 +1583,12 @@ Attendees.datagridUpdate = {
                   label: {
                     text: 'State',
                   },
-                  editorType: "dxLookup",
+                  editorType: 'dxLookup',
                   editorOptions: {
                     elementAttr: {
                       class: 'state-lookup-search',  // calling closing by the parent
                     },
-                    valueExpr: "id",
+                    valueExpr: 'id',
                     displayExpr: (item) => {
                       return item ? item.name + ", " + item.country_name : null;
                     },
@@ -2106,7 +2106,7 @@ Attendees.datagridUpdate = {
     },
     columns: [
       {
-        dataField: "family.id",
+        dataField: 'family.id',
         validationRules: [{type: 'required'}],
         caption: 'Family',
         groupIndex: 0,
@@ -2158,7 +2158,7 @@ Attendees.datagridUpdate = {
         }
       },
       {
-        caption: "Full name",
+        caption: 'Full name',
         dataField: 'attendee.infos.names.original',
         allowEditing: false,
         cellTemplate: (container, rowData) => {
@@ -2897,7 +2897,7 @@ Attendees.datagridUpdate = {
             };
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
-              method: "POST",
+              method: 'POST',
               dataType: 'json',
               contentType: 'application/json; charset=utf-8',
               data: JSON.stringify({...values, ...subject}),
@@ -2952,7 +2952,7 @@ Attendees.datagridUpdate = {
               at: 'center',
               of: window,
             },
-          }, "info", 3000);
+          }, 'info', 3000);
       },
       allowColumnReordering: true,
       columnAutoWidth: true,

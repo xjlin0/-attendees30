@@ -63,9 +63,10 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
             for attendingmeet in instance.attendingmeet_set.all():
                 Attendance.objects.filter(gathering__meet=attendingmeet.meet, attending=attendingmeet.attending).delete()
             instance.attendingmeet_set.all().delete()
-            if instance.registration and len(instance.registration.attending_set.all()) == 1 and instance.registration.attending_set.first() == instance:
-                instance.registration.delete()
+            registration = instance.registration
             instance.delete()
+            if not registration.attending_set.exists():
+                registration.delete()
 
         else:
             time.sleep(2)

@@ -1,9 +1,11 @@
+import time
 from django.contrib.postgres.aggregates.general import ArrayAgg, JSONBAgg
 from django.db.models.functions import Concat, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Func, Value
 from django.db.models.expressions import F, Q
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -72,6 +74,14 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
             )
 
         return qs.filter(division__organization=current_user.organization)
+
+    def perform_destroy(self, instance):
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        if self.request.user.privileged_to_edit(target_attendee.id):  # intentionally forbid user delete him/herself
+            pass
+        else:
+            time.sleep(2)
+            raise PermissionDenied(detail='Not allowed to delete attendee')
 
 
 api_datagrid_data_attendee_viewset = ApiDatagridDataAttendeeViewSet
