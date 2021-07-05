@@ -1,12 +1,15 @@
+from pathlib import Path
+
 from django.contrib.postgres.aggregates.general import ArrayAgg
-from django.db.models import Q, F, Func, Case, When, Value
+from django.db.models import Q, F, Func, Case, When
 from django.db.models.expressions import OrderBy
 from django.http import Http404
 
 from rest_framework.utils import json
 
 from attendees.occasions.models import Meet
-from attendees.persons.models import Attendee
+from attendees.persons.models import Attendee, Relationship, Registration
+from attendees.persons.services import AttendingService, FamilyService
 
 
 class AttendeeService:
@@ -190,3 +193,36 @@ class AttendeeService:
                 field_converter[meet.slug] = 'attendings__meets__display_name'
 
         return field_converter.get(query_field, query_field).replace('.', '__')
+
+    @staticmethod
+    def destroy_with_associations(attendee):
+        for attending in attendee.attendings.filter(is_removed=False):
+            AttendingService.destroy_with_associations(attending)
+
+        attendee.pasts.filter(is_removed=False).delete()
+
+        Relationship.objects.filter(
+            (Q(from_attendee=attendee)
+             |
+             Q(to_attendee=attendee)),
+            is_removed=False,
+        ).delete()
+
+        attendee.places.filter(is_removed=False).delete()
+
+        for family in attendee.families.filter(is_removed=False):
+            FamilyService.destroy_with_associations(family, attendee)
+
+        for registration in Registration.objects.filter(registrant=attendee, is_removed=False):
+            registration.registrant = None
+            if not registration.attending_set.filter(is_removed=False).exist():
+                registration.delete()
+            else:
+                registration.save()
+
+        old_photo = attendee.photo
+        if old_photo:
+            old_file = Path(old_photo.path)
+            old_file.unlink(missing_ok=True)
+
+        attendee.delete()

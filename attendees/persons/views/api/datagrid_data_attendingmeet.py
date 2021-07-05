@@ -59,7 +59,7 @@ class ApiDatagridDataAttendingMeetViewSet(LoginRequiredMixin, SpyGuard, ModelVie
             instance.delete()
         else:
             time.sleep(2)
-            raise PermissionDenied(detail='Not allowed to delete families')
+            raise PermissionDenied(detail=f'Not allowed to delete {instance.__class__.__name__}')
 
 
 api_datagrid_data_attendingmeet_viewset = ApiDatagridDataAttendingMeetViewSet

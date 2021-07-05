@@ -18,10 +18,10 @@ class FamilyService:
         """
 
         if family.familyattendee_set.count() < 2 and family.familyattendee_set.first() == attendee:
-            Relationship.objects.filter(in_family=family.id, relation__consanguinity=False).delete()
-            Relationship.objects.filter(in_family=family.id, relation__consanguinity=True).update(in_family=None)
-            family.places.all().delete()
-            family.familyattendee_set.all().delete()
+            Relationship.objects.filter(in_family=family.id, relation__consanguinity=False, is_removed=False).delete()
+            Relationship.objects.filter(in_family=family.id, relation__consanguinity=True, is_removed=False).update(in_family=None)
+            family.places.filter(is_removed=False).delete()
+            family.familyattendee_set.filter(is_removed=False).delete()
             family.delete()
 
         else:
@@ -30,5 +30,5 @@ class FamilyService:
                 family_name.replace(attendee_name, '')
             family.display_name = family_name
             family.save()
-            Relationship.objects.filter(from_attendee=attendee, in_family=family.id, relation__consanguinity=False).delete()
-            family.familyattendee_set.filter(attendee=attendee).delete()
+            Relationship.objects.filter(from_attendee=attendee, in_family=family.id, relation__consanguinity=False, is_removed=False).delete()
+            family.familyattendee_set.filter(attendee=attendee, is_removed=False).delete()

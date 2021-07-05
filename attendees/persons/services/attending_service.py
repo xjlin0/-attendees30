@@ -70,14 +70,19 @@ class AttendingService:
     @staticmethod
     def destroy_with_associations(attending):
         """
-        No permission check, delete the attending with attendingmeets and attendances
+        No permission check, delete the attending with attendingmeets, attendances and self registration without attendings
         :param attending: an attending object
         :return: None
         """
-        for attendingmeet in attending.attendingmeet_set.all():
-            Attendance.objects.filter(gathering__meet=attendingmeet.meet, attending=attendingmeet.attending).delete()
-        attending.attendingmeet_set.all().delete()
+        for attendingmeet in attending.attendingmeet_set.filter(is_removed=False):
+            Attendance.objects.filter(
+                gathering__meet=attendingmeet.meet,
+                attending=attendingmeet.attending,
+                is_removed=False,
+            ).delete()
+        attending.attendingmeet_set.filter(is_removed=False).delete()
         registration = attending.registration
-        attending.delete()
-        if not registration.attending_set.exists():
+        attending.registration = None
+        if registration and registration.registrant == attending.attendee and not registration.attending_set.filter(is_removed=False).exists():
             registration.delete()
+        attending.delete()
