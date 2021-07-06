@@ -3,10 +3,11 @@ import time
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import PermissionDenied
 
 from attendees.persons.models import Attending, Attendee
 from attendees.persons.serializers.attending_minimal_serializer import AttendingMinimalSerializer
+from attendees.persons.services import AttendingService
 
 
 class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
@@ -45,7 +46,7 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
         else:
             time.sleep(2)
-            raise AuthenticationFailed(detail='Are you data admin or counselor?')
+            raise PermissionDenied(detail='Are you data admin or counselor?')
 
     def perform_create(self, serializer):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
@@ -54,7 +55,16 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
         else:
             time.sleep(2)
-            raise AuthenticationFailed(detail="Can't create attending across different organization")
+            raise PermissionDenied(detail="Can't create attending across different organization")
+
+    def perform_destroy(self, instance):
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        if self.request.user.privileged_to_edit(target_attendee.id):
+            AttendingService.destroy_with_associations(instance)
+
+        else:
+            time.sleep(2)
+            raise PermissionDenied(detail=f'Not allowed to delete {instance.__class__.__name__}')
 
 
 api_attendee_attendings_viewset = ApiAttendeeAttendingsViewSet

@@ -18,10 +18,13 @@ Attendees.datagridUpdate = {
   attendingPopup: null,  // for show/hide popup
   attendingsData: {},
   attendingDefaults: {
-    // assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
     category: 'primary',
-    // start: new Date().toISOString(),
-    // finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
+  },
+  attendingmeetDefaults: {
+    assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
+    category: 'primary',
+    start: new Date().toISOString(),
+    finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now
   },
   // addressId: '', // for sending address data by AJAX
   placePopup: null, // for show/hide popup
@@ -37,6 +40,7 @@ Attendees.datagridUpdate = {
   },
   familyAttendeeDatagrid: null,
   familyAttrPopupDxForm: null,
+  familyAttrPopupDxFormData: {},
   familyAttrPopup: null,
   familyAttrDefaults: {
     display_order: 0,
@@ -46,43 +50,44 @@ Attendees.datagridUpdate = {
   },
 
   init: () => {
-    console.log("/static/js/persons/datagrid_attendee_update_view.js");
+    console.log('/static/js/persons/datagrid_attendee_update_view.js');
     Attendees.datagridUpdate.displayNotifierFromSearchParam('success');
     Attendees.datagridUpdate.initAttendeeForm();
   },
 
   initListeners: () => {
-    $("div.nav-buttons").on("click", "input#custom-control-edit-checkbox", e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
-    $("div.form-container").on("click", "button.attending-button", e => Attendees.datagridUpdate.initAttendingPopupDxForm(e));
-    $("div.form-container").on("click", "button.place-button", e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
-    $("div.form-container").on("click", "button.family-button", e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
+    $("div.nav-buttons").on('click', 'input#custom-control-edit-checkbox', e => Attendees.datagridUpdate.toggleEditing(Attendees.utilities.toggleEditingAndReturnStatus(e)));
+    $("div.form-container").on('click', 'button.attending-button', e => Attendees.datagridUpdate.initAttendingPopupDxForm(e));
+    $("div.form-container").on('click', 'button.place-button', e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
+    $("div.form-container").on('click', 'button.family-button', e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
     Attendees.datagridUpdate.attachContactAddButton();
     // add listeners for Family, counselling, etc.
   },
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-delete').dxButton('instance').option('disabled', !enabled);
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
-    Attendees.datagridUpdate.attendeeMainDxForm.option("readOnly", !enabled);
-    Attendees.datagridUpdate.attendeePhotoFileUploader.option("disabled", !enabled);
+    Attendees.datagridUpdate.attendeeMainDxForm.option('readOnly', !enabled);
+    Attendees.datagridUpdate.attendeePhotoFileUploader.option('disabled', !enabled);
 
     if (enabled) {
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', true);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
     } else {
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.last_name2", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.first_name2", "visible", false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("attendee.infos.names.original", "visible", true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption("family.id", "groupIndex", 0);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', false);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', true);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('family.id', 'groupIndex', 0);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
@@ -91,14 +96,17 @@ Attendees.datagridUpdate = {
       mode: 'cell',
       allowUpdating: enabled,
       allowAdding: enabled,
-      allowDeleting: false,
+      allowDeleting: enabled,
+      texts: {
+        confirmDeleteMessage: 'Are you sure to delete it? Instead, setting the "finish" date is usually enough!',
+      },
     };
-    Attendees.datagridUpdate.familyAttendeeDatagrid.option("editing", cellEditingArgs);
-    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option("editing", cellEditingArgs);
-    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option("editing", cellEditingArgs);
-    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option("editing", cellEditingArgs);
-    Attendees.datagridUpdate.noteDatagrid && Attendees.datagridUpdate.noteDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.noteEditingArgs});
-    Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.option("editing", {...cellEditingArgs, ...Attendees.datagridUpdate.attendingMeetEditingArgs});
+    Attendees.datagridUpdate.familyAttendeeDatagrid.option('editing', cellEditingArgs);
+    Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.option('editing', cellEditingArgs);
+    Attendees.datagridUpdate.educationDatagrid && Attendees.datagridUpdate.educationDatagrid.option('editing', cellEditingArgs);
+    Attendees.datagridUpdate.statusDatagrid && Attendees.datagridUpdate.statusDatagrid.option('editing', cellEditingArgs);
+    Attendees.datagridUpdate.noteDatagrid && Attendees.datagridUpdate.noteDatagrid.option('editing', {...cellEditingArgs, ...Attendees.datagridUpdate.noteEditingArgs});
+    Attendees.datagridUpdate.attendingMeetDatagrid && Attendees.datagridUpdate.attendingMeetDatagrid.option('editing', {...cellEditingArgs, ...Attendees.datagridUpdate.attendingMeetEditingArgs});
   },
 
   displayNotifierFromSearchParam: (successParamName) => {
@@ -112,7 +120,7 @@ Attendees.datagridUpdate = {
             my: 'center',
             at: 'center',
             of: window,
-          }
+          },
         }, 'success', 2500);
     }
   },
@@ -128,8 +136,8 @@ Attendees.datagridUpdate = {
     // Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
     $.ajaxSetup({
       headers: {
-        "X-CSRFToken": document.querySelector('input[name="csrfmiddlewaretoken"]').value,
-        "X-Target-Attendee-Id": Attendees.datagridUpdate.attendeeId,
+        'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+        'X-Target-Attendee-Id': Attendees.datagridUpdate.attendeeId,
       }
     });
 
@@ -139,7 +147,7 @@ Attendees.datagridUpdate = {
       window.top.document.title = 'New Attendee';
       Attendees.utilities.editingEnabled = true;
       Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
-      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm('instance');
       Attendees.datagridUpdate.attendeeFormConfigs.formData = Attendees.datagridUpdate.attendeeMainDxFormDefault;
       Attendees.datagridUpdate.populateBasicInfoBlock({});
     } else {
@@ -151,7 +159,7 @@ Attendees.datagridUpdate = {
           Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : Attendees.datagridUpdate.attendeeMainDxFormDefault;
           $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
           window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
-          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm('instance');
           Attendees.datagridUpdate.populateBasicInfoBlock();
           Attendees.datagridUpdate.initListeners();
           Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
@@ -174,7 +182,7 @@ Attendees.datagridUpdate = {
         text: 'Add more contact',
         icon: 'email',  // or 'fas fa-comment-dots'
         stylingMode: 'outlined',
-        type: "success",
+        type: 'success',
         height: '1.4rem',
         hint: 'add more different contacts such as more phones/emails',
         onClick: () => {
@@ -187,9 +195,9 @@ Attendees.datagridUpdate = {
     const basicItems = [
       {
         colSpan: 4,
-        itemType: "group",
+        itemType: 'group',
         cssClass: 'h6',
-        caption: "Photo",
+        caption: 'Photo',
         items: [
 
           {
@@ -235,15 +243,14 @@ Attendees.datagridUpdate = {
           },
           {
             template: (data, itemElement) => {
-              photoFileUploader = $("<div>").attr("id", "dxfu1").dxFileUploader(
+              photoFileUploader = $("<div>").attr('id', 'dxfu1').dxFileUploader(
                 {
                   name: 'photo',
                   disabled: !Attendees.utilities.editingEnabled,
-                  selectButtonText: "Select photo",
-                  //                  labelText: "hi5",
-                  accept: "image/*",
+                  selectButtonText: 'Select photo',
+                  accept: 'image/*',
                   multiple: false,
-                  uploadMode: "useForm",
+                  uploadMode: 'useForm',
                   onValueChanged: (e) => {
                     if (e.value.length) {
                       $('img.attendee-photo-img')[0].src = (window.URL ? URL : webkitURL).createObjectURL(e.value[0]);
@@ -261,9 +268,9 @@ Attendees.datagridUpdate = {
         colSpan: 20,
         colCount: 21,
         itemType: "group",
-        name: "basic-info-container",
+        name: 'basic-info-container',
         cssClass: 'h6',
-        caption: "Basic info. Fields after nick name can be removed by clearing & save.",  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
+        caption: 'Basic info. Fields after nick name can be removed by clearing & save.',  // adding element in caption by $("<span>", {text:"hi 5"}).appendTo($("span.dx-form-group-caption")[1])
         items: [],  // will populate later for dynamic contacts
       },
     ];
@@ -288,7 +295,7 @@ Attendees.datagridUpdate = {
               const familyContentTypeId = document.querySelector('div.datagrid-attendee-update').dataset.familyContenttypeId;
               const $placeUl = $('<ul>', {class: 'list-group'});
               const newButtonAttrs = {
-                text: "Add new address+",
+                text: 'Add new address+',
                 disabled: !Attendees.utilities.editingEnabled,
                 title: '+ Add the attendee to a new address',
                 // type: 'button',
@@ -332,7 +339,7 @@ Attendees.datagridUpdate = {
                 });
 
                 let $familyLi = $('<li>', {
-                  class: 'list-group-item',
+                  class: 'list-group-item ' + family.id,
                   text: family.display_name,
                 }).append($familyNewButton);
 
@@ -359,9 +366,9 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: 'Families: Except current attendee, double click table cells to edit if editing mode is on. Click away or hit Enter to save',
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
@@ -389,8 +396,8 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 24,
-            dataField: "familyattendee_set",
-            name: "familyAttendeeDatagrid",
+            dataField: 'familyattendee_set',
+            name: 'familyAttendeeDatagrid',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -404,13 +411,13 @@ Attendees.datagridUpdate = {
         apiUrlName: 'api_attendee_relationships_view_set',
         colSpan: 24,
         colCount: 24,
-        caption: "Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: 'Relationships & Access: double click table cells to edit if editing mode is on. Click away or hit Enter to save',
         cssClass: 'h6',
         itemType: "group",
         items: [
           {
             colSpan: 24,
-            dataField: "relationship_set",
+            dataField: 'relationship_set',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -426,7 +433,7 @@ Attendees.datagridUpdate = {
         colCount: 24,
         caption: "Education: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
@@ -456,13 +463,13 @@ Attendees.datagridUpdate = {
         apiUrlName: 'api_categorized_pasts_view_set_status',
         colSpan: 24,
         colCount: 24,
-        caption: "Status: double click table cells to edit if editing mode is on. Click away or hit Enter to save",
+        caption: 'Status: double click table cells to edit if editing mode is on. Click away or hit Enter to save',
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
-            dataField: "past_status_set",
+            dataField: 'past_status_set',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -487,13 +494,13 @@ Attendees.datagridUpdate = {
         apiUrlName: 'api_categorized_pasts_view_set_note',
         colSpan: 24,
         colCount: 24,
-        caption: "Other notes",
+        caption: 'Other notes',
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
-            dataField: "past_note_set",
+            dataField: 'past_note_set',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -517,13 +524,13 @@ Attendees.datagridUpdate = {
       {
         colSpan: 24,
         colCount: 24,
-        caption: "Usually joins: register groups by buttons, or click 'edit' to join activities",
+        caption: 'Usually joins: register groups by buttons, or click \'edit\' to join activities',
         cssClass: 'h6',
-        itemType: "group",
+        itemType: 'group',
         items: [
           {
             colSpan: 24,
-            dataField: "attendingmeets",
+            dataField: 'attendingmeets',
             cssClass: 'attendings-buttons',
             label: {
               text: 'registrant/group',
@@ -531,17 +538,21 @@ Attendees.datagridUpdate = {
             template: (data, itemElement) => {
                   const attendings = data.editorOptions && data.editorOptions.value || [];
                   Attendees.datagridUpdate.attendingsData = attendings.reduce((sum, now) => {
-                    return {
-                      ...sum,
-                      [now.attending_id]: now,
-                    };
+                    if (now.attending_is_removed) {
+                      return {...sum}
+                    }else {
+                      return {
+                        ...sum,
+                        [now.attending_id]: now,
+                      };
+                    }
                   }, {});
                   Attendees.datagridUpdate.populateAttendingButtons(Object.values(Attendees.datagridUpdate.attendingsData), itemElement);
             },
           },
           {
             colSpan: 24,
-            dataField: "attendingmeets_set",
+            dataField: 'attendingmeets_set',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
@@ -554,19 +565,19 @@ Attendees.datagridUpdate = {
     ];
 
     const buttonItems = [
-      { // https://supportcenter.devexpress.com/ticket/details/t681806
-        itemType: "button",
-        name: "mainAttendeeFormSubmit",
-        horizontalAlignment: "left",
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormSubmit',
+        horizontalAlignment: 'left',
         buttonOptions: {
           elementAttr: {
             class: 'attendee-form-submits',  // for toggling editing mode
           },
           disabled: !Attendees.utilities.editingEnabled,
-          text: "Save Attendee details and photo",
-          icon: "save",
-          hint: "save attendee data in the page",
-          type: "default",
+          text: 'Save Attendee details and photo',
+          icon: 'save',
+          hint: 'save attendee data in the page',
+          type: 'default',
           useSubmitBehavior: true,
           onClick: (e) => {
             if (Attendees.datagridUpdate.attendeeMainDxForm.validate().isValid && confirm('Are you sure?')) {
@@ -602,14 +613,66 @@ Attendees.datagridUpdate = {
                   console.log('formData: ', [...userData]);
                   DevExpress.ui.notify(
                     {
-                      message: "saving attendee error",
+                      message: 'saving attendee error',
                       width: 500,
                       position: {
                         my: 'center',
                         at: 'center',
                         of: window,
-                      }
-                    }, "error", 5000);
+                      },
+                    }, 'error', 5000);
+                },
+              });
+            }
+          }
+        },
+      },
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormDelete',
+        horizontalAlignment: 'left',
+        buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-delete',  // for toggling editing mode
+          },
+          disabled: !Attendees.utilities.editingEnabled,
+          text: "Delete all of Attendee's data",
+          icon: 'trash',
+          hint: "delete attendee's all data in the page",
+          type: 'danger',
+          onClick: (e) => {
+            if (confirm('Are you sure to delete all data of the attendee? Everything of the attendee will be removed.  Instead, seetting finish/deathday is usually enough!')) {
+              window.scrollTo(0,0);
+              $('div.spinner-border').show();
+              $.ajax({
+                url: Attendees.datagridUpdate.attendeeAjaxUrl,
+                method: 'DELETE',
+                success: (response) => {
+                  $('div.spinner-border').hide();
+                  DevExpress.ui.notify(
+                    {
+                      message: 'delete attendee success',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'info', 2500);
+                  window.location = new URL(window.location.origin);
+                },
+                error: (response) => {
+                  console.log('Failed to delete data for main AttendeeForm, error: ', response);
+                  DevExpress.ui.notify(
+                    {
+                      message: 'saving attendee error',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'error', 5000);
                 },
               });
             }
@@ -700,11 +763,11 @@ Attendees.datagridUpdate = {
             message: 'first or last name is required'
           },
           {
-            type: "stringLength",
+            type: 'stringLength',
             reevaluate: true,
             max: 25,
-            message: "No more than 25 characters"
-          }
+            message: 'No more than 25 characters'
+          },
         ],
       },
       {
@@ -720,10 +783,10 @@ Attendees.datagridUpdate = {
             message: 'first or last name is required'
           },
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 25,
-            message: "No more than 25 characters"
-          }
+            message: 'No more than 25 characters'
+          },
         ],
       },
       {
@@ -763,7 +826,7 @@ Attendees.datagridUpdate = {
             message: 'first or last name is required'
           },
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 8,
             message: "No more than 8 characters"
           }
@@ -779,7 +842,7 @@ Attendees.datagridUpdate = {
             message: 'first or last name is required'
           },
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 12,
             message: "No more than 12 characters"
           }
@@ -844,7 +907,6 @@ Attendees.datagridUpdate = {
         label: {
           text: 'phone1',
         },
-        // editorOptions: {mask: "+1 (X00) 000-0000",}
       },
       {
         colSpan: 7,
@@ -852,7 +914,6 @@ Attendees.datagridUpdate = {
         label: {
           text: 'phone2',
         },
-        // editorOptions: {mask: "+1 (X00) 000-0000",}
       },
       {
         colSpan: 7,
@@ -935,7 +996,7 @@ Attendees.datagridUpdate = {
               {
                 type: 'stringLength',
                 min: 2,
-                message: "Contact method can't be less than 2 characters"
+                message: 'Contact method can\'t be less than 2 characters'
               },
               {
                 type: 'custom',
@@ -979,7 +1040,7 @@ Attendees.datagridUpdate = {
               disabled: !Attendees.utilities.editingEnabled,
               text: 'Save Custom Contact',
               icon: 'save',
-              hint: "save Custom Contact in the popup",
+              hint: 'save Custom Contact in the popup',
               type: 'default',
               useSubmitBehavior: false,
               onClick: (e) => {
@@ -1008,7 +1069,7 @@ Attendees.datagridUpdate = {
                             my: 'center',
                             at: 'center',
                             of: window,
-                          }
+                          },
                         }, 'success', 2500);
                     },
                     error: (response) => {
@@ -1016,13 +1077,13 @@ Attendees.datagridUpdate = {
                       Attendees.datagridUpdate.contactPopup.hide();
                       DevExpress.ui.notify(
                         {
-                          message: "saving custom contact error",
+                          message: 'saving custom contact error',
                           width: 500,
                           position: {
                             my: 'center',
                             at: 'center',
                             of: window,
-                          }
+                          },
                         }, 'error', 5000);
                     },
                   });
@@ -1031,7 +1092,7 @@ Attendees.datagridUpdate = {
             },
           },
         ],
-      }).dxForm("instance");
+      }).dxForm('instance');
       e.append(formContainer);
     },
   },
@@ -1082,7 +1143,7 @@ Attendees.datagridUpdate = {
         Attendees.datagridUpdate.attendingPopupDxForm = formContainer.dxForm({
           readOnly: !Attendees.utilities.editingEnabled,
           formData: Attendees.datagridUpdate.attendingDefaults,
-          colCount: 2,
+          colCount: 3,
           scrollingEnabled: true,
           showColonAfterLabel: false,
           requiredMark: '*',
@@ -1126,11 +1187,6 @@ Attendees.datagridUpdate = {
               },
             },
             {
-              dataField: 'category',
-              helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
-              isRequired: true,
-            },
-            {
               dataField: 'registration.registrant',
               validationRules: [
                 {
@@ -1162,6 +1218,11 @@ Attendees.datagridUpdate = {
                 },
                 dataSource: Attendees.datagridUpdate.attendeeSource,
               },
+            },
+            {
+              dataField: 'category',
+              helpText: 'help text can be changed in /static/js /persons /datagrid_attendee_update_view.js',
+              isRequired: true,
             },
             {
               itemType: 'button',
@@ -1198,7 +1259,7 @@ Attendees.datagridUpdate = {
                                 my: 'center',
                                 at: 'center',
                                 of: window,
-                              }
+                              },
                             }, 'success', 2500);
                           response.attending_id = response.id;
                           Attendees.datagridUpdate.attendingsData[response.id] = response;
@@ -1215,13 +1276,65 @@ Attendees.datagridUpdate = {
                                 my: 'center',
                                 at: 'center',
                                 of: window,
-                              }
+                              },
                             }, 'error', 5000);
                         },
                       });
                     }
                   });
                 }
+              },
+            },
+            {
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              name: 'deleteAttendingButton',
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                text: 'Delete Attending',
+                icon: 'trash',
+                hint: 'delete the current Attending in the popup',
+                type: 'danger',
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if (confirm('Are you sure to delete the attending and all its registrations&activities? Instead, setting "finish" dates in all its activities in the table is usually enough!')) {
+                    $.ajax({
+                      url: ajaxUrl,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.attendingPopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'attending deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'info', 2500);
+                        attendingButton.remove();
+                        Attendees.datagridUpdate.attendingMeetDatagrid.refresh();
+                      },
+                      error: (response) => {
+                        console.log('Failed to delete attending in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'delete attending error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'error', 5000);
+                      },
+                    });
+                  }
+                },
               },
             },
           ]
@@ -1327,8 +1440,8 @@ Attendees.datagridUpdate = {
     return {
       visible: true,
       title: (placeButton.value ? 'Viewing ' : 'Creating ') + placeButton.dataset.desc,
-      minwidth: "20%",
-      minheight: "30%",
+      minwidth: '20%',
+      minheight: '30%',
       position: {
         my: 'center',
         at: 'center',
@@ -1344,7 +1457,6 @@ Attendees.datagridUpdate = {
       contentTemplate: (e) => {
         const formContainer = $('<div class="locate-form">');
         Attendees.datagridUpdate.placePopupDxForm = formContainer.dxForm({
-          // repaintChangesOnly: true,  // https://github.com/DevExpress/DevExtreme/issues/7295
           readOnly: !Attendees.utilities.editingEnabled,
           formData: {
             ...Attendees.datagridUpdate.placeDefaults,
@@ -1354,72 +1466,72 @@ Attendees.datagridUpdate = {
           colCount: 12,
           scrollingEnabled: true,
           showColonAfterLabel: false,
-          requiredMark: "*",
-          labelLocation: "top",
-          minColWidth: "20%",
+          requiredMark: '*',
+          labelLocation: 'top',
+          minColWidth: '20%',
           showValidationSummary: true,
           items: [
             {
               colSpan: 3,
-              dataField: "display_name",
+              dataField: 'display_name',
               // label: {
               //   text: 'Dwelling Reason',
               // },
               helpText: 'Why attendee occupy here',
               isRequired: true,
               editorOptions: {
-                placeholder: "Main/parent/past, etc",
+                placeholder: 'Main/parent/past, etc',
               },
             },
             {
               colSpan: 3,
-              dataField: "display_order",
+              dataField: 'display_order',
               helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
-                placeholder: "0/1/2/3, etc",
+                placeholder: '0/1/2/3, etc',
               },
               validationRules: [
                 {
-                  type: "range",
+                  type: 'range',
                   max: 32767,
                   min: 0,
-                  message: "display_order should be between 0 and 32767"
+                  message: 'display_order should be between 0 and 32767'
                 },
                 {
-                  type: "required",
-                  message: "display_order is required"
+                  type: 'required',
+                  message: 'display_order is required'
                 },
               ],
             },
             {
               colSpan: 3,
-              dataField: "start",
-              editorType: "dxDateBox",
+              dataField: 'start',
+              editorType: 'dxDateBox',
               label: {
                 text: 'stay from',
               },
               helpText: 'When moved in?',
               editorOptions: {
-                type: "date",
+                type: 'date',
                 showClearButton: true,
-                dateSerializationFormat: "yyyy-MM-dd",
-                placeholder: "click calendar",
+                dateSerializationFormat: 'yyyy-MM-dd',
+                placeholder: 'click calendar',
               },
             },
             {
               colSpan: 3,
-              dataField: "finish",
-              editorType: "dxDateBox",
+              dataField: 'finish',
+              editorType: 'dxDateBox',
               label: {
                 text: 'stay until',
               },
               helpText: 'When moved out?',
               editorOptions: {
-                type: "date",
+                type: 'date',
                 showClearButton: true,
-                dateSerializationFormat: "yyyy-MM-dd",
-                placeholder: "click calendar",
+                dateSerializationFormat: 'yyyy-MM-dd',
+                placeholder: 'click calendar',
               },
             },
             {
@@ -1459,7 +1571,7 @@ Attendees.datagridUpdate = {
               },
             },
             {
-              itemType: "group",
+              itemType: 'group',
               visible: false,
               name: 'NewAddressItems',
               colSpan: 12,
@@ -1467,7 +1579,7 @@ Attendees.datagridUpdate = {
               items: [
                 {
                   colSpan: 4,
-                  dataField: "address.street_number",
+                  dataField: 'address.street_number',
                   helpText: 'no road name please',
                   label: {
                     text: 'Door number',
@@ -1478,7 +1590,7 @@ Attendees.datagridUpdate = {
                 },
                 {
                   colSpan: 4,
-                  dataField: "address.route",
+                  dataField: 'address.route',
                   helpText: 'no door number please',
                   label: {
                     text: 'Road',
@@ -1489,19 +1601,19 @@ Attendees.datagridUpdate = {
                 },
                 {
                   colSpan: 4,
-                  dataField: "address.extra",
+                  dataField: 'address.extra',
                   helpText: 'suite/floor number, etc',
                   label: {
                     text: 'Extra: unit/apt',
                   },
                   editorOptions: {
-                    placeholder: "example: Apt 2G",
+                    placeholder: 'example: Apt 2G',
                   },
                 },
                 {
                   colSpan: 4,
-                  dataField: "address.city",
-                  name: "locality",
+                  dataField: 'address.city',
+                  name: 'locality',
                   helpText: 'Village/Town name',
                   label: {
                     text: 'City',
@@ -1512,7 +1624,7 @@ Attendees.datagridUpdate = {
                 },
                 {
                   colSpan: 4,
-                  dataField: "address.postal_code",
+                  dataField: 'address.postal_code',
                   helpText: 'ZIP code',
                   editorOptions: {
                     placeholder: "example: '94106'",
@@ -1520,17 +1632,16 @@ Attendees.datagridUpdate = {
                 },
                 {
                   colSpan: 4,
-                  dataField: "address.state_id",
-                  //              name: "existingAddressSelector",
+                  dataField: 'address.state_id',
                   label: {
                     text: 'State',
                   },
-                  editorType: "dxLookup",
+                  editorType: 'dxLookup',
                   editorOptions: {
                     elementAttr: {
                       class: 'state-lookup-search',  // calling closing by the parent
                     },
-                    valueExpr: "id",
+                    valueExpr: 'id',
                     displayExpr: (item) => {
                       return item ? item.name + ", " + item.country_name : null;
                     },
@@ -1557,20 +1668,20 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
-              itemType: "button",
-              horizontalAlignment: "left",
+              itemType: 'button',
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Save Place",
-                icon: "save",
-                hint: "save Place data in the popup",
-                type: "default",
-                useSubmitBehavior: false,
+                text: 'Save Place',
+                icon: 'save',
+                hint: 'save Place data in the popup',
+                type: 'default',
+                useSubmitBehavior: true,
                 onClick: (clickEvent) => {
-                  if (confirm('are you sure to submit the popup Place Form?')) {
+                  if (confirm('Are you sure to submit the popup Place Form?')) {
                     const userData = Attendees.datagridUpdate.placePopupDxForm.option('formData');
                     const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
 
@@ -1665,109 +1776,114 @@ Attendees.datagridUpdate = {
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "editAddressButton",
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              name: 'editAddressButton',
               visible: true,
-              horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Edit the address",
-                icon: "edit",
-                hint: "Modifying the current address, without creating one",
-                type: "success",
+                text: 'Edit the address',
+                icon: 'edit',
+                hint: 'Modifying the current address, without creating one',
+                type: 'success',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to edit the current address?")) {
+                  if (confirm('Are you sure to edit the current address?')) {
                     Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('editAddressButton').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('newAddressButton').option('visible', false);
                   }
                 },
               },
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "newAddressButton",
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              name: 'newAddressButton',
               visible: true,
-              horizontalAlignment: "left",
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Add new address",
-                icon: "home",
-                hint: "Can't find exiting address, add a new one here",
-                type: "normal",
+                text: 'Add new address',
+                icon: 'home',
+                hint: "Can't find exiting address, add a new address here",
+                type: 'normal',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to add new address?")) {
+                  if (confirm('Are you sure to add new address?')) {
                     Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems', 'visible', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("address.id").option('disable', true);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("newAddressButton").option('visible', false);
-                    Attendees.datagridUpdate.placePopupDxForm.getEditor("editAddressButton").option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('address.id').option('disable', true);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('newAddressButton').option('visible', false);
+                    Attendees.datagridUpdate.placePopupDxForm.getEditor('editAddressButton').option('visible', false);
                     Attendees.datagridUpdate.placePopup.option('title', 'Creating Address');
                     Attendees.datagridUpdate.placePopupDxForm.option('formData').address.id = null;
-                    // Attendees.datagridUpdate.addressId = null;
                   }
                 },
               },
             },
             {
               colSpan: 3,
-              itemType: "button",
-              name: "setFamilyAddressButton",
-              visible: true,  // only show if family address is different
-              horizontalAlignment: "left",
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              name: 'deletePlaceButton',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
                 },
                 disabled: !Attendees.utilities.editingEnabled,
-                text: "Overwrite Family Address",
-                icon: "group",
-                hint: "Copy the address to attendee's first family",
-                type: "danger",
+                text: 'Delete Place',
+                icon: 'trash',
+                hint: 'delete the current place in the popup',
+                type: 'danger',
                 useSubmitBehavior: false,
                 onClick: (clickEvent) => {
-                  if (confirm("Are you sure to set the current address to the attendee's first family? (not implement yet)")) {
-                    console.log("Hi 1564 Todo 20210515: Please implement this function")
+                  if (confirm('Are you sure to delete the place? Instead, setting "move out" date is usually enough!')) {
+                    $.ajax({
+                      url: ajaxUrl,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.placePopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'Place deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'info', 2500);
+                        placeButton.remove();
+                      },
+                      error: (response) => {
+                        console.log('Failed to delete Place in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'delete place error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'error', 5000);
+                      },
+                    });
                   }
                 },
               },
             },
-//            {
-//              colSpan: 3,
-//              itemType: "button",
-//              name: "copyFamilyAddressButton",
-//              visible: true, // only show if family address is different
-//              horizontalAlignment: "left",
-//              buttonOptions: {
-//                elementAttr: {
-//                  class: 'attendee-form-submits',    // for toggling editing mode
-//                },
-//                disabled: !Attendees.utilities.editingEnabled,
-//                text: "Copy Family address",
-//                icon: "group",
-//                hint: "Copy address from attendee's first family",
-//                type: "danger",
-//                useSubmitBehavior: false,
-//                onClick: (clickEvent) => {
-//                  if(confirm("Are you sure to copy the attendee's first family? (not implement yet)")){
-//                    console.log("Hi 1509 Todo 20210515: Please implement this function")
-//                  }
-//                },
-//              },
-//            },
           ],
-        }).dxForm("instance");
+        }).dxForm('instance');
         e.append(formContainer);
       },
     };
@@ -1807,14 +1923,14 @@ Attendees.datagridUpdate = {
       const args = {};
 
       [
-        "skip",
-        "take",
-        "sort",
-        "filter",
-        "searchExpr",
-        "searchOperation",
-        "searchValue",
-        "group",
+        'skip',
+        'take',
+        'sort',
+        'filter',
+        'searchExpr',
+        'searchOperation',
+        'searchValue',
+        'group',
       ].forEach((i) => {
         if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
           args[i] = loadOptions[i];
@@ -1833,7 +1949,7 @@ Attendees.datagridUpdate = {
         },
         error: (response) => {
           console.log('ajax error here is response: ', response);
-          deferred.reject("Data Loading Error, probably time out?");
+          deferred.reject('Data Loading Error, probably time out?');
         },
         timeout: 7000,
       });
@@ -1863,14 +1979,14 @@ Attendees.datagridUpdate = {
       const args = {};
 
       [
-        "skip",
-        "take",
-        "sort",
-        "filter",
-        "searchExpr",
-        "searchOperation",
-        "searchValue",
-        "group",
+        'skip',
+        'take',
+        'sort',
+        'filter',
+        'searchExpr',
+        'searchOperation',
+        'searchValue',
+        'group',
       ].forEach((i) => {
         if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
           args[i] = loadOptions[i];
@@ -1878,7 +1994,7 @@ Attendees.datagridUpdate = {
 
       $.ajax({
         url: Attendees.datagridUpdate.attendeeAttrs.dataset.statesEndpoint,
-        dataType: "json",
+        dataType: 'json',
         data: args,
         success: (result) => {
           deferred.resolve(result.data, {
@@ -1889,7 +2005,7 @@ Attendees.datagridUpdate = {
         },
         error: (response) => {
           console.log('ajax error here is response: ', response);
-          deferred.reject("Data Loading Error, probably time out?");
+          deferred.reject('Data Loading Error, probably time out?');
         },
         timeout: 7000,
       });
@@ -1918,13 +2034,13 @@ Attendees.datagridUpdate = {
   initFamilyAttendeeDatagrid: (data, itemElement) => {
     const $myDatagrid = $("<div id='family-attendee-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.familyAttendeeDatagridConfig);
     itemElement.append($myDatagrid);
-    Attendees.datagridUpdate.familyAttendeeDatagrid = $myDatagrid.dxDataGrid("instance");
+    Attendees.datagridUpdate.familyAttendeeDatagrid = $myDatagrid.dxDataGrid('instance');
   },
 
   familyAttendeeDatagridConfig: {
     dataSource: {
       store: new DevExpress.data.CustomStore({
-        key: "id",
+        key: 'id',
         load: () => {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
         },
@@ -1939,42 +2055,60 @@ Attendees.datagridUpdate = {
         update: (key, values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
-            method: "PATCH",
+            method: 'PATCH',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: "update success, please reload page if changing family",
+                  message: 'update success, please reload page if changing family',
                   width: 500,
                   position: {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
-                }, "success", 2000);
+                  },
+                }, 'success', 2000);
             },
           });
         },
         insert: function (values) {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
-            method: "POST",
+            method: 'POST',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: "Create success, please find the new attendee in the table",
+                  message: 'Create success, please find the new attendee in the table',
                   width: 500,
                   position: {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, "success", 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
+            method: 'DELETE',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'family member removed',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'info', 2000);
             },
           });
         },
@@ -1989,7 +2123,7 @@ Attendees.datagridUpdate = {
             my: 'center',
             at: 'center',
             of: window,
-          }
+          },
         }, 'info', 3000);
     },
     allowColumnReordering: true,
@@ -2007,7 +2141,7 @@ Attendees.datagridUpdate = {
       autoExpandAll: true,
     },
     editing: {
-      mode: "cell",
+      mode: 'cell',
       allowUpdating: Attendees.utilities.editingEnabled,
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
@@ -2019,22 +2153,22 @@ Attendees.datagridUpdate = {
     },
     onRowPrepared: (e) => {
       if (e.rowType === 'data' && e.data.attendee && e.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
-        e.rowElement.css("color", "SeaGreen");
-        e.rowElement.attr('title', "Please scroll up and change main attendee data there!");
+        e.rowElement.css('color', 'SeaGreen');
+        e.rowElement.attr('title', 'Please scroll up and change main attendee data there!');
       }
     },
     columns: [
       {
-        dataField: "family.id",
-        validationRules: [{type: "required"}],
+        dataField: 'family.id',
+        validationRules: [{type: 'required'}],
         caption: 'Family',
         groupIndex: 0,
         lookup: {
-          valueExpr: "id",
-          displayExpr: "display_name",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint),
               byKey: (key) => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint + key + '/'),
             }),
@@ -2042,15 +2176,15 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "role",
-        validationRules: [{type: "required"}],
+        dataField: 'role',
+        validationRules: [{type: 'required'}],
         caption: 'Role',
         lookup: {
-          valueExpr: "id",
-          displayExpr: "title",
+          valueExpr: 'id',
+          displayExpr: 'title',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint);
               },
@@ -2067,27 +2201,27 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "attendee.gender",
-        validationRules: [{type: "required"}],
+        dataField: 'attendee.gender',
+        validationRules: [{type: 'required'}],
         caption: 'Gender',
         lookup: {
-          valueExpr: "name",
-          displayExpr: "name",
+          valueExpr: 'name',
+          displayExpr: 'name',
           dataSource: Attendees.utilities.genderEnums(),
         }
       },
       {
         caption: 'Full name',
-        dataField: "attendee.infos.names.original",
+        dataField: 'attendee.infos.names.original',
         allowEditing: false,
         cellTemplate: (container, rowData) => {
           if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
             $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
           } else {
             const attrs = {
-              "class": "text-info",
-              "text": rowData.data.attendee.infos.names.original,
-              "href": Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
+              class: 'text-info',
+              text: rowData.data.attendee.infos.names.original,
+              href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
             };
             $('<a>', attrs).appendTo(container);
           }
@@ -2095,62 +2229,62 @@ Attendees.datagridUpdate = {
       },
       {
         caption: 'First name',
-        dataField: "attendee.first_name",
+        dataField: 'attendee.first_name',
         visible: false,
         validationRules: [
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 25,
-            message: "first name cannot exceed 25 characters"
+            message: 'first name cannot exceed 25 characters'
           },
         ],
       },
       {
         caption: 'Last name',
-        dataField: "attendee.last_name",
+        dataField: 'attendee.last_name',
         visible: false,
         validationRules: [
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 25,
-            message: "last name cannot exceed 25 characters"
+            message: 'last name cannot exceed 25 characters'
           },
         ],
       },
       {
         caption: 'Last name2',
-        dataField: "attendee.last_name2",
+        dataField: 'attendee.last_name2',
         visible: false,
         validationRules: [
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 8,
-            message: "last name 2 cannot exceed 8 characters"
+            message: 'last name 2 cannot exceed 8 characters'
           },
         ],
       },
       {
         caption: 'First name2',
-        dataField: "attendee.first_name2",
+        dataField: 'attendee.first_name2',
         visible: false,
         validationRules: [
           {
-            type: "stringLength",
+            type: 'stringLength',
             max: 12,
-            message: "last name 2 cannot exceed 12 characters"
+            message: 'last name 2 cannot exceed 12 characters'
           },
         ],
       },
       {
-        dataField: "attendee.division",
-        validationRules: [{type: "required"}],
+        dataField: 'attendee.division',
+        validationRules: [{type: 'required'}],
         caption: 'Attendee Division',
         lookup: {
-          valueExpr: "id",
-          displayExpr: "display_name",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
               },
@@ -2167,17 +2301,17 @@ Attendees.datagridUpdate = {
         }
       },
       {
-        dataField: "start",
-        dataType: "date",
+        dataField: 'start',
+        dataType: 'date',
         editorOptions: {
-          dateSerializationFormat: "yyyy-MM-dd",
+          dateSerializationFormat: 'yyyy-MM-dd',
         },
       },
       {
-        dataField: "finish",
-        dataType: "date",
+        dataField: 'finish',
+        dataType: 'date',
         editorOptions: {
-          dateSerializationFormat: "yyyy-MM-dd",
+          dateSerializationFormat: 'yyyy-MM-dd',
         },
       },
     ],
@@ -2197,8 +2331,8 @@ Attendees.datagridUpdate = {
     return {
       visible: true,
       title: familyAttrButton.value ? 'Viewing Family' : 'Creating Family',
-      minwidth: "20%",
-      minheight: "30%",
+      minwidth: '20%',
+      minheight: '30%',
       position: {
         my: 'center',
         at: 'center',
@@ -2213,9 +2347,9 @@ Attendees.datagridUpdate = {
           colCount: 3,
           scrollingEnabled: true,
           showColonAfterLabel: false,
-          requiredMark: "*",
-          labelLocation: "top",
-          minColWidth: "20%",
+          requiredMark: '*',
+          labelLocation: 'top',
+          minColWidth: '20%',
           showValidationSummary: true,
           items: [
             {
@@ -2227,46 +2361,46 @@ Attendees.datagridUpdate = {
               helpText: 'what family is this?',
               isRequired: true,
               editorOptions: {
-                placeholder: "Main/parent/past, etc",
+                placeholder: 'Main/parent/past, etc',
               },
             },
             {
               colSpan: 1,
-              dataField: "display_order",
+              dataField: 'display_order',
               helpText: '0 is shown before 1,2...',
               isRequired: true,
               editorOptions: {
-                placeholder: "0/1/2/3, etc",
+                placeholder: '0/1/2/3, etc',
               },
               validationRules: [
                 {
-                  type: "range",
+                  type: 'range',
                   max: 32767,
                   min: 0,
-                  message: "display_order should be between 0 and 32767"
+                  message: 'display_order should be between 0 and 32767'
                 },
                 {
-                  type: "required",
-                  message: "display_order is required"
+                  type: 'required',
+                  message: 'display_order is required'
                 },
               ],
             },
             {
               colSpan: 1,
-              dataField: "division",
-              editorType: "dxSelectBox",
+              dataField: 'division',
+              editorType: 'dxSelectBox',
               isRequired: true,
               label: {
                 text: 'Family major Division',
               },
               editorOptions: {
-                valueExpr: "id",
-                displayExpr: "display_name",
-                placeholder: "Select a value...",
+                valueExpr: 'id',
+                displayExpr: 'display_name',
+                placeholder: 'Select a value...',
                 dataSource: new DevExpress.data.DataSource({
                   store: new DevExpress.data.CustomStore({
-                    key: "id",
-                    loadMode: "raw",
+                    key: 'id',
+                    loadMode: 'raw',
                     load: () => {
                       const d = $.Deferred();
                       $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
@@ -2278,11 +2412,10 @@ Attendees.datagridUpdate = {
                 }),
               },
             },
-
             {
               colSpan: 1,
               itemType: 'button',
-              horizontalAlignment: "left",
+              horizontalAlignment: 'left',
               buttonOptions: {
                 elementAttr: {
                   class: 'attendee-form-submits',    // for toggling editing mode
@@ -2292,7 +2425,7 @@ Attendees.datagridUpdate = {
                 icon: 'save',
                 hint: 'save Family attr data in the popup',
                 type: 'default',
-                useSubmitBehavior: false,
+                useSubmitBehavior: true,
                 onClick: (clickEvent) => {
                   if (Attendees.datagridUpdate.familyAttrPopupDxForm.validate().isValid && confirm('are you sure to submit the popup Family attr Form?')) {
                     const userData = Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData');
@@ -2313,7 +2446,7 @@ Attendees.datagridUpdate = {
                               my: 'center',
                               at: 'center',
                               of: window,
-                            }
+                            },
                           }, 'success', 2500);
 
                         if (familyAttrButton.value) {
@@ -2324,17 +2457,17 @@ Attendees.datagridUpdate = {
                         Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
                       },
                       error: (response) => {
-                        console.log('2062 Failed to save data for Family attr Form in Popup, error: ', response);
+                        console.log('Failed to save data for Family attr Form in Popup, error: ', response);
                         console.log('formData: ', userData);
                         DevExpress.ui.notify(
                           {
-                            message: 'saving locate error',
+                            message: 'saving Family error',
                             width: 500,
                             position: {
                               my: 'center',
                               at: 'center',
                               of: window,
-                            }
+                            },
                           }, 'error', 5000);
                       },
                     });
@@ -2342,9 +2475,75 @@ Attendees.datagridUpdate = {
                 },
               },
             },
+            {
+              colSpan: 1,
+              itemType: 'button',
+              horizontalAlignment: 'left',
+              buttonOptions: {
+                elementAttr: {
+                  class: 'attendee-form-submits family-delete-button',    // for toggling editing mode
+                },
+                disabled: !Attendees.utilities.editingEnabled,
+                hide: !familyAttrButton.value,
+                text: 'Delete Family, Places, Relationships',
+                icon: 'trash',
+                hint: 'delete the Family with their places & marital relationships.',
+                type: 'danger',
+                useSubmitBehavior: false,
+                onClick: (clickEvent) => {
+                  if (confirm('Are you sure to delete the family and all its places and marital relationships in the popup?  Instead, editing the "finish" date or members is usually enough!')) {
+                    $.ajax({
+                      url: $('form#family-attr-update-popup-form').attr('action') + Attendees.datagridUpdate.familyAttrPopupDxFormData.id,
+                      method: 'DELETE',
+                      success: (response) => {
+                        Attendees.datagridUpdate.familyAttrPopup.hide();
+                        DevExpress.ui.notify(
+                          {
+                            message: 'Family deleted',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'info', 2500);
 
+                        Attendees.datagridUpdate.familyAttendeeDatagrid.refresh();
+                        Attendees.datagridUpdate.relationshipDatagrid.refresh();
+                        $('li.' + familyAttrButton.value).remove();
+                        familyAttrButton.remove();
+                      },
+                      error: (response) => {
+                        console.log('Failed to delete Family in Popup, error: ', response);
+                        DevExpress.ui.notify(
+                          {
+                            message: 'delete Family error',
+                            width: 500,
+                            position: {
+                              my: 'center',
+                              at: 'center',
+                              of: window,
+                            },
+                          }, 'error', 5000);
+                      },
+                    });
+                  }
+                },
+              },
+            },
+            {
+              colSpan: 1,
+              name: 'familyMemberCount',
+              helpText: 'Close the popup to see family members in the table',
+              label: {
+                text: 'family member count',
+              },
+              template: (data, itemElement) => {
+                $('<p>', {class: 'family-member-count', text: 0}).appendTo(itemElement);
+              },
+            },
           ],
-        }).dxForm("instance");
+        }).dxForm('instance');
         e.append(formContainer);
       }
     };
@@ -2355,12 +2554,16 @@ Attendees.datagridUpdate = {
       const families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
       const fetchedFamily = families.find(x => x.id === familyAttrButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedFamily) {
+        $('p.family-member-count')[0].textContent = fetchedFamily.attendees.length;
+        if (fetchedFamily.attendees.length > 1) {$('.family-delete-button').text('Remove attendee from Family')}
         Attendees.datagridUpdate.familyAttrPopupDxFormData = fetchedFamily;
         Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', fetchedFamily);
       } else {
         $.ajax({
           url: $('form#family-attr-update-popup-form').attr('action') + familyAttrButton.value + '/',
           success: (response) => {
+            $('p.family-member-count')[0].textContent = response.attendees.length;
+            if (response.attendees.length > 1) {$('.family-delete-button').text('Remove attendee from Family')}
             Attendees.datagridUpdate.familyAttrPopupDxFormData = response;
             Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData', response);
           },
@@ -2368,8 +2571,6 @@ Attendees.datagridUpdate = {
         });
       }
     }
-
-
   },
 
 
@@ -2385,7 +2586,7 @@ Attendees.datagridUpdate = {
   relationshipDatagridConfig: {
     dataSource: {
       store: new DevExpress.data.CustomStore({
-        key: "id",
+        key: 'id',
         load: () => {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint);
         },
@@ -2400,30 +2601,30 @@ Attendees.datagridUpdate = {
         update: (key, values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
-            method: "PATCH",
+            method: 'PATCH',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: "update success, please reload page if changing family",
+                  message: 'update success, please reload page if changing family',
                   width: 500,
                   position: {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
-                }, "success", 2000);
+                  },
+                }, 'success', 2000);
             },
           });
         },
-        insert: function (values) {
+        insert: (values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint,
-            method: "POST",
+            method: 'POST',
             dataType: 'json',
-            contentType: "application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
             success: (result) => {
               DevExpress.ui.notify(
@@ -2434,8 +2635,26 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
-                }, "success", 2000);
+                  },
+                }, 'success', 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            method: 'DELETE',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'removed relationship success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'info', 2000);
             },
           });
         },
@@ -2454,7 +2673,7 @@ Attendees.datagridUpdate = {
             my: 'center',
             at: 'center',
             of: window,
-          }
+          },
         }, "info", 3000);
     },
     allowColumnReordering: true,
@@ -2472,7 +2691,7 @@ Attendees.datagridUpdate = {
       autoExpandAll: true,
     },
     editing: {
-      mode: "cell",
+      mode: 'cell',
       allowUpdating: Attendees.utilities.editingEnabled,
       allowAdding: Attendees.utilities.editingEnabled,
       allowDeleting: false,
@@ -2498,15 +2717,15 @@ Attendees.datagridUpdate = {
     },
     columns: [
       {
-        dataField: "relation",
-        validationRules: [{type: "required"}],
+        dataField: 'relation',
+        validationRules: [{type: 'required'}],
         caption: 'Role',
         lookup: {
-          valueExpr: "id",
-          displayExpr: "title",
+          valueExpr: 'id',
+          displayExpr: 'title',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 100});
               },
@@ -2523,17 +2742,17 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "to_attendee",
-        validationRules: [{type: "required"}],
+        dataField: 'to_attendee',
+        validationRules: [{type: 'required'}],
         caption: 'Attendee',
         lookup: {
-          valueExpr: "id",
+          valueExpr: 'id',
           displayExpr: (item) => {
             return item ? '(' + item.gender[0] + ") " + item.infos.names.original : null;
           },
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: (searchOpts) => {
                 const params = {};
                 if (searchOpts.searchValue) {
@@ -2555,18 +2774,18 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "in_family",
+        dataField: 'in_family',
         editorOptions: {
           showClearButton: true,
         },
         caption: 'Family',
         groupIndex: 0,
         lookup: {
-          valueExpr: "id",
+          valueExpr: 'id',
           displayExpr: "display_name",
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeFamiliesEndpoint),
               byKey: (key) => {
                 if (key) {
@@ -2608,14 +2827,14 @@ Attendees.datagridUpdate = {
         dataType: 'boolean',
       },
       {
-        dataField: "start",
-        dataType: "datetime",
-        format: "MM/dd/yyyy",
+        dataField: 'start',
+        dataType: 'datetime',
+        format: 'MM/dd/yyyy',
       },
       {
-        dataField: "finish",
-        dataType: "datetime",
-        format: "MM/dd/yyyy",
+        dataField: 'finish',
+        dataType: 'datetime',
+        format: 'MM/dd/yyyy',
       },
     ],
   },
@@ -2632,14 +2851,14 @@ Attendees.datagridUpdate = {
   pastDatagridConfig: (args) => { // {type: 'education', dataFields: {display_name: 'display_name', start: 'start'}, extraDatagridOpts:{editing:{mode:'popup'}}}
     const columns = [
       {
-        dataField: "category",
-        validationRules: [{type: "required"}],
+        dataField: 'category',
+        validationRules: [{type: 'required'}],
         lookup: {
-          valueExpr: "id",
-          displayExpr: "display_name",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
           dataSource: {
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => {
                 return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.categoriesEndpoint, {
                   take: 100,
@@ -2658,9 +2877,8 @@ Attendees.datagridUpdate = {
           },
         },
       },
-
       {
-        dataField: "display_name",
+        dataField: 'display_name',
       },
       {
         caption: 'Secret shared with you',
@@ -2677,25 +2895,25 @@ Attendees.datagridUpdate = {
         dataType: 'boolean',
       },
       {
-        dataField: "infos.comment",
+        dataField: 'infos.comment',
         caption: 'Comment',
-        dataType: "string",
+        dataType: 'string',
         width: '32%',
       },
       {
-        dataField: "when",
-        dataType: "date",
+        dataField: 'when',
+        dataType: 'date',
       },
       {
-        dataField: "finish",
-        dataType: "date",
+        dataField: 'finish',
+        dataType: 'date',
       },
     ];
 
     return {
       dataSource: {
         store: new DevExpress.data.CustomStore({
-          key: "id",
+          key: 'id',
           load: () => {
             return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint, {category__type: args.type});
           },
@@ -2710,9 +2928,9 @@ Attendees.datagridUpdate = {
           update: (key, values) => {
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
-              method: "PATCH",
+              method: 'PATCH',
               dataType: 'json',
-              contentType: "application/json; charset=utf-8",
+              contentType: 'application/json; charset=utf-8',
               data: JSON.stringify(values),
               success: (result) => {
                 DevExpress.ui.notify(
@@ -2723,8 +2941,8 @@ Attendees.datagridUpdate = {
                       my: 'center',
                       at: 'center',
                       of: window,
-                    }
-                  }, "success", 2000);
+                    },
+                  }, 'success', 2000);
               },
             });
           },
@@ -2735,9 +2953,9 @@ Attendees.datagridUpdate = {
             };
             return $.ajax({
               url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
-              method: "POST",
+              method: 'POST',
               dataType: 'json',
-              contentType: "application/json; charset=utf-8",
+              contentType: 'application/json; charset=utf-8',
               data: JSON.stringify({...values, ...subject}),
               success: (result) => {
                 DevExpress.ui.notify(
@@ -2748,8 +2966,26 @@ Attendees.datagridUpdate = {
                       my: 'center',
                       at: 'center',
                       of: window,
-                    }
-                  }, "success", 2000);
+                    },
+                  }, 'success', 2000);
+              },
+            });
+          },
+          remove: (key) => {
+            return $.ajax({
+              url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
+              method: 'DELETE',
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'removed '+ args.type +' success',
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    },
+                  }, 'info', 2000);
               },
             });
           },
@@ -2771,8 +3007,8 @@ Attendees.datagridUpdate = {
               my: 'center',
               at: 'center',
               of: window,
-            }
-          }, "info", 3000);
+            },
+          }, 'info', 3000);
       },
       allowColumnReordering: true,
       columnAutoWidth: true,
@@ -2818,10 +3054,10 @@ Attendees.datagridUpdate = {
   },
 
   noteEditingArgs: {
-    mode: "popup",
+    mode: 'popup',
     popup: {
       showTitle: true,
-      title: "Editing note of Attendee"
+      title: 'Editing note of Attendee'
     },
     form: {
       items: [
@@ -2829,17 +3065,17 @@ Attendees.datagridUpdate = {
           dataField: 'category',
         },
         {
-          dataField: "display_name",
+          dataField: 'display_name',
         },
         {
           dataField: 'infos.show_secret',
         },
         {
-          dataField: "when",
+          dataField: 'when',
         },
         {
-          dataField: "infos.comment",
-          editorType: "dxTextArea",
+          dataField: 'infos.comment',
+          editorType: 'dxTextArea',
           colSpan: 2,
           editorOptions: {
             autoResizeEnabled: true,
@@ -2861,7 +3097,7 @@ Attendees.datagridUpdate = {
   attendingMeetDatagridConfig: {
     dataSource: {
       store: new DevExpress.data.CustomStore({
-        key: "id",
+        key: 'id',
         load: () => {
           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint);
         },
@@ -2894,10 +3130,10 @@ Attendees.datagridUpdate = {
             },
           });
         },
-        insert: function (values) {
+        insert: (values) => {
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint,
-            method: "POST",
+            method: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(values),
@@ -2910,8 +3146,26 @@ Attendees.datagridUpdate = {
                     my: 'center',
                     at: 'center',
                     of: window,
-                  }
+                  },
                 }, 'success', 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.attendingmeetsEndpoint + key + '/',
+            method: 'DELETE',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'removed AttendingMeet success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'info', 2000);
             },
           });
         },
@@ -3026,6 +3280,7 @@ Attendees.datagridUpdate = {
       },
       {
         dataField: 'character',
+        validationRules: [{type: 'required'}],
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
@@ -3051,27 +3306,27 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "category",
+        dataField: 'category',
         validationRules: [{type: 'required'}],
       },
       {
-        dataField: "start",
+        dataField: 'start',
         validationRules: [{type: 'required'}],
-        dataType: "datetime",
-        format: "MM/dd/yyyy",
+        dataType: 'datetime',
+        format: 'MM/dd/yyyy',
         editorOptions: {
-          type: "datetime",
-          dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+          type: 'datetime',
+          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
       {
-        dataField: "finish",
+        dataField: 'finish',
         validationRules: [{type: 'required'}],
-        dataType: "datetime",
-        format: "MM/dd/yyyy",
+        dataType: 'datetime',
+        format: 'MM/dd/yyyy',
         editorOptions: {
-          type: "datetime",
-          dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+          type: 'datetime',
+          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
     ],
@@ -3082,6 +3337,9 @@ Attendees.datagridUpdate = {
     popup: {
       showTitle: true,
       title: 'Editing Attendee activities'
+    },
+    texts: {
+      confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
     },
     form: {
       items: [

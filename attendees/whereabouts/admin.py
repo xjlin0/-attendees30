@@ -28,6 +28,12 @@ class DivisionAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('id', 'organization', 'display_name', 'slug', 'modified')
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(organization=request.user.organization)
+
 
 class PropertyAdmin(admin.ModelAdmin):
     formfield_overrides = {
@@ -41,7 +47,13 @@ class PropertyAdmin(admin.ModelAdmin):
 class CampusAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("display_name",)}
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('display_name', 'slug', 'modified')
+    list_display = ('display_name', 'organization', 'slug', 'modified')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.resolver_match.func.__name__ == 'changelist_view':
+            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+        return qs.filter(organization=request.user.organization)
 
 
 class SuiteAdmin(admin.ModelAdmin):

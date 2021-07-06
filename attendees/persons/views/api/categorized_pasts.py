@@ -16,6 +16,7 @@ from attendees.users.models import MenuAuthGroup
 class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewSet):
     """
     API endpoint that allows Past(history/experience) of an attendee (in header X-TARGET-ATTENDEE-ID) to be viewed/edited.
+    All actions including DELETE needs search params of category__type in order to pass permission check
     Todo 20210530 tried with UserPassesTestMixin failed due to the lack of query_params in ASGIRequest
     """
     serializer_class = PastSerializer

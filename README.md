@@ -63,13 +63,15 @@
 </details>
 
 ## mockup
-https://marvelapp.com/9dj5heb
+1. https://marvelapp.com/9dj5heb
+2. https://marvelapp.com/prototype/876j52i
 
 ## data models
 https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
 ## How to start dev env
 
+All libraries are included to facilitate offline development
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
 * check local python version, Django coockie cutter is developed with Python 3
 * There is no need to have local Django or Postgres running, but on MacOS you will need Virtualbox from https://www.virtualbox.org
@@ -93,7 +95,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 ## Todo:
 - [x] make auth group not organization specific, and counselling note check on organization
 - [ ] Past can replace Note, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance)
-- [ ] attendee detail page
+- [x] attendee detail page
   - [x] server side process of Attendees list & search page
   - [x] AttendingMeet form of Attendee update page
   - [x] FamilyAttendee datagrid of Attendee update page
@@ -103,7 +105,7 @@ https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
   - [x] Generic models such as Note, Place, Past need to have organization column instead of infos
   - [x] Add Past as Note
   - [x] Create new instance of Attendee & attending update page with params with meet
-  - [ ] delete function for human error
+  - [x] delete function for human error
   - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] implement secret/private relation/past general
 - [ ] Move single attendee update page out of data assembly

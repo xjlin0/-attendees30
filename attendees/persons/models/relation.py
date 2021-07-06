@@ -12,7 +12,8 @@ class Relation(TimeStampedModel, SoftDeletableModel):
     display_order = models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)
     emergency_contact = models.BooleanField('to be the emergency contact?', null=False, blank=False, default=False, help_text="default value, can be changed in relationships further")
     scheduler = models.BooleanField('to be the scheduler?', null=False, blank=False, default=False, help_text="default value, can view/change the schedules of the caller?")
-    relative = models.BooleanField('is a relative?', null=False, blank=False, default=False, help_text="default value, can be changed in relationships further")
+    relative = models.BooleanField('relative?', null=False, blank=False, default=False, help_text='is it a relative?')
+    consanguinity = models.BooleanField('blood relatives?', null=False, blank=False, default=False, help_text='is it blood relatives?')
 
     def __str__(self):
         return '%s' % self.title
