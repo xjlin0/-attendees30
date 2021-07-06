@@ -27,7 +27,8 @@ class FamilyService:
         else:
             family_name = family.display_name
             for attendee_name in attendee.all_names():
-                family_name.replace(attendee_name, '')
+                if attendee_name is not None:
+                    family_name.replace(attendee_name, '')
             family.display_name = family_name
             family.save()
             Relationship.objects.filter(from_attendee=attendee, in_family=family.id, relation__consanguinity=False, is_removed=False).delete()

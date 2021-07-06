@@ -66,6 +66,7 @@ Attendees.datagridUpdate = {
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-delete').dxButton('instance').option('disabled', !enabled);
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option('readOnly', !enabled);
@@ -146,7 +147,7 @@ Attendees.datagridUpdate = {
       window.top.document.title = 'New Attendee';
       Attendees.utilities.editingEnabled = true;
       Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
-      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+      Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm('instance');
       Attendees.datagridUpdate.attendeeFormConfigs.formData = Attendees.datagridUpdate.attendeeMainDxFormDefault;
       Attendees.datagridUpdate.populateBasicInfoBlock({});
     } else {
@@ -158,7 +159,7 @@ Attendees.datagridUpdate = {
           Attendees.datagridUpdate.attendeeFormConfigs.formData = response ? response : Attendees.datagridUpdate.attendeeMainDxFormDefault;
           $('h3.page-title').text('Details of ' + Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original);
           window.top.document.title = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos.names.original;
-          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm("instance");
+          Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm('instance');
           Attendees.datagridUpdate.populateBasicInfoBlock();
           Attendees.datagridUpdate.initListeners();
           Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
@@ -610,6 +611,58 @@ Attendees.datagridUpdate = {
                 error: (response) => {
                   console.log('Failed to save data for main AttendeeForm, error: ', response);
                   console.log('formData: ', [...userData]);
+                  DevExpress.ui.notify(
+                    {
+                      message: 'saving attendee error',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'error', 5000);
+                },
+              });
+            }
+          }
+        },
+      },
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormDelete',
+        horizontalAlignment: 'left',
+        buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-delete',  // for toggling editing mode
+          },
+          disabled: !Attendees.utilities.editingEnabled,
+          text: "Delete all of Attendee's data",
+          icon: 'trash',
+          hint: "delete attendee's all data in the page",
+          type: 'danger',
+          onClick: (e) => {
+            if (confirm('Are you sure to delete all data of the attendee? Everything of the attendee will be removed.  Instead, seetting finish/deathday is usually enough!')) {
+              window.scrollTo(0,0);
+              $('div.spinner-border').show();
+              $.ajax({
+                url: Attendees.datagridUpdate.attendeeAjaxUrl,
+                method: 'DELETE',
+                success: (response) => {
+                  $('div.spinner-border').hide();
+                  DevExpress.ui.notify(
+                    {
+                      message: 'delete attendee success',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'info', 2500);
+                  window.location = new URL(window.location.origin);
+                },
+                error: (response) => {
+                  console.log('Failed to delete data for main AttendeeForm, error: ', response);
                   DevExpress.ui.notify(
                     {
                       message: 'saving attendee error',

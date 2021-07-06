@@ -83,6 +83,6 @@ class AttendingService:
         attending.attendingmeet_set.filter(is_removed=False).delete()
         registration = attending.registration
         attending.registration = None
-        if registration and registration.registrant == attending.attendee and not registration.attending_set.filter(is_removed=False).exists():
+        if registration and registration.registrant == attending.attendee and not registration.attending_set.filter(is_removed=False):
             registration.delete()
         attending.delete()

@@ -35,11 +35,13 @@ class ApiAttendeeRelationshipsViewSet(LoginRequiredMixin, SpyGuard, viewsets.Mod
             return Relationship.objects.filter(
                 pk=target_relationship_id,
                 to_attendee__division__organization=target_attendee.division.organization,
+                is_removed=False,
             )
         else:
             return Relationship.objects.filter(
                 from_attendee=target_attendee,
                 to_attendee__division__organization=target_attendee.division.organization,
+                is_removed=False,
             )
 
 

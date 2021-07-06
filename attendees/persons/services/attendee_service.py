@@ -215,7 +215,7 @@ class AttendeeService:
 
         for registration in Registration.objects.filter(registrant=attendee, is_removed=False):
             registration.registrant = None
-            if not registration.attending_set.filter(is_removed=False).exist():
+            if not registration.attending_set.filter(is_removed=False):
                 registration.delete()
             else:
                 registration.save()
