@@ -35,7 +35,7 @@ router = routers.DefaultRouter()  # (trailing_slash=False)
 router.register(
     'api/datagrid_data_attendees',
     api_datagrid_data_attendees_viewset,
-    basename='attending',
+    basename='attendee',
 )
 router.register(
     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/assembly_meet_attendings',
