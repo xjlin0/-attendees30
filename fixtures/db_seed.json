@@ -829,7 +829,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 20,
+      "rght": 22,
       "tree_id": 8,
       "level": 0
     }
@@ -853,8 +853,8 @@
         "class": "dropdown-item",
         "title": "Coworkers attendance"
       },
-      "lft": 18,
-      "rght": 19,
+      "lft": 20,
+      "rght": 21,
       "tree_id": 8,
       "level": 1
     }
@@ -878,8 +878,8 @@
         "class": "dropdown-item",
         "title": "My (families) attendance"
       },
-      "lft": 16,
-      "rght": 17,
+      "lft": 18,
+      "rght": 19,
       "tree_id": 8,
       "level": 1
     }
@@ -930,8 +930,8 @@
       "infos": {
         "class": "dropdown-item"
       },
-      "lft": 12,
-      "rght": 13,
+      "lft": 14,
+      "rght": 15,
       "tree_id": 8,
       "level": 1
     }
@@ -1004,8 +1004,8 @@
       "infos": {
         "class": "dropdown-divider"
       },
-      "lft": 14,
-      "rght": 15,
+      "lft": 16,
+      "rght": 17,
       "tree_id": 8,
       "level": 1
     }
@@ -1117,7 +1117,7 @@
     "pk": 15,
     "fields": {
       "created": "2020-11-20T16:12:21.803Z",
-      "modified": "2021-04-08T17:26:54.124Z",
+      "modified": "2021-07-09T16:11:51.590Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
@@ -1125,7 +1125,7 @@
       "html_type": "a",
       "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendees/",
       "url_name": "datagrid_assembly_data_attendees",
-      "display_name": "\u6703\u54e1\u8cc7\u6599 attendee",
+      "display_name": "\u4ed6\u4eba\u8cc7\u6599 others info",
       "display_order": 3100,
       "infos": {
         "class": "dropdown-item",
@@ -1206,8 +1206,8 @@
         "class": "dropdown-item",
         "title": "Update my info"
       },
-      "lft": 10,
-      "rght": 11,
+      "lft": 12,
+      "rght": 13,
       "tree_id": 8,
       "level": 1
     }
@@ -1217,15 +1217,15 @@
     "pk": 19,
     "fields": {
       "created": "2020-12-14T04:43:29Z",
-      "modified": "2021-06-11T16:31:40.749Z",
+      "modified": "2021-07-09T15:37:03.753Z",
       "is_removed": false,
       "organization": 1,
-      "category": "main",
+      "category": "sublink",
       "parent": 1,
-      "html_type": "a",
+      "html_type": "permission",
       "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/",
       "url_name": "datagrid_attendee_update_view",
-      "display_name": "update attendee \u500b\u4eba\u8cc7\u6599",
+      "display_name": "update attendee \u66f4\u65b0\u4ed6\u4eba",
       "display_order": 725,
       "infos": {
         "class": "dropdown-item",
@@ -1330,7 +1330,7 @@
     "pk": 24,
     "fields": {
       "created": "2021-07-03T19:11:57.123Z",
-      "modified": "2021-07-03T19:14:14.267Z",
+      "modified": "2021-07-09T15:19:42.525Z",
       "is_removed": false,
       "organization": 1,
       "category": "sublink",
@@ -1338,9 +1338,34 @@
       "html_type": "permission",
       "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/new",
       "url_name": "datagrid_attendee_create_view",
-      "display_name": "create attendee \u5275\u5efa\u65b0\u4eba",
-      "display_order": 726,
+      "display_name": "create attendee \u53e6\u5efa\u65b0\u4eba",
+      "display_order": 730,
       "infos": {},
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 8,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 25,
+    "fields": {
+      "created": "2021-07-09T15:35:48.091Z",
+      "modified": "2021-07-09T16:11:12.824Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 1,
+      "html_type": "a",
+      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/self",
+      "url_name": "datagrid_attendee_update_self",
+      "display_name": "self info \u81ea\u8eab\u8cc7\u6599",
+      "display_order": 726,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "Update attendee info"
+      },
       "lft": 8,
       "rght": 9,
       "tree_id": 8,
@@ -1386,14 +1411,14 @@
         },
         "contacts": {},
         "hostname": "192.168.99.100",
-        "all_access_assemblies": [
-          "cfcch_congregation_data"
-        ],
         "counselor": [
           "data_counselor"
         ],
         "data_admins": [
           "data_organizer"
+        ],
+        "all_access_assemblies": [
+          "cfcch_congregation_data"
         ]
       }
     }
@@ -2662,8 +2687,8 @@
       "display_order": 20,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2679,8 +2704,8 @@
       "display_order": 21,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2696,8 +2721,8 @@
       "display_order": 25,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2713,8 +2738,8 @@
       "display_order": 26,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2730,8 +2755,8 @@
       "display_order": 1,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2747,8 +2772,8 @@
       "display_order": 2,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2764,8 +2789,8 @@
       "display_order": 70,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2781,8 +2806,8 @@
       "display_order": 50,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2798,8 +2823,8 @@
       "display_order": 50,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2815,8 +2840,8 @@
       "display_order": 90,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2832,8 +2857,8 @@
       "display_order": 90,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -2849,8 +2874,8 @@
       "display_order": 500,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -2866,8 +2891,8 @@
       "display_order": 500,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -2883,8 +2908,8 @@
       "display_order": 32766,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2900,8 +2925,8 @@
       "display_order": 30,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2917,8 +2942,8 @@
       "display_order": 30,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -2934,8 +2959,8 @@
       "display_order": 30000,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -2951,8 +2976,8 @@
       "display_order": 10000,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -2968,8 +2993,8 @@
       "display_order": 20000,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -2985,8 +3010,8 @@
       "display_order": 20000,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -3002,8 +3027,8 @@
       "display_order": 100,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3019,8 +3044,8 @@
       "display_order": 100,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3036,8 +3061,8 @@
       "display_order": 200,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3053,8 +3078,8 @@
       "display_order": 200,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3070,8 +3095,8 @@
       "display_order": 32767,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -3087,8 +3112,8 @@
       "display_order": 31000,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -3104,8 +3129,8 @@
       "display_order": 22,
       "emergency_contact": true,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -3121,8 +3146,8 @@
       "display_order": 32767,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -3138,8 +3163,8 @@
       "display_order": 53,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -3155,8 +3180,8 @@
       "display_order": 22,
       "emergency_contact": true,
       "scheduler": true,
-      "consanguinity": true,
-      "relative": true
+      "relative": true,
+      "consanguinity": true
     }
   },
   {
@@ -3172,8 +3197,8 @@
       "display_order": 54,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": false
+      "relative": false,
+      "consanguinity": false
     }
   },
   {
@@ -3189,8 +3214,8 @@
       "display_order": 210,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3206,8 +3231,8 @@
       "display_order": 210,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -3223,8 +3248,8 @@
       "display_order": 220,
       "emergency_contact": false,
       "scheduler": false,
-      "consanguinity": false,
-      "relative": true
+      "relative": true,
+      "consanguinity": false
     }
   },
   {
@@ -8765,6 +8790,84 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 71,
+    "fields": {
+      "created": "2021-07-09T15:35:48.129Z",
+      "modified": "2021-07-09T15:35:48.129Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 72,
+    "fields": {
+      "created": "2021-07-09T15:35:48.136Z",
+      "modified": "2021-07-09T15:35:48.136Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 73,
+    "fields": {
+      "created": "2021-07-09T15:35:48.141Z",
+      "modified": "2021-07-09T15:35:48.141Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 74,
+    "fields": {
+      "created": "2021-07-09T15:35:48.144Z",
+      "modified": "2021-07-09T15:35:48.144Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 75,
+    "fields": {
+      "created": "2021-07-09T15:35:48.144Z",
+      "modified": "2021-07-09T15:35:48.144Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 76,
+    "fields": {
+      "created": "2021-07-09T15:35:48.145Z",
+      "modified": "2021-07-09T15:35:48.145Z",
+      "is_removed": false,
+      "auth_group": 3,
+      "read": true,
+      "write": true,
+      "menu": 25
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -9235,7 +9338,7 @@
     "pk": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
     "fields": {
       "created": "1999-04-11T19:31:50.659Z",
-      "modified": "2020-12-10T21:29:11.306Z",
+      "modified": "2021-07-09T15:49:13.626Z",
       "is_removed": false,
       "division": 1,
       "user": 1,
@@ -9257,11 +9360,14 @@
       },
       "infos": {
         "fixed": {
+          "food_pref": "hh",
           "test_long_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
         "names": {
           "nick": "root",
-          "original": "superuser1 system admin1 Lastnam2superuser2"
+          "original": "superuser1 system admin1 Lastnam2superuser2",
+          "simplified": "Lastnam2superuser2",
+          "traditional": "Lastnam2superuser2"
         },
         "contacts": {
           "email1": "5greata@email.com",
