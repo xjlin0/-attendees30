@@ -20,11 +20,7 @@ from attendees.persons.views import (
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
     datagrid_attendee_update_view,
-    info_of_attendee_create_view,
     api_attendee_attendings_viewset,
-    attendee_update_view,
-    attendees_update_view,
-    attendee_detail_view,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
 )
@@ -35,7 +31,7 @@ router = routers.DefaultRouter()  # (trailing_slash=False)
 router.register(
     'api/datagrid_data_attendees',
     api_datagrid_data_attendees_viewset,
-    basename='attending',
+    basename='attendee',
 )
 router.register(
     'api/(?P<division_slug>.+)/(?P<assembly_slug>.+)/assembly_meet_attendings',
@@ -142,50 +138,15 @@ urlpatterns = [
     ),
 
     path(
-        "attendee_detail_view/<str:attendee_id>",
-        view=attendee_detail_view,
-        name="attendee_detail_view",
-    ),
-
-    path(
-        "attendee_detail_view/",
-        view=attendee_detail_view,
-        name="attendee_detail_view",
-    ),
-
-    path(
-        "attendee_update_view/<str:attendee_id>",
-        view=attendee_update_view,
-        name="attendee_update_view",
-    ),
-
-    path(
-        "attendee_update_view/",
-        view=attendee_update_view,
-        name="attendee_update_view",
-    ),
-
-    path(
-        "attendees_update_view/<str:attendee_id>",
-        view=attendees_update_view,
-        name="attendees_update_view",
-    ),
-
-    path(
-        "attendees_update_view/",
-        view=attendees_update_view,
-        name="attendees_update_view",
-    ),
-
-    path(
-        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/',
+        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/self',
         view=datagrid_attendee_update_view,
-        name='datagrid_attendee_update_view',
+        name='datagrid_attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
     ),
     path(
         '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/new',
+        kwargs={'attendee_id': 'new', 'allowed_to_create_attendee': False},
         view=datagrid_attendee_update_view,
-        name='datagrid_attendee_create_view',  # for permission
+        name='datagrid_attendee_create_view',  # for create non-family-attendee permission
     ),
     path(
         '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/<str:attendee_id>',

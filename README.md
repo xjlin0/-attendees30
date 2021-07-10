@@ -92,32 +92,48 @@ All libraries are included to facilitate offline development
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
-## Todo:
+## Todo & progress:
+
+<details>
+  <summary>Click to expand all</summary>
+
 - [x] make auth group not organization specific, and counselling note check on organization
 - [ ] Past can replace Note, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance)
+  - [x] make Past model generic
+  - [ ] any past status list (Past level)
+  - [ ] Attendance roaster to Past auto conversion
 - [x] attendee detail page
   - [x] server side process of Attendees list & search page
   - [x] AttendingMeet form of Attendee update page
-  - [x] FamilyAttendee datagrid of Attendee update page
-  - [x] Personal & family Address of Attendee update page
-  - [x] Dynamic contacts of Attendee update page
-  - [x] Permission controlled blocks in single attendee update page, i.e. different blocks/user-settings for different groups
-  - [x] Generic models such as Note, Place, Past need to have organization column instead of infos
-  - [x] Add Past as Note
-  - [x] Create new instance of Attendee & attending update page with params with meet
-  - [x] delete function for human error
-  - [x] Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
-  - [x] implement secret/private relation/past general
-- [ ] Move single attendee update page out of data assembly
-- [ ] Gathering list (new design with server side processing)
-- [ ] Attendance list (new design with server side processing)
+  - [x] [PR#3](https://github.com/xjlin0/attendees30/pull/3) FamilyAttendee datagrid of Attendee update page
+  - [x] [PR#2](https://github.com/xjlin0/attendees30/pull/2) Personal & family Address of Attendee update page
+  - [x] [PR#4](https://github.com/xjlin0/attendees30/pull/4) Dynamic contacts of Attendee update page
+  - [x] [PR#9](https://github.com/xjlin0/attendees30/pull/9) Permission controlled blocks in single attendee update page, i.e. different blocks/user-settings for different groups
+  - [x] [PR#11](https://github.com/xjlin0/attendees30/pull/11) Generic models such as Note, Place, Past need to have organization column instead of infos
+  - [x] [PR#12](https://github.com/xjlin0/attendees30/pull/12) Add Past as Note
+  - [x] [PR#13](https://github.com/xjlin0/attendees30/pull/13) [PR#14](https://github.com/xjlin0/attendees30/pull/14) [PR#15](https://github.com/xjlin0/attendees30/pull/15) Create new instance of Attendee & attending update page with params with meet
+  - [x] [PR#16](https://github.com/xjlin0/attendees30/pull/16) delete function for human error
+  - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
+  - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
+- [ ] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
+  - [ ] remove all previous attendee edit testing pages
+  - [ ] remove attendee list page dependency of path params and take search params from user for assembly slug
+  - [ ] rename and move attendees/attendee page, and show attendees based on auth groups
+- [ ] Gathering list (server side processing with auto-generation)
+- [ ] Attendance list (server side processing with auto-generation)
+  - [ ] member list (attendance level with editing category)
 - [ ] Attending list (new design with server side processing)
 - [ ] Create roaster page (no real-time update in v1)
-- [ ] Coworker roaster, X: characters, Y: dates(gatherings)
-- [ ] Audit log/history/vision of data: django-pghistory maybe
+- [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
+- [ ] Audit log/history/vision of data
+  - [ ] find library and install: django-pghistory maybe
+  - [ ] each model level version
+  - [ ] document aggregation level version
 - [ ] upgrade to Django 3.2LTS or 4
    -[ ] use Django JSONField instead of Postgres JSONField
    -[ ] decide async or not (uvicorn high CPU usage)
 - [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?
+
+</details>

@@ -31,8 +31,8 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
         current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', 'cfcch_unspecified')
         current_assembly_id = Assembly.objects.get(slug=current_assembly_slug).id
-        targeting_attendee_id = 'new' if self.request.resolver_match.url_name == Menu.CREATE_VIEW_NAME else self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())  # if more logic needed when create new, a new view will be better
-        allowed_to_create_attendee = False if self.request.resolver_match.url_name == Menu.CREATE_VIEW_NAME else Menu.user_can_create_attendee(self.request.user)
+        targeting_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())  # if more logic needed when create new, a new view will be better
+        allowed_to_create_attendee = self.kwargs.get('allowed_to_create_attendee', Menu.user_can_create_attendee(self.request.user))
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'family_contenttype_id': ContentType.objects.get_for_model(Family).id,

@@ -1,8 +1,10 @@
 from django.contrib import admin, messages
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
+from django.contrib.postgres import fields
 from django.forms import TextInput
 from django.db import models
+from django_json_widget.widgets import JSONEditorWidget
 from mptt.admin import MPTTModelAdmin
 from .models import Menu, MenuAuthGroup
 
@@ -30,6 +32,7 @@ class MenuAuthGroupInline(admin.TabularInline):
 class MenuAdmin(MPTTModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
         models.CharField: {'widget': TextInput(attrs={'size':'100%'})},
     }
     mptt_level_indent = 20
