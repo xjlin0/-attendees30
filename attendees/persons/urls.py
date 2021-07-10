@@ -20,11 +20,7 @@ from attendees.persons.views import (
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
     datagrid_attendee_update_view,
-    info_of_attendee_create_view,
     api_attendee_attendings_viewset,
-    attendee_update_view,
-    attendees_update_view,
-    attendee_detail_view,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
 )
@@ -139,42 +135,6 @@ urlpatterns = [
         "<slug:division_slug>/<slug:assembly_slug>/datagrid_assembly_data_attendings/",
         view=datagrid_assembly_data_attendings_list_view,
         name="datagrid_assembly_data_attendings",
-    ),
-
-    path(
-        "attendee_detail_view/<str:attendee_id>",
-        view=attendee_detail_view,
-        name="attendee_detail_view",
-    ),
-
-    path(
-        "attendee_detail_view/",
-        view=attendee_detail_view,
-        name="attendee_detail_view",
-    ),
-
-    path(
-        "attendee_update_view/<str:attendee_id>",
-        view=attendee_update_view,
-        name="attendee_update_view",
-    ),
-
-    path(
-        "attendee_update_view/",
-        view=attendee_update_view,
-        name="attendee_update_view",
-    ),
-
-    path(
-        "attendees_update_view/<str:attendee_id>",
-        view=attendees_update_view,
-        name="attendees_update_view",
-    ),
-
-    path(
-        "attendees_update_view/",
-        view=attendees_update_view,
-        name="attendees_update_view",
     ),
 
     path(
