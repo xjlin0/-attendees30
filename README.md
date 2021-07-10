@@ -115,10 +115,10 @@ All libraries are included to facilitate offline development
   - [x] [PR#16](https://github.com/xjlin0/attendees30/pull/16) delete function for human error
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
-- [ ] Move attendee/attendees page out of data assembly -- coworkers need to see all attendee of the organization, with a way to see only family members like general users
+- [ ] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [ ] remove all previous attendee edit testing pages
   - [ ] remove attendee list page dependency of path params and take search params from user for assembly slug
-  - [ ] rename and move attendees/attendee page
+  - [ ] rename and move attendees/attendee page, and show attendees based on auth groups
 - [ ] Gathering list (server side processing with auto-generation)
 - [ ] Attendance list (server side processing with auto-generation)
   - [ ] member list (attendance level with editing category)
