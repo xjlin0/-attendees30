@@ -28,7 +28,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         # current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
         family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
-        available_meets = Meet.objects.filter(assembly__division__organization=self.request.user.organization)
+        available_meets = Meet.objects.filter(assembly__division__organization=self.request.user.organization).order_by('assembly')
             #Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
         # available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
         allowed_to_create_attendee = Menu.user_can_create_attendee(self.request.user)
