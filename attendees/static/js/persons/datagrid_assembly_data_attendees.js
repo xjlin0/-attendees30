@@ -3,7 +3,7 @@ Attendees.dataAttendees = {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
     Attendees.dataAttendees.setDataAttrs();
-    Attendees.dataAttendees.setMeetsColumns();
+    Attendees.dataAttendees.setMeetsColumns([]);
     Attendees.dataAttendees.startDataGrid();
   },
 

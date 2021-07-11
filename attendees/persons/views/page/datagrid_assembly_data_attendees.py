@@ -30,42 +30,42 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
         available_meets = Meet.objects.filter(assembly__division__organization=self.request.user.organization)
             #Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
-        available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
+        # available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
         allowed_to_create_attendee = Menu.user_can_create_attendee(self.request.user)
         context.update({
             # 'current_organization_slug': current_organization_slug,
             # 'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
             'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,
-            'available_meets': available_meets,
+            # 'available_meets': available_meets,
             'available_meets_json': dumps([model_to_dict(m, fields=('id', 'slug', 'display_name')) for m in available_meets]),
-            'available_characters': available_characters,
-            'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
+            # 'available_characters': available_characters,
+            # 'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
             'allowed_to_create_attendee': allowed_to_create_attendee,
             'create_attendee_urn': f'/persons/datagrid_attendee_update_view/new',
         })
         return context
 
-    def render_to_response(self, context, **kwargs):
-        if self.request.user.belongs_to_divisions_of([context['current_division_slug']]):
-            if self.request.is_ajax():
-                pass
+    def render_to_response(self, context, **kwargs):  # view only provides empty tables, it's API that needs to return valid data
+        # if self.request.user.belongs_to_divisions_of([context['current_division_slug']]):
+        if self.request.is_ajax():
+            pass
 
-            else:
-                # chosen_character_slugs = self.request.GET.getlist('characters', [])
-                # context.update({'chosen_character_slugs': chosen_character_slugs})
-                context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
-                # context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
-                # context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
-                context.update({'attendee_urn': f"/persons/{context['current_division_slug']}/{context['current_assembly_slug']}/datagrid_attendee_update_view/"})
-                context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
-                context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
-                context.update({'attendings_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})
-                context.update({'attendances_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendances/"})
-                return render(self.request, self.get_template_names()[0], context)
         else:
-            time.sleep(2)
-            raise Http404('Have you registered any events of the organization?')
+            # chosen_character_slugs = self.request.GET.getlist('characters', [])
+            # context.update({'chosen_character_slugs': chosen_character_slugs})
+            context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
+            # context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
+            # context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
+            context.update({'attendee_urn': f"/persons/datagrid_attendee_update_view/"})
+            # context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
+            # context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
+            # context.update({'attendings_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})
+            # context.update({'attendances_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendances/"})
+            return render(self.request, self.get_template_names()[0], context)
+        # else:
+        #     time.sleep(2)
+        #     raise Http404('Have you registered any events of the organization?')
 
     # def get_attendances(self, args):
     #     return []

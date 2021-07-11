@@ -31,7 +31,7 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         filters_list = ast.literal_eval(filters_list_string)  # Datagrid didn't send array in standard url params since search can be nested arrays
 
         return AttendeeService.by_datagrid_params(
-            current_user=self.request.user.organization,
+            current_user=self.request.user,
             assembly_slug=assembly_slug,
             orderby_string=orderby_string,
             filters_list=filters_list,
