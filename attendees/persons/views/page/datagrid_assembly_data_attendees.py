@@ -25,15 +25,16 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
         context = super().get_context_data(**kwargs)
         # Todo include user divisions and meets slugs in context
         current_division_slug = self.kwargs.get('division_slug', None)
-        current_organization_slug = self.kwargs.get('organization_slug', None)
+        # current_organization_slug = self.kwargs.get('organization_slug', None)
         current_assembly_slug = self.kwargs.get('assembly_slug', None)
         family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
-        available_meets = Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
+        available_meets = Meet.objects.filter(assembly__division__organization=self.request.user.organization)
+            #Meet.objects.filter(assembly__slug=current_assembly_slug).order_by('id')
         available_characters = Character.objects.filter(assembly__slug=current_assembly_slug).order_by('display_order')
         allowed_to_create_attendee = Menu.user_can_create_attendee(self.request.user)
         context.update({
-            'current_organization_slug': current_organization_slug,
-            'current_division_slug': current_division_slug,
+            # 'current_organization_slug': current_organization_slug,
+            # 'current_division_slug': current_division_slug,
             'current_assembly_slug': current_assembly_slug,
             'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,
             'available_meets': available_meets,
@@ -41,7 +42,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
             'available_characters': available_characters,
             'available_characters_json': dumps([model_to_dict(c, fields=('slug', 'display_name')) for c in available_characters]),
             'allowed_to_create_attendee': allowed_to_create_attendee,
-            'create_attendee_urn': f'/persons/{current_division_slug}/{current_assembly_slug}/datagrid_attendee_update_view/new',
+            'create_attendee_urn': f'/persons/datagrid_attendee_update_view/new',
         })
         return context
 
@@ -54,8 +55,8 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
                 # chosen_character_slugs = self.request.GET.getlist('characters', [])
                 # context.update({'chosen_character_slugs': chosen_character_slugs})
                 context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
-                context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
-                context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
+                # context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
+                # context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
                 context.update({'attendee_urn': f"/persons/{context['current_division_slug']}/{context['current_assembly_slug']}/datagrid_attendee_update_view/"})
                 context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
                 context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})

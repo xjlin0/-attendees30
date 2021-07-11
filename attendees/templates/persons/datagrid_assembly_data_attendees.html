@@ -37,8 +37,12 @@
   <div class="d-flex justify-content-between">
     <div class="d-flex">
       <h3>
-        All attendees of the organization
+        All attendees
       </h3>
+    </div>
+    <div id="assembly-tag-box"
+         class="d-flex">
+      assembly-tag-box
     </div>
     <div class="d-flex">
       {% if allowed_to_create_attendee %}
@@ -71,11 +75,11 @@
       data-available-meets="{{available_meets_json}}"
       data-available-characters="{{available_characters_json}}"
       data-divisions-endpoint="{{divisions_endpoint}}"
-      data-teams-endpoint="{{teams_endpoint}}"
+
       data-gatherings-endpoint="{{gatherings_endpoint}}"
       data-characters-endpoint="{{characters_endpoint}}"
       data-attendings-endpoint="{{attendings_endpoint}}"
-      data-attendees-endpoint="{{attendees_endpoint}}"
+
       data-attendee-urn="{{attendee_urn}}"
       data-attendances-endpoint="{{attendances_endpoint}}">
   </div>

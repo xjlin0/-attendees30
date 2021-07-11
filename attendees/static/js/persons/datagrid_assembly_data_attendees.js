@@ -1,10 +1,10 @@
 Attendees.dataAttendees = {
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
+    Attendees.utilities.setAjaxLoaderOnDevExtreme();
     Attendees.dataAttendees.setDataAttrs();
     Attendees.dataAttendees.setMeetsColumns();
     Attendees.dataAttendees.startDataGrid();
-    Attendees.utilities.setAjaxLoaderOnDevExtreme();
   },
 
   attendeeUrn: null,
@@ -186,28 +186,28 @@ Attendees.dataAttendees = {
       },
     },
     {
-      caption: "Email",
-      dataField: "infos.contacts",
+      caption: 'Email',
+      dataField: 'infos.contacts',
       name: 'infos.contacts.emails',
       allowSorting: false,
-      dataType: "string",
+      dataType: 'string',
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
         const emails = [];
         if (rowData.data.infos.contacts.email1) emails.push(rowData.data.infos.contacts.email1);
         if (rowData.data.infos.contacts.email2) emails.push(rowData.data.infos.contacts.email2);
         const attrs = {
-          "class": "text-info",
-          "text": emails.join(', '),
+          class: 'text-info',
+          text: emails.join(', '),
         };
         $($('<span>', attrs)).appendTo(container);
       },
     },
   ],
 
-  setMeetsColumns: () => {
+  setMeetsColumns: (availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets)) => {
     const meetColumns=[];
-    const availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets); // $('div.attendings').data('available-meets');
+    // const availableMeets = JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets); // $('div.attendings').data('available-meets');
 
     availableMeets.forEach(meet => {
       meetColumns.push({

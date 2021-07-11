@@ -138,18 +138,18 @@ urlpatterns = [
     ),
 
     path(
-        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/self',
+        'datagrid_attendee_update_view/self',
         view=datagrid_attendee_update_view,
         name='datagrid_attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
     ),
     path(
-        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/new',
-        kwargs={'attendee_id': 'new', 'allowed_to_create_attendee': False},
+        'datagrid_attendee_update_view/new',
+        kwargs={'attendee_id': 'new', 'can_create_nonfamily_attendee': False},
         view=datagrid_attendee_update_view,
         name='datagrid_attendee_create_view',  # for create non-family-attendee permission
     ),
     path(
-        '<slug:division_slug>/<slug:assembly_slug>/datagrid_attendee_update_view/<str:attendee_id>',
+        'datagrid_attendee_update_view/<str:attendee_id>',
         view=datagrid_attendee_update_view,
         name='datagrid_attendee_update_view',
     ),

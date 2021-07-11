@@ -104,9 +104,9 @@ class AttendeeService:
                 return target_attendee.related_ones.all()
 
     @staticmethod
-    def by_datagrid_params(current_user_organization, assembly_slug, orderby_string, filters_list):
+    def by_datagrid_params(current_user, assembly_slug, orderby_string, filters_list):
         """
-        :param current_user_organization:
+        :param current_user:
         :param assembly_slug: attendee participated assembly. Exception: if assembly is in organization's all_access_assemblies, all attendee of the same org will be return
         :param orderby_string:
         :param filters_list:
@@ -114,7 +114,7 @@ class AttendeeService:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slug)
 
-        init_query = Q(division__organization=current_user_organization) if assembly_slug in current_user_organization.infos['all_access_assemblies'] else Q(attendings__meets__assembly__slug=assembly_slug)
+        init_query = Q(division__organization=current_user.organization) if assembly_slug in current_user.organization.infos['all_access_assemblies'] else Q(attendings__meets__assembly__slug=assembly_slug)
         # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slug), Q.AND)
@@ -122,7 +122,7 @@ class AttendeeService:
         return Attendee.objects.select_related().prefetch_related().annotate(
                     attendingmeets=ArrayAgg('attendings__meets__slug', distinct=True),
                 ).filter(final_query).filter(
-                    division__organization=current_user_organization  #Bugfix 20210517 limit org in init_query doesn't work.
+                    division__organization=current_user.organization  #Bugfix 20210517 limit org in init_query doesn't work.
                 ).order_by(*orderby_list)
 
     @staticmethod

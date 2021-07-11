@@ -21,7 +21,7 @@ Attendees.datagridUpdate = {
     category: 'primary',
   },
   attendingmeetDefaults: {
-    assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
+    // assembly: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.currentAssemblyId),
     category: 'primary',
     start: new Date().toISOString(),
     finish: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(), // 1 years from now

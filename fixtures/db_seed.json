@@ -1148,7 +1148,7 @@
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/",
+      "urn": "/persons/datagrid_attendee_update_view/",
       "url_name": "datagrid_attendee_update_view",
       "display_name": "update attendee \u66f4\u65b0\u4ed6\u4eba",
       "display_order": 725,
@@ -1261,7 +1261,7 @@
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/new",
+      "urn": "/persons/datagrid_attendee_update_view/new",
       "url_name": "datagrid_attendee_create_view",
       "display_name": "create attendee \u53e6\u5efa\u65b0\u4eba",
       "display_order": 730,
@@ -1283,7 +1283,7 @@
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/self",
+      "urn": "/persons/datagrid_attendee_update_view/self",
       "url_name": "datagrid_attendee_update_self",
       "display_name": "self info \u81ea\u8eab\u8cc7\u6599",
       "display_order": 726,
@@ -1342,6 +1342,15 @@
         "data_admins": [
           "data_organizer"
         ],
+        "groups_see_others_attending": {
+          "data_counselor": true,
+          "data_organizer": true,
+          "cfcch_congregation_data": true,
+          "children_organizer": true,
+          "children_coworker": true,
+          "conference_organizer": true,
+	        "conference_coworker":true
+        },
         "all_access_assemblies": [
           "cfcch_congregation_data"
         ]
