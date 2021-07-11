@@ -26,13 +26,14 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         """
         # current_user_organization = self.request.user.organization
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
-        assembly_slug = self.request.query_params.get('assembly')
+        assembly_slugs_string = self.request.query_params.get('assemblies')
         filters_list_string = self.request.query_params.get('filter', '[]')
         filters_list = ast.literal_eval(filters_list_string)  # Datagrid didn't send array in standard url params since search can be nested arrays
+        assembly_slugs = ast.literal_eval(assembly_slugs_string)
 
         return AttendeeService.by_datagrid_params(
             current_user=self.request.user,
-            assembly_slug=assembly_slug,
+            assembly_slugs=assembly_slugs,
             orderby_string=orderby_string,
             filters_list=filters_list,
         )

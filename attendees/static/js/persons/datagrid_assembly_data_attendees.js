@@ -25,7 +25,7 @@ Attendees.dataAttendees = {
     key: "id",
     load: (loadOptions) => {
       const deferred = $.Deferred();
-      const args = {assembly: $('div.dataAttendees').data('assembly')};
+      const args = {assemblies: JSON.stringify([$('div.dataAttendees').data('assembly')])};
 
       [
         "skip",

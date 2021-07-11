@@ -104,20 +104,21 @@ class AttendeeService:
                 return target_attendee.related_ones.all()
 
     @staticmethod
-    def by_datagrid_params(current_user, assembly_slug, orderby_string, filters_list):
+    def by_datagrid_params(current_user, assembly_slugs, orderby_string, filters_list):
         """
+        Todo 20210711 need permission check: coworkers/admins can see all organization's attendee, while ordinary users can access by schedular assignments
         :param current_user:
-        :param assembly_slug: attendee participated assembly. Exception: if assembly is in organization's all_access_assemblies, all attendee of the same org will be return
+        :param assembly_slugs: attendee participated assembly. Exception: if assembly is in organization's all_access_assemblies, all attendee of the same org will be return
         :param orderby_string:
         :param filters_list:
         :return:
         """
-        orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slug)
+        orderby_list = AttendeeService.orderby_parser(orderby_string, assembly_slugs)
 
-        init_query = Q(division__organization=current_user.organization) if assembly_slug in current_user.organization.infos['all_access_assemblies'] else Q(attendings__meets__assembly__slug=assembly_slug)
+        init_query = Q(attendings__meets__assembly__slug__in=assembly_slugs)
         # Todo: need filter on attending_meet finish_date
 
-        final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slug), Q.AND)
+        final_query = init_query.add(AttendeeService.filter_parser(filters_list, assembly_slugs), Q.AND)
 
         return Attendee.objects.select_related().prefetch_related().annotate(
                     attendingmeets=ArrayAgg('attendings__meets__slug', distinct=True),
@@ -126,14 +127,14 @@ class AttendeeService:
                 ).order_by(*orderby_list)
 
     @staticmethod
-    def orderby_parser(orderby_string, assembly_slug):
+    def orderby_parser(orderby_string, assembly_slugs):
         """
         generates sorter (column or OrderBy Func) based on user's choice
         :param orderby_string: JSON fetched from search params, will convert attendee.division to attendee__division
-        :param assembly_slug: assembly_slug
+        :param assembly_slugs: assembly_slug
         :return: a List of sorter for order_by()
         """
-        meet_sorters = {meet.slug: Func(F('attendingmeets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(assembly__slug=assembly_slug)}
+        meet_sorters = {meet.slug: Func(F('attendingmeets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(assembly__slug__in=assembly_slugs)}
 
         orderby_list = []  # sort attendingmeets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
         for orderby_dict in json.loads(orderby_string):
@@ -147,11 +148,11 @@ class AttendeeService:
         return orderby_list
 
     @staticmethod
-    def filter_parser(filters_list, assembly_slug):
+    def filter_parser(filters_list, assembly_slugs):
         """
         A recursive method return Q function based on multi-level filter conditions
         :param filters_list: a string of multi-level list of filter conditions
-        :param assembly_slug: assembly_slug
+        :param assembly_slugs: assembly_slug
         :return: Q function, could be an empty Q()
         """
         and_string = Q.AND.lower()
@@ -162,24 +163,24 @@ class AttendeeService:
                 raise Exception("Can't process both 'or'/'and' at the same level! please wrap them in separated lists.")
             elif filters_list[1] == and_string:
                 and_list = [element for element in filters_list if element != and_string]
-                and_query = AttendeeService.filter_parser(and_list[0], assembly_slug)
+                and_query = AttendeeService.filter_parser(and_list[0], assembly_slugs)
                 for and_element in and_list[1:]:
-                    and_query.add(AttendeeService.filter_parser(and_element, assembly_slug), Q.AND)
+                    and_query.add(AttendeeService.filter_parser(and_element, assembly_slugs), Q.AND)
                 return and_query
             elif filters_list[1] == or_string:
                 or_list = [element for element in filters_list if element != or_string]
-                or_query = AttendeeService.filter_parser(or_list[0], assembly_slug)
+                or_query = AttendeeService.filter_parser(or_list[0], assembly_slugs)
                 for or_element in or_list[1:]:
-                    or_query.add(AttendeeService.filter_parser(or_element, assembly_slug), Q.OR)
+                    or_query.add(AttendeeService.filter_parser(or_element, assembly_slugs), Q.OR)
                 return or_query
             elif filters_list[1] == '=':
                 return Q(**{filters_list[0].replace('.', '__'): filters_list[2]})
             elif filters_list[1] == 'contains':
-                return Q(**{AttendeeService.field_convert(filters_list[0], assembly_slug) + '__icontains': filters_list[2]})
+                return Q(**{AttendeeService.field_convert(filters_list[0], assembly_slugs) + '__icontains': filters_list[2]})
         return Q()
 
     @staticmethod
-    def field_convert(query_field, assembly_slug):
+    def field_convert(query_field, assembly_slugs):
         """
         some of the values are calculated cell values, and need to convert back to db field for search
         :return: string of fields in database
@@ -188,8 +189,8 @@ class AttendeeService:
             'self_phone_numbers': 'infos__contacts',
             'self_email_addresses': 'infos__contacts',
         }
-        if assembly_slug:
-            for meet in Meet.objects.filter(assembly__slug=assembly_slug):
+        if assembly_slugs:
+            for meet in Meet.objects.filter(assembly__slug__in=assembly_slugs):
                 field_converter[meet.slug] = 'attendings__meets__display_name'
 
         return field_converter.get(query_field, query_field).replace('.', '__')
