@@ -1,7 +1,9 @@
 Attendees.dataAttendees = {
+  assemblyTagBox: null,
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
+    Attendees.dataAttendees.startAssemblySelector();
     Attendees.dataAttendees.setDataAttrs();
     Attendees.dataAttendees.setMeetsColumns([]);
     Attendees.dataAttendees.startDataGrid();
@@ -16,6 +18,23 @@ Attendees.dataAttendees = {
     Attendees.dataAttendees.attendeeUrn = $AttendeeAttrs.attendeeUrn;
   },
 
+  startAssemblySelector: () => {
+    Attendees.dataAttendees.assemblyTagBox = $('div.assembly-tag-box').dxTagBox({
+      dataSource: new DevExpress.data.DataSource({
+        store: JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets),
+        key: 'id',
+        group: 'assembly_name'
+      }),
+      valueExpr: 'id',
+      showClearButton: true,
+      placeholder: 'select activities...',
+      width: '50%',
+      searchEnabled: true,
+      grouped: true,
+      displayExpr: 'display_name'
+    }).dxTagBox('instance');
+  },
+
   startDataGrid: () => {
     Attendees.dataAttendees.dataGridOpts['dataSource'] = Attendees.dataAttendees.customStore;
     $("div.dataAttendees").dxDataGrid(Attendees.dataAttendees.dataGridOpts);//.dxDataGrid("instance");
@@ -25,7 +44,7 @@ Attendees.dataAttendees = {
     key: "id",
     load: (loadOptions) => {
       const deferred = $.Deferred();
-      const args = {assemblies: JSON.stringify([$('div.dataAttendees').data('assembly')])};
+      const args = {assemblies: JSON.stringify(Attendees.dataAttendees.assemblyTagBox.option('value'))};
 
       [
         "skip",
