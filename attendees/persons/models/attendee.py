@@ -1,6 +1,7 @@
 from opencc import OpenCC
 
 from django.db import models
+from django.db.models import Q
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
@@ -86,6 +87,18 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         if other_attendee_id:
             return Attendee.objects.filter(pk=other_attendee_id, division__organization=self.division.organization).exists()
         return False
+
+    def scheduling_attendees(self):
+        """
+        :return: all attendees that can be scheduled by the self(included) based on relationships. For example, if a kid
+        specified "scheduler" is true in its parent relationship, when calling parent_attendee.scheduling_attendees(),
+        both the kid and the parent will be returned, means the parent can change/see schedule of the kid and the parent.
+        """
+        return self.__class__.objects.filter(
+            Q(id=self.id)
+            |
+            Q(from_attendee__to_attendee__id=self.id, from_attendee__scheduler=True)
+        ).distinct()
 
     @cached_property
     def parents_notifiers_names(self):

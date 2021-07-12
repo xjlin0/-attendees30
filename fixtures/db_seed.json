@@ -1311,6 +1311,7 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
+        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "organization.none",
         "counselor": [],
@@ -1342,17 +1343,14 @@
         "data_admins": [
           "data_organizer"
         ],
-        "groups_see_others_attending": {
-          "data_counselor": true,
-          "data_organizer": true,
-          "cfcch_congregation_data": true,
-          "children_organizer": true,
-          "children_coworker": true,
-          "conference_organizer": true,
-	        "conference_coworker":true
-        },
-        "all_access_assemblies": [
-          "cfcch_congregation_data"
+        "groups_see_all_meets_attendees": [
+          "data_counselor",
+          "data_organizer",
+          "cfcch_congregation_data",
+          "children_organizer",
+          "children_coworker",
+          "conference_organizer",
+	        "conference_coworker"
         ]
       }
     }
@@ -1371,6 +1369,7 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
+        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "heaven.heaven",
         "counselor": [],

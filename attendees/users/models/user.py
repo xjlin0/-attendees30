@@ -35,6 +35,12 @@ class User(AbstractUser):
         else:
             return self.organization and self.organization.slug == organization_slug
 
+    def can_see_all_organizational_meets_attendees(self):
+        if self.organization:
+            return self.belongs_to_groups_of(self.organization.infos['groups_see_all_meets_attendees'])
+        else:
+            return False
+
     def privileged(self):
         """
         check if user's in correct groups to see other's data without relationships, currently are data_admins or counselor group

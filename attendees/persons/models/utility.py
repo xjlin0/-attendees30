@@ -39,9 +39,10 @@ class Utility:
                     "flags": {
                       "attendance_character_to_past_categories":  {}
                     },
+                    "groups_see_all_meets_attendees": [],
                     "contacts": {},
                     "counselor": [],
-                    "data_admins": []
+                    "data_admins": [],
                   }
 
     @staticmethod
