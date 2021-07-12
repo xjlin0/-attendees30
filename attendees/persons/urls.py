@@ -126,7 +126,7 @@ urlpatterns = [
     ),
 
     path(
-        "<slug:division_slug>/<slug:assembly_slug>/datagrid_assembly_data_attendees/",
+        "datagrid_assembly_data_attendees/",
         view=datagrid_assembly_data_attendees_list_view,
         name="datagrid_assembly_data_attendees",
     ),
