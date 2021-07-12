@@ -35,6 +35,12 @@ class User(AbstractUser):
         else:
             return self.organization and self.organization.slug == organization_slug
 
+    def can_see_all_organizational_meets_attendees(self):
+        if self.organization:
+            return self.belongs_to_groups_of(self.organization.infos['groups_see_all_meets_attendees'])
+        else:
+            return False
+
     def privileged(self):
         """
         check if user's in correct groups to see other's data without relationships, currently are data_admins or counselor group
@@ -72,10 +78,10 @@ class User(AbstractUser):
         return self.attendee and self.attendee.attending_set.filter(divisions__slug__in=division_slugs).exists()
 
     def belongs_to_divisions_of(self, division_slugs):
-        if self.is_superuser:
-            return True
-        else:
-            return self.organization and self.organization.division_set.filter(slug__in=division_slugs).exists()
+        # if self.is_superuser:
+        #     return True
+        # else:
+        return self.organization and self.organization.division_set.filter(slug__in=division_slugs).exists()
 
     def belongs_to_organization_and_division(self, organization_slug, division_slug):
         if self.is_superuser:

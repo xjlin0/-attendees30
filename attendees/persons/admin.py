@@ -33,6 +33,7 @@ class FamilyAttendeeInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
+    list_display_links = ('display_name',)
     list_display = ('id', 'type', 'display_name', 'display_order', 'infos')
 
 

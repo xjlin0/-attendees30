@@ -1148,7 +1148,7 @@
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/",
+      "urn": "/persons/datagrid_attendee_update_view/",
       "url_name": "datagrid_attendee_update_view",
       "display_name": "update attendee \u66f4\u65b0\u4ed6\u4eba",
       "display_order": 725,
@@ -1261,7 +1261,7 @@
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/new",
+      "urn": "/persons/datagrid_attendee_update_view/new",
       "url_name": "datagrid_attendee_create_view",
       "display_name": "create attendee \u53e6\u5efa\u65b0\u4eba",
       "display_order": 730,
@@ -1283,7 +1283,7 @@
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_attendee_update_view/self",
+      "urn": "/persons/datagrid_attendee_update_view/self",
       "url_name": "datagrid_attendee_update_self",
       "display_name": "self info \u81ea\u8eab\u8cc7\u6599",
       "display_order": 726,
@@ -1311,6 +1311,7 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
+        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "organization.none",
         "counselor": [],
@@ -1342,8 +1343,14 @@
         "data_admins": [
           "data_organizer"
         ],
-        "all_access_assemblies": [
-          "cfcch_congregation_data"
+        "groups_see_all_meets_attendees": [
+          "data_counselor",
+          "data_organizer",
+          "cfcch_congregation_data",
+          "children_organizer",
+          "children_coworker",
+          "conference_organizer",
+	        "conference_coworker"
         ]
       }
     }
@@ -1362,6 +1369,7 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
+        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "heaven.heaven",
         "counselor": [],
@@ -2111,7 +2119,7 @@
       "is_removed": false,
       "type": "status",
       "display_order": 0,
-      "display_name": "accept",
+      "display_name": "receive",
       "infos": {}
     }
   },

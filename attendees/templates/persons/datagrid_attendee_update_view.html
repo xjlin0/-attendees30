@@ -44,7 +44,7 @@
     </span>
   </div>
   <div class="d-flex align-items-center form-actions">
-      {% if allowed_to_create_attendee %}
+      {% if can_create_nonfamily_attendee %}
         <a class="add-attendee btn btn-outline-success btn-xs"
            title="add a new attendee"
            role="button"
@@ -96,7 +96,7 @@
          data-attendee-endpoint="{{attendee_endpoint}}"
          data-family-attendees-endpoint="{{family_attendees_endpoint}}"
          data-attendee-urn="{{attendee_urn}}"
-         data-current-assembly-id="{{current_assembly_id}}">
+         >
     </div>
   </form>
   <form id="attending-update-popup-form"
