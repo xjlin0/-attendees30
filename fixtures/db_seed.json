@@ -2119,7 +2119,7 @@
       "is_removed": false,
       "type": "status",
       "display_order": 0,
-      "display_name": "accept",
+      "display_name": "receive",
       "infos": {}
     }
   },
