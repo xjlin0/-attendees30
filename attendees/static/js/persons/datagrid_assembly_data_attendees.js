@@ -142,7 +142,7 @@ Attendees.dataAttendees = {
 //    },
     {
       caption: "Full name",
-      allowSorting: false,
+      // allowSorting: false,
       dataField: "infos.names",
       name: 'infos.names.original',
       dataType: "string",
