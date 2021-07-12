@@ -1,9 +1,9 @@
 Attendees.dataAttendees = {
-  assemblyTagBox: null,
+  meetTagBox: null,
   init: () => {
     console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
-    Attendees.dataAttendees.startAssemblySelector();
+    Attendees.dataAttendees.startMeetSelector();
     Attendees.dataAttendees.setDataAttrs();
     Attendees.dataAttendees.setMeetsColumns([]);
     Attendees.dataAttendees.startDataGrid();
@@ -18,8 +18,8 @@ Attendees.dataAttendees = {
     Attendees.dataAttendees.attendeeUrn = $AttendeeAttrs.attendeeUrn;
   },
 
-  startAssemblySelector: () => {
-    Attendees.dataAttendees.assemblyTagBox = $('div.assembly-tag-box').dxTagBox({
+  startMeetSelector: () => {
+    Attendees.dataAttendees.meetTagBox = $('div.meet-tag-box').dxTagBox({
       dataSource: new DevExpress.data.DataSource({
         store: JSON.parse(document.querySelector('div.dataAttendees').dataset.availableMeets),
         key: 'id',
@@ -31,7 +31,11 @@ Attendees.dataAttendees = {
       width: '50%',
       searchEnabled: true,
       grouped: true,
-      displayExpr: 'display_name'
+      displayExpr: 'display_name',
+      onValueChanged: (e) => {
+        Attendees.dataAttendees.setMeetsColumns(Attendees.dataAttendees.meetTagBox._selectedItems);
+        Attendees.dataAttendees.startDataGrid();
+      },
     }).dxTagBox('instance');
   },
 
@@ -44,7 +48,7 @@ Attendees.dataAttendees = {
     key: "id",
     load: (loadOptions) => {
       const deferred = $.Deferred();
-      const args = {assemblies: JSON.stringify(Attendees.dataAttendees.assemblyTagBox.option('value'))};
+      const args = {meets: JSON.stringify(Attendees.dataAttendees.meetTagBox.option('value'))};
 
       [
         "skip",
@@ -178,9 +182,9 @@ Attendees.dataAttendees = {
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
         const attrs = {
-          "class": "text-info",
-          "text": "Attendances",
-          "href": Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id,
+          class: 'text-info',
+          text: 'Attendances',
+          href: Attendees.dataAttendees.familyAttendancesUrn + rowData.data.id,
         };
         $($('<a>', attrs)).appendTo(container);
       },
@@ -230,7 +234,7 @@ Attendees.dataAttendees = {
 
     availableMeets.forEach(meet => {
       meetColumns.push({
-        visible: meet.id > 0,
+        // visible: meet.id > 0,
         caption: meet.display_name,
         dataField: meet.slug,
         allowHeaderFiltering: false,
