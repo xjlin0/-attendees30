@@ -89,7 +89,10 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         return False
 
     def can_schedule_attendee(self, other_attendee_id):
+        if str(self.id) == other_attendee_id:
+            return True
         return self.__class__.objects.filter(
+            (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
             from_attendee__to_attendee__id=self.id,
             from_attendee__from_attendee__id=other_attendee_id,
             from_attendee__scheduler=True,
@@ -105,7 +108,12 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         return self.__class__.objects.filter(
             Q(id=self.id)
             |
-            Q(from_attendee__to_attendee__id=self.id, from_attendee__scheduler=True)
+            Q(
+                (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
+                from_attendee__to_attendee__id=self.id,
+                from_attendee__scheduler=True,
+                from_attendee__is_removed=False,
+            )
         ).distinct()
 
     @cached_property
