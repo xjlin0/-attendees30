@@ -19,7 +19,7 @@ from attendees.persons.views import (
     datagrid_assembly_all_attendings_list_view,
     datagrid_assembly_data_attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
-    datagrid_attendee_update_view,
+    attendee_update_view,
     api_attendee_attendings_viewset,
     api_user_meet_attendings_viewset,
     api_family_organization_attendings_viewset,
@@ -138,19 +138,19 @@ urlpatterns = [
     ),
 
     path(
-        'datagrid_attendee_update_view/self',
-        view=datagrid_attendee_update_view,
-        name='datagrid_attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
+        'attendee/self',
+        view=attendee_update_view,
+        name='attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
     ),
     path(
-        'datagrid_attendee_update_view/new',
+        'attendee/new',
         kwargs={'attendee_id': 'new', 'can_create_nonfamily_attendee': False},
-        view=datagrid_attendee_update_view,
-        name='datagrid_attendee_create_view',  # for create non-family-attendee permission
+        view=attendee_update_view,
+        name='attendee_create_view',  # for create non-family-attendee permission
     ),
     path(
-        'datagrid_attendee_update_view/<str:attendee_id>',
-        view=datagrid_attendee_update_view,
-        name='datagrid_attendee_update_view',
+        'attendee/<str:attendee_id>',
+        view=attendee_update_view,
+        name='attendee_update_view',
     ),
 ]

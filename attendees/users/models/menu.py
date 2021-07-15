@@ -7,7 +7,7 @@ from attendees.whereabouts.models import Organization
 
 
 class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
-    CREATE_VIEW_NAME = 'datagrid_attendee_create_view'
+    CREATE_VIEW_NAME = 'attendee_create_view'
 
     id = models.BigAutoField(
         auto_created=True,

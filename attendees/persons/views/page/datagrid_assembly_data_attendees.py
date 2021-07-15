@@ -32,7 +32,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
             'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,
             'available_meets_json': dumps(list(available_meets)),
             'allowed_to_create_attendee': allowed_to_create_attendee,
-            'create_attendee_urn': f'/persons/datagrid_attendee_update_view/new',
+            'create_attendee_urn': f'/persons/attendee/new',
         })
         return context
 
@@ -47,7 +47,7 @@ class DatagridAssemblyDataAttendeesListView(RouteGuard, ListView):
             context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
             # context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
             # context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
-            context.update({'attendee_urn': f"/persons/datagrid_attendee_update_view/"})
+            context.update({'attendee_urn': f"/persons/attendee/"})
             # context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
             # context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
             # context.update({'attendings_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})

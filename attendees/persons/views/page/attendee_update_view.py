@@ -13,10 +13,10 @@ from attendees.users.models import Menu
 from attendees.utils.view_helpers import get_object_or_delayed_403
 
 
-class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
+class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
     model = Attendee
     fields = '__all__'
-    template_name = 'persons/datagrid_attendee_update_view.html'
+    template_name = 'persons/attendee_update_view.html'
 
     def get_object(self, queryset=None):
         # queryset = self.get_queryset() if queryset is None else queryset
@@ -75,5 +75,5 @@ class DatagridAttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateVie
             raise Http404('Have you registered any events of the organization?')
 
 
-datagrid_attendee_update_view = DatagridAttendeeUpdateView.as_view()
+attendee_update_view = AttendeeUpdateView.as_view()
 
