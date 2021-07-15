@@ -137,3 +137,12 @@ All libraries are included to facilitate offline development
 - [ ] i18n Translation on model data, django-parler maybe?
 
 </details>
+
+## Issues:
+
+<details>
+  <summary>Click to expand all</summary>
+
+- [ ] for ordinary users:
+   -[ ] even as scheduler seeing other's attendee detail view, the joined meet doesn't show group name (i.e. Hagar cannot see Ishmael in "the Rock")
+</details>

@@ -32,12 +32,12 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
         # current_assembly_slug = self.kwargs.get('assembly_slug', 'cfcch_unspecified')
         # current_assembly_id = Assembly.objects.get(slug=current_assembly_slug).id
         targeting_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())  # if more logic needed when create new, a new view will be better
-        can_create_nonfamily_attendee = self.kwargs.get('can_create_nonfamily_attendee', Menu.user_can_create_attendee(self.request.user))
+        show_create_nonfamily_attendee = self.kwargs.get('show_create_nonfamily_attendee', Menu.user_can_create_attendee(self.request.user))
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
-            'can_create_nonfamily_attendee': can_create_nonfamily_attendee,
+            'show_create_nonfamily_attendee': show_create_nonfamily_attendee,
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
             'attendingmeets_endpoint': '/persons/api/datagrid_data_attendingmeet/',
@@ -58,12 +58,12 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
             # 'current_organization_slug': current_organization_slug,
             # 'current_division_slug': current_division_slug,
             # 'current_assembly_id': current_assembly_id,
-            'attendee_urn': f"/persons/datagrid_attendee_update_view/",
+            'attendee_urn': f"/persons/attendee/",
         })
         return context
 
-    def render_to_response(self, context, **kwargs):
-        if self.request.user.attendee.under_same_org_with(context['targeting_attendee_id']):
+    def render_to_response(self, context, **kwargs):  # attendee_id "new" only happened in attendee_create_view checked by RouteAndSpyGuard
+        if context['targeting_attendee_id'] == 'new' or self.request.user.attendee.under_same_org_with(context['targeting_attendee_id']):
             if self.request.is_ajax():
                 pass
 

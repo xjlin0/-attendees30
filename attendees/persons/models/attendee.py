@@ -88,6 +88,14 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
             return Attendee.objects.filter(pk=other_attendee_id, division__organization=self.division.organization).exists()
         return False
 
+    def can_schedule_attendee(self, other_attendee_id):
+        return self.__class__.objects.filter(
+            from_attendee__to_attendee__id=self.id,
+            from_attendee__from_attendee__id=other_attendee_id,
+            from_attendee__scheduler=True,
+            from_attendee__is_removed=False,
+        ).exists()
+
     def scheduling_attendees(self):
         """
         :return: all attendees that can be scheduled by the self(included) based on relationships. For example, if a kid

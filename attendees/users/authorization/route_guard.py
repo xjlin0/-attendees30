@@ -34,10 +34,12 @@ class SpyGuard(UserPassesTestMixin):
             return Menu.user_can_create_attendee(self.request.user) # assume url is datagrid_attendee_create_view
         if targeting_attendee_id:
             if current_attendee:
+                if str(current_attendee.id) == targeting_attendee_id:
+                    return True
                 if current_attendee.under_same_org_with(targeting_attendee_id):
-                    return True  # Todo: check relation/scheduler permission for non-dada-admin
-        else:
-            return True
+                    return self.request.user.privileged() or current_attendee.can_schedule_attendee(targeting_attendee_id)
+        if targeting_attendee_id is None:
+            return self.kwargs.get('myself')
 
         time.sleep(2)
         return False

@@ -139,12 +139,13 @@ urlpatterns = [
 
     path(
         'attendee/self',
+        kwargs={'myself': True},
         view=attendee_update_view,
         name='attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
     ),
     path(
         'attendee/new',
-        kwargs={'attendee_id': 'new', 'can_create_nonfamily_attendee': False},
+        kwargs={'attendee_id': 'new', 'show_create_nonfamily_attendee': False},
         view=attendee_update_view,
         name='attendee_create_view',  # for create non-family-attendee permission
     ),
