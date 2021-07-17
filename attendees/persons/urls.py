@@ -139,7 +139,6 @@ urlpatterns = [
 
     path(
         'attendee/self',
-        kwargs={'myself': True},
         view=attendee_update_view,
         name='attendee_update_self',  # null attendee_id will be replaced by request.user's attendee_id
     ),
