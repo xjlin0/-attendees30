@@ -1117,19 +1117,19 @@
     "pk": 15,
     "fields": {
       "created": "2020-11-20T16:12:21.803Z",
-      "modified": "2021-07-12T16:18:03.890Z",
+      "modified": "2021-07-17T17:29:22.795Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/datagrid_assembly_data_attendees/",
-      "url_name": "datagrid_assembly_data_attendees",
+      "urn": "/persons/attendees/",
+      "url_name": "attendees_list_view",
       "display_name": "others info \u4ed6\u4eba\u8cc7\u6599",
       "display_order": 1000,
       "infos": {
         "class": "dropdown-item",
-        "title": "congregation attendee data"
+        "title": "other attendees data"
       },
       "lft": 14,
       "rght": 15,
@@ -9160,7 +9160,7 @@
       "actual_birthday": null,
       "estimated_birthday": null,
       "deathday": null,
-      "photo": "attendee_portrait/Rembrandt_Harmensz._van_Rijn__Abraham_ZsVZoFY.jpg",
+      "photo": "",
       "progressions": {},
       "infos": {
         "fixed": {
