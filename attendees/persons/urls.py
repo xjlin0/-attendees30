@@ -17,7 +17,7 @@ from attendees.persons.views import (
     api_datagrid_data_familyattendees_viewset,
     api_attendee_relationships_viewset,
     datagrid_assembly_all_attendings_list_view,
-    datagrid_assembly_data_attendees_list_view,
+    attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
     attendee_update_view,
     api_attendee_attendings_viewset,
@@ -126,9 +126,9 @@ urlpatterns = [
     ),
 
     path(
-        "datagrid_assembly_data_attendees/",
-        view=datagrid_assembly_data_attendees_list_view,
-        name="datagrid_assembly_data_attendees",
+        'attendees/',
+        view=attendees_list_view,
+        name='attendees_list_view',
     ),
 
     path(
