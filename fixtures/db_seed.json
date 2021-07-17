@@ -829,7 +829,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 24,
+      "rght": 26,
       "tree_id": 8,
       "level": 0
     }
@@ -853,8 +853,8 @@
         "class": "dropdown-item",
         "title": "Coworkers attendance"
       },
-      "lft": 22,
-      "rght": 23,
+      "lft": 24,
+      "rght": 25,
       "tree_id": 8,
       "level": 1
     }
@@ -878,8 +878,8 @@
         "class": "dropdown-item",
         "title": "My (families) attendance"
       },
-      "lft": 20,
-      "rght": 21,
+      "lft": 22,
+      "rght": 23,
       "tree_id": 8,
       "level": 1
     }
@@ -1293,6 +1293,31 @@
       },
       "lft": 8,
       "rght": 9,
+      "tree_id": 8,
+      "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 26,
+    "fields": {
+      "created": "2021-07-17T23:36:05.745Z",
+      "modified": "2021-07-17T23:36:05.745Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "main",
+      "parent": 1,
+      "html_type": "a",
+      "urn": "/occasions/gatherings/",
+      "url_name": "gatherings_list_view",
+      "display_name": "gatherings \u55ae\u6b21\u6d3b\u52d5\u5217\u8868",
+      "display_order": 1250,
+      "infos": {
+        "class": "dropdown-item",
+        "title": "Gatherings list"
+      },
+      "lft": 20,
+      "rght": 21,
       "tree_id": 8,
       "level": 1
     }
@@ -8630,6 +8655,71 @@
       "read": true,
       "write": true,
       "menu": 15
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 82,
+    "fields": {
+      "created": "2021-07-17T23:36:05.772Z",
+      "modified": "2021-07-17T23:36:05.772Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 83,
+    "fields": {
+      "created": "2021-07-17T23:36:05.774Z",
+      "modified": "2021-07-17T23:36:05.774Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 84,
+    "fields": {
+      "created": "2021-07-17T23:36:05.777Z",
+      "modified": "2021-07-17T23:36:05.777Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 85,
+    "fields": {
+      "created": "2021-07-17T23:36:05.790Z",
+      "modified": "2021-07-17T23:36:05.790Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 86,
+    "fields": {
+      "created": "2021-07-17T23:36:05.794Z",
+      "modified": "2021-07-17T23:36:05.794Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 26
     }
   },
   {

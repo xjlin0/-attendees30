@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}
+  All gatherings
+{% endblock title %}
+
+{% block extra_css %}
+  <link rel="preload"
+        as="style"
+        href="{% static 'devextreme/dx.common.css' %}"
+        onload="this.rel='stylesheet'">
+
+  <link rel="preload"
+        as="style"
+        href="{% static 'devextreme/dx.light.compact.css' %}"
+        onload="this.rel='stylesheet'">
+{% endblock extra_css %}
+
+{% block extra_head %}
+  <script defer
+          type="text/javascript"
+          src="{% static 'devextreme/dx.all.js' %}"
+          integrity="sha384-cnNGdFpQw8wkyU1GB8McOr3QflVl8UeaRXUucUCnBL3FR61457ll67FTDYh/yQ5O sha512-7rH3hw5MKHmtN515LKVdNefqss0exGarCbF8fffYfioGwUZQ/yaTlHn+XNTAJ3fkIPsbzY+Wi9CKP1f/PVImhw=="
+          crossorigin="anonymous">
+  </script>
+
+  <script defer
+          type="text/javascript"
+          src="{% static 'js/occasions/gatherings_list_view.js' %}">
+  </script>
+
+{% endblock extra_head %}
+
+{% block content %}
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <h3>
+        Gathering list
+      </h3>
+    </div>
+  </div>
+
+  <div class="gatheringFilters"
+        data-url="{{request.get_full_path}}">
+  </div>
+
+  <div class="gatheringDatagrids"
+      data-available-meets="{{available_meets_json}}">
+  </div>
+{% endblock content %}

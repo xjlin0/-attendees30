@@ -120,6 +120,9 @@ All libraries are included to facilitate offline development
   - [x] [PR#18](https://github.com/xjlin0/attendees30/pull/18) remove attendee list page dependency of path params and take search params from user for assembly slug
   - [x] [PR#19](https://github.com/xjlin0/attendees30/pull/19) rename and move attendees/attendee page, and show attendees based on auth groups
 - [ ] Gathering list (server side processing with auto-generation)
+  - [x] [PR#20](https://github.com/xjlin0/attendees30/pull/20) gatherings datagrid filtered by meets and date ranges
+  - [ ] django-schedule with Meet
+  - [ ] can gathering generation automatic?
 - [ ] Attendance list (server side processing with auto-generation)
   - [ ] member list (attendance level with editing category)
 - [ ] Attending list (new design with server side processing)
