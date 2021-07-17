@@ -7,7 +7,9 @@ from attendees.whereabouts.models import Organization
 
 
 class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
-    ATTENDEE_CREATE_VIEW_NAME = 'attendee_create_view'
+    ATTENDEE_CREATE_VIEW = 'attendee_create_view'
+    ATTENDEE_UPDATE_VIEW = 'attendee_update_view'
+    ATTENDEE_UPDATE_SELF = 'attendee_update_self'
 
     id = models.BigAutoField(
         auto_created=True,
@@ -109,7 +111,7 @@ class Menu(MPTTModel, TimeStampedModel, SoftDeletableModel):
         return self.organization.slug if self.organization else ''
 
     @staticmethod
-    def user_can_create_attendee(user, url_name=ATTENDEE_CREATE_VIEW_NAME):
+    def user_can_create_attendee(user, url_name=ATTENDEE_CREATE_VIEW):
         return Menu.objects.filter(
             auth_groups__in=user.groups.all(),
             url_name=url_name,

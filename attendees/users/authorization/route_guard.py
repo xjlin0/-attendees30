@@ -27,7 +27,7 @@ class RouteGuard(UserPassesTestMixin):
 class SpyGuard(UserPassesTestMixin):
 
     def test_func(self):  # Superusers can still access such attendee in admin UI
-        targeting_attendee_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str()))
+        targeting_attendee_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', self.kwargs.get('attendee_id'))
         current_attendee = self.request.user.attendee
 
         if targeting_attendee_id == 'new':
@@ -35,9 +35,11 @@ class SpyGuard(UserPassesTestMixin):
         if targeting_attendee_id:
             if current_attendee:
                 if str(current_attendee.id) == targeting_attendee_id:
-                    return True
+                    return self.request.resolver_match.url_name == Menu.ATTENDEE_UPDATE_VIEW
                 if current_attendee.under_same_org_with(targeting_attendee_id):
                     return self.request.user.privileged() or current_attendee.can_schedule_attendee(targeting_attendee_id)
+        else:
+            return self.request.resolver_match.url_name == Menu.ATTENDEE_UPDATE_SELF
 
         time.sleep(2)
         return False
