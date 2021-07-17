@@ -21,7 +21,7 @@ class ApiAttendeeAttendingsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
         current_user_organization = self.request.user.organization
         is_self = current_user_organization and self.request.user.attendee and self.request.user.attendee == target_attendee
         is_privileged = current_user_organization and self.request.user.privileged()
-        if target_attendee and (is_self or is_privileged):  # Todo: scheduler should be able to do it too
+        if target_attendee and (is_self or is_privileged or self.request.user.attendee.can_schedule_attendee(target_attendee.id)):
             attending_id = self.kwargs.get('pk')
             qs = Attending.objects.filter(
                 attendee=target_attendee,

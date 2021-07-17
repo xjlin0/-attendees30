@@ -50,7 +50,7 @@ Attendees.datagridUpdate = {
   },
 
   init: () => {
-    console.log('/static/js/persons/datagrid_attendee_update_view.js');
+    console.log('/static/js/persons/attendee_update_view.js');
     Attendees.datagridUpdate.displayNotifierFromSearchParam('success');
     Attendees.datagridUpdate.initAttendeeForm();
   },

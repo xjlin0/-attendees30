@@ -829,7 +829,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 22,
+      "rght": 24,
       "tree_id": 8,
       "level": 0
     }
@@ -853,8 +853,8 @@
         "class": "dropdown-item",
         "title": "Coworkers attendance"
       },
-      "lft": 20,
-      "rght": 21,
+      "lft": 22,
+      "rght": 23,
       "tree_id": 8,
       "level": 1
     }
@@ -878,8 +878,8 @@
         "class": "dropdown-item",
         "title": "My (families) attendance"
       },
-      "lft": 18,
-      "rght": 19,
+      "lft": 20,
+      "rght": 21,
       "tree_id": 8,
       "level": 1
     }
@@ -930,8 +930,8 @@
       "infos": {
         "class": "dropdown-item"
       },
-      "lft": 14,
-      "rght": 15,
+      "lft": 16,
+      "rght": 17,
       "tree_id": 8,
       "level": 1
     }
@@ -1004,8 +1004,8 @@
       "infos": {
         "class": "dropdown-divider"
       },
-      "lft": 16,
-      "rght": 17,
+      "lft": 18,
+      "rght": 19,
       "tree_id": 8,
       "level": 1
     }
@@ -1057,7 +1057,7 @@
         "aria-haspopup": "true"
       },
       "lft": 1,
-      "rght": 8,
+      "rght": 6,
       "tree_id": 10,
       "level": 0
     }
@@ -1081,8 +1081,8 @@
         "class": "dropdown-item",
         "title": "roaster list"
       },
-      "lft": 6,
-      "rght": 7,
+      "lft": 4,
+      "rght": 5,
       "tree_id": 10,
       "level": 1
     }
@@ -1106,8 +1106,8 @@
         "class": "dropdown-item",
         "title": "congregation attending"
       },
-      "lft": 4,
-      "rght": 5,
+      "lft": 2,
+      "rght": 3,
       "tree_id": 10,
       "level": 1
     }
@@ -1117,23 +1117,23 @@
     "pk": 15,
     "fields": {
       "created": "2020-11-20T16:12:21.803Z",
-      "modified": "2021-07-09T16:11:51.590Z",
+      "modified": "2021-07-17T17:29:22.795Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
-      "parent": 12,
+      "parent": 1,
       "html_type": "a",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendees/",
-      "url_name": "datagrid_assembly_data_attendees",
-      "display_name": "\u4ed6\u4eba\u8cc7\u6599 others info",
-      "display_order": 3100,
+      "urn": "/persons/attendees/",
+      "url_name": "attendees_list_view",
+      "display_name": "others info \u4ed6\u4eba\u8cc7\u6599",
+      "display_order": 1000,
       "infos": {
         "class": "dropdown-item",
-        "title": "congregation attendee data"
+        "title": "other attendees data"
       },
-      "lft": 2,
-      "rght": 3,
-      "tree_id": 10,
+      "lft": 14,
+      "rght": 15,
+      "tree_id": 8,
       "level": 1
     }
   },
@@ -1142,14 +1142,14 @@
     "pk": 19,
     "fields": {
       "created": "2020-12-14T04:43:29Z",
-      "modified": "2021-07-09T15:37:03.753Z",
+      "modified": "2021-07-15T15:41:44.030Z",
       "is_removed": false,
       "organization": 1,
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/datagrid_attendee_update_view/",
-      "url_name": "datagrid_attendee_update_view",
+      "urn": "/persons/attendee/",
+      "url_name": "attendee_update_view",
       "display_name": "update attendee \u66f4\u65b0\u4ed6\u4eba",
       "display_order": 725,
       "infos": {
@@ -1255,14 +1255,14 @@
     "pk": 24,
     "fields": {
       "created": "2021-07-03T19:11:57.123Z",
-      "modified": "2021-07-09T15:19:42.525Z",
+      "modified": "2021-07-15T15:40:52.026Z",
       "is_removed": false,
       "organization": 1,
       "category": "sublink",
       "parent": 1,
       "html_type": "permission",
-      "urn": "/persons/datagrid_attendee_update_view/new",
-      "url_name": "datagrid_attendee_create_view",
+      "urn": "/persons/attendee/new",
+      "url_name": "attendee_create_view",
       "display_name": "create attendee \u53e6\u5efa\u65b0\u4eba",
       "display_order": 730,
       "infos": {},
@@ -1277,14 +1277,14 @@
     "pk": 25,
     "fields": {
       "created": "2021-07-09T15:35:48.091Z",
-      "modified": "2021-07-09T16:11:12.824Z",
+      "modified": "2021-07-15T15:40:17.718Z",
       "is_removed": false,
       "organization": 1,
       "category": "main",
       "parent": 1,
       "html_type": "a",
-      "urn": "/persons/datagrid_attendee_update_view/self",
-      "url_name": "datagrid_attendee_update_self",
+      "urn": "/persons/attendee/self",
+      "url_name": "attendee_update_self",
       "display_name": "self info \u81ea\u8eab\u8cc7\u6599",
       "display_order": 726,
       "infos": {
@@ -1311,7 +1311,6 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
-        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "organization.none",
         "counselor": [],
@@ -1324,7 +1323,7 @@
     "pk": 1,
     "fields": {
       "created": "2020-04-11T18:15:06.495Z",
-      "modified": "2021-04-08T13:57:30.446Z",
+      "modified": "2021-07-12T15:56:14.460Z",
       "is_removed": false,
       "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "Chinese for Christ Church of Hayward",
@@ -1343,6 +1342,9 @@
         "data_admins": [
           "data_organizer"
         ],
+        "all_access_assemblies": [
+          "cfcch_congregation_data"
+        ],
         "groups_see_all_meets_attendees": [
           "data_counselor",
           "data_organizer",
@@ -1350,7 +1352,7 @@
           "children_organizer",
           "children_coworker",
           "conference_organizer",
-	        "conference_coworker"
+          "conference_coworker"
         ]
       }
     }
@@ -1369,7 +1371,6 @@
           "opencc_convert": true,
           "attendance_character_to_past_categories": {}
         },
-        "groups_see_all_meets_attendees": [],
         "contacts": {},
         "hostname": "heaven.heaven",
         "counselor": [],
@@ -2115,7 +2116,7 @@
     "pk": 4,
     "fields": {
       "created": "2021-05-23T12:56:31.387Z",
-      "modified": "2021-05-23T12:59:36.666Z",
+      "modified": "2021-07-12T16:20:11.182Z",
       "is_removed": false,
       "type": "status",
       "display_order": 0,
@@ -8567,6 +8568,71 @@
     }
   },
   {
+    "model": "users.menuauthgroup",
+    "pk": 77,
+    "fields": {
+      "created": "2021-07-12T16:16:59.333Z",
+      "modified": "2021-07-12T16:16:59.333Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 78,
+    "fields": {
+      "created": "2021-07-12T16:16:59.334Z",
+      "modified": "2021-07-12T16:16:59.334Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 79,
+    "fields": {
+      "created": "2021-07-12T16:16:59.337Z",
+      "modified": "2021-07-12T16:16:59.337Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 80,
+    "fields": {
+      "created": "2021-07-12T16:16:59.339Z",
+      "modified": "2021-07-12T16:16:59.339Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 81,
+    "fields": {
+      "created": "2021-07-12T16:16:59.341Z",
+      "modified": "2021-07-12T16:16:59.341Z",
+      "is_removed": false,
+      "auth_group": 3,
+      "read": true,
+      "write": true,
+      "menu": 15
+    }
+  },
+  {
     "model": "whereabouts.division",
     "pk": 0,
     "fields": {
@@ -9082,7 +9148,7 @@
     "pk": "aa24758f-cc70-4353-b1d7-9c616b3db425",
     "fields": {
       "created": "1999-04-11T19:38:16.323Z",
-      "modified": "2021-07-03T21:39:40.802Z",
+      "modified": "2021-07-11T14:55:53.581Z",
       "is_removed": false,
       "division": 1,
       "user": null,

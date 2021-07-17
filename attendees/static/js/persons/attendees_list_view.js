@@ -1,7 +1,7 @@
 Attendees.dataAttendees = {
   meetTagBox: null,
   init: () => {
-    console.log("attendees/static/js/persons/datagrid_assembly_data_attendees.js");
+    console.log("attendees/static/js/persons/attendees_list_view.js");
     Attendees.utilities.setAjaxLoaderOnDevExtreme();
     Attendees.dataAttendees.startMeetSelector();
     Attendees.dataAttendees.setDataAttrs();

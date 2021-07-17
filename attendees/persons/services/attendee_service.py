@@ -173,9 +173,15 @@ class AttendeeService:
                     or_query.add(AttendeeService.filter_parser(or_element, meets, current_user), Q.OR)
                 return or_query
             elif filters_list[1] == '=':
-                return Q(**{filters_list[0].replace('.', '__'): filters_list[2]})
+                return Q(**{AttendeeService.field_convert(filters_list[0], meets, current_user): filters_list[2]})
+            elif filters_list[1] == 'startswith':
+                return Q(**{AttendeeService.field_convert(filters_list[0], meets, current_user) + '__istartswith': filters_list[2]})
+            elif filters_list[1] == 'endswith':
+                return Q(**{AttendeeService.field_convert(filters_list[0], meets, current_user) + '__iendswith': filters_list[2]})
             elif filters_list[1] == 'contains':
                 return Q(**{AttendeeService.field_convert(filters_list[0], meets, current_user) + '__icontains': filters_list[2]})
+            elif filters_list[1] == '<>':
+                return ~Q(**{AttendeeService.field_convert(filters_list[0], meets, current_user): filters_list[2]})
         return Q()
 
     @staticmethod

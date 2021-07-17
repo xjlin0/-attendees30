@@ -115,10 +115,10 @@ All libraries are included to facilitate offline development
   - [x] [PR#16](https://github.com/xjlin0/attendees30/pull/16) delete function for human error
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
-- [ ] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
+- [x] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages
-  - [x] remove attendee list page dependency of path params and take search params from user for assembly slug
-  - [ ] rename and move attendees/attendee page, and show attendees based on auth groups
+  - [x] [PR#18](https://github.com/xjlin0/attendees30/pull/18) remove attendee list page dependency of path params and take search params from user for assembly slug
+  - [x] [PR#19](https://github.com/xjlin0/attendees30/pull/19) rename and move attendees/attendee page, and show attendees based on auth groups
 - [ ] Gathering list (server side processing with auto-generation)
 - [ ] Attendance list (server side processing with auto-generation)
   - [ ] member list (attendance level with editing category)
@@ -136,4 +136,13 @@ All libraries are included to facilitate offline development
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?
 
+</details>
+
+## Issues:
+
+<details>
+  <summary>Click to expand all</summary>
+
+- [ ] for ordinary users:
+   -[ ] even as scheduler seeing other's attendee detail view, the joined meet doesn't show group name (i.e. Hagar cannot see Ishmael in "the Rock")
 </details>
