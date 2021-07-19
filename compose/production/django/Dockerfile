@@ -11,7 +11,7 @@ RUN apt-get update \
   # psycopg2 dependencies
   && apt-get install -y libpq-dev \
   # Translations dependencies
-  && apt-get install -y gettext \
+  && apt-get install -y gettext python-dateutil \
   # intall git for pip install by github
   && apt-get install -y git less gdal-bin \
   # cleaning up unused files
