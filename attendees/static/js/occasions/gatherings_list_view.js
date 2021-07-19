@@ -55,17 +55,17 @@ Attendees.gatherings = {
         },
         editorType: 'dxTagBox',
         editorOptions: {
-          valueExpr: "id",
-          displayExpr: "display_name",
+          valueExpr: 'id',
+          displayExpr: 'display_name',
           // grouped: true,
-
-          dataSource: {
-            group: 'assembly_name',
+          dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
-              key: "id",
+              key: 'id',
               load: () => $.getJSON($('div.gathering-filters').data('meets-endpoint')),
             }),
-          },
+            key: 'id',
+            group: 'assembly_name',
+          }),
         },
       },
     ],
