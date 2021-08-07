@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
 import time
@@ -7,8 +6,7 @@ from attendees.occasions.services import GatheringService
 from attendees.occasions.serializers import GatheringSerializer
 
 
-@method_decorator([login_required], name='dispatch')
-class ApiOrganizationMeetGatheringsViewSet(viewsets.ModelViewSet):
+class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows Team to be viewed or edited.
     """

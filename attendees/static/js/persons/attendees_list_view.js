@@ -79,7 +79,7 @@ Attendees.dataAttendees = {
         error: () => {
           deferred.reject("Data Loading Error, probably time out?");
         },
-        timeout: 30000,
+        timeout: 60000,
       });
 
       return deferred.promise();

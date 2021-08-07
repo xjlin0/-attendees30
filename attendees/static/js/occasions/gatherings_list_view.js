@@ -1,6 +1,7 @@
 Attendees.gatherings = {
   filtersForm: null,
   meetTagbox: null,
+  // gatheringsDatagrid: {reload: ()=>{}},
   init: () => {
     console.log('static/js/occasions/gatherings_list_view.js');
     Attendees.gatherings.initFiltersForm();
@@ -9,7 +10,7 @@ Attendees.gatherings = {
   },
   initListeners: () => {},
   initFiltersForm: () => {
-    console.log('11 initFiltersForm');
+    console.log('13 initFiltersForm');
     Attendees.gatherings.filtersForm = $('div.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
   },
   filterFormConfigs: {
@@ -52,6 +53,7 @@ Attendees.gatherings = {
       {
         dataField: 'meets',
         colSpan: 6,
+        cssClass: 'selected-meets',
         validationRules: [{type: 'required'}],
         label: {
           location: 'top',
@@ -59,15 +61,19 @@ Attendees.gatherings = {
         },
         editorType: 'dxTagBox',
         editorOptions: {
-          valueExpr: 'id',
+          valueExpr: 'slug',
           displayExpr: 'display_name',
           showClearButton: true,
           grouped: true,
+          onValueChanged: (e)=>{
+            console.log("hi 69 here is e: ", e);
+            Attendees.gatherings.gatheringsDatagrid.refresh();
+          },
           dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
-              key: 'id',
+              key: 'slug',
               load: (loadOptions) => {
-                console.log("hi 70 here is loadOptions: ", loadOptions);
+                console.log("hi 76 here is loadOptions: ", loadOptions);
                 const d = new $.Deferred();
                 $.get($('div.filters-dxform').data('meets-endpoint'), {
                   start: new Date($('div.filter-from input')[1].value).toISOString(),
@@ -88,27 +94,147 @@ Attendees.gatherings = {
                 return d.promise();
               },
             }),  // specify group didn't work, so regroup manually :(
-            key: 'id',
+            key: 'slug',
           }),
         },
-
-        // editorOptions: {
-        //   valueExpr: 'id',
-        //   displayExpr: 'display_name',
-        //   // grouped: true,
-        //   dataSource: new DevExpress.data.DataSource({
-        //     store: new DevExpress.data.CustomStore({
-        //       key: 'id',
-        //       load: () => $.getJSON($('div.filters-dxform').data('meets-endpoint')),
-        //     }),
-        //     key: 'id',
-        //     group: 'assembly_name',
-        //   }),
-        // },
+      },
+      {
+        colSpan: 12,
+        dataField: "filtered_gathering_set",
+        label: {
+          location: 'top',
+          text: ' ',  // empty space required for removing label
+          showColon: false,
+        },
+        template: (data, itemElement) => {
+          console.log("hi 110 here is itemElement: ", itemElement);
+          Attendees.gatherings.gatheringsDatagrid = Attendees.gatherings.initFilteredGatheringsDatagrid(data, itemElement);
+        },
       },
     ],
   },
-  initFilteredGatheringsDatagrid: () => {},
+
+  initFilteredGatheringsDatagrid: (data, itemElement) => {
+    console.log('hi 118 here is initFilteredGatheringsDatagrid() here is itemElement: ', itemElement);
+    const $gatheringDatagrid = $("<div id='gatherings-datagrid-container'>").dxDataGrid(Attendees.gatherings.gatheringDatagridConfig);
+    itemElement.append($gatheringDatagrid);
+    return $gatheringDatagrid.dxDataGrid('instance');
+  },
+
+  gatheringDatagridConfig: {
+    dataSource: {
+      store: new DevExpress.data.CustomStore({
+        key: 'id',
+        load: () => {
+          const meets = $('div.selected-meets select').val();
+          console.log("hi 130 here is meets: ", meets);
+          if (meets.length) {
+            return $.getJSON($('div.filters-dxform').data('gatherings-endpoint'), {
+              meets: meets,
+              start: new Date($('div.filter-from input')[1].value).toISOString(),
+              finish: new Date($('div.filter-till input')[1].value).toISOString(),
+            });
+          }
+        },
+        // byKey: (key) => {
+          // const d = new $.Deferred();
+          // $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/')
+          //   .done((result) => {
+          //     d.resolve(result.data);
+          //   });
+          // return d.promise();
+        // },
+        // update: (key, values) => {
+          // return $.ajax({
+          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
+          //   method: 'PATCH',
+          //   dataType: 'json',
+          //   contentType: 'application/json; charset=utf-8',
+          //   data: JSON.stringify(values),
+          //   success: (result) => {
+          //     DevExpress.ui.notify(
+          //       {
+          //         message: 'update ' + args.type + ' success',
+          //         width: 500,
+          //         position: {
+          //           my: 'center',
+          //           at: 'center',
+          //           of: window,
+          //         },
+          //       }, 'success', 2000);
+          //   },
+          // });
+        // },
+        // insert: function (values) {
+          // const subject = {
+          //   content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
+          //   object_id: Attendees.datagridUpdate.attendeeId,
+          // };
+          // return $.ajax({
+          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
+          //   method: 'POST',
+          //   dataType: 'json',
+          //   contentType: 'application/json; charset=utf-8',
+          //   data: JSON.stringify({...values, ...subject}),
+          //   success: (result) => {
+          //     DevExpress.ui.notify(
+          //       {
+          //         message: 'Create ' + args.type + ' success',
+          //         width: 500,
+          //         position: {
+          //           my: 'center',
+          //           at: 'center',
+          //           of: window,
+          //         },
+          //       }, 'success', 2000);
+          //   },
+          // });
+        // },
+        // remove: (key) => {
+          // return $.ajax({
+          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
+          //   method: 'DELETE',
+          //   success: (result) => {
+          //     DevExpress.ui.notify(
+          //       {
+          //         message: 'removed '+ args.type +' success',
+          //         width: 500,
+          //         position: {
+          //           my: 'center',
+          //           at: 'center',
+          //           of: window,
+          //         },
+          //       }, 'info', 2000);
+          //   },
+          // });
+        // },
+      }),
+    },
+    // onRowInserting: (rowData) => {
+    // },
+    // onInitNewRow: (e) => {
+    // },
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
+    columnResizingMode: 'nextColumn',
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    loadPanel: {
+      message: 'Fetching...',
+      enabled: true,
+    },
+    wordWrapEnabled: false,
+    width: '100%',
+    grouping: {
+      autoExpandAll: true,
+    },
+    // onRowUpdating: (rowData) => {
+    // },
+    columns: [
+
+    ],
+  },
 };
 
 $(document).ready(() => {

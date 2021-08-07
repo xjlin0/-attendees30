@@ -12,6 +12,7 @@ class GatheringsListView(LoginRequiredMixin, RouteGuard, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
+            'gatherings_endpoint': '/occasions/api/organization_team_gatherings/',
             'meets_endpoint': '/occasions/api/organization_meets/',
         })
         return context
@@ -22,6 +23,10 @@ class GatheringsListView(LoginRequiredMixin, RouteGuard, ListView):
 
         else:
             return render(self.request, self.get_template_names()[0], context)
+
+    # def test(self):
+    #     meet.event_relations.first().event.get_occurrences(datetime(2021,8,1,tzinfo=pytz.utc), datetime(2021,8,20,tzinfo=pytz.utc))
+    #     return None
 
 
 gatherings_list_view = GatheringsListView.as_view()
