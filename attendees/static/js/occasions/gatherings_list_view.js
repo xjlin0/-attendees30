@@ -18,12 +18,13 @@ Attendees.gatherings = {
     itemType: 'group',
     items: [
       {
-        dataField: 'filter_from',
+        // name: 'filter-from',
         colSpan: 3,
-        // cssClass: 'filter_from',
+        cssClass: 'filter-from',
         validationRules: [{type: 'required'}],
         label: {
           location: 'top',
+          text: 'Filter from',
         },
         editorType: 'dxDateBox',
         editorOptions: {
@@ -33,9 +34,9 @@ Attendees.gatherings = {
         },
       },
       {
-        dataField: 'filter_till',
+        // name: 'filter-till',
         colSpan: 3,
-        // cssClass: 'filter_till',
+        cssClass: 'filter-till',
         validationRules: [{type: 'required'}],
         label: {
           location: 'top',
@@ -65,11 +66,12 @@ Attendees.gatherings = {
           dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => {
+              load: (loadOptions) => {
+                console.log("hi 70 here is loadOptions: ", loadOptions);
                 const d = new $.Deferred();
                 $.get($('div.filters-dxform').data('meets-endpoint'), {
-                  start: $('input[name="filter_from"]').val(),
-                  finish: $('input[name="filter_till"]').val(),
+                  start: new Date($('div.filter-from input')[1].value).toISOString(),
+                  finish: new Date($('div.filter-till input')[1].value).toISOString(),
                 })
                   .done((result) => {
                     const answer={};
@@ -85,7 +87,7 @@ Attendees.gatherings = {
                   });
                 return d.promise();
               },
-            }),  // specify group didn't work, so do it manually :(
+            }),  // specify group didn't work, so regroup manually :(
             key: 'id',
           }),
         },

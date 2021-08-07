@@ -24,7 +24,7 @@ class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
         if current_user_organization:
             start = self.request.query_params.get('start', Utility.now_with_timezone(-relativedelta(hours=1)))
             finish = self.request.query_params.get('finish', Utility.now_with_timezone(relativedelta(months=1)))
-            print("hi 27 ");
+
             return Meet.objects.filter(
                 (Q(start__isnull=True) | Q(start__lte=finish)),
                 (Q(finish__isnull=True) | Q(finish__gte=start)),
