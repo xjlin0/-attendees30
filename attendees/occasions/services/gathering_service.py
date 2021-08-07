@@ -37,11 +37,15 @@ class GatheringService:
         )  # another way is to get assemblys from registration, but it relies on attendingmeet validations
 
     @staticmethod
-    def by_organization_meets(organization_slug, meet_slugs):
-        return Gathering.objects.filter(
-            meet__slug__in=meet_slugs,
-            meet__assembly__division__organization__slug=organization_slug,
-        ).order_by(
+    def by_organization_meets(organization_slug, meet_slugs, start, finish):
+        filters = Q(meet__assembly__division__organization__slug=organization_slug).add(
+                        Q(meet__slug__in=meet_slugs), Q.AND)
+
+        if start:
+            filters.add((Q(finish__isnull=True) | Q(finish__gte=start)), Q.AND)
+        if finish:
+            filters.add((Q(start__isnull=True) | Q(start__lte=finish)), Q.AND)
+        return Gathering.objects.filter(filters).order_by(
             'meet',
             '-start',
         )
