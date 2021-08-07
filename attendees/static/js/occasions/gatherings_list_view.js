@@ -1,16 +1,13 @@
 Attendees.gatherings = {
   filtersForm: null,
   meetTagbox: null,
-  // gatheringsDatagrid: {reload: ()=>{}},
   init: () => {
     console.log('static/js/occasions/gatherings_list_view.js');
     Attendees.gatherings.initFiltersForm();
-    // Attendees.gatherings.initFilteredGatheringsDatagrid();
     Attendees.gatherings.initListeners();
   },
   initListeners: () => {},
   initFiltersForm: () => {
-    console.log('13 initFiltersForm');
     Attendees.gatherings.filtersForm = $('div.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
   },
   filterFormConfigs: {
@@ -19,7 +16,6 @@ Attendees.gatherings = {
     itemType: 'group',
     items: [
       {
-        // name: 'filter-from',
         colSpan: 3,
         cssClass: 'filter-from',
         validationRules: [{type: 'required'}],
@@ -31,15 +27,12 @@ Attendees.gatherings = {
         editorOptions: {
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
-          // dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
           onValueChanged: (e)=>{
-            console.log("hi 36 here is e: ", e);
             Attendees.gatherings.gatheringsDatagrid.refresh();
           },
         },
       },
       {
-        // name: 'filter-till',
         colSpan: 3,
         cssClass: 'filter-till',
         validationRules: [{type: 'required'}],
@@ -51,9 +44,7 @@ Attendees.gatherings = {
         editorOptions: {
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
-          // dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
           onValueChanged: (e)=>{
-            console.log("hi 56 here is e: ", e);
             Attendees.gatherings.gatheringsDatagrid.refresh();
           },
         },
@@ -75,14 +66,12 @@ Attendees.gatherings = {
           searchEnabled: false,
           grouped: true,
           onValueChanged: (e)=>{
-            console.log("hi 78 here is e: ", e);
             Attendees.gatherings.gatheringsDatagrid.refresh();
           },
           dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
               key: 'slug',
               load: (loadOptions) => {
-                console.log("hi 85 here is loadOptions: ", loadOptions);
                 const d = new $.Deferred();
                 $.get($('div.filters-dxform').data('meets-endpoint'), {
                   start: new Date($('div.filter-from input')[1].value).toISOString(),
@@ -116,7 +105,6 @@ Attendees.gatherings = {
           showColon: false,
         },
         template: (data, itemElement) => {
-          console.log("hi 119 here is itemElement: ", itemElement);
           Attendees.gatherings.gatheringsDatagrid = Attendees.gatherings.initFilteredGatheringsDatagrid(data, itemElement);
         },
       },
@@ -124,7 +112,6 @@ Attendees.gatherings = {
   },
 
   initFilteredGatheringsDatagrid: (data, itemElement) => {
-    console.log('hi 127 here is initFilteredGatheringsDatagrid() here is itemElement: ', itemElement);
     const $gatheringDatagrid = $("<div id='gatherings-datagrid-container'>").dxDataGrid(Attendees.gatherings.gatheringDatagridConfig);
     itemElement.append($gatheringDatagrid);
     return $gatheringDatagrid.dxDataGrid('instance');
@@ -136,7 +123,6 @@ Attendees.gatherings = {
         key: 'id',
         load: () => {
           const meets = $('div.selected-meets select').val();
-          console.log("hi 139 here is meets: ", meets);
           if (meets.length) {
             return $.getJSON($('div.filters-dxform').data('gatherings-endpoint'), {
               meets: meets,
@@ -241,7 +227,27 @@ Attendees.gatherings = {
     // onRowUpdating: (rowData) => {
     // },
     columns: [
-
+      {
+        dataField: 'meet',
+      },
+      {
+        dataField: 'gathering_label',
+      },
+      {
+        dataField: 'site',
+        caption: 'Location',
+      },
+      {
+        dataField: 'start',
+        caption: 'Start (12hr@your timezone)',
+        validationRules: [{type: 'required'}],
+        dataType: 'datetime',
+        format: 'longDateLongTime',
+        editorOptions: {
+          type: 'datetime',
+          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
+        },
+      },
     ],
   },
 };
