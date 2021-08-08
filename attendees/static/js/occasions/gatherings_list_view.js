@@ -6,10 +6,10 @@ Attendees.gatherings = {
     console.log('static/js/occasions/gatherings_list_view.js');
     Attendees.gatherings.initEditingSwitch();
     Attendees.gatherings.initFiltersForm();
-    Attendees.gatherings.initListeners();
+    // Attendees.gatherings.initListeners();
   },
 
-  initListeners: () => {},
+  // initListeners: () => {},
 
   initEditingSwitch: () => {
     $('div#custom-control-edit-checkbox').dxSwitch({
@@ -27,11 +27,10 @@ Attendees.gatherings = {
   },
 
   toggleEditing: (enabled) => {
-    if(enabled){
-
-    }else{
-
-    }
+    Attendees.gatherings.gatheringsDatagrid && Attendees.gatherings.gatheringsDatagrid.option('editing', Attendees.gatherings.gatheringEditingArgs(enabled));
+    // if(enabled){
+    // }else{
+    // }
   },
 
   initFiltersForm: () => {
@@ -165,78 +164,79 @@ Attendees.gatherings = {
             });
           }
         },
-        // byKey: (key) => {
-          // const d = new $.Deferred();
-          // $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/')
-          //   .done((result) => {
-          //     d.resolve(result.data);
-          //   });
-          // return d.promise();
-        // },
-        // update: (key, values) => {
-          // return $.ajax({
-          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
-          //   method: 'PATCH',
-          //   dataType: 'json',
-          //   contentType: 'application/json; charset=utf-8',
-          //   data: JSON.stringify(values),
-          //   success: (result) => {
-          //     DevExpress.ui.notify(
-          //       {
-          //         message: 'update ' + args.type + ' success',
-          //         width: 500,
-          //         position: {
-          //           my: 'center',
-          //           at: 'center',
-          //           of: window,
-          //         },
-          //       }, 'success', 2000);
-          //   },
-          // });
-        // },
-        // insert: function (values) {
+        byKey: (key) => {
+          console.log("hi 168 here is key: ", key);
+          const d = new $.Deferred();
+          $.get($('div.filters-dxform').data('gatherings-endpoint') + key + '/')
+            .done((result) => {
+              d.resolve(result.data);
+            });
+          return d.promise();
+        },
+        update: (key, values) => {
+          return $.ajax({
+            url: $('div.filters-dxform').data('gatherings-endpoint') + key,
+            method: 'PATCH',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(values),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'update success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'success', 2000);
+            },
+          });
+        },
+        insert: function (c) {
           // const subject = {
           //   content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
           //   object_id: Attendees.datagridUpdate.attendeeId,
           // };
-          // return $.ajax({
-          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint,
-          //   method: 'POST',
-          //   dataType: 'json',
-          //   contentType: 'application/json; charset=utf-8',
-          //   data: JSON.stringify({...values, ...subject}),
-          //   success: (result) => {
-          //     DevExpress.ui.notify(
-          //       {
-          //         message: 'Create ' + args.type + ' success',
-          //         width: 500,
-          //         position: {
-          //           my: 'center',
-          //           at: 'center',
-          //           of: window,
-          //         },
-          //       }, 'success', 2000);
-          //   },
-          // });
-        // },
-        // remove: (key) => {
-          // return $.ajax({
-          //   url: Attendees.datagridUpdate.attendeeAttrs.dataset.pastsEndpoint + key + '/?' + $.param({category__type: args.type}),
-          //   method: 'DELETE',
-          //   success: (result) => {
-          //     DevExpress.ui.notify(
-          //       {
-          //         message: 'removed '+ args.type +' success',
-          //         width: 500,
-          //         position: {
-          //           my: 'center',
-          //           at: 'center',
-          //           of: window,
-          //         },
-          //       }, 'info', 2000);
-          //   },
-          // });
-        // },
+          return $.ajax({
+            url: $('div.filters-dxform').data('gatherings-endpoint'),
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(values),  // ...subject}),
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'Create ' + args.type + ' success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'success', 2000);
+            },
+          });
+        },
+        remove: (key) => {
+          return $.ajax({
+            url: $('div.filters-dxform').data('gatherings-endpoint') + key ,
+            method: 'DELETE',
+            success: (result) => {
+              DevExpress.ui.notify(
+                {
+                  message: 'removed success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'info', 2000);
+            },
+          });
+        },
       }),
     },
     // onRowInserting: (rowData) => {
@@ -271,6 +271,7 @@ Attendees.gatherings = {
           valueExpr: 'id',
           displayExpr: 'display_name',
           dataSource: (options) => {
+            console.log("hi 274 here is options: ", options);
             return {
               filter: options.data ? {'assemblies[]': options.data.assembly} : null,
               store: new DevExpress.data.CustomStore({
@@ -312,44 +313,44 @@ Attendees.gatherings = {
     ],
   },
 
-  gatheringEditingArgs: {
-    mode: 'popup',
-    popup: {
-      showTitle: true,
-      title: 'Editing Gathering'
-    },
-    texts: {
-      confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
-    },
-    form: {
-      items: [
-        {
-          colSpan: 2,
-          dataField: 'attending',
-        },
-        {
-          dataField: 'assembly',
-        },
-        {
-          dataField: 'meet',
-        },
-        {
-          dataField: 'character',
-          editorOptions: {
-            showClearButton: true,
-          }
-        },
-        {
-          dataField: 'category',
-        },
-        {
-          dataField: 'start',
-        },
-        {
-          dataField: 'finish',
-        },
-      ],
-    },
+  gatheringEditingArgs: (enabled) => {
+    return {
+      allowUpdating: enabled,
+      allowAdding: enabled,
+      allowDeleting: enabled,
+      texts: {
+        confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
+      },
+      mode: 'popup',
+      popup: {
+        showTitle: true,
+        title: 'Editing Gathering'
+      },
+      form: {
+        items: [
+          {
+            // colSpan: 2,
+            dataField: 'meet',
+          },
+          {
+            dataField: 'display_name',
+          },
+          {
+            dataField: 'start',
+          },
+          {
+            dataField: 'finish',
+            // dataType: 'datetime',
+          },
+          {
+            dataField: 'site_type',
+          },
+          {
+            dataField: 'site_id',
+          },
+        ],
+      },
+    };
   },
 };
 
