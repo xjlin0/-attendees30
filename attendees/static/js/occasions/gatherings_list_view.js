@@ -107,7 +107,7 @@ Attendees.gatherings = {
               key: 'slug',
               load: (loadOptions) => {
                 const d = new $.Deferred();
-                $.get($('div.filters-dxform').data('meets-endpoint'), {
+                $.get($('div.filters-dxform').data('meets-endpoint-by-slug'), {
                   start: new Date($('div.filter-from input')[1].value).toISOString(),
                   finish: new Date($('div.filter-till input')[1].value).toISOString(),
                 })
@@ -258,6 +258,9 @@ Attendees.gatherings = {
     grouping: {
       autoExpandAll: true,
     },
+    groupPanel: {
+      visible: "auto",
+    },
     // onRowUpdating: (rowData) => {
     // },
     columns: [
@@ -273,11 +276,11 @@ Attendees.gatherings = {
               store: new DevExpress.data.CustomStore({
                 key: 'id',
                 load: (searchOpts) => {
-                  return $.getJSON($('div.filters-dxform').data('assembly-meets-endpoint'), searchOpts.filter);
+                  return $.getJSON($('div.filters-dxform').data('meets-endpoint-by-id'), searchOpts.filter);
                 },
                 byKey: (key) => {
                   const d = new $.Deferred();
-                  $.get($('div.filters-dxform').data('assembly-meets-endpoint') + key + '/')
+                  $.get($('div.filters-dxform').data('meets-endpoint-by-id') + key + '/')
                     .done((result) => {
                       d.resolve(result);
                     });

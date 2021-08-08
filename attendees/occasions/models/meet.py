@@ -23,7 +23,7 @@ class Meet(TimeStampedModel, SoftDeletableModel, Utility):
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True)
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"info": "...", "url": "https://..."}. Please keep {} here even no data')
     site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
-    site_id = models.BigIntegerField()
+    site_id = models.CharField(max_length=36, null=False, blank=False, default='0')
     site = GenericForeignKey('site_type', 'site_id')
 
     # def save(self):

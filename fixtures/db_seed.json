@@ -5864,8 +5864,8 @@
       "infos": {
         "notice": "the finish date of attending_meets of 'archived' is always forever to show all attendees."
       },
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5885,8 +5885,8 @@
       "infos": {
         "notice": "the finish date of attending_meets of visitor is always forever to show all attendees."
       },
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5904,8 +5904,8 @@
       "display_name": "The Rock",
       "slug": "d7c8Fd_cfcch_junior_regular_the_rock",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5923,8 +5923,8 @@
       "display_name": "Little foot",
       "slug": "d7c8Fd_cfcch_junior_regular_little_foot",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5942,8 +5942,8 @@
       "display_name": "\u5f71\u97f3\u4e2d\u63a7",
       "slug": "d7c8Fd_cfcch_adault_sunday_recording_av_control",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5961,8 +5961,8 @@
       "display_name": "\u5929\u5802 \u73bb\u7483\u6d77\u5929\u4f7f\u8a69\u73ed",
       "slug": "faBd6C_heaven_sea_of_glass_angel_choir",
       "infos": {},
-      "site_type": 36,
-      "site_id": 9
+      "site_type": 34,
+      "site_id": "e50d2b9c-0f92-4048-a524-918909d7a0c5"
     }
   },
   {
@@ -5980,8 +5980,8 @@
       "display_name": "kid Christmas Celebration \u5152\u5c11\u8056\u8a95\u6703",
       "slug": "d7c8Fd_cfcch_junior_regular_christmas_celebration",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -5999,8 +5999,8 @@
       "display_name": "\u9752\u5c11\u77ed\u5ba3\u82f1\u8a9e\u6559\u5b78",
       "slug": "d7c8Fd_cfcch_junior_special_english_teaching",
       "infos": {},
-      "site_type": 36,
-      "site_id": 10
+      "site_type": 34,
+      "site_id": "edd6463b-3757-423e-83a8-4ff823ee9059"
     }
   },
   {
@@ -6020,8 +6020,8 @@
       "infos": {
         "extending_attending_days": 90
       },
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -6039,8 +6039,8 @@
       "display_name": "\u901a\u8a0a\u9304 directory",
       "slug": "d7c8Fd_cfcch_congregation_directory",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -6058,8 +6058,8 @@
       "display_name": "\u6703\u54e1 member",
       "slug": "d7c8Fd_cfcch_congregation_member",
       "infos": {},
-      "site_type": 36,
-      "site_id": 1
+      "site_type": 34,
+      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
     }
   },
   {
@@ -6077,8 +6077,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u98df\u5bbf",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_accommodation",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
@@ -6096,8 +6096,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u63a5\u9001",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_transportation",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
@@ -6115,8 +6115,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u8a0e\u8ad6\u5c0f\u7d44",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_panel",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
@@ -6134,8 +6134,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u4e2d\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_chinese_program",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
@@ -6153,8 +6153,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u5152\u7ae5\u6d3b\u52d5",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_junior_program",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
@@ -6172,8 +6172,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u82f1\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_english_program",
       "infos": {},
-      "site_type": 36,
-      "site_id": 11
+      "site_type": 34,
+      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
     }
   },
   {
