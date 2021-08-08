@@ -1,15 +1,43 @@
 Attendees.gatherings = {
   filtersForm: null,
   meetTagbox: null,
+  editingSwitch: null,
   init: () => {
     console.log('static/js/occasions/gatherings_list_view.js');
+    Attendees.gatherings.initEditingSwitch();
     Attendees.gatherings.initFiltersForm();
     Attendees.gatherings.initListeners();
   },
+
   initListeners: () => {},
+
+  initEditingSwitch: () => {
+    $('div#custom-control-edit-checkbox').dxSwitch({
+      value: Attendees.utilities.editingEnabled,
+      switchedOffText: 'Editing disabled',
+      switchedOnText: 'Editing enabled',
+      hint: 'Toggle Editing mode',
+      width: '60%',
+      height: '110%',
+      onValueChanged: (e) => {  // not reconfirm, it's already after change
+        Attendees.utilities.editingEnabled = e.value;
+        Attendees.gatherings.toggleEditing(e.value);
+      },
+    })
+  },
+
+  toggleEditing: (enabled) => {
+    if(enabled){
+
+    }else{
+
+    }
+  },
+
   initFiltersForm: () => {
     Attendees.gatherings.filtersForm = $('div.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
   },
+
   filterFormConfigs: {
     dataSource: null,
     colCount: 12,
@@ -21,14 +49,17 @@ Attendees.gatherings = {
         validationRules: [{type: 'required'}],
         label: {
           location: 'top',
-          text: 'Filter from',
+          text: 'Filter from (mm/dd/yyyy)',
         },
         editorType: 'dxDateBox',
         editorOptions: {
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
-            Attendees.gatherings.gatheringsDatagrid.refresh();
+            const meets = $('div.selected-meets select').val();
+            if (meets.length) {
+              Attendees.gatherings.gatheringsDatagrid.refresh();
+            }
           },
         },
       },
@@ -45,7 +76,10 @@ Attendees.gatherings = {
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
-            Attendees.gatherings.gatheringsDatagrid.refresh();
+            const meets = $('div.selected-meets select').val();
+            if (meets.length) {
+              Attendees.gatherings.gatheringsDatagrid.refresh();
+            }
           },
         },
       },
@@ -229,6 +263,30 @@ Attendees.gatherings = {
     columns: [
       {
         dataField: 'meet',
+        validationRules: [{type: 'required'}],
+        lookup: {
+          valueExpr: 'id',
+          displayExpr: 'display_name',
+          dataSource: (options) => {
+            return {
+              filter: options.data ? {'assemblies[]': options.data.assembly} : null,
+              store: new DevExpress.data.CustomStore({
+                key: 'id',
+                load: (searchOpts) => {
+                  return $.getJSON($('div.filters-dxform').data('assembly-meets-endpoint'), searchOpts.filter);
+                },
+                byKey: (key) => {
+                  const d = new $.Deferred();
+                  $.get($('div.filters-dxform').data('assembly-meets-endpoint') + key + '/')
+                    .done((result) => {
+                      d.resolve(result);
+                    });
+                  return d.promise();
+                },
+              }),
+            };
+          },
+        },
       },
       {
         dataField: 'gathering_label',
@@ -239,7 +297,7 @@ Attendees.gatherings = {
       },
       {
         dataField: 'start',
-        caption: 'Start (12hr@your timezone)',
+        caption: 'Start (12hr@browser timezone)',
         validationRules: [{type: 'required'}],
         dataType: 'datetime',
         format: 'longDateLongTime',
@@ -249,6 +307,46 @@ Attendees.gatherings = {
         },
       },
     ],
+  },
+
+  gatheringEditingArgs: {
+    mode: 'popup',
+    popup: {
+      showTitle: true,
+      title: 'Editing Gathering'
+    },
+    texts: {
+      confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
+    },
+    form: {
+      items: [
+        {
+          colSpan: 2,
+          dataField: 'attending',
+        },
+        {
+          dataField: 'assembly',
+        },
+        {
+          dataField: 'meet',
+        },
+        {
+          dataField: 'character',
+          editorOptions: {
+            showClearButton: true,
+          }
+        },
+        {
+          dataField: 'category',
+        },
+        {
+          dataField: 'start',
+        },
+        {
+          dataField: 'finish',
+        },
+      ],
+    },
   },
 };
 

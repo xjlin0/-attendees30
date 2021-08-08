@@ -14,6 +14,7 @@ class GatheringsListView(LoginRequiredMixin, RouteGuard, ListView):
         context.update({
             'gatherings_endpoint': '/occasions/api/organization_team_gatherings/',
             'meets_endpoint': '/occasions/api/organization_meets/',
+            'assembly_meets_endpoint': '/occasions/api/user_assembly_meets/',
         })
         return context
 
