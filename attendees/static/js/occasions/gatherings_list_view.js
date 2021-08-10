@@ -170,7 +170,6 @@ Attendees.gatherings = {
           }
         },
         byKey: (key) => {
-          console.log("hi 73 here is key: ", key);
           const d = new $.Deferred();
           $.get($('form.filters-dxform').data('gatherings-endpoint') + key + '/')
             .done((result) => {
@@ -179,7 +178,6 @@ Attendees.gatherings = {
           return d.promise();
         },
         update: (key, values) => {
-          console.log("hi 182 here is values: ", values);
           return $.ajax({
             url: $('form.filters-dxform').data('gatherings-endpoint') + key + '/',
             method: 'PATCH',
@@ -253,6 +251,8 @@ Attendees.gatherings = {
     columnAutoWidth: true,
     allowColumnResizing: true,
     columnResizingMode: 'nextColumn',
+    // cellHintEnabled: true,
+    hoverStateEnabled: true,
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     loadPanel: {
@@ -271,8 +271,14 @@ Attendees.gatherings = {
       enabled: true,
       mode: 'select',
     },
-    // onRowUpdating: (rowData) => {
-    // },
+    onInitNewRow: (rowData) => {
+      Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Adding Gathering');
+    },
+    onEditingStart: (e) => {
+      if (e.data && typeof e.data === 'object') {
+        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label']);
+      }
+    },
     columns: [
       {
         dataField: 'meet',
@@ -285,7 +291,6 @@ Attendees.gatherings = {
               key: 'id',
               load: () => $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id')),
               byKey: (key) => {
-                console.log("hi 281 here is key: ", key);
                 return $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id') + key + '/');},
             }),
           },
@@ -302,7 +307,6 @@ Attendees.gatherings = {
       },
       {
         dataField: 'start',
-        caption: 'Start (12hr@browser timezone)',
         validationRules: [{type: 'required'}],
         dataType: 'datetime',
         format: 'longDateLongTime',
@@ -311,18 +315,17 @@ Attendees.gatherings = {
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
-      {
-        dataField: 'finish',
-        visible: false,
-        caption: 'End at',
-        validationRules: [{type: 'required'}],
-        dataType: 'datetime',
-        format: 'longDateLongTime',
-        editorOptions: {
-          type: 'datetime',
-          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
-        },
-      },
+      // {
+      //   dataField: 'finish',
+      //   caption: 'End',
+      //   validationRules: [{type: 'required'}],
+      //   dataType: 'datetime',
+      //   format: 'longDateLongTime',
+      //   editorOptions: {
+      //     type: 'datetime',
+      //     dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
+      //   },
+      // },
       {
         dataField: 'display_name',
         // helpText: 'meet name + date',
@@ -350,9 +353,10 @@ Attendees.gatherings = {
       mode: 'popup',
       popup: {
         showTitle: true,
-        title: 'Editing Gathering',
+        title: 'gatheringEditingArgs',
       },
       form: {
+        colCount: 2,
         items: [
           {
             dataField: 'display_name',
@@ -360,11 +364,6 @@ Attendees.gatherings = {
           {
             // colSpan: 2,
             dataField: 'meet',
-          },
-          {
-            dataField: 'gathering_label',
-            disabled: true,
-            helpText: 'not editable',
           },
           {
             dataField: 'start',
@@ -376,6 +375,8 @@ Attendees.gatherings = {
             dataField: 'site',
             caption: 'Location',
             colSpan: 2,
+            disabled: true,
+            helpText: 'not editable',
           },
           // {
           //   dataField: 'site_type',
