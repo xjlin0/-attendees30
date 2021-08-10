@@ -45,11 +45,12 @@
     </div>
   </div>
 
-  <div class="filters-dxform"
+  <form class="filters-dxform"
        data-gatherings-endpoint="{{gatherings_endpoint}}"
        data-meets-endpoint-by-id="{{meets_endpoint_by_id}}"
        data-meets-endpoint-by-slug="{{meets_endpoint_by_slug}}">
-  </div>
+    {% csrf_token %}
+  </form>
 
   <div class="gathering-datagrids">
   </div>

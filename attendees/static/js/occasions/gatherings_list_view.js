@@ -34,7 +34,12 @@ Attendees.gatherings = {
   },
 
   initFiltersForm: () => {
-    Attendees.gatherings.filtersForm = $('div.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
+    $.ajaxSetup({
+      headers: {
+        'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+      }
+    });
+    Attendees.gatherings.filtersForm = $('form.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
   },
 
   filterFormConfigs: {
@@ -106,7 +111,7 @@ Attendees.gatherings = {
               key: 'slug',
               load: (loadOptions) => {
                 const d = new $.Deferred();
-                $.get($('div.filters-dxform').data('meets-endpoint-by-slug'), {
+                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'), {
                   start: new Date($('div.filter-from input')[1].value).toISOString(),
                   finish: new Date($('div.filter-till input')[1].value).toISOString(),
                 })
@@ -157,7 +162,7 @@ Attendees.gatherings = {
         load: () => {
           const meets = $('div.selected-meets select').val();
           if (meets.length) {
-            return $.getJSON($('div.filters-dxform').data('gatherings-endpoint'), {
+            return $.getJSON($('form.filters-dxform').data('gatherings-endpoint'), {
               meets: meets,
               start: new Date($('div.filter-from input')[1].value).toISOString(),
               finish: new Date($('div.filter-till input')[1].value).toISOString(),
@@ -165,17 +170,18 @@ Attendees.gatherings = {
           }
         },
         byKey: (key) => {
-          console.log("hi 168 here is key: ", key);
+          console.log("hi 73 here is key: ", key);
           const d = new $.Deferred();
-          $.get($('div.filters-dxform').data('gatherings-endpoint') + key + '/')
+          $.get($('form.filters-dxform').data('gatherings-endpoint') + key + '/')
             .done((result) => {
               d.resolve(result.data);
             });
           return d.promise();
         },
         update: (key, values) => {
+          console.log("hi 182 here is values: ", values);
           return $.ajax({
-            url: $('div.filters-dxform').data('gatherings-endpoint') + key,
+            url: $('form.filters-dxform').data('gatherings-endpoint') + key + '/',
             method: 'PATCH',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -200,7 +206,7 @@ Attendees.gatherings = {
           //   object_id: Attendees.datagridUpdate.attendeeId,
           // };
           return $.ajax({
-            url: $('div.filters-dxform').data('gatherings-endpoint'),
+            url: $('form.filters-dxform').data('gatherings-endpoint'),
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -221,7 +227,7 @@ Attendees.gatherings = {
         },
         remove: (key) => {
           return $.ajax({
-            url: $('div.filters-dxform').data('gatherings-endpoint') + key ,
+            url: $('form.filters-dxform').data('gatherings-endpoint') + key ,
             method: 'DELETE',
             success: (result) => {
               DevExpress.ui.notify(
@@ -259,7 +265,11 @@ Attendees.gatherings = {
       autoExpandAll: true,
     },
     groupPanel: {
-      visible: "auto",
+      visible: 'auto',
+    },
+    columnChooser: {
+      enabled: true,
+      mode: 'select',
     },
     // onRowUpdating: (rowData) => {
     // },
@@ -270,30 +280,21 @@ Attendees.gatherings = {
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
-          dataSource: (options) => {
-            console.log("hi 274 here is options: ", options);
-            return {
-              filter: options.data ? {'assemblies[]': options.data.assembly} : null,
-              store: new DevExpress.data.CustomStore({
-                key: 'id',
-                load: (searchOpts) => {
-                  return $.getJSON($('div.filters-dxform').data('meets-endpoint-by-id'), searchOpts.filter);
-                },
-                byKey: (key) => {
-                  const d = new $.Deferred();
-                  $.get($('div.filters-dxform').data('meets-endpoint-by-id') + key + '/')
-                    .done((result) => {
-                      d.resolve(result);
-                    });
-                  return d.promise();
-                },
-              }),
-            };
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: 'id',
+              load: () => $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id')),
+              byKey: (key) => {
+                console.log("hi 281 here is key: ", key);
+                return $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id') + key + '/');},
+            }),
           },
         },
       },
       {
         dataField: 'gathering_label',
+        // helpText: 'label, not editable',
+        readOnly: true,
       },
       {
         dataField: 'site',
@@ -310,6 +311,31 @@ Attendees.gatherings = {
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
+      {
+        dataField: 'finish',
+        visible: false,
+        caption: 'End at',
+        validationRules: [{type: 'required'}],
+        dataType: 'datetime',
+        format: 'longDateLongTime',
+        editorOptions: {
+          type: 'datetime',
+          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
+        },
+      },
+      {
+        dataField: 'display_name',
+        // helpText: 'meet name + date',
+        visible: false,
+      },
+      {
+        dataField: 'site_type',
+        visible: false,
+      },
+      {
+        dataField: 'site_id',
+        visible: false,
+      },
     ],
   },
 
@@ -324,30 +350,39 @@ Attendees.gatherings = {
       mode: 'popup',
       popup: {
         showTitle: true,
-        title: 'Editing Gathering'
+        title: 'Editing Gathering',
       },
       form: {
         items: [
+          {
+            dataField: 'display_name',
+          },
           {
             // colSpan: 2,
             dataField: 'meet',
           },
           {
-            dataField: 'display_name',
+            dataField: 'gathering_label',
+            disabled: true,
+            helpText: 'not editable',
           },
           {
             dataField: 'start',
           },
           {
             dataField: 'finish',
-            // dataType: 'datetime',
           },
           {
-            dataField: 'site_type',
+            dataField: 'site',
+            caption: 'Location',
+            colSpan: 2,
           },
-          {
-            dataField: 'site_id',
-          },
+          // {
+          //   dataField: 'site_type',
+          // },
+          // {
+          //   dataField: 'site_id',
+          // },
         ],
       },
     };

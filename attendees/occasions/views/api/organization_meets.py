@@ -20,7 +20,7 @@ class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         current_user_organization = self.request.user.organization
-        print("hi 23 here is self.request.query_params: "); print(self.request.query_params)
+
         if current_user_organization:
             start = self.request.query_params.get('start', Utility.now_with_timezone(-relativedelta(hours=1)))
             finish = self.request.query_params.get('finish', Utility.now_with_timezone(relativedelta(months=1)))
