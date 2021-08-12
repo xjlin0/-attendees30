@@ -276,7 +276,7 @@ Attendees.gatherings = {
     },
     onEditingStart: (e) => {
       if (e.data && typeof e.data === 'object') {
-        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label']);
+        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label'] + '@' + e.data['site']);
       }
     },
     columns: [
@@ -303,6 +303,7 @@ Attendees.gatherings = {
       },
       {
         dataField: 'site',
+        readOnly: true,
         caption: 'Location',
       },
       {
@@ -331,9 +332,27 @@ Attendees.gatherings = {
         // helpText: 'meet name + date',
         visible: false,
       },
+//      {
+//        dataField: 'site_type',
+//        visible: false,
+//      },
       {
         dataField: 'site_type',
         visible: false,
+        caption: 'location type',
+        validationRules: [{type: 'required'}],
+        lookup: {
+          valueExpr: 'id',
+          displayExpr: 'model',
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: 'id',
+              load: () => $.getJSON($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'locations'}),
+              byKey: (key) => {
+                return $.getJSON($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'locations'});},
+            }),
+          },
+        },
       },
       {
         dataField: 'site_id',
@@ -371,16 +390,16 @@ Attendees.gatherings = {
           {
             dataField: 'finish',
           },
+//          {
+//            dataField: 'site',
+//            caption: 'Location',
+//            colSpan: 2,
+//            disabled: true,
+//            helpText: 'not editable',
+//          },
           {
-            dataField: 'site',
-            caption: 'Location',
-            colSpan: 2,
-            disabled: true,
-            helpText: 'not editable',
+            dataField: 'site_type',
           },
-          // {
-          //   dataField: 'site_type',
-          // },
           // {
           //   dataField: 'site_id',
           // },

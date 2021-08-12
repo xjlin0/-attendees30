@@ -12,6 +12,7 @@ class GatheringsListView(LoginRequiredMixin, RouteGuard, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
+            'content_type_models_endpoint': '/whereabouts/api/content_type_models/',
             'gatherings_endpoint': '/occasions/api/organization_team_gatherings/',
             'meets_endpoint_by_slug': '/occasions/api/organization_meets/',
             'meets_endpoint_by_id': '/occasions/api/user_assembly_meets/',
