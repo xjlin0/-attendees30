@@ -349,7 +349,13 @@ Attendees.gatherings = {
               key: 'id',
               load: () => $.getJSON($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'locations'}),
               byKey: (key) => {
-                return $.getJSON($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'locations'});},
+                const d = new $.Deferred();
+                $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'locations'})
+                  .done((result) => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
             }),
           },
         },

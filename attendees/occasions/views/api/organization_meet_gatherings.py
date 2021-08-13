@@ -18,18 +18,15 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
 
     def get_queryset(self):
         current_user_organization = self.request.user.organization
-        print("hi ApiOrganizationMeetGatheringsViewSet 21 here is self.request.query_params: "); print(self.request.query_params)
-        print("hi ApiOrganizationMeetGatheringsViewSet 22 here is self.kwargs: "); print(self.kwargs)
+
         if current_user_organization:
             pk = self.kwargs.get('pk')
-            print("hi 25 here is pk: "); print(pk)
+
             if pk:
-                gg = Gathering.objects.filter(
+                return Gathering.objects.filter(
                     pk=pk,
                     meet__assembly__division__organization=current_user_organization,
                 )
-                print("hi 31 here is gg: "); print(gg)
-                return gg
 
             else:
                 # Todo: probably need to check if the meets belongs to the organization?
