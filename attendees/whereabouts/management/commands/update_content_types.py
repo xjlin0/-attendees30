@@ -29,6 +29,7 @@ class Command(BaseCommand):
                 UPDATE {ContentType._meta.db_table}
                   SET genres='location',
                       display_order=3,
+                      endpoint='/{Suite._meta.app_label}/api/organizational_suites/',
                       hint='entire floor/space'
                   WHERE app_label='{Suite._meta.app_label}'
                     AND model='{Suite._meta.model_name}';
@@ -51,7 +52,7 @@ class Command(BaseCommand):
                   SET genres='location',
                       display_order=6,
                       hint='entire division/department',
-                      endpoint='/whereabouts/api/user_divisions/'
+                      endpoint='/{Division._meta.app_label}/api/user_divisions/'
                   WHERE app_label='{Division._meta.app_label}'
                     AND model='{Division._meta.model_name}';
 
@@ -66,7 +67,7 @@ class Command(BaseCommand):
                   SET genres='location',
                       display_order=8,
                       hint='street address',
-                      endpoint='/whereabouts/api/all_addresses/'
+                      endpoint='/{Organization._meta.app_label}/api/all_addresses/'
                   WHERE app_label='{Address._meta.app_label}'
                     AND model='{Address._meta.model_name}';
                     """

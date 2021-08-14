@@ -23,16 +23,20 @@ class ApiUserPlaceViewSet(LoginRequiredMixin, ModelViewSet):
             places = Place.objects if self.request.user.privileged() else self.request.user.attendee.contacts
 
             if place_id:
-                return places.filter(pk=place_id)
+                return places.filter(
+                    pk=place_id,
+                    organization=self.request.user.organization,
+                )
             else:
                 return places.filter(
-                    Q(address__street_number__icontains=keyword)
-                    |
-                    Q(display_name__icontains=keyword)
-                    |
-                    Q(address__route__icontains=keyword)
-                    |
-                    Q(address__raw__icontains=keyword)
+                    (Q(address__street_number__icontains=keyword)
+                     |
+                     Q(display_name__icontains=keyword)
+                     |
+                     Q(address__route__icontains=keyword)
+                     |
+                     Q(address__raw__icontains=keyword)),
+                    organization=self.request.user.organization,
                 )
 
         else:

@@ -6,6 +6,7 @@ from attendees.whereabouts.views import (
     api_datagrid_data_place_viewset,
     api_all_state_view_set,
     api_all_address_view_set,
+    api_organizational_suite_view_set,
     api_user_division_viewset,
     api_user_place_view_set,
 )
@@ -42,6 +43,11 @@ router.register(
     'api/all_states',
     api_all_state_view_set,
     basename='address',
+)
+router.register(
+    'api/organizational_suites',
+    api_organizational_suite_view_set,
+    basename='suite',
 )
 
 urlpatterns = [
