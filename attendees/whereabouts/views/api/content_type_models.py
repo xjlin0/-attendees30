@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView
 from attendees.whereabouts.serializers import ContentTypeSerializer
 
 
-class ApiContentTypeModelsView(LoginRequiredMixin, ListAPIView):
+class ApiContentTypeListAPIView(LoginRequiredMixin, ListAPIView):
     """
     Restricted endpoint that allows ContentType to be viewed, need search params of 'query' to filter the models.
     """
@@ -21,10 +21,10 @@ class ApiContentTypeModelsView(LoginRequiredMixin, ListAPIView):
             if content_type_id:
                 return ContentType.objects.raw(f'SELECT * FROM {ContentType.objects.model._meta.db_table} WHERE id = %s AND genres LIKE %s', [content_type_id, query])
             else:
-                return ContentType.objects.raw(f'SELECT * FROM {ContentType.objects.model._meta.db_table} WHERE genres LIKE %s', [query])
+                return ContentType.objects.raw(f'SELECT * FROM {ContentType.objects.model._meta.db_table} WHERE genres LIKE %s ORDER BY display_order', [query])
         else:
             time.sleep(2)
             raise AuthenticationFailed(detail='Have your account assigned an organization?')
 
 
-content_type_models_view = ApiContentTypeModelsView
+content_type_list_api_view = ApiContentTypeListAPIView

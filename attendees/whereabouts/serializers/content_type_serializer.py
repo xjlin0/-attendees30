@@ -6,12 +6,10 @@ class ContentTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContentType
-        fields = [f.name for f in model._meta.fields] + [
-            'endpoint',
-        ]
+        fields = ['id', 'model', 'endpoint', 'hint']
 
     def build_unknown_field(self, field_name, model_class):
         """
-        have to override https://stackoverflow.com/a/65035143/4257237
+        have to override for RawQuerySet https://stackoverflow.com/a/65035143/4257237
         """
         return fields.CharField, {'read_only': True}

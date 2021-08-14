@@ -347,10 +347,10 @@ Attendees.gatherings = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => $.getJSON($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'locations'}),
+              load: () => $.getJSON($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'location'}),
               byKey: (key) => {
                 const d = new $.Deferred();
-                $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'locations'})
+                $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'location'})
                   .done((result) => {
                     d.resolve(result.data);
                   });
