@@ -7,6 +7,7 @@ from attendees.whereabouts.views import (
     api_all_state_view_set,
     api_all_address_view_set,
     api_organizational_suite_view_set,
+    api_organizational_room_view_set,
     api_user_division_viewset,
     api_user_place_view_set,
 )
@@ -14,11 +15,6 @@ from attendees.whereabouts.views import (
 app_name = "whereabouts"
 
 router = routers.DefaultRouter()
-# router.register(
-#     'api/content_type_models',
-#     content_type_models_viewset,
-#     basename='content_type',
-# )
 router.register(
     'api/user_divisions',
     api_user_division_viewset,
@@ -48,6 +44,11 @@ router.register(
     'api/organizational_suites',
     api_organizational_suite_view_set,
     basename='suite',
+)
+router.register(
+    'api/organizational_rooms',
+    api_organizational_room_view_set,
+    basename='room',
 )
 
 urlpatterns = [

@@ -2,6 +2,8 @@ Attendees.gatherings = {
   filtersForm: null,
   meetTagbox: null,
   editingSwitch: null,
+  contentTypeEndpoint: '',
+  contentTypeEndpoints: {},
   init: () => {
     console.log('static/js/occasions/gatherings_list_view.js');
     Attendees.gatherings.initEditingSwitch();
@@ -276,6 +278,8 @@ Attendees.gatherings = {
     },
     onEditingStart: (e) => {
       if (e.data && typeof e.data === 'object') {
+        console.log("hi 281 here is e.data['site_type']: ", e.data['site_type']);
+        Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[e.data['site_type']];
         Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label'] + '@' + e.data['site']);
       }
     },
@@ -316,42 +320,52 @@ Attendees.gatherings = {
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
-      // {
-      //   dataField: 'finish',
-      //   caption: 'End',
-      //   validationRules: [{type: 'required'}],
-      //   dataType: 'datetime',
-      //   format: 'longDateLongTime',
-      //   editorOptions: {
-      //     type: 'datetime',
-      //     dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
-      //   },
-      // },
+      {
+        dataField: 'finish',
+        visible: false,
+        caption: 'End',
+        validationRules: [{type: 'required'}],
+        dataType: 'datetime',
+        format: 'longDateLongTime',
+        editorOptions: {
+          type: 'datetime',
+          dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
+        },
+      },
       {
         dataField: 'display_name',
         // helpText: 'meet name + date',
         visible: false,
       },
-//      {
-//        dataField: 'site_type',
-//        visible: false,
-//      },
       {
         dataField: 'site_type',
         visible: false,
         caption: 'location type',
         validationRules: [{type: 'required'}],
         lookup: {
+          hint: 'select a location type',
           valueExpr: 'id',
           displayExpr: 'model',
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => $.getJSON($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'location'}),
+              load: (searchOpts) => {
+                console.log("hi 356 here is searchOpts: ", searchOpts);
+                const d = new $.Deferred();
+                $.get($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'location'})
+                  .done((result) => {
+                    Attendees.gatherings.contentTypeEndpoints=result.data.reduce((obj, item) => ({...obj, [item.id]: item.endpoint}) ,{});
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
               byKey: (key) => {
+                console.log("hi 366 here is key: ", key);
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'location'})
                   .done((result) => {
+                    console.log("hi 370 here is result, do you see endpoint? ", result);
+                    Attendees.gatherings.contentTypeEndpoint = result.data[0].endpoint;
                     d.resolve(result.data);
                   });
                 return d.promise();
@@ -363,6 +377,42 @@ Attendees.gatherings = {
       {
         dataField: 'site_id',
         visible: false,
+        caption: 'location',
+        validationRules: [{type: 'required'}],
+        lookup: {
+          hint: 'select a location',
+          valueExpr: 'id',
+          displayExpr: 'display_name',
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: 'id',
+              load: (searchArgs) => {
+                console.log("hi 393 before ajax single site_id here is Attendees.gatherings.contentTypeEndpoint: ", Attendees.gatherings.contentTypeEndpoint);
+                if (Attendees.gatherings.contentTypeEndpoint) {
+                  console.log("hi 395 starting ajax single here is searchArgs: ", searchArgs);
+                  const d = new $.Deferred();
+                  $.get(Attendees.gatherings.contentTypeEndpoint, searchArgs)
+                    .done((result) => {
+                      d.resolve(result.data);
+                    });
+                  return d.promise();
+                }
+              },
+              byKey: (key) => {
+                console.log("hi 405 before ajax single site_id here is key: ", key);
+                if (Attendees.gatherings.contentTypeEndpoint) {
+                  console.log("hi 407 starting ajax single here is Attendees.gatherings.contentTypeEndpoint: ", Attendees.gatherings.contentTypeEndpoint);
+                  const d = new $.Deferred();
+                  $.get(Attendees.gatherings.contentTypeEndpoint + key + '/')
+                    .done((result) => {
+                      d.resolve(result);
+                    });
+                  return d.promise();
+                }
+              },
+            }),
+          },
+        },
       },
     ],
   },
@@ -406,9 +456,10 @@ Attendees.gatherings = {
           {
             dataField: 'site_type',
           },
-          // {
-          //   dataField: 'site_id',
-          // },
+          {
+            dataField: 'site_id',
+//            visible: false,
+          },
         ],
       },
     };

@@ -4,31 +4,31 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import AuthenticationFailed
 
-from attendees.whereabouts.models import Suite
-from attendees.whereabouts.serializers import SuiteSerializer
+from attendees.whereabouts.models import Room
+from attendees.whereabouts.serializers import RoomSerializer
 
 
-class ApiOrganizationalSuiteViewSet(LoginRequiredMixin, ModelViewSet):
+class ApiOrganizationalRoomViewSet(LoginRequiredMixin, ModelViewSet):
     """
     API endpoint that allows Suite to be viewed or edited.
     """
-    serializer_class = SuiteSerializer
+    serializer_class = RoomSerializer
 
     def get_queryset(self, **kwargs):
         if self.request.user.organization:
-            suite_id = self.request.query_params.get('id', None)
+            room_id = self.request.query_params.get('id', None)
             keywords = self.request.query_params.get('searchValue', ''),
             keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on ajax does not help, check if args[i] = JSON.stringify(loadOptions[i]) help
-            print("hi 23 here is self.request.query_params: "); print(self.request.query_params)
-            if suite_id:
-                return Suite.objects.filter(
-                    pk=suite_id,
-                    property__campus__organization=self.request.user.organization,
+            print("hi 22 here is self.request.query_params: "); print(self.request.query_params)
+            if room_id:
+                return Room.objects.filter(
+                    pk=room_id,
+                    suite__property__campus__organization=self.request.user.organization,
                 )
             else:
-                return Suite.objects.filter(
+                return Room.objects.filter(
                     display_name__icontains=keyword,
-                    property__campus__organization=self.request.user.organization,
+                    suite__property__campus__organization=self.request.user.organization,
                 )
 
         else:
@@ -36,4 +36,4 @@ class ApiOrganizationalSuiteViewSet(LoginRequiredMixin, ModelViewSet):
             raise AuthenticationFailed(detail='Have your account assigned an organization?')
 
 
-api_organizational_suite_view_set = ApiOrganizationalSuiteViewSet
+api_organizational_room_view_set = ApiOrganizationalRoomViewSet

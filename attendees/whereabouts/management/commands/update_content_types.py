@@ -22,6 +22,7 @@ class Command(BaseCommand):
                 UPDATE {ContentType._meta.db_table}
                   SET genres='location',
                       display_order=2,
+                      endpoint='/{Room._meta.app_label}/api/organizational_rooms/',
                       hint='single room/office'
                   WHERE app_label='{Room._meta.app_label}'
                     AND model='{Room._meta.model_name}';
