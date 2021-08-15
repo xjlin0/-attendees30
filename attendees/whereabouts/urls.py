@@ -6,6 +6,9 @@ from attendees.whereabouts.views import (
     api_datagrid_data_place_viewset,
     api_all_state_view_set,
     api_all_address_view_set,
+    api_user_organization_viewset,
+    api_organizational_campus_view_set,
+    api_organizational_property_view_set,
     api_organizational_suite_view_set,
     api_organizational_room_view_set,
     api_user_division_viewset,
@@ -39,6 +42,21 @@ router.register(
     'api/all_states',
     api_all_state_view_set,
     basename='address',
+)
+router.register(
+    'api/user_organizations',
+    api_user_organization_viewset,
+    basename='organization',
+)
+router.register(
+    'api/organizational_campuses',
+    api_organizational_campus_view_set,
+    basename='campus',
+)
+router.register(
+    'api/organizational_properties',
+    api_organizational_property_view_set,
+    basename='property',
 )
 router.register(
     'api/organizational_suites',
