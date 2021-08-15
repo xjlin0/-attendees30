@@ -245,10 +245,6 @@ Attendees.gatherings = {
         },
       }),
     },
-    // onRowInserting: (rowData) => {
-    // },
-    // onInitNewRow: (e) => {
-    // },
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
@@ -278,9 +274,13 @@ Attendees.gatherings = {
     },
     onEditingStart: (e) => {
       if (e.data && typeof e.data === 'object') {
-        console.log("hi 281 here is e.data['site_type']: ", e.data['site_type']);
         Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[e.data['site_type']];
         Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label'] + '@' + e.data['site']);
+      }
+    },
+    onEditorPrepared: (e) => {
+      if (e.dataField === 'site_id') {
+        Attendees.gatherings.siteIdElement = e;
       }
     },
     columns: [
@@ -302,7 +302,6 @@ Attendees.gatherings = {
       },
       {
         dataField: 'gathering_label',
-        // helpText: 'label, not editable',
         readOnly: true,
       },
       {
@@ -342,6 +341,13 @@ Attendees.gatherings = {
         visible: false,
         caption: 'location type',
         validationRules: [{type: 'required'}],
+        setCellValue: (rowData, value) => {
+          rowData.site_id = undefined;
+          Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[value];
+          rowData.site_type = value;
+//          $('div.in-popup-site-id input')[1].value=''; Todo 20210814: can't clear site_id dxlookup after it reload
+//          Attendees.gatherings.siteIdElement.value = undefined;
+        },
         lookup: {
           hint: 'select a location type',
           valueExpr: 'id',
@@ -350,21 +356,18 @@ Attendees.gatherings = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchOpts) => {
-                console.log("hi 356 here is searchOpts: ", searchOpts);
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'location'})
                   .done((result) => {
-                    Attendees.gatherings.contentTypeEndpoints=result.data.reduce((obj, item) => ({...obj, [item.id]: item.endpoint}) ,{});
+                    Attendees.gatherings.contentTypeEndpoints = result.data.reduce((obj, item) => ({...obj, [item.id]: item.endpoint}) ,{});
                     d.resolve(result.data);
                   });
                 return d.promise();
               },
               byKey: (key) => {
-                console.log("hi 366 here is key: ", key);
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'location'})
                   .done((result) => {
-                    console.log("hi 370 here is result, do you see endpoint? ", result);
                     Attendees.gatherings.contentTypeEndpoint = result.data[0].endpoint;
                     d.resolve(result.data);
                   });
@@ -377,9 +380,11 @@ Attendees.gatherings = {
       {
         dataField: 'site_id',
         visible: false,
+        cssClass: 'pre-popup-site-id',
         caption: 'location',
         validationRules: [{type: 'required'}],
         lookup: {
+          allowClearing: true,
           hint: 'select a location',
           valueExpr: 'id',
           displayExpr: 'display_name',
@@ -387,9 +392,7 @@ Attendees.gatherings = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchArgs) => {
-                console.log("hi 393 before ajax single site_id here is Attendees.gatherings.contentTypeEndpoint: ", Attendees.gatherings.contentTypeEndpoint);
                 if (Attendees.gatherings.contentTypeEndpoint) {
-                  console.log("hi 395 starting ajax single here is searchArgs: ", searchArgs);
                   const d = new $.Deferred();
                   $.get(Attendees.gatherings.contentTypeEndpoint, searchArgs)
                     .done((result) => {
@@ -399,9 +402,7 @@ Attendees.gatherings = {
                 }
               },
               byKey: (key) => {
-                console.log("hi 405 before ajax single site_id here is key: ", key);
                 if (Attendees.gatherings.contentTypeEndpoint) {
-                  console.log("hi 407 starting ajax single here is Attendees.gatherings.contentTypeEndpoint: ", Attendees.gatherings.contentTypeEndpoint);
                   const d = new $.Deferred();
                   $.get(Attendees.gatherings.contentTypeEndpoint + key + '/')
                     .done((result) => {
@@ -435,9 +436,9 @@ Attendees.gatherings = {
         items: [
           {
             dataField: 'display_name',
+            placeholer: 'input date such as 12/25/2022',
           },
           {
-            // colSpan: 2,
             dataField: 'meet',
           },
           {
@@ -446,19 +447,12 @@ Attendees.gatherings = {
           {
             dataField: 'finish',
           },
-//          {
-//            dataField: 'site',
-//            caption: 'Location',
-//            colSpan: 2,
-//            disabled: true,
-//            helpText: 'not editable',
-//          },
           {
             dataField: 'site_type',
           },
           {
             dataField: 'site_id',
-//            visible: false,
+//            cssClass: 'in-popup-site-id',
           },
         ],
       },
