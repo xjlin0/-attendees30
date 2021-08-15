@@ -1,18 +1,15 @@
-import time
-
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from json import dumps
-from django.forms.models import model_to_dict
-from django.http import Http404
-from django.shortcuts import render
-from django.db.models import F
-from attendees.occasions.models import Meet, Assembly
-from attendees.users.authorization import RouteGuard
-import logging
 
+from django.shortcuts import render
+from django.db.models import F, Q
+from attendees.occasions.models import Meet
+from attendees.persons.models import Utility
+from attendees.users.authorization import RouteGuard
 from attendees.users.models import Menu
+from json import dumps
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +23,12 @@ class AttendeesListView(RouteGuard, ListView):
         context = super().get_context_data(**kwargs)
         # Todo include user divisions and meets slugs in context
         family_attendances_menu = Menu.objects.filter(url_name='datagrid_user_organization_attendances').first()
-        available_meets = Meet.objects.filter(assembly__division__organization=self.request.user.organization).annotate(assembly_name=F('assembly__display_name')).order_by('assembly_name').values('id', 'slug', 'display_name', 'assembly_name')  # Todo 20210711 only coworkers can see all Meet, general users should only see what they attended
+        available_meets = Meet.objects.filter(
+            (Q(finish__isnull=True) | Q(finish__gt=Utility.now_with_timezone())),
+            assembly__division__organization=self.request.user.organization,
+        ).annotate(
+            assembly_name=F('assembly__display_name'),
+        ).order_by('assembly_name').values('id', 'slug', 'display_name', 'assembly_name')  # Todo 20210711 only coworkers can see all Meet, general users should only see what they attended
         allowed_to_create_attendee = Menu.user_can_create_attendee(self.request.user)
         context.update({
             'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,

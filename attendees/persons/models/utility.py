@@ -58,8 +58,8 @@ class Utility:
         return datetime.now(timezone.utc)+timedelta(weeks=99999)
 
     @staticmethod
-    def now_with_timezone():  # 1923 years from now
-        return datetime.now(timezone.utc)
+    def now_with_timezone(delta=timedelta(weeks=0)):  # 1923 years from now
+        return datetime.now(timezone.utc) + delta
 
     @staticmethod
     def presence(string, default_when_none=None):

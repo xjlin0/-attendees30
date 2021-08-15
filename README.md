@@ -83,6 +83,7 @@ All libraries are included to facilitate offline development
 * build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
 * create migration files by `docker-compose -f local.yml run --rm django python manage.py makemigrations`
 * migrate db by `docker-compose -f local.yml run --rm django python manage.py migrate`
+* upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
 * create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
 * import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
   (data were created by `docker-compose -f local.yml run django python manage.py dumpdata --exclude users.user --exclude admin.logentry --exclude sessions.session --exclude django_celery_beat.crontabschedule --exclude contenttypes.contenttype --exclude sites.site --exclude django_celery_beat.periodictasks --exclude django_celery_beat.periodictask  --exclude account.emailaddress --exclude account.emailconfirmation --exclude socialaccount.socialtoken --exclude auth.permission --indent 2 > fixtures/db_seed2.json`)
@@ -120,6 +121,9 @@ All libraries are included to facilitate offline development
   - [x] [PR#18](https://github.com/xjlin0/attendees30/pull/18) remove attendee list page dependency of path params and take search params from user for assembly slug
   - [x] [PR#19](https://github.com/xjlin0/attendees30/pull/19) rename and move attendees/attendee page, and show attendees based on auth groups
 - [ ] Gathering list (server side processing with auto-generation)
+  - [x] [PR#20](https://github.com/xjlin0/attendees30/pull/20) gatherings datagrid filtered by meets and date ranges
+  - [ ] django-schedule with Meet
+  - [ ] can gathering generation automatic?
 - [ ] Attendance list (server side processing with auto-generation)
   - [ ] member list (attendance level with editing category)
 - [ ] Attending list (new design with server side processing)

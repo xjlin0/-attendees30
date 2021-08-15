@@ -12,7 +12,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0001_minimal_place'),
+        ('whereabouts', '0002_minimal_place'),
         ('occasions', '0000_initial'),
     ]
 
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('division', models.ForeignKey(on_delete=models.SET(0), to='whereabouts.Division')),
                 ('category', models.CharField(default='normal', help_text='normal, no-display, etc', max_length=20, blank=False, null=False, db_index=True)),
                 ('slug', models.SlugField(max_length=50, unique=True, help_text='format: Organization_name-Assembly_name')),
-                ('display_name', models.CharField(max_length=50)),
+                ('display_name', models.CharField(max_length=50, blank=False, null=False, help_text='Uniq within Organization, adding year helps')),
                 ('infos', JSONField(blank=True, default=dict, help_text="please keep {} here even there's no data", null=True)),
             ],
             options={

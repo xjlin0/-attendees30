@@ -4,9 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
-
+from django.db.models import F
 from attendees.occasions.models import Meet
 from attendees.occasions.serializers.meet import MeetSerializer
+
 
 class ApiUserAssemblyMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     """
@@ -23,6 +24,8 @@ class ApiUserAssemblyMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
             return Meet.objects.filter(
                 assembly__in=assemblies,
                 assembly__division__organization=current_user_organization,
+            ).annotate(
+                assembly_name=F('assembly__display_name'),
             )
 
         else:

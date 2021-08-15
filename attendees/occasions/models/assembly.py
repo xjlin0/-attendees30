@@ -17,7 +17,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
     finish = models.DateTimeField(null=True, blank=True, help_text='optional')
     # contacts = models.ManyToManyField('whereabouts.Place', through='AssemblyContact')
     category = models.CharField(max_length=20, default='normal', blank=False, null=False, db_index=True, help_text="normal, no-display, etc")
-    display_name = models.CharField(max_length=50, blank=False, null=False)
+    display_name = models.CharField(max_length=50, blank=False, null=False, help_text='Uniq within Organization, adding year helps')
     display_order = models.SmallIntegerField(default=0, blank=False, null=False)
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True, help_text='format: Organization_name-Assembly_name')
     need_age = models.BooleanField('Does registration need age info?', null=False, blank=False, default=False, help_text="Does the age info of the participants required?")
@@ -41,16 +41,4 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
     def get_addresses(self):
         return "\n".join([a.street for a in self.places.all() if a is not None])
 
-# from rest_framework import serializers
-#
-#
-# class AssemblySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Assembly
-#         fields = ['id', 'name', 'division', 'ttttt']
-
-# from mainsite.models.assembly import AssemblySerializer
-# k2=Assembly.objects.get(pk=2)
-# serializer=AssemblySerializer(k2)
-# serializer.data
-# #=> {'id': 2, 'name': '2019 Fall kid programs', 'division': 'none', 'ttttt': 'ttttt'}
+# Todo 20210718 add uniq at save:  within organization, the display_name should be uniq for grouped dropdown

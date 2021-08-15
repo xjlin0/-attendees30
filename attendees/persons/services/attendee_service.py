@@ -95,7 +95,7 @@ class AttendeeService:
             init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
                          Q(is_removed=False), Q.AND)
             final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
-
+            # Todo 20210807 query.add() doesn't need reassign to a different variable
             if current_user.privileged:
                 return Attendee.objects.filter(final_query).order_by(
                     Case(When(id__in=target_attendee.related_ones.values_list('id'), then=0), default=1)
