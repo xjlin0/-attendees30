@@ -52,13 +52,13 @@ Attendees.gatherings = {
       {
         colSpan: 3,
         cssClass: 'filter-from',
-        validationRules: [{type: 'required'}],
         label: {
           location: 'top',
           text: 'Filter from (mm/dd/yyyy)',
         },
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
@@ -73,13 +73,13 @@ Attendees.gatherings = {
       {
         colSpan: 3,
         cssClass: 'filter-till',
-        validationRules: [{type: 'required'}],
         label: {
           location: 'top',
           text: 'Filter till(exclude)',
         },
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
@@ -114,10 +114,12 @@ Attendees.gatherings = {
             store: new DevExpress.data.CustomStore({
               key: 'slug',
               load: (loadOptions) => {
+                const filterFrom = $('div.filter-from input')[1].value;
+                const filterTill = $('div.filter-till input')[1].value;
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('meets-endpoint-by-slug'), {
-                  start: new Date($('div.filter-from input')[1].value).toISOString(),
-                  finish: new Date($('div.filter-till input')[1].value).toISOString(),
+                  start: filterFrom ? new Date(filterFrom).toISOString() : null,
+                  finish: filterTill ? new Date(filterTill).toISOString() : null,
                 })
                   .done((result) => {
                     const answer={};

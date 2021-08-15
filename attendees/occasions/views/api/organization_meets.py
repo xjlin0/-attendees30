@@ -23,14 +23,18 @@ class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
         current_user_organization = self.request.user.organization
 
         if current_user_organization:
-            start = self.request.query_params.get('start', Utility.now_with_timezone(-relativedelta(hours=1)))
-            finish = self.request.query_params.get('finish', Utility.now_with_timezone(relativedelta(months=1)))
+            start = self.request.query_params.get('start')
+            finish = self.request.query_params.get('finish')
 
-            return Meet.objects.filter(
-                (Q(start__isnull=True) | Q(start__lte=finish)),
-                (Q(finish__isnull=True) | Q(finish__gte=start)),
-                assembly__division__organization=current_user_organization,
-            ).annotate(
+            extra_filter = Q(assembly__division__organization=current_user_organization)
+
+            if start:
+                extra_filter.add((Q(finish__isnull=True) | Q(finish__gte=start)), Q.AND)
+
+            if finish:
+                extra_filter.add((Q(start__isnull=True) | Q(start__lte=finish)), Q.AND)
+
+            return Meet.objects.filter(extra_filter).annotate(
                 assembly_name=F('assembly__display_name'),
             ).order_by('assembly_name')
 
