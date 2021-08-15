@@ -31,7 +31,7 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
             else:
                 # Todo: probably need to check if the meets belongs to the organization?
                 return GatheringService.by_organization_meets(
-                    organization_slug=current_user_organization.slug,
+                    current_user=self.request.user,
                     meet_slugs=self.request.query_params.getlist('meets[]', []),
                     start=self.request.query_params.get('start'),
                     finish=self.request.query_params.get('finish'),

@@ -8,6 +8,7 @@ from django.db.models import F
 from attendees.occasions.models import Meet
 from attendees.occasions.serializers.meet import MeetSerializer
 
+
 class ApiUserAssemblyMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows Meet to be viewed or edited.

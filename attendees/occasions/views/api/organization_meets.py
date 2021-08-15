@@ -15,6 +15,7 @@ class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows all Meet in current user's organization filtered by date to be viewed or edited.
     Todo 20210711 only coworkers/organizers can see all Meets, general users should only see what they attended
+    Todo 20210815 if limiting by meet's shown_audience, non-coworker assigned to non-public meets won't show
     """
     serializer_class = MeetSerializer
 

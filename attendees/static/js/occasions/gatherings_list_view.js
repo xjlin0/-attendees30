@@ -62,6 +62,7 @@ Attendees.gatherings = {
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
+            Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
             const meets = $('div.selected-meets select').val();
             if (meets.length) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
@@ -82,6 +83,7 @@ Attendees.gatherings = {
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
+            Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
             const meets = $('div.selected-meets select').val();
             if (meets.length) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
