@@ -444,12 +444,12 @@ Attendees.gatherings = {
         colCount: 2,
         items: [
           {
-            dataField: 'display_name',
-            helpText: 'Event name and date',
-          },
-          {
             dataField: 'meet',
             helpText: "What's the event?",
+          },
+          {
+            dataField: 'display_name',
+            helpText: 'Event name and date',
           },
           {
             dataField: 'start',
