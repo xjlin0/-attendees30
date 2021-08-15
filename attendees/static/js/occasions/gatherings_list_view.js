@@ -287,6 +287,9 @@ Attendees.gatherings = {
       {
         dataField: 'meet',
         validationRules: [{type: 'required'}],
+        editorOptions: {
+          placeholder: 'Example: "The Rock"',
+        },
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
@@ -316,6 +319,7 @@ Attendees.gatherings = {
         format: 'longDateLongTime',
         editorOptions: {
           type: 'datetime',
+          placeholder: 'Click calendar to select date/time ⇨ ',
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
@@ -328,19 +332,25 @@ Attendees.gatherings = {
         format: 'longDateLongTime',
         editorOptions: {
           type: 'datetime',
+          placeholder: 'Click calendar to select date/time ⇨ ',
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
         },
       },
       {
         dataField: 'display_name',
-        // helpText: 'meet name + date',
         visible: false,
+        editorOptions: {
+          placeholder: 'Example: "The Rock - 12/25/2022"',
+        },
       },
       {
         dataField: 'site_type',
         visible: false,
-        caption: 'location type',
+        caption: 'Location type',
         validationRules: [{type: 'required'}],
+        editorOptions: {
+          placeholder: 'Example: "room"',
+        },
         setCellValue: (rowData, value) => {
           rowData.site_id = undefined;
           Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[value];
@@ -351,7 +361,7 @@ Attendees.gatherings = {
         lookup: {
           hint: 'select a location type',
           valueExpr: 'id',
-          displayExpr: 'model',
+          displayExpr: (rowData) => rowData.model + ': ' + rowData.hint,
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
@@ -381,8 +391,11 @@ Attendees.gatherings = {
         dataField: 'site_id',
         visible: false,
         cssClass: 'pre-popup-site-id',
-        caption: 'location',
+        caption: 'Location',
         validationRules: [{type: 'required'}],
+        editorOptions: {
+          placeholder: 'Example: "Fellowship F201"',
+        },
         lookup: {
           allowClearing: true,
           hint: 'select a location',
@@ -436,22 +449,27 @@ Attendees.gatherings = {
         items: [
           {
             dataField: 'display_name',
-            placeholer: 'input date such as 12/25/2022',
+            helpText: 'Event name and date',
           },
           {
             dataField: 'meet',
+            helpText: "What's the event?",
           },
           {
             dataField: 'start',
+            helpText: 'Event start time in browser timezone',
           },
           {
             dataField: 'finish',
+            helpText: 'Event end time in browser timezone',
           },
           {
             dataField: 'site_type',
+            helpText: 'More specific/smaller place preferred',
           },
           {
             dataField: 'site_id',
+            helpText: 'Where the event be hold',
 //            cssClass: 'in-popup-site-id',
           },
         ],
