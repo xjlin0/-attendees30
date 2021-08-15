@@ -200,11 +200,7 @@ Attendees.gatherings = {
             },
           });
         },
-        insert: function (c) {
-          // const subject = {
-          //   content_type: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeContenttypeId,
-          //   object_id: Attendees.datagridUpdate.attendeeId,
-          // };
+        insert: function (values) {
           return $.ajax({
             url: $('form.filters-dxform').data('gatherings-endpoint'),
             method: 'POST',
@@ -214,7 +210,7 @@ Attendees.gatherings = {
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: 'Create ' + args.type + ' success',
+                  message: 'Create success',
                   width: 500,
                   position: {
                     my: 'center',
