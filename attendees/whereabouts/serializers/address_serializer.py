@@ -6,6 +6,7 @@ class AddressSerializer(serializers.ModelSerializer):
     postal_code = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
     state_id = serializers.SerializerMethodField(read_only=True)
+    display_name = serializers.SerializerMethodField(read_only=True)
 
     def get_postal_code(self, obj):
         locality = obj.locality
@@ -18,6 +19,9 @@ class AddressSerializer(serializers.ModelSerializer):
     def get_state_id(self, obj):
         locality = obj.locality
         return locality.state.id if locality else None
+
+    def get_display_name(self, obj):
+        return str(obj)  # for gatherings_list_view page
 
     class Meta:
         model = Address

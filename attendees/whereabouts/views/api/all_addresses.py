@@ -20,7 +20,7 @@ class ApiAllAddressViewSet(LoginRequiredMixin, ModelViewSet):
             address_id = self.request.query_params.get('id', None)
             keywords = self.request.query_params.get('searchValue', ''),
             keyword = ''.join(map(str, keywords))  # Todo: crazy params parsed as tuple, add JSON.stringify() on ajax does not help, check if args[i] = JSON.stringify(loadOptions[i]) help
-
+            print("hi 23 here is keywords: "); print(keywords)
             if address_id:
                 return Address.objects.filter(pk=address_id)
             else:
