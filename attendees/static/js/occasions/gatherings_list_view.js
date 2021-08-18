@@ -8,10 +8,8 @@ Attendees.gatherings = {
     console.log('static/js/occasions/gatherings_list_view.js');
     Attendees.gatherings.initEditingSwitch();
     Attendees.gatherings.initFiltersForm();
-    // Attendees.gatherings.initListeners();
+    Attendees.gatherings.initGenerateButton();
   },
-
-  // initListeners: () => {},
 
   initEditingSwitch: () => {
     $('div#custom-control-edit-checkbox').dxSwitch({
@@ -26,6 +24,17 @@ Attendees.gatherings = {
         Attendees.gatherings.toggleEditing(e.value);
       },
     })
+  },
+
+  initGenerateButton: () => {
+    $('div#generate-gatherings').dxButton({
+      text: 'Generate Gatherings',
+      height: '1.5rem',
+      hint: 'Disabled when multiple meets selected or no duration filled',
+      onClick: () => {
+        console.log('hi 35 clicked');
+      },
+    });
   },
 
   toggleEditing: (enabled) => {
@@ -54,7 +63,7 @@ Attendees.gatherings = {
         cssClass: 'filter-from',
         label: {
           location: 'top',
-          text: 'Filter from (mm/dd/yyyy)',
+          text: 'From (mm/dd/yyyy)',
         },
         editorType: 'dxDateBox',
         editorOptions: {
@@ -75,7 +84,7 @@ Attendees.gatherings = {
         cssClass: 'filter-till',
         label: {
           location: 'top',
-          text: 'Filter till(exclude)',
+          text: 'Till(exclude)',
         },
         editorType: 'dxDateBox',
         editorOptions: {
@@ -93,7 +102,8 @@ Attendees.gatherings = {
       },
       {
         dataField: 'meets',
-        colSpan: 6,
+        colSpan: 5,
+        helpText: "Select single one to generate gatherings",
         cssClass: 'selected-meets',
         validationRules: [{type: 'required'}],
         label: {
@@ -108,7 +118,10 @@ Attendees.gatherings = {
           searchEnabled: false,
           grouped: true,
           onValueChanged: (e)=>{
-            Attendees.gatherings.gatheringsDatagrid.refresh();
+            if (e.value && e.value.length > 0) {
+              Attendees.gatherings.gatheringsDatagrid.refresh();
+              //Attendees.gatherings.filtersForm.itemOption('meets', { helpText: "new help text" })
+            }
           },
           dataSource: new DevExpress.data.DataSource({
             store: new DevExpress.data.CustomStore({
@@ -138,6 +151,20 @@ Attendees.gatherings = {
             }),  // specify group didn't work, so regroup manually :(
             key: 'slug',
           }),
+        },
+      },
+      {
+        colSpan: 1,
+        dataField: 'duration',
+        editorType: 'dxTextBox',
+        helpText: '(minutes)',
+        disabled: true,
+        label: {
+          location: 'top',
+          text: 'duration',
+        },
+        editorOptions: {
+          value: 90,
         },
       },
       {
