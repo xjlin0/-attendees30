@@ -127,13 +127,14 @@ Attendees.gatherings = {
             store: new DevExpress.data.CustomStore({
               key: 'slug',
               load: (loadOptions) => {
-                const filterFrom = $('div.filter-from input')[1].value;
-                const filterTill = $('div.filter-till input')[1].value;
                 const d = new $.Deferred();
-                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'), {
-                  start: filterFrom ? new Date(filterFrom).toISOString() : null,
-                  finish: filterTill ? new Date(filterTill).toISOString() : null,
-                })
+                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'))
+                //   , {
+                //   const filterFrom = $('div.filter-from input')[1].value;
+                // const filterTill = $('div.filter-till input')[1].value;
+                //   start: filterFrom ? new Date(filterFrom).toISOString() : null,
+                //   finish: filterTill ? new Date(filterTill).toISOString() : null,
+                // })
                   .done((result) => {
                     const answer={};
                     if (result.data[0] && result.data[0].assembly_name){
