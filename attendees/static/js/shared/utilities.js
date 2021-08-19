@@ -91,6 +91,10 @@ Attendees.utilities = {
 
   },
 
+  timeRules: {
+    Weekly: {weekday: 'long', hour: 'numeric', minute: 'numeric'},
+  },  // convert Django Schedule rule name to JS toLocaleString option
+
   debounce : (delay, fn) => {
     let timer = null;
     return (...arguments) => {

@@ -1,6 +1,7 @@
 Attendees.gatherings = {
   filtersForm: null,
   meetTagbox: null,
+  meetScheduleRules: {},
   editingSwitch: null,
   contentTypeEndpoint: '',
   contentTypeEndpoints: {},
@@ -103,7 +104,7 @@ Attendees.gatherings = {
       {
         dataField: 'meets',
         colSpan: 5,
-        helpText: "Select single one to generate gatherings",
+        helpText: 'Select single one to generate gatherings',
         cssClass: 'selected-meets',
         validationRules: [{type: 'required'}],
         label: {
@@ -120,7 +121,28 @@ Attendees.gatherings = {
           onValueChanged: (e)=>{
             if (e.value && e.value.length > 0) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
-              //Attendees.gatherings.filtersForm.itemOption('meets', { helpText: "new help text" })
+              if (e.value.length < 2) {
+                const newhelpTexts = [];
+                const noRuleText = 'The chosen meet does not have schedule in EventRelation';
+                const timeRules = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
+                if (timeRules && timeRules.length > 0) {
+                  timeRules.forEach(timeRule => {
+                    if (timeRule.rule) {
+                      const toLocaleStringOpts = Attendees.utilities.timeRules[timeRule.rule];
+                      const startTime = new Date(timeRule.start).toLocaleString(navigator.language, toLocaleStringOpts);
+                      const endTime = new Date(timeRule.end).toLocaleString(navigator.language, toLocaleStringOpts);
+                      newhelpTexts.push(timeRule.rule + ' ' + startTime + ' ~ ' + endTime);
+                    } else {
+                      newhelpTexts.push(noRuleText);
+                    }
+                  });
+                } else {
+                  newhelpTexts.push(noRuleText);
+                }
+                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: newhelpTexts.join(', ')});
+              } else {
+                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: 'Select single one to generate gatherings'});
+              }
             }
           },
           dataSource: new DevExpress.data.DataSource({
@@ -137,8 +159,9 @@ Attendees.gatherings = {
                 // })
                   .done((result) => {
                     const answer={};
-                    if (result.data[0] && result.data[0].assembly_name){
+                    if (result.data[0] && result.data[0].assembly_name) {
                       result.data.forEach(meet=>{
+                        Attendees.gatherings.meetScheduleRules[meet.slug] = meet.schedule_rules;
                         if (meet.assembly_name){
                           answer[meet.assembly_name] = answer[meet.assembly_name] || {key: meet.assembly_name, items:[]};
                           answer[meet.assembly_name].items.push(meet);

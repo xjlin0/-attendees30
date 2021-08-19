@@ -38,6 +38,10 @@ class Meet(TimeStampedModel, SoftDeletableModel, Utility):
     def url(self):
         return self.infos.get('url', '')
 
+    @property
+    def schedule_rules(self):
+        return [{'rule': er.event.rule.name, 'start': er.event.start, 'end': er.event.end} for er in self.event_relations.all()]
+
     class Meta:
         db_table = 'occasions_meets'
 
