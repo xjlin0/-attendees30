@@ -123,15 +123,19 @@ Attendees.gatherings = {
               Attendees.gatherings.gatheringsDatagrid.refresh();
               if (e.value.length < 2) {
                 const newhelpTexts = [];
+                let lastDuration = 0;
                 const noRuleText = 'The chosen meet does not have schedule in EventRelation';
                 const timeRules = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
                 if (timeRules && timeRules.length > 0) {
                   timeRules.forEach(timeRule => {
                     if (timeRule.rule) {
                       const toLocaleStringOpts = Attendees.utilities.timeRules[timeRule.rule];
-                      const startTime = new Date(timeRule.start).toLocaleString(navigator.language, toLocaleStringOpts);
-                      const endTime = new Date(timeRule.end).toLocaleString(navigator.language, toLocaleStringOpts);
-                      newhelpTexts.push(timeRule.rule + ' ' + startTime + ' ~ ' + endTime);
+                      const startTime = new Date(timeRule.start);
+                      const endTime = new Date(timeRule.end);
+                      lastDuration = (endTime-startTime)/60000;
+                      const startTimeText = startTime.toLocaleString(navigator.language, toLocaleStringOpts);
+                      const endTimeText = endTime.toLocaleString(navigator.language, toLocaleStringOpts);
+                      newhelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText);
                     } else {
                       newhelpTexts.push(noRuleText);
                     }
@@ -140,6 +144,9 @@ Attendees.gatherings = {
                   newhelpTexts.push(noRuleText);
                 }
                 Attendees.gatherings.filtersForm.itemOption('meets', {helpText: newhelpTexts.join(', ')});
+                if (lastDuration > 0) {
+                  Attendees.gatherings.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
+                }
               } else {
                 Attendees.gatherings.filtersForm.itemOption('meets', {helpText: 'Select single one to generate gatherings'});
               }
