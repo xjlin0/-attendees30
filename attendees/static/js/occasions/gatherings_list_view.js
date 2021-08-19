@@ -134,6 +134,7 @@ Attendees.gatherings = {
           searchEnabled: false,
           grouped: true,
           onValueChanged: (e)=>{
+            const defaultHelpText = 'Select single one to generate gatherings';
             if (e.value && e.value.length > 0) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
               if (e.value.length < 2) {
@@ -163,8 +164,10 @@ Attendees.gatherings = {
                   Attendees.gatherings.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
                 }
               } else {
-                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: 'Select single one to generate gatherings'});
+                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: defaultHelpText});
               }
+            } else {
+              Attendees.gatherings.filtersForm.itemOption('meets', {helpText: defaultHelpText});
             }
           },
           dataSource: new DevExpress.data.DataSource({
