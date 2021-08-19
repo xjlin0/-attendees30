@@ -1,30 +1,41 @@
 Attendees.gatherings = {
   filtersForm: null,
-  meetTagbox: null,
   meetScheduleRules: {},
-  editingSwitch: null,
+  filterMeetCheckbox: null,
   contentTypeEndpoint: '',
   contentTypeEndpoints: {},
   init: () => {
     console.log('static/js/occasions/gatherings_list_view.js');
+    Attendees.gatherings.initFilterMeetCheckbox();
     Attendees.gatherings.initEditingSwitch();
     Attendees.gatherings.initFiltersForm();
     Attendees.gatherings.initGenerateButton();
   },
 
   initEditingSwitch: () => {
-    $('div#custom-control-edit-checkbox').dxSwitch({
+    $('div#custom-control-edit-switch').dxSwitch({
       value: Attendees.utilities.editingEnabled,
       switchedOffText: 'Editing disabled',
       switchedOnText: 'Editing enabled',
       hint: 'Toggle Editing mode',
-      width: '60%',
+      width: '18%',
       height: '110%',
       onValueChanged: (e) => {  // not reconfirm, it's already after change
         Attendees.utilities.editingEnabled = e.value;
         Attendees.gatherings.toggleEditing(e.value);
       },
     })
+  },
+
+  initFilterMeetCheckbox: () => {
+    Attendees.gatherings.filterMeetCheckbox = $('div#custom-control-filter-meets-checkbox').dxCheckBox({
+      value: true,
+      hint: 'When checked, the dropdown list of Meets will be filtered based on the From/Till date&time',
+      text: 'Filter meets by date/time',
+      onValueChanged: (e) => {
+        Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+      }
+    }).dxCheckBox('instance');
   },
 
   initGenerateButton: () => {
@@ -72,7 +83,9 @@ Attendees.gatherings = {
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
-            Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+            if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
+              Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+            }
             const meets = $('div.selected-meets select').val();
             if (meets.length) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
@@ -93,7 +106,9 @@ Attendees.gatherings = {
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
           onValueChanged: (e)=>{
-            Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+            if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
+              Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+            }
             const meets = $('div.selected-meets select').val();
             if (meets.length) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
@@ -124,7 +139,7 @@ Attendees.gatherings = {
               if (e.value.length < 2) {
                 const newhelpTexts = [];
                 let lastDuration = 0;
-                const noRuleText = 'The chosen meet does not have schedule in EventRelation';
+                const noRuleText = 'This meet does not have schedules in EventRelation';
                 const timeRules = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
                 if (timeRules && timeRules.length > 0) {
                   timeRules.forEach(timeRule => {
@@ -132,9 +147,9 @@ Attendees.gatherings = {
                       const toLocaleStringOpts = Attendees.utilities.timeRules[timeRule.rule];
                       const startTime = new Date(timeRule.start);
                       const endTime = new Date(timeRule.end);
-                      lastDuration = (endTime-startTime)/60000;
                       const startTimeText = startTime.toLocaleString(navigator.language, toLocaleStringOpts);
                       const endTimeText = endTime.toLocaleString(navigator.language, toLocaleStringOpts);
+                      lastDuration = ( endTime - startTime )/60000;
                       newhelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText);
                     } else {
                       newhelpTexts.push(noRuleText);
@@ -157,13 +172,17 @@ Attendees.gatherings = {
               key: 'slug',
               load: (loadOptions) => {
                 const d = new $.Deferred();
-                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'))
-                //   , {
-                //   const filterFrom = $('div.filter-from input')[1].value;
-                // const filterTill = $('div.filter-till input')[1].value;
-                //   start: filterFrom ? new Date(filterFrom).toISOString() : null,
-                //   finish: filterTill ? new Date(filterTill).toISOString() : null,
-                // })
+                const params = {};
+
+                if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
+                  console.log("hi 172");
+                  const filterFrom = $('div.filter-from input')[1].value;
+                  const filterTill = $('div.filter-till input')[1].value;
+                  params['start'] = filterFrom ? new Date(filterFrom).toISOString() : null;
+                  params['finish'] = filterTill ? new Date(filterTill).toISOString() : null;
+                }
+
+                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'), params)
                   .done((result) => {
                     const answer={};
                     if (result.data[0] && result.data[0].assembly_name) {
