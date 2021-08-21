@@ -14,6 +14,7 @@ from attendees.occasions.views import (
     api_assembly_meet_characters_viewset,
     api_assembly_meet_teams_viewset,
     api_assembly_meet_gatherings_viewset,
+    batch_gatherings_viewset,
     api_organization_meet_team_viewset,
     api_organization_meet_gatherings_viewset,
     api_user_assembly_characters_viewset,
@@ -55,6 +56,11 @@ router.register(
     'api/organization_team_gatherings',
     api_organization_meet_gatherings_viewset,
     basename='gathering',
+)
+router.register(
+    'api/batch_gatherings',
+    batch_gatherings_viewset,
+    basename='result',
 )
 router.register(
     'api/user_assembly_characters',

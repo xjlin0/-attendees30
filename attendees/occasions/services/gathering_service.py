@@ -52,3 +52,8 @@ class GatheringService:
             'meet',
             '-start',
         )
+
+    @staticmethod
+    def batch_create(validated_data):
+        print("hi 58 here is validated_data: "); print(validated_data)
+        return 42

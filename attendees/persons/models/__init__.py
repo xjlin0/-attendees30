@@ -1,5 +1,5 @@
 from .enum import GenderEnum
-from .utility import Utility
+from .utility import Utility, GatheringBatchCreateResult
 from .category import Category
 from .note import Note
 from .past import Past

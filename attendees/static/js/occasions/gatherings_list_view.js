@@ -45,6 +45,38 @@ Attendees.gatherings = {
       hint: 'Disabled when multiple meets selected or no duration filled',
       onClick: () => {
         console.log('hi 35 clicked');
+        const params = {};
+        const filterFrom = $('div.filter-from input')[1].value;
+        const filterTill = $('div.filter-till input')[1].value;
+        params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
+        params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
+        const meets = $('div.selected-meets select').val();
+        if (meets.length && meets.length === 1) {
+          params['meet'] = meets[0];
+          return $.ajax({
+            url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(params),
+            success: (result) => {
+              console.log("hi 63 here is success result: ", result);
+              DevExpress.ui.notify(
+                {
+                  message: 'update success',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'success', 2000);
+            },
+            error: (result) => {
+              console.log("hi 76 here is error result: ", result);
+            },
+          });
+        }
       },
     });
   },

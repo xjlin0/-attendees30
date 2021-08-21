@@ -12,6 +12,7 @@ from .api.assembly_meet_characters import api_assembly_meet_characters_viewset
 from .api.assembly_meet_teams import api_assembly_meet_teams_viewset
 from .api.assembly_meet_gatherings import api_assembly_meet_gatherings_viewset
 from .api.organization_meet_teams import api_organization_meet_team_viewset
+from .api.batch_gatherings import batch_gatherings_viewset
 from .api.organization_meet_gatherings import api_organization_meet_gatherings_viewset
 from .api.user_assembly_characters import api_user_assembly_characters_viewset
 from .api.coworker_organization_attendances import api_coworker_organization_attendances_viewset
