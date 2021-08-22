@@ -6191,7 +6191,6 @@
         "link": null,
         "\u9031\u5831": "https://sdasdasd.com/asdadsasd.pdf"
       },
-      "occurrence": null,
       "site_type": 40,
       "site_id": 1
     }
@@ -6208,7 +6207,6 @@
       "finish": "2020-05-17T18:59:59Z",
       "display_name": "05/17/2020",
       "infos": {},
-      "occurrence": null,
       "site_type": 40,
       "site_id": 1
     }
@@ -6227,7 +6225,6 @@
       "infos": {
         "link": null
       },
-      "occurrence": null,
       "site_type": 38,
       "site_id": 1
     }
@@ -6246,7 +6243,6 @@
       "infos": {
         "link": null
       },
-      "occurrence": null,
       "site_type": 39,
       "site_id": 1
     }
@@ -6266,7 +6262,6 @@
         "link": null,
         "LG_location": "Burbank Library"
       },
-      "occurrence": null,
       "site_type": 36,
       "site_id": 9
     }
@@ -6283,7 +6278,6 @@
       "finish": "2020-07-21T06:00:00Z",
       "display_name": "07/20/2020 Basic I",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 10
     }
@@ -6300,7 +6294,6 @@
       "finish": "2020-05-17T18:59:59Z",
       "display_name": "05/17/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 1
     }
@@ -6317,7 +6310,6 @@
       "finish": "2020-12-24T18:59:59Z",
       "display_name": "12/24/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 1
     }
@@ -6334,7 +6326,6 @@
       "finish": "2020-07-19T20:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020\u4f4f\u5bbf",
       "infos": {},
-      "occurrence": null,
       "site_type": 40,
       "site_id": 4
     }
@@ -6351,7 +6342,6 @@
       "finish": "2020-07-18T01:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u665a\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6368,7 +6358,6 @@
       "finish": "2020-07-19T04:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5bb5\u591c\u806f\u8abc",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 6
     }
@@ -6385,7 +6374,6 @@
       "finish": "2020-07-18T15:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u65e9\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6402,7 +6390,6 @@
       "finish": "2020-07-18T19:45:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u4e2d\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6419,7 +6406,6 @@
       "finish": "2020-07-19T02:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u665a\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6436,7 +6422,6 @@
       "finish": "2020-07-18T04:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u7834\u51b0\u904a\u6232",
       "infos": {},
-      "occurrence": null,
       "site_type": 37,
       "site_id": 3
     }
@@ -6453,7 +6438,6 @@
       "finish": "2020-07-19T15:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u65e9\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6470,7 +6454,6 @@
       "finish": "2020-07-19T19:45:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u4e2d\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6487,7 +6470,6 @@
       "finish": "2020-07-18T03:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u8b1b\u9053\u4fe1\u606f I",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 3
     }
@@ -6504,7 +6486,6 @@
       "finish": "2020-07-18T17:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f II",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 5
     }
@@ -6521,7 +6502,6 @@
       "finish": "2020-07-18T22:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f III",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 5
     }
@@ -6538,7 +6518,6 @@
       "finish": "2020-07-19T03:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f IV",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 5
     }
@@ -6555,7 +6534,6 @@
       "finish": "2020-07-19T17:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u8b1b\u9053\u4fe1\u606f V",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 5
     }
@@ -6572,7 +6550,6 @@
       "finish": "2020-07-18T05:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u540c\u5de5\u6703\u8b70",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 2
     }
@@ -6589,7 +6566,6 @@
       "finish": "2020-07-19T05:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u7d44\u9577\u6703\u8b70",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 4
     }
@@ -6606,7 +6582,6 @@
       "finish": "2020-07-18T20:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5718\u9ad4\u5408\u5f71",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
       "site_id": 4
     }
@@ -6623,7 +6598,6 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab1",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 2
     }
@@ -6640,7 +6614,6 @@
       "finish": "2020-07-20T01:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u63a5\u9001",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 11
     }
@@ -6657,7 +6630,6 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab2",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 3
     }
@@ -6674,7 +6646,6 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab3",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
       "site_id": 4
     }
@@ -6691,7 +6662,6 @@
       "finish": "2199-07-18T19:00:00Z",
       "display_name": "CFCCH\u6703\u54e1 member",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 1
     }
@@ -6708,7 +6678,6 @@
       "finish": "2199-07-18T19:00:00Z",
       "display_name": "CFCCH\u901a\u8a0a\u9304 directory",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
       "site_id": 1
     }

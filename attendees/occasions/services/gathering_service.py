@@ -79,9 +79,6 @@ class GatheringService:
 
         for er in meet.event_relations.all():
             for occurrence in er.event.get_occurrences(begin_time, end_time):
-                if not occurrence.id:
-                    occurrence.save()
-
                 gathering, gathering_created = Gathering.objects.get_or_create(
                     meet=meet,
                     site_id=meet.site_id,
@@ -91,12 +88,12 @@ class GatheringService:
                         'site_type': meet.site_type,
                         'site_id': meet.site_id,
                         'meet': meet,
-                        'occurrence': occurrence,
                         'start': occurrence.start,
                         'finish': occurrence.end,
-                        'display_name': f'{meet.assembly.display_name} {meet.display_name} {occurrence.start.strftime("%Y/%m/%d,%H:%M %p %Z")}',
+                        'infos': meet.infos,
+                        'display_name': f'{meet.display_name} {occurrence.start.strftime("%Y/%m/%d,%H:%M %p %Z")}',
                     },
-                )  # don't upadte gatherings if exist
+                )  # don't update gatherings if exist since it may have customizations
 
                 if gathering_created:
                     number_created += 1

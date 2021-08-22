@@ -398,6 +398,7 @@ Attendees.gatherings = {
     columns: [
       {
         dataField: 'meet',
+        width: '10%',
         validationRules: [{type: 'required'}],
         editorOptions: {
           placeholder: 'Example: "The Rock"',
@@ -415,17 +416,28 @@ Attendees.gatherings = {
           },
         },
       },
+//      {
+//        dataField: 'gathering_label',
+//        width: '30%',
+//        readOnly: true,
+//      },
       {
-        dataField: 'gathering_label',
-        readOnly: true,
+        dataField: 'display_name',
+        width: '30%',
+//        visible: false,
+        editorOptions: {
+          placeholder: 'Example: "The Rock - 12/25/2022"',
+        },
       },
       {
         dataField: 'site',
+        width: '30%',
         readOnly: true,
         caption: 'Location',
       },
       {
         dataField: 'start',
+        width: '30%',
         validationRules: [{type: 'required'}],
         dataType: 'datetime',
         format: 'longDateLongTime',
@@ -446,13 +458,6 @@ Attendees.gatherings = {
           type: 'datetime',
           placeholder: 'Click calendar to select date/time ⇨ ',
           dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
-        },
-      },
-      {
-        dataField: 'display_name',
-        visible: false,
-        editorOptions: {
-          placeholder: 'Example: "The Rock - 12/25/2022"',
         },
       },
       {

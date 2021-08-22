@@ -25,7 +25,6 @@ class Migration(migrations.Migration):
                 ('start', models.DateTimeField(blank=False, null=False)),
                 ('finish', models.DateTimeField(blank=False, null=False, help_text="Required for user to filter by time")),
                 ('is_removed', models.BooleanField(default=False)),
-                ('occurrence', models.ForeignKey(blank=True, null=True, on_delete=models.deletion.SET_NULL, to='schedule.Occurrence')),
                 ('site_id', models.CharField(max_length=36, null=False, blank=False, default='0')),
                 ('meet', models.ForeignKey(on_delete=models.SET(0), to='occasions.Meet')),
                 ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
