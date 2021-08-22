@@ -44,7 +44,6 @@ Attendees.gatherings = {
       height: '1.5rem',
       hint: 'Disabled when multiple meets selected or no duration filled',
       onClick: () => {
-        console.log('hi 35 clicked');
         const params = {};
         const filterFrom = $('div.filter-from input')[1].value;
         const filterTill = $('div.filter-till input')[1].value;
@@ -165,8 +164,9 @@ Attendees.gatherings = {
           showClearButton: true,
           searchEnabled: false,
           grouped: true,
-          onValueChanged: (e)=>{
+          onValueChanged: (e)=> {
             const defaultHelpText = 'Select single one to generate gatherings';
+            const $meetHelpText = Attendees.gatherings.filtersForm.getEditor('meets').element().parent().parent().find(".dx-field-item-help-text");
             if (e.value && e.value.length > 0) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
               if (e.value.length < 2) {
@@ -191,15 +191,15 @@ Attendees.gatherings = {
                 } else {
                   newhelpTexts.push(noRuleText);
                 }
-                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: newhelpTexts.join(', ')});
+                $meetHelpText.text(newhelpTexts.join(', '));  // https://supportcenter.devexpress.com/ticket/details/t531683
                 if (lastDuration > 0) {
                   Attendees.gatherings.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
                 }
               } else {
-                Attendees.gatherings.filtersForm.itemOption('meets', {helpText: defaultHelpText});
+                $meetHelpText.text(defaultHelpText);  // https://supportcenter.devexpress.com/ticket/details/t531683
               }
             } else {
-              Attendees.gatherings.filtersForm.itemOption('meets', {helpText: defaultHelpText});
+              $meetHelpText.text(defaultHelpText);  // https://supportcenter.devexpress.com/ticket/details/t531683
             }
           },
           dataSource: new DevExpress.data.DataSource({
@@ -281,6 +281,7 @@ Attendees.gatherings = {
           const meets = $('div.selected-meets select').val();
           if (meets.length) {
             return $.getJSON($('form.filters-dxform').data('gatherings-endpoint'), {
+              take: 500,
               meets: meets,
               start: new Date($('div.filter-from input')[1].value).toISOString(),
               finish: new Date($('div.filter-till input')[1].value).toISOString(),
@@ -365,6 +366,10 @@ Attendees.gatherings = {
     hoverStateEnabled: true,
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
+    pager: {
+        showPageSizeSelector: true,
+        allowedPageSizes: [10, 50, 5000]
+    },
     loadPanel: {
       message: 'Fetching...',
       enabled: true,
@@ -495,7 +500,9 @@ Attendees.gatherings = {
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'location'})
                   .done((result) => {
-                    Attendees.gatherings.contentTypeEndpoint = result.data[0].endpoint;
+                    if (result.data && result.data[0] && result.data[0].endpoint) {
+                      Attendees.gatherings.contentTypeEndpoint = result.data[0].endpoint;
+                    }
                     d.resolve(result.data);
                   });
                 return d.promise();
