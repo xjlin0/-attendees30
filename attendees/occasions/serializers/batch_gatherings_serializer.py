@@ -8,7 +8,7 @@ class BatchGatheringsSerializer(serializers.Serializer):
     number_created = serializers.IntegerField(read_only=True)
     begin = serializers.DateTimeField()
     end = serializers.DateTimeField()
-    meet = serializers.CharField()
+    meet_slug = serializers.CharField()
     # schedule_rules = serializers.JSONField(read_only=True)
 
     # class Meta:

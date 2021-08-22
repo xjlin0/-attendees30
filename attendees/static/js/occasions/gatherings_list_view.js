@@ -50,9 +50,9 @@ Attendees.gatherings = {
         const filterTill = $('div.filter-till input')[1].value;
         params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
         params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
-        const meets = $('div.selected-meets select').val();
-        if (meets.length && meets.length === 1) {
-          params['meet'] = meets[0];
+        const meetSlugs = $('div.selected-meets select').val();
+        if (meetSlugs.length && meetSlugs.length === 1) {
+          params['meet_slug'] = meetSlugs[0];
           return $.ajax({
             url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
             method: 'POST',

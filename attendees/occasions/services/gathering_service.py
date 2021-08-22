@@ -1,6 +1,6 @@
 from django.db.models import Q
-from attendees.occasions.models import Gathering
-
+from attendees.occasions.models import Gathering, Meet
+from datetime import datetime
 
 class GatheringService:
 
@@ -54,6 +54,51 @@ class GatheringService:
         )
 
     @staticmethod
-    def batch_create(validated_data):
-        print("hi 58 here is validated_data: "); print(validated_data)
-        return 42
+    def batch_create(begin, end, meet_slug, user_organization, user_time_zone):
+        """
+        Ideopotently create gatherings based on the following params.  Created Gatherings are associated with Occurrence
+        Todo 20210821 Hardcoded tzinfo for strptime to get event.get_occurrences() working as of now, needs improvement.
+        :param begin:
+        :param end:
+        :param meet_slug:
+        :param user_organization:
+        :param user_time_zone:
+        :return: number of gatherings created
+        """
+        print("hi 65 here is begin: "); print(begin)
+        print("hi 66 here is end: "); print(end)
+        print("hi 67 here is meet_slug: "); print(meet_slug)
+        number_created = 0
+        iso_time_format = '%Y-%m-%dT%H:%M:%S.%f%z'
+        # begin_time = datetime.strptime(begin, iso_time_format).replace(tzinfo=pytz.utc)
+        # end_time = datetime.strptime(end, iso_time_format).replace(tzinfo=pytz.utc)
+
+        begin_time = datetime.strptime(begin, iso_time_format).astimezone(user_time_zone)
+        end_time = datetime.strptime(end, iso_time_format).astimezone(user_time_zone)
+        meet = Meet.objects.get(slug=meet_slug, assembly__division__organization=user_organization)
+
+        for er in meet.event_relations.all():
+            for occurrence in er.event.get_occurrences(begin_time, end_time):
+                if not occurrence.id:
+                    occurrence.save()
+
+                gathering, gathering_created = Gathering.objects.get_or_create(
+                    meet=meet,
+                    site_id=meet.site_id,
+                    site_type=meet.site_type,
+                    start=occurrence.start,
+                    defaults={
+                        'site_type': meet.site_type,
+                        'site_id': meet.site_id,
+                        'meet': meet,
+                        'occurrence': occurrence,
+                        'start': occurrence.start,
+                        'finish': occurrence.end,
+                        'display_name': f'{meet.assembly.display_name} {meet.display_name} {occurrence.start.strftime("%Y/%m/%d,%H:%M %p %Z")}',
+                    },
+                )  # don't upadte gatherings if exist
+
+                if gathering_created:
+                    number_created += 1
+
+        return number_created

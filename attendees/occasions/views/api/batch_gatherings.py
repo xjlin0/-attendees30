@@ -1,6 +1,9 @@
 import time
 from dateutil.relativedelta import relativedelta
+import pytz
+from urllib import parse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
 from django.db.models import F, Q
 
 from rest_framework import viewsets
@@ -15,11 +18,16 @@ class BatchGatheringsViewSet(LoginRequiredMixin, viewsets.ViewSet):
     """
     API endpoint that allows batch creation of gatherings.
     """
-    serializer_class = BatchGatheringsSerializer
+    serializer_class = BatchGatheringsSerializer  # Required for the Browsable API renderer to have a nice form.
 
     def create(self, request):
         serializer = BatchGatheringsSerializer(request.data)
-        result = GatheringService.batch_create(request.data)
+        tzname = request.COOKIES.get('timezone') or settings.CLIENT_DEFAULT_TIME_ZONE
+        result = GatheringService.batch_create(
+            **request.data,
+            user_organization=request.user.organization,
+            user_time_zone=pytz.timezone(parse.unquote(tzname)),
+        )
         return Response({**serializer.data, 'number_created': result})
 
     # def list(self, request):
