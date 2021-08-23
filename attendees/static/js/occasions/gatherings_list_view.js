@@ -171,10 +171,14 @@ Attendees.gatherings = {
             if (e.value && e.value.length > 0) {
               Attendees.gatherings.gatheringsDatagrid.refresh();
               if (e.value.length < 2) {
-                const newhelpTexts = [];
+                const newHelpTexts = [];
+                let finalHelpText = '';
                 let lastDuration = 0;
                 const noRuleText = 'This meet does not have schedules in EventRelation';
-                const timeRules = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
+                const ruleData = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
+                const timeRules = ruleData.rules;
+                const meetStart = new Date(ruleData.meetStart).toDateString();
+                const meetFinish = new Date(ruleData.meetFinish).toDateString();
                 if (timeRules && timeRules.length > 0) {
                   timeRules.forEach(timeRule => {
                     if (timeRule.rule) {
@@ -184,15 +188,16 @@ Attendees.gatherings = {
                       const startTimeText = startTime.toLocaleString(navigator.language, toLocaleStringOpts);
                       const endTimeText = endTime.toLocaleString(navigator.language, toLocaleStringOpts);
                       lastDuration = ( endTime - startTime )/60000;
-                      newhelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText);
+                      newHelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText);
                     } else {
-                      newhelpTexts.push(noRuleText);
+                      newHelpTexts.push(noRuleText);
                     }
                   });
+                  finalHelpText = newHelpTexts.join(' & ') + ' from ' + meetStart + ' to ' + meetFinish;
                 } else {
-                  newhelpTexts.push(noRuleText);
+                  finalHelpText = noRuleText;
                 }
-                $meetHelpText.text(newhelpTexts.join(', '));  // https://supportcenter.devexpress.com/ticket/details/t531683
+                $meetHelpText.text(finalHelpText);  // https://supportcenter.devexpress.com/ticket/details/t531683
                 if (lastDuration > 0) {
                   Attendees.gatherings.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
                 }
@@ -222,7 +227,7 @@ Attendees.gatherings = {
                     const answer={};
                     if (result.data[0] && result.data[0].assembly_name) {
                       result.data.forEach(meet=>{
-                        Attendees.gatherings.meetScheduleRules[meet.slug] = meet.schedule_rules;
+                        Attendees.gatherings.meetScheduleRules[meet.slug] = {meetStart: meet.start, meetFinish: meet.finish, rules: meet.schedule_rules};
                         if (meet.assembly_name){
                           answer[meet.assembly_name] = answer[meet.assembly_name] || {key: meet.assembly_name, items:[]};
                           answer[meet.assembly_name].items.push(meet);
