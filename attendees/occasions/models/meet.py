@@ -10,6 +10,13 @@ from attendees.persons.models import Utility, Note
 
 
 class Meet(TimeStampedModel, SoftDeletableModel, Utility):
+    """
+    Todo 20210823 currently one meet can only have single default location for all auto-generated gatherings, need
+    to reconfirm if that's reality.  If one meet need to auto-generate gatherings with different default locations,
+    we might need to store "{model name}#{integer id}" in EventRelation.distinction while sacrificing uuid models.
+
+    """
+
     notes = GenericRelation(Note)
     event_relations = GenericRelation(EventRelation)
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
