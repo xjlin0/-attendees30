@@ -59,10 +59,9 @@ Attendees.gatherings = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(params),
             success: (result) => {
-              console.log("hi 63 here is success result: ", result);
               DevExpress.ui.notify(
                 {
-                  message: 'update success',
+                  message: 'Batch processed, ' + result.number_created + ' successfully created',
                   width: 500,
                   position: {
                     my: 'center',
@@ -596,6 +595,9 @@ Attendees.gatherings = {
                   const d = new $.Deferred();
                   $.get(Attendees.gatherings.contentTypeEndpoint + key + '/')
                     .done((result) => {
+                    if (result && result.id && parseInt(key) === result.id) {
+                      result.id = key;
+                    }  // Todo: type conversion for integer key of models other than address?
                       d.resolve(result);
                     });
                   return d.promise();
