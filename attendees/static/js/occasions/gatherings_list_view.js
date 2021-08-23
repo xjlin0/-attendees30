@@ -44,13 +44,14 @@ Attendees.gatherings = {
       height: '1.5rem',
       hint: 'Disabled when multiple meets selected or no duration filled',
       onClick: () => {
+        Attendees.gatherings.filtersForm.validate();
         const params = {};
         const filterFrom = $('div.filter-from input')[1].value;
         const filterTill = $('div.filter-till input')[1].value;
         params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
         params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
         const meetSlugs = $('div.selected-meets select').val();
-        if (meetSlugs.length && meetSlugs.length === 1) {
+        if (params['begin'] && params['end'] && Attendees.gatherings.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
           params['meet_slug'] = meetSlugs[0];
           return $.ajax({
             url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
@@ -84,6 +85,17 @@ Attendees.gatherings = {
                     }, 'error', 5000);
             },
           });
+        } else {
+          DevExpress.ui.notify(
+            {
+              message: "Can't generate, Please select one one single meet, with Filter 'till' earlier than filter 'from'",
+              width: 500,
+              position: {
+                my: 'center',
+                at: 'center',
+                of: window,
+              },
+            }, 'error', 2000);
         }
       },
     });
@@ -115,6 +127,16 @@ Attendees.gatherings = {
       {
         colSpan: 3,
         cssClass: 'filter-from',
+        dataField: 'filter-from',
+        validationRules: [{
+          reevaluate: true,
+          type: 'custom',
+          message: 'filter date "Till" is earlier than "From"',
+          validationCallback: (e) => {
+            const filterTill = $('div.filter-till input')[1].value;
+            return e.value && filterTill ? new Date(filterTill) > e.value : true;
+          },  // allow null for users to check all records
+        }],
         label: {
           location: 'top',
           text: 'From (mm/dd/yyyy)',
@@ -124,7 +146,8 @@ Attendees.gatherings = {
           showClearButton: true,
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
-          onValueChanged: (e)=>{
+          onValueChanged: (e) => {
+            Attendees.gatherings.filtersForm.validate();
             if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
               Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
             }
@@ -138,6 +161,16 @@ Attendees.gatherings = {
       {
         colSpan: 3,
         cssClass: 'filter-till',
+        dataField: 'filter-till',
+        validationRules: [{
+          reevaluate: true,
+          type: 'custom',
+          message: 'filter date "Till" is earlier than "From"',
+          validationCallback: (e) => {
+            const filterFrom = $('div.filter-from input')[1].value;
+            return e.value && filterFrom ? new Date(filterFrom) < e.value : true;
+          },  // allow null for users to check all records
+        }],
         label: {
           location: 'top',
           text: 'Till(exclude)',
@@ -147,7 +180,8 @@ Attendees.gatherings = {
           showClearButton: true,
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
-          onValueChanged: (e)=>{
+          onValueChanged: (e) => {
+            Attendees.gatherings.filtersForm.validate();
             if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
               Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
             }
@@ -176,6 +210,7 @@ Attendees.gatherings = {
           searchEnabled: false,
           grouped: true,
           onValueChanged: (e)=> {
+            Attendees.gatherings.filtersForm.validate();
             const defaultHelpText = 'Select single one to generate gatherings';
             const $meetHelpText = Attendees.gatherings.filtersForm.getEditor('meets').element().parent().parent().find(".dx-field-item-help-text");
             if (e.value && e.value.length > 0) {
