@@ -81,10 +81,12 @@ Attendees.gatherings = {
   },
 
   toggleEditing: (enabled) => {
-    Attendees.gatherings.gatheringsDatagrid && Attendees.gatherings.gatheringsDatagrid.option('editing', Attendees.gatherings.gatheringEditingArgs(enabled));
-    // if(enabled){
-    // }else{
-    // }
+    if (Attendees.gatherings.gatheringsDatagrid) {
+      Attendees.gatherings.gatheringsDatagrid.option('editing.allowUpdating', enabled);
+      Attendees.gatherings.gatheringsDatagrid.option('editing.allowAdding', enabled);
+      Attendees.gatherings.gatheringsDatagrid.option('editing.allowDeleting', enabled);
+      Attendees.gatherings.gatheringsDatagrid.option('editing.popup.onContentReady', e => e.component.option('toolbarItems[0].visible', enabled));
+    }
   },
 
   initFiltersForm: () => {
@@ -210,7 +212,6 @@ Attendees.gatherings = {
                 const params = {};
 
                 if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
-                  console.log("hi 172");
                   const filterFrom = $('div.filter-from input')[1].value;
                   const filterTill = $('div.filter-till input')[1].value;
                   params['start'] = filterFrom ? new Date(filterFrom).toISOString() : null;
@@ -386,6 +387,55 @@ Attendees.gatherings = {
       enabled: true,
       mode: 'select',
     },
+    editing: {
+      allowUpdating: false,
+      allowAdding: false,
+      allowDeleting: false,
+      texts: {
+        confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
+      },
+      mode: 'popup',
+      popup: {
+        showTitle: true,
+        title: 'gatheringEditingArgs',
+        onContentReady: e => e.component.option('toolbarItems[0].visible', false),
+      },
+      form: {
+        colCount: 2,
+        items: [
+          {
+            dataField: 'meet',
+            helpText: "What's the event?",
+          },
+          {
+            dataField: 'display_name',
+            helpText: 'Event name and date',
+          },
+          {
+            dataField: 'start',
+            helpText: 'Event start time in browser timezone',
+          },
+          {
+            dataField: 'finish',
+            helpText: 'Event end time in browser timezone',
+          },
+          {
+            dataField: 'site_type',
+            helpText: 'More specific/smaller place preferred',
+          },
+          {
+            dataField: 'site_id',
+            helpText: 'Where the event be hold',
+//            cssClass: 'in-popup-site-id',
+          },
+        ],
+      },
+    },
+    onCellClick: (e) => {
+        if (e.rowType === 'data' && e.column.dataField === 'display_name') {
+            e.component.editRow(e.row.rowIndex);
+        }
+    },
     onInitNewRow: (rowData) => {
       Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Adding Gathering');
     },
@@ -432,6 +482,9 @@ Attendees.gatherings = {
 //        visible: false,
         editorOptions: {
           placeholder: 'Example: "The Rock - 12/25/2022"',
+        },
+        cellTemplate: (cellElement, cellInfo) => {
+          cellElement.append ('<u class="text-info">' + cellInfo.data.display_name + '</u>');
         },
       },
       {
@@ -553,52 +606,6 @@ Attendees.gatherings = {
         },
       },
     ],
-  },
-
-  gatheringEditingArgs: (enabled) => {
-    return {
-      allowUpdating: enabled,
-      allowAdding: enabled,
-      allowDeleting: enabled,
-      texts: {
-        confirmDeleteMessage: 'Are you sure to delete it and all its attendances? Instead, setting the "finish" date is usually enough!',
-      },
-      mode: 'popup',
-      popup: {
-        showTitle: true,
-        title: 'gatheringEditingArgs',
-      },
-      form: {
-        colCount: 2,
-        items: [
-          {
-            dataField: 'meet',
-            helpText: "What's the event?",
-          },
-          {
-            dataField: 'display_name',
-            helpText: 'Event name and date',
-          },
-          {
-            dataField: 'start',
-            helpText: 'Event start time in browser timezone',
-          },
-          {
-            dataField: 'finish',
-            helpText: 'Event end time in browser timezone',
-          },
-          {
-            dataField: 'site_type',
-            helpText: 'More specific/smaller place preferred',
-          },
-          {
-            dataField: 'site_id',
-            helpText: 'Where the event be hold',
-//            cssClass: 'in-popup-site-id',
-          },
-        ],
-      },
-    };
   },
 };
 
