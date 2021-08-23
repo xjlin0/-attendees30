@@ -70,8 +70,6 @@ class GatheringService:
         print("hi 67 here is meet_slug: "); print(meet_slug)
         number_created = 0
         iso_time_format = '%Y-%m-%dT%H:%M:%S.%f%z'
-        # begin_time = datetime.strptime(begin, iso_time_format).replace(tzinfo=pytz.utc)
-        # end_time = datetime.strptime(end, iso_time_format).replace(tzinfo=pytz.utc)
 
         begin_time = datetime.strptime(begin, iso_time_format).astimezone(user_time_zone)
         end_time = datetime.strptime(end, iso_time_format).astimezone(user_time_zone)
@@ -98,4 +96,11 @@ class GatheringService:
                 if gathering_created:
                     number_created += 1
 
-        return number_created
+        results = {
+            'number_created': number_created,
+            'meet_slug': meet.slug,
+            'begin': meet.start if meet.start > begin_time else begin_time,
+            'end': meet.finish if meet.finish < end_time else end_time,
+        }
+
+        return results

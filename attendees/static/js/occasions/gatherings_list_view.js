@@ -61,17 +61,27 @@ Attendees.gatherings = {
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: 'Batch processed, ' + result.number_created + ' successfully created',
+                  message: 'Batch processed, ' + result.number_created + ' successfully created between ' + new Date(result.begin).toLocaleString() + ' & ' + new Date(result.end).toLocaleString(),
                   width: 500,
                   position: {
                     my: 'center',
                     at: 'center',
                     of: window,
                   },
-                }, 'success', 2000);
+                }, 'success', 3000);
             },
             error: (result) => {
-              console.log("hi 76 here is error result: ", result);
+              console.log("hi gatherings_list_view.js 74 here is error result: ", result);
+              DevExpress.ui.notify(
+                    {
+                      message: 'Batch processing error: ' + result,
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'error', 5000);
             },
           });
         }
