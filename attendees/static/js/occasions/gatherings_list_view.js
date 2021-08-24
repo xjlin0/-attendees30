@@ -47,60 +47,60 @@ Attendees.gatherings = {
       height: '1.5rem',
       hint: 'Disabled when multiple meets selected or no duration filled',
       onClick: () => {
-        // Todo: need confirm
-        Attendees.gatherings.filtersForm.validate();
-        const params = {};
-        const filterFrom = $('div.filter-from input')[1].value;
-        const filterTill = $('div.filter-till input')[1].value;
-        params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
-        params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
-        // Todo: need duration pass in
-        const meetSlugs = $('div.selected-meets select').val();
-        if (params['begin'] && params['end'] && Attendees.gatherings.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
-          params['meet_slug'] = meetSlugs[0];
-          return $.ajax({
-            url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
-            method: 'POST',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(params),
-            success: (result) => {
-              DevExpress.ui.notify(
-                {
-                  message: 'Batch processed, ' + result.number_created + ' successfully created between ' + new Date(result.begin).toLocaleString() + ' & ' + new Date(result.end).toLocaleString(),
-                  width: 500,
-                  position: {
-                    my: 'center',
-                    at: 'center',
-                    of: window,
-                  },
-                }, 'success', 3000);
-            },
-            error: (result) => {
-              console.log("hi gatherings_list_view.js 74 here is error result: ", result);
-              DevExpress.ui.notify(
-                    {
-                      message: 'Batch processing error: ' + result,
-                      width: 500,
-                      position: {
-                        my: 'center',
-                        at: 'center',
-                        of: window,
-                      },
-                    }, 'error', 5000);
-            },
-          });
-        } else {
-          DevExpress.ui.notify(
-            {
-              message: "Can't generate, Please select one single meet with duration, and Filter 'till' earlier than filter 'from'",
-              width: 500,
-              position: {
-                my: 'center',
-                at: 'center',
-                of: window,
+        if (Attendees.gatherings.filtersForm.validate().isValid && confirm('Are you sure to auto generate all gatherings of the chosen meet between the filtered date?')) {
+          const params = {};
+          const filterFrom = $('div.filter-from input')[1].value;
+          const filterTill = $('div.filter-till input')[1].value;
+          params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
+          params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
+          params['duration'] = Attendees.gatherings.filtersForm.getEditor('duration').option('value');
+          const meetSlugs = $('div.selected-meets select').val();
+          if (params['begin'] && params['end'] && Attendees.gatherings.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
+            params['meet_slug'] = meetSlugs[0];
+            return $.ajax({
+              url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
+              method: 'POST',
+              dataType: 'json',
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify(params),
+              success: (result) => {
+                DevExpress.ui.notify(
+                  {
+                    message: 'Batch processed, ' + result.number_created + ' successfully created between ' + new Date(result.begin).toLocaleString() + ' & ' + new Date(result.end).toLocaleString(),
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    },
+                  }, 'success', 3000);
               },
-            }, 'error', 2000);
+              error: (result) => {
+                console.log("hi gatherings_list_view.js 74 here is error result: ", result);
+                DevExpress.ui.notify(
+                  {
+                    message: 'Batch processing error: ' + result,
+                    width: 500,
+                    position: {
+                      my: 'center',
+                      at: 'center',
+                      of: window,
+                    },
+                  }, 'error', 5000);
+              },
+            });
+          } else {
+            DevExpress.ui.notify(
+              {
+                message: "Can't generate, Please select one single meet with duration, and Filter 'till' earlier than filter 'from'",
+                width: 500,
+                position: {
+                  my: 'center',
+                  at: 'center',
+                  of: window,
+                },
+              }, 'error', 2000);
+          }
         }
       },
     }).dxButton('instance');
