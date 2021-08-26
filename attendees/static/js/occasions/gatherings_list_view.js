@@ -64,6 +64,7 @@ Attendees.gatherings = {
               contentType: 'application/json; charset=utf-8',
               data: JSON.stringify(params),
               success: (result) => {
+                Attendees.gatherings.gatheringsDatagrid.refresh();
                 DevExpress.ui.notify(
                   {
                     message: 'Batch processed, ' + result.number_created + ' successfully created between ' + new Date(result.begin).toLocaleString() + ' & ' + new Date(result.end).toLocaleString(),
@@ -259,7 +260,7 @@ Attendees.gatherings = {
                       const startTimeText = startTime.toLocaleString(navigator.language, toLocaleStringOpts);
                       const endTimeText = endTime.toLocaleString(navigator.language, toLocaleStringOpts);
                       lastDuration = ( endTime - startTime )/60000;
-                      newHelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText);
+                      newHelpTexts.push(timeRule.rule + ' ' + startTimeText + ' ~ ' + endTimeText + '@' + timeRule.location);
                     } else {
                       newHelpTexts.push(noRuleText);
                     }

@@ -2,6 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection
 
+from schedule.models.events import EventRelation
+
 from attendees.whereabouts.models import Room, Suite, Property, Campus, Division, Organization
 from address.models import Address
 
@@ -74,6 +76,9 @@ class Command(BaseCommand):
                       endpoint='/{Organization._meta.app_label}/api/all_addresses/'
                   WHERE app_label='{Address._meta.app_label}'
                     AND model='{Address._meta.model_name}';
+
+                COMMENT ON COLUMN {EventRelation._meta.db_table}.distinction
+                  IS 'location: <{ContentType._meta.db_table}.model>#<{ContentType._meta.db_table}.id>';
                     """
         )
 

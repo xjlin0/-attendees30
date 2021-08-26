@@ -47,7 +47,12 @@ class Meet(TimeStampedModel, SoftDeletableModel, Utility):
 
     @property
     def schedule_rules(self):
-        return [{'rule': er.event.rule.name, 'start': er.event.start, 'end': er.event.end} for er in self.event_relations.all()]
+        return [{
+            'rule': er.event.rule.name,
+            'start': er.event.start,
+            'end': er.event.end,
+            'location': Utility.get_location(er),
+        } for er in self.event_relations.all()]
 
     class Meta:
         db_table = 'occasions_meets'

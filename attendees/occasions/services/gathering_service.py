@@ -68,11 +68,13 @@ class GatheringService:
         """
         number_created = 0
         iso_time_format = '%Y-%m-%dT%H:%M:%S.%f%z'
-        begin_time = datetime.strptime(begin, iso_time_format).astimezone(user_time_zone)
-        end_time = datetime.strptime(end, iso_time_format).astimezone(user_time_zone)
+        user_begin_time = datetime.strptime(begin, iso_time_format)
+        user_end_time = datetime.strptime(end, iso_time_format)
         meet = Meet.objects.filter(slug=meet_slug, assembly__division__organization=user_organization).first()
 
-        if meet and end_time > begin_time:
+        if meet and user_end_time > user_begin_time:
+            begin_time = (user_begin_time if meet.start < user_begin_time else meet.start).astimezone(user_time_zone)
+            end_time = (user_end_time if meet.finish > user_end_time else meet.finish).astimezone(user_time_zone)
             gathering_time = timedelta(minutes=duration) if duration and duration > 0 else None
             for er in meet.event_relations.all():
                 for occurrence in er.event.get_occurrences(begin_time, end_time):
@@ -99,8 +101,8 @@ class GatheringService:
             results = {
                 'number_created': number_created,
                 'meet_slug': meet.slug,
-                'begin': meet.start if meet.start > begin_time else begin_time,
-                'end': meet.finish if meet.finish < end_time else end_time,
+                'begin': begin_time,
+                'end': end_time,
                 'explain': "begin&end dates maybe replaced by Event's default dates."
             }
 
