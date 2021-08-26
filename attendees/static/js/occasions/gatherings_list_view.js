@@ -58,13 +58,12 @@ Attendees.gatherings = {
           if (params['begin'] && params['end'] && Attendees.gatherings.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
             params['meet_slug'] = meetSlugs[0];
             return $.ajax({
-              url: $('form.filters-dxform').data('batch-gatherings-endpoint'),
+              url: $('form.filters-dxform').data('series-gatherings-endpoint'),
               method: 'POST',
               dataType: 'json',
               contentType: 'application/json; charset=utf-8',
               data: JSON.stringify(params),
               success: (result) => {
-                Attendees.gatherings.gatheringsDatagrid.refresh();
                 DevExpress.ui.notify(
                   {
                     message: 'Batch processed, ' + result.number_created + ' successfully created between ' + new Date(result.begin).toLocaleString() + ' & ' + new Date(result.end).toLocaleString(),
@@ -80,7 +79,7 @@ Attendees.gatherings = {
                 console.log("hi gatherings_list_view.js 74 here is error result: ", result);
                 DevExpress.ui.notify(
                   {
-                    message: 'Batch processing error: ' + result,
+                    message: 'Batch processing error. ' + result && result.responseText,
                     width: 500,
                     position: {
                       my: 'center',
@@ -89,6 +88,9 @@ Attendees.gatherings = {
                     },
                   }, 'error', 5000);
               },
+              complete: () => {
+                Attendees.gatherings.gatheringsDatagrid.refresh();
+              }, // partial gatherings may have generated even when errors
             });
           } else {
             DevExpress.ui.notify(

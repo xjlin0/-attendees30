@@ -6,6 +6,9 @@ from attendees.users.models import Menu, MenuAuthGroup
 
 
 class RouteGuard(UserPassesTestMixin):
+    """
+    check if the user are among auth groups that can visit the url
+    """
 
     def test_func(self):
         whether_user_allowed_to_read_the_page = Menu.objects.filter(
@@ -25,6 +28,9 @@ class RouteGuard(UserPassesTestMixin):
 
 
 class SpyGuard(UserPassesTestMixin):
+    """
+        check if the user can visit urls for checking other attendee's data
+    """
 
     def test_func(self):  # Superusers can still access such attendee in admin UI
         targeting_attendee_id = self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', self.kwargs.get('attendee_id'))

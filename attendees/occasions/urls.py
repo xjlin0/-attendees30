@@ -14,7 +14,7 @@ from attendees.occasions.views import (
     api_assembly_meet_characters_viewset,
     api_assembly_meet_teams_viewset,
     api_assembly_meet_gatherings_viewset,
-    batch_gatherings_viewset,
+    series_gatherings_viewset,
     api_organization_meet_team_viewset,
     api_organization_meet_gatherings_viewset,
     api_user_assembly_characters_viewset,
@@ -58,9 +58,9 @@ router.register(
     basename='gathering',
 )
 router.register(
-    'api/batch_gatherings',
-    batch_gatherings_viewset,
-    basename='result',
+    'api/series_gatherings',
+    series_gatherings_viewset,
+    basename='series_gatherings',  # request.resolver_match.url_name will be series_gatherings-list
 )
 router.register(
     'api/user_assembly_characters',

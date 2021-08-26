@@ -26,6 +26,16 @@
     }
   },
   {
+    "model": "schedule.rule",
+    "pk": 2,
+    "fields": {
+      "name": "Monthly",
+      "description": "Monthly",
+      "frequency": "MONTHLY",
+      "params": ""
+    }
+  },
+  {
     "model": "schedule.eventrelation",
     "pk": 1,
     "fields": {
@@ -830,7 +840,7 @@
       },
       "lft": 1,
       "rght": 26,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 0
     }
   },
@@ -855,7 +865,7 @@
       },
       "lft": 24,
       "rght": 25,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -880,7 +890,7 @@
       },
       "lft": 22,
       "rght": 23,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -908,7 +918,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 0
     }
   },
@@ -932,7 +942,7 @@
       },
       "lft": 16,
       "rght": 17,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -957,7 +967,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -982,7 +992,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1006,7 +1016,7 @@
       },
       "lft": 18,
       "rght": 19,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1030,7 +1040,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1058,7 +1068,7 @@
       },
       "lft": 1,
       "rght": 6,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 0
     }
   },
@@ -1083,7 +1093,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 1
     }
   },
@@ -1108,7 +1118,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 1
     }
   },
@@ -1133,7 +1143,7 @@
       },
       "lft": 14,
       "rght": 15,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1158,7 +1168,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1268,7 +1278,7 @@
       "infos": {},
       "lft": 10,
       "rght": 11,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1293,7 +1303,7 @@
       },
       "lft": 8,
       "rght": 9,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1318,8 +1328,32 @@
       },
       "lft": 20,
       "rght": 21,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 27,
+    "fields": {
+      "created": "2021-08-26T17:01:46.726Z",
+      "modified": "2021-08-26T17:01:46.726Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "API",
+      "parent": null,
+      "html_type": "",
+      "urn": "/occasions/api/series_gatherings/",
+      "url_name": "series_gatherings-list",
+      "display_name": "series_gatherings_viewset",
+      "display_order": 0,
+      "infos": {
+        "note": "url_name is for coworkers to batch create series of gatherings from /occasions/gatherings/"
+      },
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 8,
+      "level": 0
     }
   },
   {
@@ -5905,7 +5939,7 @@
       "slug": "d7c8Fd_cfcch_junior_regular_the_rock",
       "infos": {},
       "site_type": 39,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6192,7 +6226,7 @@
         "\u9031\u5831": "https://sdasdasd.com/asdadsasd.pdf"
       },
       "site_type": 40,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6208,7 +6242,7 @@
       "display_name": "05/17/2020",
       "infos": {},
       "site_type": 40,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6226,7 +6260,7 @@
         "link": null
       },
       "site_type": 38,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6244,7 +6278,7 @@
         "link": null
       },
       "site_type": 39,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6263,7 +6297,7 @@
         "LG_location": "Burbank Library"
       },
       "site_type": 36,
-      "site_id": 9
+      "site_id": "9"
     }
   },
   {
@@ -6279,7 +6313,7 @@
       "display_name": "07/20/2020 Basic I",
       "infos": {},
       "site_type": 36,
-      "site_id": 10
+      "site_id": "10"
     }
   },
   {
@@ -6295,7 +6329,7 @@
       "display_name": "05/17/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6311,7 +6345,7 @@
       "display_name": "12/24/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6327,7 +6361,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020\u4f4f\u5bbf",
       "infos": {},
       "site_type": 40,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6343,7 +6377,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u665a\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6359,7 +6393,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5bb5\u591c\u806f\u8abc",
       "infos": {},
       "site_type": 39,
-      "site_id": 6
+      "site_id": "6"
     }
   },
   {
@@ -6375,7 +6409,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u65e9\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6391,7 +6425,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u4e2d\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6407,7 +6441,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u665a\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6423,7 +6457,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u7834\u51b0\u904a\u6232",
       "infos": {},
       "site_type": 37,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6439,7 +6473,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u65e9\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6455,7 +6489,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u4e2d\u9910",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6471,7 +6505,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u8b1b\u9053\u4fe1\u606f I",
       "infos": {},
       "site_type": 38,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6487,7 +6521,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f II",
       "infos": {},
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6503,7 +6537,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f III",
       "infos": {},
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6519,7 +6553,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f IV",
       "infos": {},
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6535,7 +6569,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u8b1b\u9053\u4fe1\u606f V",
       "infos": {},
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6551,7 +6585,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u540c\u5de5\u6703\u8b70",
       "infos": {},
       "site_type": 39,
-      "site_id": 2
+      "site_id": "2"
     }
   },
   {
@@ -6567,7 +6601,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u7d44\u9577\u6703\u8b70",
       "infos": {},
       "site_type": 39,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6583,7 +6617,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5718\u9ad4\u5408\u5f71",
       "infos": {},
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6599,7 +6633,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab1",
       "infos": {},
       "site_type": 39,
-      "site_id": 2
+      "site_id": "2"
     }
   },
   {
@@ -6615,7 +6649,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u63a5\u9001",
       "infos": {},
       "site_type": 36,
-      "site_id": 11
+      "site_id": "11"
     }
   },
   {
@@ -6631,7 +6665,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab2",
       "infos": {},
       "site_type": 39,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6647,7 +6681,7 @@
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab3",
       "infos": {},
       "site_type": 39,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6663,7 +6697,7 @@
       "display_name": "CFCCH\u6703\u54e1 member",
       "infos": {},
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6679,7 +6713,7 @@
       "display_name": "CFCCH\u901a\u8a0a\u9304 directory",
       "infos": {},
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -8689,6 +8723,71 @@
       "read": true,
       "write": true,
       "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 87,
+    "fields": {
+      "created": "2021-08-26T17:01:46.771Z",
+      "modified": "2021-08-26T17:01:46.771Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 88,
+    "fields": {
+      "created": "2021-08-26T17:01:46.773Z",
+      "modified": "2021-08-26T17:01:46.773Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 89,
+    "fields": {
+      "created": "2021-08-26T17:01:46.776Z",
+      "modified": "2021-08-26T17:01:46.776Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 90,
+    "fields": {
+      "created": "2021-08-26T17:01:46.782Z",
+      "modified": "2021-08-26T17:01:46.782Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 91,
+    "fields": {
+      "created": "2021-08-26T17:01:46.786Z",
+      "modified": "2021-08-26T17:01:46.786Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 27
     }
   },
   {
