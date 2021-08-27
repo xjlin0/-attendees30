@@ -26,13 +26,23 @@
     }
   },
   {
+    "model": "schedule.rule",
+    "pk": 2,
+    "fields": {
+      "name": "Monthly",
+      "description": "Monthly",
+      "frequency": "MONTHLY",
+      "params": ""
+    }
+  },
+  {
     "model": "schedule.eventrelation",
     "pk": 1,
     "fields": {
       "event": 1,
       "content_type": 55,
       "object_id": 1,
-      "distinction": "normal"
+      "distinction": "room#1"
     }
   },
   {
@@ -830,7 +840,7 @@
       },
       "lft": 1,
       "rght": 26,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 0
     }
   },
@@ -855,7 +865,7 @@
       },
       "lft": 24,
       "rght": 25,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -880,7 +890,7 @@
       },
       "lft": 22,
       "rght": 23,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -908,7 +918,7 @@
       },
       "lft": 1,
       "rght": 8,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 0
     }
   },
@@ -932,7 +942,7 @@
       },
       "lft": 16,
       "rght": 17,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -957,7 +967,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -982,7 +992,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1006,7 +1016,7 @@
       },
       "lft": 18,
       "rght": 19,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1030,7 +1040,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 9,
+      "tree_id": 10,
       "level": 1
     }
   },
@@ -1058,7 +1068,7 @@
       },
       "lft": 1,
       "rght": 6,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 0
     }
   },
@@ -1083,7 +1093,7 @@
       },
       "lft": 4,
       "rght": 5,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 1
     }
   },
@@ -1108,7 +1118,7 @@
       },
       "lft": 2,
       "rght": 3,
-      "tree_id": 10,
+      "tree_id": 11,
       "level": 1
     }
   },
@@ -1133,7 +1143,7 @@
       },
       "lft": 14,
       "rght": 15,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1158,7 +1168,7 @@
       },
       "lft": 6,
       "rght": 7,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1268,7 +1278,7 @@
       "infos": {},
       "lft": 10,
       "rght": 11,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1293,7 +1303,7 @@
       },
       "lft": 8,
       "rght": 9,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
     }
   },
@@ -1318,8 +1328,32 @@
       },
       "lft": 20,
       "rght": 21,
-      "tree_id": 8,
+      "tree_id": 9,
       "level": 1
+    }
+  },
+  {
+    "model": "users.menu",
+    "pk": 27,
+    "fields": {
+      "created": "2021-08-26T17:01:46.726Z",
+      "modified": "2021-08-26T17:01:46.726Z",
+      "is_removed": false,
+      "organization": 1,
+      "category": "API",
+      "parent": null,
+      "html_type": "",
+      "urn": "/occasions/api/series_gatherings/",
+      "url_name": "series_gatherings-list",
+      "display_name": "series_gatherings_viewset",
+      "display_order": 0,
+      "infos": {
+        "note": "url_name is for coworkers to batch create series of gatherings from /occasions/gatherings/"
+      },
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 8,
+      "level": 0
     }
   },
   {
@@ -5904,8 +5938,8 @@
       "display_name": "The Rock",
       "slug": "d7c8Fd_cfcch_junior_regular_the_rock",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 39,
+      "site_id": "1"
     }
   },
   {
@@ -5923,8 +5957,8 @@
       "display_name": "Little foot",
       "slug": "d7c8Fd_cfcch_junior_regular_little_foot",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 39,
+      "site_id": "1"
     }
   },
   {
@@ -5942,8 +5976,8 @@
       "display_name": "\u5f71\u97f3\u4e2d\u63a7",
       "slug": "d7c8Fd_cfcch_adault_sunday_recording_av_control",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 38,
+      "site_id": "1"
     }
   },
   {
@@ -5961,8 +5995,8 @@
       "display_name": "\u5929\u5802 \u73bb\u7483\u6d77\u5929\u4f7f\u8a69\u73ed",
       "slug": "faBd6C_heaven_sea_of_glass_angel_choir",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e50d2b9c-0f92-4048-a524-918909d7a0c5"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -5980,8 +6014,8 @@
       "display_name": "kid Christmas Celebration \u5152\u5c11\u8056\u8a95\u6703",
       "slug": "d7c8Fd_cfcch_junior_regular_christmas_celebration",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 38,
+      "site_id": "1"
     }
   },
   {
@@ -5999,8 +6033,8 @@
       "display_name": "\u9752\u5c11\u77ed\u5ba3\u82f1\u8a9e\u6559\u5b78",
       "slug": "d7c8Fd_cfcch_junior_special_english_teaching",
       "infos": {},
-      "site_type": 34,
-      "site_id": "edd6463b-3757-423e-83a8-4ff823ee9059"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6020,8 +6054,8 @@
       "infos": {
         "extending_attending_days": 90
       },
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 35,
+      "site_id": "1"
     }
   },
   {
@@ -6039,8 +6073,8 @@
       "display_name": "\u901a\u8a0a\u9304 directory",
       "slug": "d7c8Fd_cfcch_congregation_directory",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 35,
+      "site_id": "1"
     }
   },
   {
@@ -6058,8 +6092,8 @@
       "display_name": "\u6703\u54e1 member",
       "slug": "d7c8Fd_cfcch_congregation_member",
       "infos": {},
-      "site_type": 34,
-      "site_id": "680656f5-a475-439e-9844-1129bd5aa5a4"
+      "site_type": 35,
+      "site_id": "1"
     }
   },
   {
@@ -6077,8 +6111,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u98df\u5bbf",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_accommodation",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6096,8 +6130,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u63a5\u9001",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_transportation",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6115,8 +6149,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u8a0e\u8ad6\u5c0f\u7d44",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_panel",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6134,8 +6168,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u4e2d\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_chinese_program",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6153,8 +6187,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u5152\u7ae5\u6d3b\u52d5",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_junior_program",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6172,8 +6206,8 @@
       "display_name": "2020\u590f\u4ee4\u6703\u82f1\u6587\u8b70\u7a0b",
       "slug": "d7c8Fd_cfcch_summer_retreat_2020_english_program",
       "infos": {},
-      "site_type": 34,
-      "site_id": "e6e50c89-f4b7-4071-8a58-850800445304"
+      "site_type": 37,
+      "site_id": "2"
     }
   },
   {
@@ -6191,9 +6225,8 @@
         "link": null,
         "\u9031\u5831": "https://sdasdasd.com/asdadsasd.pdf"
       },
-      "occurrence": null,
       "site_type": 40,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6208,9 +6241,8 @@
       "finish": "2020-05-17T18:59:59Z",
       "display_name": "05/17/2020",
       "infos": {},
-      "occurrence": null,
       "site_type": 40,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6227,9 +6259,8 @@
       "infos": {
         "link": null
       },
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6246,9 +6277,8 @@
       "infos": {
         "link": null
       },
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6266,9 +6296,8 @@
         "link": null,
         "LG_location": "Burbank Library"
       },
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 9
+      "site_id": "9"
     }
   },
   {
@@ -6283,9 +6312,8 @@
       "finish": "2020-07-21T06:00:00Z",
       "display_name": "07/20/2020 Basic I",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 10
+      "site_id": "10"
     }
   },
   {
@@ -6300,9 +6328,8 @@
       "finish": "2020-05-17T18:59:59Z",
       "display_name": "05/17/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6317,9 +6344,8 @@
       "finish": "2020-12-24T18:59:59Z",
       "display_name": "12/24/2020 \u4e3b\u65e5\u5d07\u62dc",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6334,9 +6360,8 @@
       "finish": "2020-07-19T20:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020\u4f4f\u5bbf",
       "infos": {},
-      "occurrence": null,
       "site_type": 40,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6351,9 +6376,8 @@
       "finish": "2020-07-18T01:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u665a\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6368,9 +6392,8 @@
       "finish": "2020-07-19T04:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5bb5\u591c\u806f\u8abc",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 6
+      "site_id": "6"
     }
   },
   {
@@ -6385,9 +6408,8 @@
       "finish": "2020-07-18T15:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u65e9\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6402,9 +6424,8 @@
       "finish": "2020-07-18T19:45:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u4e2d\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6419,9 +6440,8 @@
       "finish": "2020-07-19T02:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u665a\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6436,9 +6456,8 @@
       "finish": "2020-07-18T04:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u7834\u51b0\u904a\u6232",
       "infos": {},
-      "occurrence": null,
       "site_type": 37,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6453,9 +6472,8 @@
       "finish": "2020-07-19T15:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u65e9\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6470,9 +6488,8 @@
       "finish": "2020-07-19T19:45:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u4e2d\u9910",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6487,9 +6504,8 @@
       "finish": "2020-07-18T03:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u8b1b\u9053\u4fe1\u606f I",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6504,9 +6520,8 @@
       "finish": "2020-07-18T17:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f II",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6521,9 +6536,8 @@
       "finish": "2020-07-18T22:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f III",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6538,9 +6552,8 @@
       "finish": "2020-07-19T03:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u8b1b\u9053\u4fe1\u606f IV",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6555,9 +6568,8 @@
       "finish": "2020-07-19T17:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 19 \u8b1b\u9053\u4fe1\u606f V",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 5
+      "site_id": "5"
     }
   },
   {
@@ -6572,9 +6584,8 @@
       "finish": "2020-07-18T05:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 17 \u540c\u5de5\u6703\u8b70",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 2
+      "site_id": "2"
     }
   },
   {
@@ -6589,9 +6600,8 @@
       "finish": "2020-07-19T05:30:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u7d44\u9577\u6703\u8b70",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6606,9 +6616,8 @@
       "finish": "2020-07-18T20:15:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 July 18 \u5718\u9ad4\u5408\u5f71",
       "infos": {},
-      "occurrence": null,
       "site_type": 38,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6623,9 +6632,8 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab1",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 2
+      "site_id": "2"
     }
   },
   {
@@ -6640,9 +6648,8 @@
       "finish": "2020-07-20T01:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u63a5\u9001",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 11
+      "site_id": "11"
     }
   },
   {
@@ -6657,9 +6664,8 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab2",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 3
+      "site_id": "3"
     }
   },
   {
@@ -6674,9 +6680,8 @@
       "finish": "2020-07-18T19:00:00Z",
       "display_name": "CFCC\u590f\u4ee4\u67032020 \u5c0f\u7d44\u5206\u4eab3",
       "infos": {},
-      "occurrence": null,
       "site_type": 39,
-      "site_id": 4
+      "site_id": "4"
     }
   },
   {
@@ -6691,9 +6696,8 @@
       "finish": "2199-07-18T19:00:00Z",
       "display_name": "CFCCH\u6703\u54e1 member",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -6708,9 +6712,8 @@
       "finish": "2199-07-18T19:00:00Z",
       "display_name": "CFCCH\u901a\u8a0a\u9304 directory",
       "infos": {},
-      "occurrence": null,
       "site_type": 36,
-      "site_id": 1
+      "site_id": "1"
     }
   },
   {
@@ -8720,6 +8723,71 @@
       "read": true,
       "write": true,
       "menu": 26
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 87,
+    "fields": {
+      "created": "2021-08-26T17:01:46.771Z",
+      "modified": "2021-08-26T17:01:46.771Z",
+      "is_removed": false,
+      "auth_group": 2,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 88,
+    "fields": {
+      "created": "2021-08-26T17:01:46.773Z",
+      "modified": "2021-08-26T17:01:46.773Z",
+      "is_removed": false,
+      "auth_group": 1,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 89,
+    "fields": {
+      "created": "2021-08-26T17:01:46.776Z",
+      "modified": "2021-08-26T17:01:46.776Z",
+      "is_removed": false,
+      "auth_group": 5,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 90,
+    "fields": {
+      "created": "2021-08-26T17:01:46.782Z",
+      "modified": "2021-08-26T17:01:46.782Z",
+      "is_removed": false,
+      "auth_group": 6,
+      "read": true,
+      "write": true,
+      "menu": 27
+    }
+  },
+  {
+    "model": "users.menuauthgroup",
+    "pk": 91,
+    "fields": {
+      "created": "2021-08-26T17:01:46.786Z",
+      "modified": "2021-08-26T17:01:46.786Z",
+      "is_removed": false,
+      "auth_group": 4,
+      "read": true,
+      "write": true,
+      "menu": 27
     }
   },
   {

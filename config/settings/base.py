@@ -333,4 +333,3 @@ REST_FRAMEWORK = {
 # ------------------------------------------------------------------------------
 CLIENT_DEFAULT_TIME_ZONE = 'America/Los_Angeles'
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'  # For django-address: environment variable will override it
-# OPENCC_CONVERT = True   # could add more such as https://stackoverflow.com/a/67355119/4257237

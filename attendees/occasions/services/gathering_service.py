@@ -1,6 +1,6 @@
 from django.db.models import Q
-from attendees.occasions.models import Gathering
-
+from attendees.occasions.models import Gathering, Meet
+from datetime import datetime, timedelta
 
 class GatheringService:
 
@@ -52,3 +52,67 @@ class GatheringService:
             'meet',
             '-start',
         )
+
+    @staticmethod
+    def batch_create(begin, end, meet_slug, duration, user_organization, user_time_zone):
+        """
+        Ideopotently create gatherings based on the following params.  Created Gatherings are associated with Occurrence
+        Todo 20210821 Hardcoded tzinfo for strptime to get event.get_occurrences() working as of now, needs improvement.
+        :param begin:
+        :param end:
+        :param meet_slug:
+        :param duration:
+        :param user_organization:
+        :param user_time_zone:
+        :return: number of gatherings created
+        """
+        number_created = 0
+        iso_time_format = '%Y-%m-%dT%H:%M:%S.%f%z'
+        user_begin_time = datetime.strptime(begin, iso_time_format)
+        user_end_time = datetime.strptime(end, iso_time_format)
+        meet = Meet.objects.filter(slug=meet_slug, assembly__division__organization=user_organization).first()
+
+        if meet and user_end_time > user_begin_time:
+            begin_time = (user_begin_time if meet.start < user_begin_time else meet.start).astimezone(user_time_zone)
+            end_time = (user_end_time if meet.finish > user_end_time else meet.finish).astimezone(user_time_zone)
+            gathering_time = timedelta(minutes=duration) if duration and duration > 0 else None
+            for er in meet.event_relations.all():
+                for occurrence in er.event.get_occurrences(begin_time, end_time):
+                    occurrence_end = occurrence.start + gathering_time if gathering_time else occurrence.end
+                    gathering, gathering_created = Gathering.objects.get_or_create(
+                        meet=meet,
+                        site_id=meet.site_id,
+                        site_type=meet.site_type,
+                        start=occurrence.start,
+                        defaults={
+                            'site_type': meet.site_type,
+                            'site_id': meet.site_id,
+                            'meet': meet,
+                            'start': occurrence.start,
+                            'finish': occurrence_end,
+                            'infos': meet.infos,
+                            'display_name': f'{meet.display_name} {occurrence.start.strftime("%Y/%m/%d,%H:%M %p %Z")}',
+                        },
+                    )  # don't update gatherings if exist since it may have customizations
+
+                    if gathering_created:
+                        number_created += 1
+
+            results = {
+                'number_created': number_created,
+                'meet_slug': meet.slug,
+                'begin': begin_time,
+                'end': end_time,
+                'explain': "begin&end dates maybe replaced by Event's default dates."
+            }
+
+        else:
+            results = {
+                'number_created': number_created,
+                'meet_slug': meet_slug,
+                'begin': begin,
+                'end': end,
+                'explain': 'meet or begin&end time invalid.',
+            }
+
+        return results

@@ -1,6 +1,17 @@
 import pytz, re
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from schedule.models.events import EventRelation
+
+
+class GatheringBatchCreateResult(object):
+    # class Meta:
+    #     pass
+
+    def __init__(self, **kwargs):
+        for field in ('number_created', 'begin', 'end', 'meet_slug', 'duration'):
+            setattr(self, field, kwargs.get(field, None))
 
 
 class Utility:
@@ -116,6 +127,19 @@ class Utility:
         word = re.sub(r"([a-z\d])([A-Z])", r'\1_\2', word)
         word = word.replace("-", "_")
         return word.lower()
+
+    @staticmethod
+    def get_location(eventrelation):
+        model_name, id = eventrelation.distinction.split('#')
+        if model_name:
+            model = ContentType.objects.filter(model=model_name).first()
+            if model:
+                target = model.model_class().objects.filter(pk=id).first()
+                if object:
+                    return str(target)
+
+        return None
+
 
     # @property
     # def notes(self):

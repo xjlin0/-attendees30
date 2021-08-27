@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields.jsonb import JSONField
 from model_utils.models import TimeStampedModel, SoftDeletableModel
-from schedule.models import Occurrence
 
 from attendees.persons.models import Utility, Note
 
@@ -19,9 +18,8 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
     attendings = models.ManyToManyField('persons.Attending', through='Attendance')
     display_name = models.CharField(max_length=50, blank=True, null=True, help_text="02/09/2020, etc")
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"LG_location": "F207", "link": "https://..."}. Please keep {} here even no data')
-    occurrence = models.ForeignKey(Occurrence, blank=True, null=True, on_delete=models.SET_NULL)
     site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
-    site_id = models.BigIntegerField()
+    site_id = models.CharField(max_length=36, null=False, blank=False, default='0')
     site = GenericForeignKey('site_type', 'site_id')
 
     # from itertools import groupby
