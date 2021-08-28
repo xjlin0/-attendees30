@@ -1,5 +1,5 @@
 from .assembly import Assembly
-# from .assembly_contact import AssemblyContact
+from .message_template import MessageTemplate
 from .price import Price
 from .character import Character
 from .meet import Meet
