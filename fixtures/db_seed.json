@@ -5596,7 +5596,7 @@
       "defaults": {
         "gatherings": []
       },
-      "type": "d7c8Fd_cfcc_hayward-batch_create_gatherings"
+      "type": "batch_create_gatherings"
     }
   },
   {
