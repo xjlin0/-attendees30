@@ -1,5 +1,53 @@
 [
   {
+    "model": "django_celery_beat.intervalschedule",
+    "pk": 1,
+    "fields": {
+      "every": 1,
+      "period": "minutes"
+    }
+  },
+  {
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 1,
+    "fields": {
+      "minute": "30",
+      "hour": "1",
+      "day_of_week": "*",
+      "day_of_month": "1",
+      "month_of_year": "*",
+      "timezone": "UTC"
+    }
+  },
+  {
+    "model": "django_celery_beat.periodictask",
+    "pk": 1,
+    "fields": {
+      "name": "attendees.occasions.tasks.batch_create_gatherings",
+      "task": "attendees.occasions.tasks.batch_create_gatherings",
+      "interval": null,
+      "crontab": 1,
+      "solar": null,
+      "clocked": null,
+      "args": "[]",
+      "kwargs": "{\r\n  \"meet_slugs\": [\"a\",\"b\",\"c\"]\r\n}",
+      "queue": null,
+      "exchange": null,
+      "routing_key": null,
+      "headers": "{}",
+      "priority": null,
+      "expires": null,
+      "expire_seconds": null,
+      "one_off": false,
+      "start_time": null,
+      "enabled": false,
+      "last_run_at": null,
+      "total_run_count": 0,
+      "date_changed": "2021-08-28T18:59:47.395Z",
+      "description": "test desc: attendees.occasions.tasks.batch_create_gatherings"
+    }
+  },
+  {
     "model": "schedule.calendar",
     "pk": 1,
     "fields": {
@@ -5537,6 +5585,21 @@
     }
   },
   {
+    "model": "occasions.messagetemplate",
+    "pk": 1,
+    "fields": {
+      "created": "2021-08-28T18:50:58.723Z",
+      "modified": "2021-08-28T18:50:58.723Z",
+      "is_removed": false,
+      "organization": 1,
+      "template": "The following gatherings generated:\r\n{gatherings}",
+      "defaults": {
+        "gatherings": []
+      },
+      "type": "d7c8Fd_cfcc_hayward-batch_create_gatherings"
+    }
+  },
+  {
     "model": "occasions.character",
     "pk": 1,
     "fields": {
@@ -7509,14 +7572,14 @@
         70,
         71,
         72,
-        205,
-        206,
-        207,
-        208,
         209,
         210,
         211,
         212,
+        205,
+        206,
+        207,
+        208,
         181,
         182,
         183,
@@ -7647,6 +7710,10 @@
         77,
         78,
         80,
+        209,
+        210,
+        211,
+        212,
         205,
         206,
         207,
@@ -7655,10 +7722,6 @@
         214,
         215,
         216,
-        209,
-        210,
-        211,
-        212,
         181,
         182,
         183,
@@ -7792,14 +7855,14 @@
         70,
         71,
         72,
-        205,
-        206,
-        207,
-        208,
         209,
         210,
         211,
         212,
+        205,
+        206,
+        207,
+        208,
         181,
         182,
         183,
