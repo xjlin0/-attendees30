@@ -54,7 +54,7 @@ class GatheringService:
         )
 
     @staticmethod
-    def batch_create(begin, end, meet_slug, duration, user_organization, user_time_zone):
+    def batch_create(begin, end, meet_slug, duration, meet, user_time_zone):
         """
         Ideopotently create gatherings based on the following params.  Created Gatherings are associated with Occurrence
         Todo 20210821 Hardcoded tzinfo for strptime to get event.get_occurrences() working as of now, needs improvement.
@@ -62,7 +62,7 @@ class GatheringService:
         :param end:
         :param meet_slug:
         :param duration:
-        :param user_organization:
+        :param meet:
         :param user_time_zone:
         :return: number of gatherings created
         """
@@ -70,7 +70,6 @@ class GatheringService:
         iso_time_format = '%Y-%m-%dT%H:%M:%S.%f%z'
         user_begin_time = datetime.strptime(begin, iso_time_format)
         user_end_time = datetime.strptime(end, iso_time_format)
-        meet = Meet.objects.filter(slug=meet_slug, assembly__division__organization=user_organization).first()
 
         if meet and user_end_time > user_begin_time:
             begin_time = (user_begin_time if meet.start < user_begin_time else meet.start).astimezone(user_time_zone)
