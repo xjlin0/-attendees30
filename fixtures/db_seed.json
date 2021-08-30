@@ -39,7 +39,7 @@
       "expires": null,
       "expire_seconds": null,
       "one_off": false,
-      "start_time": null,
+      "start_time": "2020-08-27T22:37:02Z",
       "enabled": true,
       "last_run_at": null,
       "total_run_count": 0,
