@@ -33,10 +33,11 @@ def batch_create_gatherings(meet_infos):
                 begin=datetime.utcnow().isoformat(sep='T', timespec='milliseconds') + 'Z',
                 end=(datetime.utcnow() + relativedelta(months=+1)).isoformat(sep='T', timespec='milliseconds') + 'Z',
                 meet_slug=meet_slug,
+                duration=0,
                 meet=meet,
                 user_time_zone=time_zone,
             )
-            print("hi 37 here is results: "); print(results)
+
     return results
 
 # in /admin/django_celery_beat/periodictask/  select the registered task and add Keyword Arguments: {"meet_slugs": ["a","b","c"] }
