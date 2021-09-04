@@ -9,7 +9,7 @@ RUN apt-get update \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
   # psycopg2 dependencies
-  && apt-get install -y libpq-dev \
+  && apt-get install -y libpq-dev curl vim wget \
   # Translations dependencies
   && apt-get install -y gettext python-dateutil \
   # intall git for pip install by github

@@ -1,4 +1,7 @@
-import pytz
+import os, pytz, ssl
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
@@ -12,32 +15,50 @@ from config import celery_app
 
 logger = get_task_logger(__name__)
 
+
 @celery_app.task()
 def batch_create_gatherings(meet_infos):
     """
     A Celery task to periodically generate gatherings.
-    :param meet_slugs: a dictionary of meet_slug: [email_recipients]
+    :param meet_infos: a list of meet infos including meet_name, meet_slug, month_adding and recipients' emails
+    Todo 20210904 tried regenerate certificates, etc but only one work is to disable it by the following openssl
     """
-    logger.info("The sample task just ran from {app_name}/occasions/tasks.py.")
-    print("test desc: attendees.occasions.tasks.batch_create_gatherings")
-    print(meet_infos)
-    results = {}
+    try:  # https://stackoverflow.com/a/55320969/4257237
+        _create_unverified_https_context = ssl._create_unverified_context
+    except AttributeError:  # Legacy Python that doesn't verify HTTPS certificates by default
+        pass
+    else:  # Handle target environment that doesn't support HTTPS verification
+        ssl._create_default_https_context = _create_unverified_https_context
 
-    for meet_slug, recipients in meet_infos.items():
-        meet = Meet.objects.filter(slug=meet_slug).first()
+    begin = datetime.utcnow().replace(microsecond=0)
+    logger.info(f"batch_create_gatherings task ran at {begin.isoformat()}(UTC) from {__package__}/occasions/tasks.py with {meet_infos}.")
+    results = {'email_response': []}
+    sg = SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))  # from sendgrid.env
+
+    for meet_info in meet_infos:
+        meet = Meet.objects.filter(slug=meet_info['meet_slug']).first()
         if meet:
             organization = meet.assembly.division.organization
             tzname = meet.infos['default_time_zone'] or organization.infos['default_time_zone'] or settings.CLIENT_DEFAULT_TIME_ZONE
             time_zone = pytz.timezone(tzname)
-            results = GatheringService.batch_create(
-                begin=datetime.utcnow().isoformat(sep='T', timespec='milliseconds') + 'Z',
-                end=(datetime.utcnow() + relativedelta(months=+1)).isoformat(sep='T', timespec='milliseconds') + 'Z',
-                meet_slug=meet_slug,
+            end = (datetime.utcnow() + relativedelta(months=+meet_info['months_adding']))
+            gathering_results = GatheringService.batch_create(
+                begin=begin.isoformat(sep='T', timespec='milliseconds') + 'Z',
+                end=end.isoformat(sep='T', timespec='milliseconds') + 'Z',
+                meet_slug=meet_info['meet_slug'],
                 duration=0,
                 meet=meet,
                 user_time_zone=time_zone,
             )
-
+            for recipient in meet_info['recipients']:
+                message = Mail(
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to_emails=recipient,
+                    subject=f"[Attendees {settings.ENV_NAME}] Batch_create_gatherings started at {begin.astimezone(time_zone).strftime('%Y-%m-%d %H:%M%p')}({tzname}), {gathering_results['number_created']} gathering(s) created.",
+                    html_content=f"<strong>Dear managers/coworkers:</strong><br>Auto generating gatherings for the meet '{meet_info['meet_name']}' processed,<br>from {gathering_results['begin']} to {gathering_results['end']}({tzname}),<br>{gathering_results['number_created']} gathering(s) created.<br>Best regards,<br>Attendees administrator",
+                )  # Todo 20210904 use email template instead
+                response = sg.send(message)
+                results['email_response'].append(f"Auto generating gatherings for the meet '{meet_info['meet_name']}' from {gathering_results['begin']} to {gathering_results['end']}({tzname}), result: {gathering_results['number_created']} gathering(s) created, email to {recipient}, email status: {response.status_code}")
     return results
 
 # in /admin/django_celery_beat/periodictask/  select the registered task and add Keyword Arguments: {"meet_slugs": ["a","b","c"] }

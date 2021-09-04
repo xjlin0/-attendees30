@@ -25,6 +25,7 @@ django-json-widget==1.0.1  # https://github.com/jmrivas86/django-json-widget
 django-private-storage==2.2.2 # https://github.com/edoburu/django-private-storage
 django-reversion==3.0.7 # https://github.com/etianen/django-reversion
 dateparser==0.7.6 # https://github.com/scrapinghub/dateparser
+sendgrid==6.8.1  # https://github.com/sendgrid/sendgrid-python
 
 # Django
 # ------------------------------------------------------------------------------
