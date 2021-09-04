@@ -6,7 +6,7 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel
 class MessageTemplate(TimeStampedModel, SoftDeletableModel):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     organization = models.ForeignKey('whereabouts.Organization', null=False, blank=False, on_delete=models.SET(0))
-    template = models.TextField(null=False, blank=False, help_text='whatever in curly braces will be interpolated by variables')
+    templates = JSONField(null=True, blank=True, default=dict, help_text='Example: {"body": "Dear {name}: Hello!"}. Whatever in curly braces will be interpolated by variables, Please keep {} here even no data')
     defaults = JSONField(null=True, blank=True, default=dict, help_text='Example: {"name": "John", "Date": "08/31/2020"}. Please keep {} here even no data')
     type = models.SlugField(max_length=50, blank=False, null=False, unique=False, help_text='format: Organization_slug-prefix-message-type-name')
 

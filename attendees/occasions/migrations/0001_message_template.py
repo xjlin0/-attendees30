@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
                 ('organization', models.ForeignKey(null=False, blank=False, on_delete=models.SET(0), to='whereabouts.Organization')),
-                ('template', models.TextField(null=False, blank=False, help_text='whatever in curly braces will be interpolated by variables')),
+                ('templates', JSONField(null=True, blank=True, default=dict, help_text='Example: {"body": "Dear {name}: Hello!"}. Whatever in curly braces will be interpolated by variables, Please keep {} here even no data')),
                 ('defaults', JSONField(null=True, blank=True, default=dict, help_text='Example: {"name": "John", "Date": "08/31/2020"}. Please keep {} here even no data')),
                 ('type', models.SlugField(blank=False, null=False, help_text='format: Organization_slug-prefix-message-type-name')),
 

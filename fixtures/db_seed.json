@@ -5595,7 +5595,11 @@
       "modified": "2021-08-28T18:50:58.723Z",
       "is_removed": false,
       "organization": 1,
-      "template": "The following gatherings generated:\r\n{gatherings}",
+      "templates": {
+        "subject": "[Attendees {env_name}] Batch_create_gatherings started at {time_triggered}({tzname}), {number_created} gathering(s) created.",
+        "html_content": "Dear managers/coworkers:<br><br>Auto generating gatherings for the meet <strong>{meet_name}</strong> processed,<br>from {begin} to {end}({tzname}),<br>{number_created} gathering(s) created.<br><br>Best regards,<br>Attendees administrator.",
+        "email_log": "Auto generating gatherings for the meet '{meet_name}' from {begin} to {end}({tzname}), result: {number_created} gathering(s) created, email to {recipient}, email status: {email_status}"
+      },
       "defaults": {
         "gatherings": []
       },

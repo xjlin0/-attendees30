@@ -3,7 +3,7 @@ from .base import env
 
 # GENERAL
 # ------------------------------------------------------------------------------
-ENV_NAME = 'local'
+ENV_NAME = env("ENV_NAME") or 'local.py'
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key

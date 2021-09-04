@@ -98,6 +98,7 @@ class GatheringService:
                         number_created += 1
 
             results = {
+                'success': True,
                 'number_created': number_created,
                 'meet_slug': meet.slug,
                 'begin': begin_time,

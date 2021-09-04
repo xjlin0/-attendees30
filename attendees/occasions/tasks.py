@@ -8,7 +8,7 @@ from django.conf import settings
 
 from celery.utils.log import get_task_logger
 
-from attendees.occasions.models import Meet
+from attendees.occasions.models import Meet, MessageTemplate
 from .services.gathering_service import GatheringService
 
 from config import celery_app
@@ -37,28 +37,50 @@ def batch_create_gatherings(meet_infos):
 
     for meet_info in meet_infos:
         meet = Meet.objects.filter(slug=meet_info['meet_slug']).first()
-        if meet:
-            organization = meet.assembly.division.organization
-            tzname = meet.infos['default_time_zone'] or organization.infos['default_time_zone'] or settings.CLIENT_DEFAULT_TIME_ZONE
-            time_zone = pytz.timezone(tzname)
-            end = (datetime.utcnow() + relativedelta(months=+meet_info['months_adding']))
-            gathering_results = GatheringService.batch_create(
-                begin=begin.isoformat(sep='T', timespec='milliseconds') + 'Z',
-                end=end.isoformat(sep='T', timespec='milliseconds') + 'Z',
-                meet_slug=meet_info['meet_slug'],
-                duration=0,
-                meet=meet,
-                user_time_zone=time_zone,
-            )
-            for recipient in meet_info['recipients']:
-                message = Mail(
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    to_emails=recipient,
-                    subject=f"[Attendees {settings.ENV_NAME}] Batch_create_gatherings started at {begin.astimezone(time_zone).strftime('%Y-%m-%d %H:%M%p')}({tzname}), {gathering_results['number_created']} gathering(s) created.",
-                    html_content=f"<strong>Dear managers/coworkers:</strong><br>Auto generating gatherings for the meet '{meet_info['meet_name']}' processed,<br>from {gathering_results['begin']} to {gathering_results['end']}({tzname}),<br>{gathering_results['number_created']} gathering(s) created.<br>Best regards,<br>Attendees administrator",
-                )  # Todo 20210904 use email template instead
-                response = sg.send(message)
-                results['email_response'].append(f"Auto generating gatherings for the meet '{meet_info['meet_name']}' from {gathering_results['begin']} to {gathering_results['end']}({tzname}), result: {gathering_results['number_created']} gathering(s) created, email to {recipient}, email status: {response.status_code}")
+
+        if not meet:
+            return {'success': False, 'explain': f"Meet with {meet_info['meet_slug']} cannot be found."}
+
+        organization = meet.assembly.division.organization
+        mold = MessageTemplate.objects.filter(type='batch_create_gatherings', organization=organization).first()
+
+        if not mold:
+            return {'success': False, 'explain': f"MessageTemplate with type 'batch_create_gatherings' under {organization} cannot be found."}
+
+        tzname = meet.infos['default_time_zone'] or organization.infos['default_time_zone'] or settings.CLIENT_DEFAULT_TIME_ZONE
+        time_zone = pytz.timezone(tzname)
+        end = (datetime.utcnow() + relativedelta(months=+meet_info['months_adding']))
+        gathering_results = GatheringService.batch_create(
+            begin=begin.isoformat(sep='T', timespec='milliseconds') + 'Z',
+            end=end.isoformat(sep='T', timespec='milliseconds') + 'Z',
+            meet_slug=meet_info['meet_slug'],
+            duration=0,
+            meet=meet,
+            user_time_zone=time_zone,
+        )
+        for recipient in meet_info['recipients']:
+            mail_variables = {
+                    'meet_name': meet_info['meet_name'],
+                    'begin': gathering_results['begin'],
+                    'end': gathering_results['end'],
+                    'tzname': tzname,
+                    'env_name': settings.ENV_NAME,
+                    'number_created': gathering_results['number_created'],
+                    'time_triggered': begin.astimezone(time_zone).strftime('%Y-%m-%d %H:%M%p'),
+                    'recipient': recipient,
+                }
+
+            message = Mail(
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to_emails=recipient,
+                subject=mold.templates['subject'].format(**mail_variables),
+                html_content=mold.templates['html_content'].format(**mail_variables)
+                # f"<strong>Dear managers/coworkers:</strong><br>Auto generating gatherings for the meet '{meet_info['meet_name']}' processed,<br>from {gathering_results['begin']} to {gathering_results['end']}({tzname}),<br>{gathering_results['number_created']} gathering(s) created.<br>Best regards,<br>Attendees administrator",
+            )  # Todo 20210904 use email template instead
+            response = sg.send(message)
+            mail_variables['email_status'] = response.status_code
+            results['email_log'].append(mold.templates['email_log'].format(**mail_variables))
+
     return results
 
 # in /admin/django_celery_beat/periodictask/  select the registered task and add Keyword Arguments: {"meet_slugs": ["a","b","c"] }
