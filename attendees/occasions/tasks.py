@@ -53,19 +53,19 @@ def batch_create_gatherings(meet_infos):
     logger.info(f"batch_create_gatherings task ran at {begin.isoformat()}(UTC) from {__package__}/occasions/tasks.py with {meet_infos}.")
     no_mold_template = "Auto generating gatherings for the meet '{meet_name}' from {begin} to {end}({tzname}), result: {number_created} gathering(s) created. Info: {explain}. emailing to {recipient}, email status: {email_status}"
     results = {
-        'organization': 'unknown',
-        'sg': SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY')),  # from sendgrid.env
-        'success': False,
-        'meet_name': 'unknown',
-        'explain': 'unknown',
-        'begin': begin,
-        'end': begin,
-        'tzname': settings.CLIENT_DEFAULT_TIME_ZONE,
-        'env_name': settings.ENV_NAME,
-        'number_created': 0,
-        'time_triggered': begin.astimezone(pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE)).strftime('%Y-%m-%d %H:%M%p'),
-        'email_status': None,
-        'email_logs': {},
+'organization': 'unknown',
+'sg': SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY')),  # from sendgrid.env
+'success': False,
+'meet_name': 'unknown',
+'explain': 'unknown',
+'begin': begin,
+'end': begin,
+'tzname': settings.CLIENT_DEFAULT_TIME_ZONE,
+'env_name': settings.ENV_NAME,
+'number_created': 0,
+'time_triggered': begin.astimezone(pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE)).strftime('%Y-%m-%d %H:%M%p'),
+'email_status': None,
+'email_logs': {},
     }
 
     for meet_info in meet_infos:

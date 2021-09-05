@@ -1,6 +1,11 @@
+import re
+from functools import reduce
+
 from django.contrib import admin
 from django.contrib.postgres import fields
 from django_json_widget.widgets import JSONEditorWidget
+from django.utils.html import format_html
+
 from attendees.persons.models import *
 from attendees.whereabouts.models import *
 from .models import *
@@ -18,11 +23,14 @@ from .models import *
 #     extra = 0
 
 class MessageTemplateAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     readonly_fields = ['id', 'created', 'modified']
     list_display = ('truncate_template', 'type', 'modified')
 
     def truncate_template(self, obj):
-        return obj.template[:100]
+        return list(obj.templates.values())[0][:100] + '...'
 
 class AssemblyAdmin(admin.ModelAdmin):
     formfield_overrides = {
