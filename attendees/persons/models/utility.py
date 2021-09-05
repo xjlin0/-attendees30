@@ -47,6 +47,7 @@ class Utility:
     @staticmethod
     def organization_infos():
         return {
+                    "default_time_zone": settings.CLIENT_DEFAULT_TIME_ZONE,
                     "flags": {
                       "attendance_character_to_past_categories":  {}
                     },
