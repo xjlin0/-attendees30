@@ -125,17 +125,19 @@ All libraries are included to facilitate offline development
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
 - [ ] Attendance list (server side processing with auto-generation)
-  - [ ] member list (attendance level with editing category)
-- [ ] Attending list (new design with server side processing)
+  - [ ] [PR#23](https://github.com/xjlin0/attendees30/pull/23) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) auto-generation attendance by attending meet and recent attendance status
+  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) member list (attendance level with editing category)
 - [ ] Create roaster page (no real-time update in v1)
-- [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
+  - [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
+- [ ] Attending list and AttendingMeet (new design with server side processing)
 - [ ] Audit log/history/vision of data
   - [ ] find library and install: django-pghistory maybe
   - [ ] each model level version
   - [ ] document aggregation level version
 - [ ] upgrade to Django 3.2LTS or 4
    -[ ] use Django JSONField instead of Postgres JSONField
-   -[ ] decide async or not (uvicorn high CPU usage)
+   -[ ] With Cookiecutter, decide async or not (uvicorn high CPU usage)
 - [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?

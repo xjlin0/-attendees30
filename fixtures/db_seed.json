@@ -5597,8 +5597,8 @@
       "organization": 1,
       "templates": {
         "subject": "[Attendees {env_name}] Batch_create_gatherings started at {time_triggered}({tzname}), {number_created} gathering(s) created.",
-        "html_content": "Dear managers/coworkers:<br><br>Auto generating gatherings for the meet <strong>{meet_name}</strong> processed,<br>from {begin} to {end}({tzname}),<br>{number_created} gathering(s) created.<br><br>Best regards,<br>Attendees administrator.",
-        "email_log": "Auto generating gatherings for the meet '{meet_name}' from {begin} to {end}({tzname}), result: {number_created} gathering(s) created, email to {recipient}, email status: {email_status}"
+        "html_content": "Dear managers/coworkers of {organization}:<br><br>Auto generating gatherings for the meet <strong>{meet_name}</strong> processed,<br>from {begin} to {end}({tzname}),<br>{number_created} gathering(s) created.<br>Info: {explain}<br><br>Best regards,<br>Attendees administrator.",
+        "email_log": "Auto generating gatherings for the meet '{meet_name}' from {begin} to {end}({tzname}), result: {number_created} gathering(s) created. Info: {explain}, emailing to {recipient}, email status: {email_status}"
       },
       "defaults": {
         "gatherings": []

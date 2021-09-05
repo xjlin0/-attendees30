@@ -103,16 +103,17 @@ class GatheringService:
                 'meet_slug': meet.slug,
                 'begin': begin_time,
                 'end': end_time,
-                'explain': "begin&end dates maybe replaced by Event's default dates."
+                'explain': "Begin&end dates are restrained by Event's default dates."
             }
 
         else:
             results = {
+                'success': False,
                 'number_created': number_created,
                 'meet_slug': meet_slug,
                 'begin': begin,
                 'end': end,
-                'explain': 'meet or begin&end time invalid.',
+                'explain': 'Meet or begin&end time invalid.',
             }
 
         return results
