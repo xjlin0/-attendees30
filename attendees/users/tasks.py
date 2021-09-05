@@ -6,6 +6,7 @@ from config import celery_app
 User = get_user_model()
 logger = get_task_logger(__name__)
 
+
 @celery_app.task()
 def get_users_count():
     """A pointless Celery task to demonstrate usage."""

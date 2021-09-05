@@ -4,7 +4,7 @@ import attendees.persons.models.utility
 from django.db import migrations, models
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
-import django.db.models.manager
+
 import django.utils.timezone
 import model_utils.fields
 
@@ -12,8 +12,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whereabouts', '0002_minimal_place'),
-        ('occasions', '0000_initial'),
+        ('occasions', '0001_message_template'),
     ]
 
     operations = [

@@ -86,7 +86,7 @@ All libraries are included to facilitate offline development
 * upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
 * create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
 * import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
-  (data were created by `docker-compose -f local.yml run django python manage.py dumpdata --exclude users.user --exclude admin.logentry --exclude sessions.session --exclude django_celery_beat.crontabschedule --exclude contenttypes.contenttype --exclude sites.site --exclude django_celery_beat.periodictasks --exclude django_celery_beat.periodictask  --exclude account.emailaddress --exclude account.emailconfirmation --exclude socialaccount.socialtoken --exclude auth.permission --indent 2 > fixtures/db_seed2.json`)
+  (data were created by `docker-compose -f local.yml run django python manage.py dumpdata --exclude users.user --exclude admin.logentry --exclude sessions.session --exclude contenttypes.contenttype --exclude sites.site --exclude account.emailaddress --exclude account.emailconfirmation --exclude socialaccount.socialtoken --exclude auth.permission --indent 2 > fixtures/db_seed2.json`)
 * go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8000/admin/users/user/
 * use browser to open http://192.168.99.100:8000/ and http://192.168.99.100:8025/
 * Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
@@ -123,19 +123,21 @@ All libraries are included to facilitate offline development
 - [ ] Gathering list (server side processing with auto-generation)
   - [x] [PR#20](https://github.com/xjlin0/attendees30/pull/20) gatherings datagrid filtered by meets and date ranges
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
-  - [ ] can gathering generation automatic?
+  - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
 - [ ] Attendance list (server side processing with auto-generation)
-  - [ ] member list (attendance level with editing category)
-- [ ] Attending list (new design with server side processing)
+  - [ ] [PR#23](https://github.com/xjlin0/attendees30/pull/23) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) auto-generation attendance by attending meet and recent attendance status
+  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) member list (attendance level with editing category)
 - [ ] Create roaster page (no real-time update in v1)
-- [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
+  - [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
+- [ ] Attending list and AttendingMeet (new design with server side processing)
 - [ ] Audit log/history/vision of data
   - [ ] find library and install: django-pghistory maybe
   - [ ] each model level version
   - [ ] document aggregation level version
 - [ ] upgrade to Django 3.2LTS or 4
    -[ ] use Django JSONField instead of Postgres JSONField
-   -[ ] decide async or not (uvicorn high CPU usage)
+   -[ ] With Cookiecutter, decide async or not (uvicorn high CPU usage)
 - [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?

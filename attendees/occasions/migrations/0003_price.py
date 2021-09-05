@@ -3,8 +3,6 @@
 import attendees.persons.models.utility
 import django.core.validators
 from django.db import migrations, models
-import django.db.models.deletion
-import django.db.models.manager
 import django.utils.timezone
 import model_utils.fields
 
@@ -12,7 +10,7 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('occasions', '0001_assembly'),
+        ('occasions', '0002_assembly'),
     ]
 
     operations = [
