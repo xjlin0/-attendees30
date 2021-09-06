@@ -353,16 +353,48 @@ Attendees.gatherings = {
     dataSource: {
       store: new DevExpress.data.CustomStore({
         key: 'id',
-        load: () => {
+        load: (loadOptions) => {
           const meets = $('div.selected-meets select').val();
-          if (meets.length) {
-            return $.getJSON($('form.filters-dxform').data('gatherings-endpoint'), {
-              take: 500,
-              meets: meets,
-              start: $('div.filter-from input')[1].value ? new Date($('div.filter-from input')[1].value).toISOString() : null,
-              finish: $('div.filter-till input')[1].value ? new Date($('div.filter-till input')[1].value).toISOString() : null,
-            });
-          }
+          const deferred = $.Deferred();
+          const args = {
+            meets: meets,
+            start: $('div.filter-from input')[1].value ? new Date($('div.filter-from input')[1].value).toISOString() : null,
+            finish: $('div.filter-till input')[1].value ? new Date($('div.filter-till input')[1].value).toISOString() : null,
+          };
+
+          [
+            'skip',
+            'take',
+            'requireTotalCount',
+            'requireGroupCount',
+            'sort',
+            'filter',
+            'totalSummary',
+            'group',
+            'groupSummary',
+          ].forEach((i) => {
+              if (i in loadOptions && Attendees.utilities.isNotEmpty(loadOptions[i]))
+                  args[i] = JSON.stringify(loadOptions[i]);
+          });
+
+          $.ajax({
+            url: $('form.filters-dxform').data('gatherings-endpoint'),
+            dataType: "json",
+            data: args,
+            success: (result) => {
+              deferred.resolve(result.data, {
+                totalCount: result.totalCount,
+                summary:    result.summary,
+                groupCount: result.groupCount,
+              });
+            },
+            error: () => {
+              deferred.reject("Data Loading Error, probably time out?");
+            },
+            timeout: 60000,
+          });
+
+          return deferred.promise();
         },
         byKey: (key) => {
           const d = new $.Deferred();
@@ -441,10 +473,16 @@ Attendees.gatherings = {
     // cellHintEnabled: true,
     hoverStateEnabled: true,
     rowAlternationEnabled: true,
-    hoverStateEnabled: true,
+    remoteOperations: true,
+    paging: {
+      pageSize: 20,
+    },
     pager: {
-        showPageSizeSelector: true,
-        allowedPageSizes: [10, 50, 5000]
+      visible: true,
+      allowedPageSizes: [20, 100, 9999],
+      showPageSizeSelector: true,
+      showInfo: true,
+      showNavigationButtons: true,
     },
     loadPanel: {
       message: 'Fetching...',
@@ -452,12 +490,12 @@ Attendees.gatherings = {
     },
     wordWrapEnabled: false,
     width: '100%',
-    grouping: {
-      autoExpandAll: true,
-    },
-    groupPanel: {
-      visible: 'auto',
-    },
+    // grouping: {
+    //   autoExpandAll: true,
+    // },
+    // groupPanel: {
+    //   visible: 'auto',
+    // },  // remoteOperations need server grouping https://js.devexpress.com/Documentation/Guide/Data_Binding/Specify_a_Data_Source/Custom_Data_Sources/#Load_Data/Server-Side_Data_Processing
     columnChooser: {
       enabled: true,
       mode: 'select',
