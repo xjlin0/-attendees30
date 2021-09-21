@@ -34,13 +34,13 @@ class AttendanceService:
         :return:  user participation Attendances with coworkers Attendances
         """
         filters = {
-            'coworker_organization_attendances': organization_slug,
+            'gathering__meet__assembly__division__organization__slug': organization_slug,
             'gathering__meet__slug__in': meet_slugs,
             'gathering__start__gte': gathering_start,
             'gathering__finish__lte': gathering_finish,
         }
 
-        if gathering_ids:
+        if gathering_ids is not None:
             filters['gathering__id__in'] = gathering_ids
 
         return Attendance.objects.select_related(
