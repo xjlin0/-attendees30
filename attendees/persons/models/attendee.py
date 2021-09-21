@@ -1,5 +1,5 @@
-from opencc import OpenCC
-
+import opencc
+from unidecode import unidecode
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
@@ -168,12 +168,13 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def save(self, *args, **kwargs):
         name = f"{self.first_name or ''} {self.last_name or ''}".strip()
         name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
-        self.infos['names']['original'] = f"{name} {name2}".strip()
+        both_names = f"{name} {name2}".strip()
+        self.infos['names']['original'] = f"{both_names} {unidecode(both_names)}".strip()  # remove accents & get pinyin
         if self.division.organization.infos.get('flags', {}).get('opencc_convert'):  # Let search work in either language
-            self.infos['names']['traditional'] = OpenCC('s2t').convert(name2)
-            self.infos['names']['simplified'] = OpenCC('t2s').convert(name2)
-        # if self.division.organization.infos.flags.accent_convert:  # For Spanish, Not in V1
-        #     self.infos['names']['unaccented'] = converter(name)
+            s2t_converter = opencc.OpenCC('s2t.json')
+            t2s_converter = opencc.OpenCC('t2s.json')
+            self.infos['names']['traditional'] = s2t_converter.convert(both_names)
+            self.infos['names']['simplified'] = t2s_converter.convert(both_names)
         super(Attendee, self).save(*args, **kwargs)
 
     def all_names(self):
