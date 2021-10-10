@@ -1,6 +1,11 @@
-from django.db.models import Q
-from attendees.occasions.models import Gathering, Meet
+from django.db.models import Q, F, Func
+from django.db.models.expressions import OrderBy
 from datetime import datetime, timedelta
+
+from rest_framework.utils import json
+
+from attendees.occasions.models import Gathering, Meet
+
 
 class GatheringService:
 
@@ -37,7 +42,8 @@ class GatheringService:
         )  # another way is to get assemblys from registration, but it relies on attendingmeet validations
 
     @staticmethod
-    def by_organization_meets(current_user, meet_slugs, start, finish):
+    def by_organization_meets(current_user, meet_slugs, start, finish, orderby_string):
+        orderby_list = GatheringService.orderby_parser(orderby_string, meet_slugs, current_user)
         filters = Q(meet__assembly__division__organization__slug=current_user.organization.slug).add(
                         Q(meet__slug__in=meet_slugs), Q.AND)
 
@@ -48,10 +54,7 @@ class GatheringService:
             filters.add((Q(finish__isnull=True) | Q(finish__gte=start)), Q.AND)
         if finish:
             filters.add((Q(start__isnull=True) | Q(start__lte=finish)), Q.AND)
-        return Gathering.objects.filter(filters).order_by(
-            'meet',
-            '-start',
-        )
+        return Gathering.objects.filter(filters).order_by(*orderby_list)
 
     @staticmethod
     def batch_create(begin, end, meet_slug, duration, meet, user_time_zone):
@@ -117,3 +120,33 @@ class GatheringService:
             }
 
         return results
+
+    @staticmethod
+    def orderby_parser(orderby_string, meet_slugs, current_user):
+        """
+        generates sorter (column or OrderBy Func) based on user's choice
+        Todo: Sort by site name is NOT supported since object_id can be int or char.
+        :param orderby_string: JSON fetched from search params
+        :param meet_slugs: meet slugs
+        :param current_user:
+        :return: a List of sorter for order_by()
+        """
+        meet_sorters = {meet.slug: Func(F('attendingmeets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(slug__in=meet_slugs, assembly__division__organization=current_user.organization)}
+        print("hi 134 here is meet_sorters: "); print(meet_sorters)
+        orderby_list = []  # sort attendingmeets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
+        for orderby_dict in json.loads(orderby_string):
+            field = orderby_dict.get('selector', 'id').replace('.', '__')
+            direction = '-' if orderby_dict.get('desc', False) else ''
+            if field in meet_sorters:
+                sorter = OrderBy(meet_sorters[field], descending=orderby_dict.get('desc', False))
+                orderby_list.append(sorter)
+            elif field == 'site':
+                site_columns = [
+                    direction + 'content_type',
+                    direction + 'object_id',
+                ]
+                orderby_list.extend(site_columns)
+            else:
+                orderby_list.append(direction + field)
+        print("hi 154 here is orderby_list: "); print(orderby_list)
+        return orderby_list

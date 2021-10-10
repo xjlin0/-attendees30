@@ -490,12 +490,12 @@ Attendees.gatherings = {
     },
     wordWrapEnabled: false,
     width: '100%',
-    // grouping: {
-    //   autoExpandAll: true,
-    // },
-    // groupPanel: {
-    //   visible: 'auto',
-    // },  // remoteOperations need server grouping https://js.devexpress.com/Documentation/Guide/Data_Binding/Specify_a_Data_Source/Custom_Data_Sources/#Load_Data/Server-Side_Data_Processing
+     grouping: {
+       autoExpandAll: true,
+     },
+     groupPanel: {
+       visible: 'auto',
+     },  // remoteOperations need server grouping https://js.devexpress.com/Documentation/Guide/Data_Binding/Specify_a_Data_Source/Custom_Data_Sources/#Load_Data/Server-Side_Data_Processing
     columnChooser: {
       enabled: true,
       mode: 'select',

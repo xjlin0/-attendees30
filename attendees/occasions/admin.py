@@ -32,6 +32,7 @@ class MessageTemplateAdmin(admin.ModelAdmin):
     def truncate_template(self, obj):
         return list(obj.templates.values())[0][:100] + '...'
 
+
 class AssemblyAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
@@ -144,7 +145,7 @@ class GatheringAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),
                            tuple(['display_name', 'infos']),
-                           tuple(['site_type', 'meet', 'site_id', 'occurrence']),
+                           tuple(['content_type', 'meet', 'object_id', 'occurrence']),
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )

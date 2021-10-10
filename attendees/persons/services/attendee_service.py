@@ -128,7 +128,7 @@ class AttendeeService:
         """
         generates sorter (column or OrderBy Func) based on user's choice
         :param orderby_string: JSON fetched from search params, will convert attendee.division to attendee__division
-        :param meets: assembly ids
+        :param meets: meet ids
         :param current_user:
         :return: a List of sorter for order_by()
         """

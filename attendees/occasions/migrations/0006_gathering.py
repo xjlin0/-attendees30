@@ -25,9 +25,9 @@ class Migration(migrations.Migration):
                 ('start', models.DateTimeField(blank=False, null=False)),
                 ('finish', models.DateTimeField(blank=False, null=False, help_text="Required for user to filter by time")),
                 ('is_removed', models.BooleanField(default=False)),
-                ('site_id', models.CharField(max_length=36, null=False, blank=False, default='0')),
+                ('object_id', models.CharField(max_length=36, null=False, blank=False, default='0')),
                 ('meet', models.ForeignKey(on_delete=models.SET(0), to='occasions.Meet')),
-                ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('display_name', models.CharField(blank=True, null=True, max_length=50, help_text="02/09/2020, etc")),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"LG_location": "F207", "link": "https://..."}. Please keep {} here even no data', null=True)),
             ],
@@ -39,6 +39,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='gathering',
-            constraint=models.UniqueConstraint(fields=('meet_id', 'site_type_id', 'site_id', 'start'), condition=models.Q(is_removed=False), name='uniq_meet_location_time'),
+            constraint=models.UniqueConstraint(fields=('meet_id', 'content_type', 'object_id', 'start'), condition=models.Q(is_removed=False), name='uniq_meet_location_time'),
         ),
     ]

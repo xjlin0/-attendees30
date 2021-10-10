@@ -21,6 +21,9 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
 
         if current_user_organization:
             pk = self.kwargs.get('pk')
+            group_string = self.request.query_params.get('group')  # [{"selector":"meet","desc":false,"isExpanded":false}] if grouping
+            orderby_string = self.request.query_params.get('sort', '[{"selector":"meet","desc":false},{"selector":"start","desc":false}]')  # order_by('meet','start')
+            print("26 here is group_string: "); print(group_string)
 
             if pk:
                 return Gathering.objects.filter(
@@ -28,13 +31,16 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
                     meet__assembly__division__organization=current_user_organization,
                 )
 
+            elif group_string:  # special case for server side grouping https://js.devexpress.com/Documentation/Guide/Data_Binding/Specify_a_Data_Source/Custom_Data_Sources/#Load_Data/Server-Side_Data_Processing
+                print("35 here is special case for server side grouping")
+
             else:
-                # Todo: probably need to check if the meets belongs to the organization?
                 return GatheringService.by_organization_meets(
                     current_user=self.request.user,
                     meet_slugs=self.request.query_params.getlist('meets[]', []),
                     start=self.request.query_params.get('start'),
                     finish=self.request.query_params.get('finish'),
+                    orderby_string=orderby_string,
                 )
 
         else:

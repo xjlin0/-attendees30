@@ -18,9 +18,9 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
     attendings = models.ManyToManyField('persons.Attending', through='Attendance')
     display_name = models.CharField(max_length=50, blank=True, null=True, help_text="02/09/2020, etc")
     infos = JSONField(null=True, blank=True, default=dict, help_text='Example: {"LG_location": "F207", "link": "https://..."}. Please keep {} here even no data')
-    site_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
-    site_id = models.CharField(max_length=36, null=False, blank=False, default='0')
-    site = GenericForeignKey('site_type', 'site_id')
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET(0), help_text='site: django_content_type id for table name')
+    object_id = models.CharField(max_length=36, null=False, blank=False, default='0')
+    site = GenericForeignKey('content_type', 'object_id')
 
     # from itertools import groupby
     # from operator import attrgetter
@@ -42,7 +42,7 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'occasions_gatherings'
         ordering = ['meet', 'start']
         constraints = [
-            models.UniqueConstraint(fields=['meet_id', 'site_type_id', 'site_id', 'start'], condition=models.Q(is_removed=False), name='uniq_meet_location_time')
+            models.UniqueConstraint(fields=['meet_id', 'content_type', 'object_id', 'start'], condition=models.Q(is_removed=False), name='uniq_meet_location_time')
         ]
 
     def __str__(self):

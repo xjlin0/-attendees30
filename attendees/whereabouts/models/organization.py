@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.contenttypes.fields import GenericRelation
+
+from attendees.occasions.models import Gathering
 from attendees.persons.models import Utility, Note
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
@@ -9,6 +11,7 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel
 class Organization(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     places = GenericRelation('whereabouts.Place')
+    gathering = GenericRelation(Gathering, related_query_name='organization')
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True, help_text="alphanumeric only")
     display_name = models.CharField(max_length=50, blank=False, null=False)
