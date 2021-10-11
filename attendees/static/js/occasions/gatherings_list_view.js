@@ -555,7 +555,8 @@ Attendees.gatherings = {
     onEditingStart: (e) => {
       if (e.data && typeof e.data === 'object') {
         Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[e.data['site_type']];
-        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Editing: ' + e.data['gathering_label'] + '@' + e.data['site']);
+        const prefix = Attendees.utilities.editingEnabled ? 'Editing: ' : 'Info: ';
+        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', prefix + e.data['gathering_label'] + '@' + e.data['site']);
       }
     },
     onEditorPrepared: (e) => {

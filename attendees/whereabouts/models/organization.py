@@ -11,7 +11,7 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel
 class Organization(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     places = GenericRelation('whereabouts.Place')
-    gathering = GenericRelation(Gathering, related_query_name='organization')
+    gathering = GenericRelation(Gathering, object_id_field='site_id', content_type_field='site_type', related_query_name='organization')
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True, help_text="alphanumeric only")
     display_name = models.CharField(max_length=50, blank=False, null=False)

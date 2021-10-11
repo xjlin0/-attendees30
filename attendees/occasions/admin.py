@@ -145,7 +145,7 @@ class GatheringAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish']),
                            tuple(['display_name', 'infos']),
-                           tuple(['content_type', 'meet', 'object_id', 'occurrence']),
+                           tuple(['site_type', 'meet', 'site_id', 'occurrence']),
                            tuple(['id', 'created', 'modified']),
                            ), }),
     )
