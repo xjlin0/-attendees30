@@ -63,6 +63,10 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
             #     print("61 here is special case for server side grouping")
 
             else:
+                if group_string:
+                    groups = json.loads(group_string)
+                    orderby_list.insert(0, {"selector": groups[0]['selector'], "desc": False})
+
                 return GatheringService.by_organization_meets(
                     current_user=self.request.user,
                     meet_slugs=self.request.query_params.getlist('meets[]', []),
