@@ -2,8 +2,6 @@ from django.db.models import Q, F, Func
 from django.db.models.expressions import OrderBy
 from datetime import datetime, timedelta
 
-from rest_framework.utils import json
-
 from attendees.occasions.models import Gathering, Meet
 
 
@@ -42,8 +40,8 @@ class GatheringService:
         )  # another way is to get assemblys from registration, but it relies on attendingmeet validations
 
     @staticmethod
-    def by_organization_meets(current_user, meet_slugs, start, finish, orderby_string):
-        orderby_list = GatheringService.orderby_parser(orderby_string, meet_slugs, current_user)
+    def by_organization_meets(current_user, meet_slugs, start, finish, orderbys):
+        orderby_list = GatheringService.orderby_parser(orderbys, meet_slugs, current_user)
         filters = Q(meet__assembly__division__organization__slug=current_user.organization.slug).add(
                         Q(meet__slug__in=meet_slugs), Q.AND)
 
@@ -122,19 +120,19 @@ class GatheringService:
         return results
 
     @staticmethod
-    def orderby_parser(orderby_string, meet_slugs, current_user):
+    def orderby_parser(orderbys, meet_slugs, current_user):
         """
         generates sorter (column or OrderBy Func) based on user's choice
         Todo: Sort by site name is NOT supported since object_id can be int or char.
-        :param orderby_string: JSON fetched from search params
+        :param orderbys: list of search params
         :param meet_slugs: meet slugs
         :param current_user:
         :return: a List of sorter for order_by()
         """
         meet_sorters = {meet.slug: Func(F('attendingmeets'), function="'{}'=ANY".format(meet.slug)) for meet in Meet.objects.filter(slug__in=meet_slugs, assembly__division__organization=current_user.organization)}
-        print("hi 134 here is meet_sorters: "); print(meet_sorters)
         orderby_list = []  # sort attendingmeets is [{"selector":"<<dataField value in DataGrid>>","desc":false}]
-        for orderby_dict in json.loads(orderby_string):
+
+        for orderby_dict in orderbys:
             field = orderby_dict.get('selector', 'id').replace('.', '__')
             direction = '-' if orderby_dict.get('desc', False) else ''
             if field in meet_sorters:
@@ -148,5 +146,4 @@ class GatheringService:
                 orderby_list.extend(site_columns)
             else:
                 orderby_list.append(direction + field)
-        print("hi 154 here is orderby_list: "); print(orderby_list)
         return orderby_list

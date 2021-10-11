@@ -599,7 +599,7 @@ Attendees.gatherings = {
         dataField: 'site',
         width: '30%',
         readOnly: true,
-        caption: 'Location',
+        caption: 'Location (only grouped not sorted)',
       },
       {
         dataField: 'start',

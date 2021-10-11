@@ -3,6 +3,9 @@ from rest_framework.response import Response
 
 
 class CustomStorePagination(LimitOffsetPagination):
+    """
+    default in setting's REST_FRAMEWORK.DEFAULT_PAGINATION_CLASS
+    """
     offset_query_param = 'skip'
     limit_query_param = 'take'
 
