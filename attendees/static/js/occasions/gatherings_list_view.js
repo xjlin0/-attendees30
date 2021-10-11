@@ -233,7 +233,7 @@ Attendees.gatherings = {
           displayExpr: 'display_name',
           showClearButton: true,
           searchEnabled: false,
-          grouped: true,
+          grouped: true,  // need to send params['grouping'] = 'assembly_name';
           onValueChanged: (e)=> {
             Attendees.gatherings.filtersForm.validate();
             const defaultHelpText = 'Select single one to view/generate gatherings, or multiple one to view';
@@ -291,25 +291,11 @@ Attendees.gatherings = {
                   const filterTill = $('div.filter-till input')[1].value;
                   params['start'] = filterFrom ? new Date(filterFrom).toISOString() : null;
                   params['finish'] = filterTill ? new Date(filterTill).toISOString() : null;
+                  params['grouping'] = 'assembly_name';  // for grouped: true,
                 }
-
-                $.get($('form.filters-dxform').data('meets-endpoint-by-slug'), params)
-                  .done((result) => {
-                    const answer={};
-                    if (result.data[0] && result.data[0].assembly_name) {
-                      result.data.forEach(meet=>{
-                        Attendees.gatherings.meetScheduleRules[meet.slug] = {meetStart: meet.start, meetFinish: meet.finish, rules: meet.schedule_rules};
-                        if (meet.assembly_name){
-                          answer[meet.assembly_name] = answer[meet.assembly_name] || {key: meet.assembly_name, items:[]};
-                          answer[meet.assembly_name].items.push(meet);
-                        }
-                      })
-                    }
-                    d.resolve(Object.values(answer));
-                  });
-                return d.promise();
+                return $.getJSON($('form.filters-dxform').data('meets-endpoint-by-slug'), params);
               },
-            }),  // specify group didn't work, so regroup manually :(
+            }),
             key: 'slug',
           }),
         },
@@ -578,7 +564,19 @@ Attendees.gatherings = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id')),
+              load: () => {
+                const d = new $.Deferred();
+                $.get($('form.filters-dxform').data('meets-endpoint-by-id'))
+                  .done((result) => {
+                    if (Object.keys(Attendees.gatherings.meetScheduleRules).length < 1 && result.data && result.data[0]) {
+                      result.data.forEach(meet=>{
+                        Attendees.gatherings.meetScheduleRules[meet.slug] = {meetStart: meet.start, meetFinish: meet.finish, rules: meet.schedule_rules};
+                      }); // schedule rules needed for gathering generation
+                    }
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
               byKey: (key) => {
                 return $.getJSON($('form.filters-dxform').data('meets-endpoint-by-id') + key + '/');},
             }),

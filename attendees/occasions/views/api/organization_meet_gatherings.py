@@ -59,9 +59,6 @@ class ApiOrganizationMeetGatheringsViewSet(LoginRequiredMixin, viewsets.ModelVie
                     meet__assembly__division__organization=current_user_organization,
                 )
 
-            # elif group_string:  # special case for server side grouping https://js.devexpress.com/Documentation/Guide/Data_Binding/Specify_a_Data_Source/Custom_Data_Sources/#Load_Data/Server-Side_Data_Processing
-            #     print("61 here is special case for server side grouping")
-
             else:
                 if group_string:
                     groups = json.loads(group_string)

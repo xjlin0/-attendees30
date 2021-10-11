@@ -140,8 +140,8 @@ class GatheringService:
                 orderby_list.append(sorter)
             elif field == 'site':
                 site_columns = [
-                    direction + 'content_type',
-                    direction + 'object_id',
+                    direction + 'site_type',
+                    direction + 'site_id',
                 ]
                 orderby_list.extend(site_columns)
             else:
