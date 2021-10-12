@@ -329,6 +329,12 @@ Attendees.gatherings = {
     ],
   },
 
+  selectAllMeets: () => {
+    const availableMeetsDxTagBox = Attendees.gatherings.filtersForm.getEditor('meets');
+    const availableMeetSlugs = availableMeetsDxTagBox.option('items').flatMap(assembly => assembly.items.map(meet => meet.slug));
+    availableMeetsDxTagBox.option('value', availableMeetSlugs);
+  },  // loop in loop because of options grouped by assembly
+
   initFilteredGatheringsDatagrid: (data, itemElement) => {
     const $gatheringDatagrid = $("<div id='gatherings-datagrid-container'>").dxDataGrid(Attendees.gatherings.gatheringDatagridConfig);
     itemElement.append($gatheringDatagrid);
