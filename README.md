@@ -93,6 +93,13 @@ All libraries are included to facilitate offline development
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
+## DB SQL Backup & Restore process (with local.yml)
+* backup current db to container `docker-compose -f local.yml exec postgres backup`
+* list backup files in container `docker-compose -f local.yml exec postgres backups`
+* copy all backup files from container to dev local computer `docker cp $(docker-compose -f local.yml ps -q postgres):/backups ./backups`
+* copy all backup files from dev local computer to container `docker cp ./backups/* $(docker-compose -f local.yml ps -q postgres):/backups/`
+* restore a backup from a backup file in container `docker-compose -f local.yml exec postgres restore backup_2018_03_13T09_05_07.sql.gz`
+
 ## Todo & progress:
 
 <details>
@@ -127,8 +134,9 @@ All libraries are included to facilitate offline development
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
   - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
-- [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) data [backup/restore](https://cookiecutter-django.readthedocs.io/en/latest/docker-postgres-backups.html) to survive new releases and migrations
+- [x] data [db backup/restore](https://cookiecutter-django.readthedocs.io/en/latest/docker-postgres-backups.html) to survive new releases and migrations
 - [ ] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
+  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
   - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) from Attendee detail and attendee list page
 - [ ] AttendingMeet list (server side processing)
   - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) new attendance datagrid filtered by meets and date ranges
