@@ -120,18 +120,25 @@ All libraries are included to facilitate offline development
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages
   - [x] [PR#18](https://github.com/xjlin0/attendees30/pull/18) remove attendee list page dependency of path params and take search params from user for assembly slug
   - [x] [PR#19](https://github.com/xjlin0/attendees30/pull/19) rename and move attendees/attendee page, and show attendees based on auth groups
-- [ ] Gathering list (server side processing with auto-generation)
+- [x] Gathering list (server side processing with auto-generation)
   - [x] [PR#20](https://github.com/xjlin0/attendees30/pull/20) gatherings datagrid filtered by meets and date ranges
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
   - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
+- [ ] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
+  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) from Attendee detail and attendee list page
+- [ ] AttendingMeet list (server side processing)
+  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) auto-generation of AttendingMeet by django-schedule with 
 - [ ] Attendance list (server side processing with auto-generation)
-  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) new attendance datagrid filtered by meets and date ranges
-  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) auto-generation attendance by attending meet and recent attendance status
-  - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) member list (attendance level with editing category)
-- [ ] Create roaster page (no real-time update in v1)
+  - [ ] [PR#27](https://github.com/xjlin0/attendees30/pull/27) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#28](https://github.com/xjlin0/attendees30/pull/28) auto-generation attendance by attending meet and recent attendance status
+  - [ ] [PR#29](https://github.com/xjlin0/attendees30/pull/29) member list (attendance level with editing category)
+- [ ] Create roaster page (no real-time update for multiple coworkers in v1)
   - [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
-- [ ] Attending list and AttendingMeet (new design with server side processing)
+- [ ] Division specific menu links, such as including selected meets in the search params
+  - [ ] Junior
+  - [ ] Data
 - [ ] Audit log/history/vision of data
   - [ ] find library and install: django-pghistory maybe
   - [ ] each model level version
