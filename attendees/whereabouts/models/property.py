@@ -12,7 +12,7 @@ from attendees.occasions.models import Gathering
 class Property(TimeStampedModel, SoftDeletableModel, Utility):
     notes = GenericRelation(Note)
     places = GenericRelation('whereabouts.Place')
-    gathering = GenericRelation(Gathering)
+    gathering = GenericRelation(Gathering, object_id_field='site_id', content_type_field='site_type', related_query_name='property')
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     display_name = models.CharField(max_length=50, blank=False, null=False, db_index=True)
     slug = models.SlugField(max_length=50, blank=False, null=False, unique=True)

@@ -1,14 +1,17 @@
 import time
-from dateutil.relativedelta import relativedelta
+from itertools import groupby
+from operator import itemgetter
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F, Q
 
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.utils import json
+from rest_framework.response import Response
 
 from attendees.occasions.models import Meet
 from attendees.occasions.serializers.meet import MeetSerializer
-from attendees.persons.models import Utility
 
 
 class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
@@ -18,6 +21,28 @@ class OrganizationMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     Todo 20210815 if limiting by meet's shown_audience, non-coworker assigned to non-public meets won't show
     """
     serializer_class = MeetSerializer
+
+    def transform_result(self, data, grouping):
+        if grouping:
+            grouping_data = []
+            for c_title, items in groupby(data, itemgetter(grouping)):
+                grouping_data.append({"key": c_title, "items": list(items)})
+            return grouping_data
+
+        else:
+            return data
+
+    def list(self, request, *args, **kwargs):
+        grouping = request.query_params.get('grouping')
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(self.transform_result(serializer.data, grouping))
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(self.transform_result(serializer.data, grouping))
 
     def get_queryset(self):
         current_user_organization = self.request.user.organization

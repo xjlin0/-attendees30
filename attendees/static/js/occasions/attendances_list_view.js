@@ -1,4 +1,4 @@
-Attendees.gatherings = {
+Attendees.attendances = {
   filtersForm: null,
   meetScheduleRules: {},
   selectedMeetHasRule: false,
@@ -7,11 +7,11 @@ Attendees.gatherings = {
   contentTypeEndpoint: '',
   contentTypeEndpoints: {},
   init: () => {
-    console.log('static/js/occasions/gatherings_list_view.js');
-    Attendees.gatherings.initFilterMeetCheckbox();
-    Attendees.gatherings.initEditingSwitch();
-    Attendees.gatherings.initFiltersForm();
-    Attendees.gatherings.initGenerateButton();
+    console.log('static/js/occasions/attendances_list_view.js');
+   // Attendees.attendances.initFilterMeetCheckbox();
+   Attendees.attendances.initEditingSwitch();
+   Attendees.attendances.initFiltersForm();
+//    Attendees.attendances.initGenerateButton();
   },
 
   initEditingSwitch: () => {
@@ -24,38 +24,38 @@ Attendees.gatherings = {
       height: '110%',
       onValueChanged: (e) => {  // not reconfirm, it's already after change
         Attendees.utilities.editingEnabled = e.value;
-        Attendees.gatherings.toggleEditing(e.value);
+        Attendees.attendances.toggleEditing(e.value);
       },
     })
   },
 
   initFilterMeetCheckbox: () => {
-    Attendees.gatherings.filterMeetCheckbox = $('div#custom-control-filter-meets-checkbox').dxCheckBox({
+    Attendees.attendances.filterMeetCheckbox = $('div#custom-control-filter-meets-checkbox').dxCheckBox({
       value: true,
       hint: 'When checked, the dropdown list of Meets will be filtered based on the From/Till date&time',
       text: 'Filter meets by date/time',
       onValueChanged: (e) => {
-        Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
+        Attendees.attendances.filtersForm.getEditor('meets').getDataSource().reload();
       }
     }).dxCheckBox('instance');
   },
 
   initGenerateButton: () => {
-    Attendees.gatherings.generateGatheringsButton = $('div#generate-gatherings').dxButton({
+    Attendees.attendances.generateGatheringsButton = $('div#generate-attendances').dxButton({
       disabled: true,
       text: 'Generate Gatherings',
       height: '1.5rem',
       hint: 'Disabled when multiple meets selected or no duration filled',
       onClick: () => {
-        if (Attendees.gatherings.filtersForm.validate().isValid && confirm('Are you sure to auto generate all gatherings of the chosen meet between the filtered date?')) {
+        if (Attendees.attendances.filtersForm.validate().isValid && confirm('Are you sure to auto generate all gatherings of the chosen meet between the filtered date?')) {
           const params = {};
           const filterFrom = $('div.filter-from input')[1].value;
           const filterTill = $('div.filter-till input')[1].value;
           params['begin'] = filterFrom ? new Date(filterFrom).toISOString() : null;
           params['end'] = filterTill ? new Date(filterTill).toISOString() : null;
-          params['duration'] = Attendees.gatherings.filtersForm.getEditor('duration').option('value');
+          params['duration'] = Attendees.attendances.filtersForm.getEditor('duration').option('value');
           const meetSlugs = $('div.selected-meets select').val();
-          if (params['begin'] && params['end'] && Attendees.gatherings.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
+          if (params['begin'] && params['end'] && Attendees.attendances.filtersForm.validate().isValid && meetSlugs.length && meetSlugs.length === 1) {
             params['meet_slug'] = meetSlugs[0];
             return $.ajax({
               url: $('form.filters-dxform').data('series-gatherings-endpoint'),
@@ -89,7 +89,7 @@ Attendees.gatherings = {
                   }, 'error', 5000);
               },
               complete: () => {
-                Attendees.gatherings.gatheringsDatagrid.refresh();
+                Attendees.attendances.gatheringsDatagrid.refresh();
               }, // partial gatherings may have generated even when errors
             });
           } else {
@@ -110,27 +110,27 @@ Attendees.gatherings = {
   },
 
   toggleEditing: (enabled) => {
-    if (Attendees.gatherings.gatheringsDatagrid) {
-      Attendees.gatherings.gatheringsDatagrid.option('editing.allowUpdating', enabled);
-      Attendees.gatherings.gatheringsDatagrid.option('editing.allowAdding', enabled);
-      Attendees.gatherings.gatheringsDatagrid.option('editing.allowDeleting', enabled);
-      Attendees.gatherings.gatheringsDatagrid.option('editing.popup.onContentReady', e => e.component.option('toolbarItems[0].visible', enabled));
-    }
-    Attendees.gatherings.generateGatheringsButton.option('disabled', !Attendees.gatherings.readyToGenerate());
+    // if (Attendees.attendances.gatheringsDatagrid) {
+    //   Attendees.attendances.gatheringsDatagrid.option('editing.allowUpdating', enabled);
+    //   Attendees.attendances.gatheringsDatagrid.option('editing.allowAdding', enabled);
+    //   Attendees.attendances.gatheringsDatagrid.option('editing.allowDeleting', enabled);
+    //   Attendees.attendances.gatheringsDatagrid.option('editing.popup.onContentReady', e => e.component.option('toolbarItems[0].visible', enabled));
+    // }
+    // Attendees.attendances.generateGatheringsButton.option('disabled', !Attendees.attendances.readyToGenerate());
   },
 
   readyToGenerate: () => {
-    const filterFrom = Attendees.gatherings.filtersForm.getEditor('filter-from').option('value');
-    const filterTill = Attendees.gatherings.filtersForm.getEditor('filter-till').option('value');
+    const filterFrom = Attendees.attendances.filtersForm.getEditor('filter-from').option('value');
+    const filterTill = Attendees.attendances.filtersForm.getEditor('filter-till').option('value');
 
-    return Attendees.gatherings.selectedMeetHasRule &&
-      Attendees.gatherings.filtersForm &&
-      Attendees.gatherings.filtersForm.validate().isValid &&
+    return Attendees.attendances.selectedMeetHasRule &&
+      Attendees.attendances.filtersForm &&
+      Attendees.attendances.filtersForm.validate().isValid &&
       filterFrom && filterTill && filterTill > filterFrom &&
-      Attendees.gatherings.filtersForm.getEditor('meets').option('value') &&
-      Attendees.gatherings.filtersForm.getEditor('meets').option('value').length === 1 &&
-      Attendees.gatherings.filtersForm.getEditor('duration').option('value') &&
-      Attendees.gatherings.filtersForm.getEditor('duration').option('value') > 0
+      Attendees.attendances.filtersForm.getEditor('meets').option('value') &&
+      Attendees.attendances.filtersForm.getEditor('meets').option('value').length === 1 &&
+      Attendees.attendances.filtersForm.getEditor('duration').option('value') &&
+      Attendees.attendances.filtersForm.getEditor('duration').option('value') > 0
   },
 
   initFiltersForm: () => {
@@ -139,7 +139,7 @@ Attendees.gatherings = {
         'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
       }
     });
-    Attendees.gatherings.filtersForm = $('form.filters-dxform').dxForm(Attendees.gatherings.filterFormConfigs).dxForm('instance');
+    Attendees.attendances.filtersForm = $('form.filters-dxform').dxForm(Attendees.attendances.filterFormConfigs).dxForm('instance');
   },
 
   filterFormConfigs: {
@@ -151,7 +151,7 @@ Attendees.gatherings = {
         colSpan: 3,
         cssClass: 'filter-from',
         dataField: 'filter-from',
-        helpText: 'required to generate gatherings',
+        helpText: 'required to generate attendances',
         validationRules: [{
           reevaluate: true,
           type: 'custom',
@@ -171,14 +171,14 @@ Attendees.gatherings = {
           value: new Date(new Date().setHours(new Date().getHours() - 1)),
           type: 'datetime',
           onValueChanged: (e) => {
-            Attendees.gatherings.generateGatheringsButton.option('disabled', !Attendees.gatherings.readyToGenerate());
-            if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
-              Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
-            }
-            const meets = $('div.selected-meets select').val();
-            if (meets.length) {
-              Attendees.gatherings.gatheringsDatagrid.refresh();
-            }
+            // Attendees.attendances.generateGatheringsButton.option('disabled', !Attendees.attendances.readyToGenerate());
+            // if (Attendees.attendances.filterMeetCheckbox.option('value')) {
+            //   Attendees.attendances.filtersForm.getEditor('meets').getDataSource().reload();
+            // }  // allow users to screen only active meets by meet's start&finish
+            // const meets = $('div.selected-meets select').val();
+            // if (meets.length) {
+            //   Attendees.attendances.gatheringsDatagrid.refresh();
+            // }
           },
         },
       },
@@ -186,7 +186,7 @@ Attendees.gatherings = {
         colSpan: 3,
         cssClass: 'filter-till',
         dataField: 'filter-till',
-        helpText: 'required to generate gatherings',
+        helpText: 'required to generate attendances',
         validationRules: [{
           reevaluate: true,
           type: 'custom',
@@ -206,14 +206,14 @@ Attendees.gatherings = {
           value: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           type: 'datetime',
           onValueChanged: (e) => {
-            Attendees.gatherings.generateGatheringsButton.option('disabled', !Attendees.gatherings.readyToGenerate());
-            if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
-              Attendees.gatherings.filtersForm.getEditor('meets').getDataSource().reload();
-            }  // allow users to screen only active meets by meet's start&finish
-            const meets = $('div.selected-meets select').val();
-            if (meets.length) {
-              Attendees.gatherings.gatheringsDatagrid.refresh();
-            }
+            // Attendees.attendances.generateGatheringsButton.option('disabled', !Attendees.attendances.readyToGenerate());
+            // if (Attendees.attendances.filterMeetCheckbox.option('value')) {
+            //   Attendees.attendances.filtersForm.getEditor('meets').getDataSource().reload();
+            // }
+            // const meets = $('div.selected-meets select').val();
+            // if (meets.length) {
+            //   Attendees.attendances.gatheringsDatagrid.refresh();
+            // }
           },
         },
       },
@@ -235,27 +235,27 @@ Attendees.gatherings = {
           searchEnabled: false,
           grouped: true,  // need to send params['grouping'] = 'assembly_name';
           onValueChanged: (e)=> {
-            Attendees.gatherings.filtersForm.validate();
+            Attendees.attendances.filtersForm.validate();
             const defaultHelpText = 'Select single one to view/generate gatherings, or multiple one to view';
-            const $meetHelpText = Attendees.gatherings.filtersForm.getEditor('meets').element().parent().parent().find(".dx-field-item-help-text");
-            Attendees.gatherings.selectedMeetHasRule = false;
-            Attendees.gatherings.generateGatheringsButton.option('disabled', true);
+            const $meetHelpText = Attendees.attendances.filtersForm.getEditor('meets').element().parent().parent().find(".dx-field-item-help-text");
+            Attendees.attendances.selectedMeetHasRule = false;
+            Attendees.attendances.generateGatheringsButton.option('disabled', true);
             $meetHelpText.text(defaultHelpText);  // https://supportcenter.devexpress.com/ticket/details/t531683
             if (e.value && e.value.length > 0) {
-              Attendees.gatherings.gatheringsDatagrid.refresh();
+              Attendees.attendances.gatheringsDatagrid.refresh();
               if (e.value.length < 2) {
                 const newHelpTexts = [];
                 let finalHelpText = '';
                 let lastDuration = 0;
                 const noRuleText = 'This meet does not have schedules in EventRelation';
-                const ruleData = Attendees.gatherings.meetScheduleRules[ e.value[0] ];
+                const ruleData = Attendees.attendances.meetScheduleRules[ e.value[0] ];
                 const timeRules = ruleData.rules;
                 const meetStart = new Date(ruleData.meetStart).toDateString();
                 const meetFinish = new Date(ruleData.meetFinish).toDateString();
                 if (timeRules && timeRules.length > 0) {
                   timeRules.forEach(timeRule => {
                     if (timeRule.rule) {
-                      Attendees.gatherings.selectedMeetHasRule = true;
+                      Attendees.attendances.selectedMeetHasRule = true;
                       const toLocaleStringOpts = Attendees.utilities.timeRules[timeRule.rule];
                       const startTime = new Date(timeRule.start);
                       const endTime = new Date(timeRule.end);
@@ -268,14 +268,14 @@ Attendees.gatherings = {
                     }
                   });
                   finalHelpText = newHelpTexts.join(', ') + ' from ' + meetStart + ' to ' + meetFinish;
-                  if (Attendees.gatherings.selectedMeetHasRule && $('div#custom-control-edit-switch').dxSwitch('instance').option('value') && lastDuration > 0) {
-                    Attendees.gatherings.generateGatheringsButton.option('disabled', false);
+                  if (Attendees.attendances.selectedMeetHasRule && $('div#custom-control-edit-switch').dxSwitch('instance').option('value') && lastDuration > 0) {
+                    Attendees.attendances.generateGatheringsButton.option('disabled', false);
                   }
                 } else {
                   finalHelpText = noRuleText;
                 }
                 $meetHelpText.text(finalHelpText);  // https://supportcenter.devexpress.com/ticket/details/t531683
-                Attendees.gatherings.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
+                Attendees.attendances.filtersForm.itemOption('duration', {editorOptions: {value: lastDuration}});
               }
             }
           },
@@ -286,7 +286,7 @@ Attendees.gatherings = {
                 const d = new $.Deferred();
                 const params = {};
 
-                if (Attendees.gatherings.filterMeetCheckbox.option('value')) {
+                if (Attendees.attendances.filterMeetCheckbox.option('value')) {
                   const filterFrom = $('div.filter-from input')[1].value;
                   const filterTill = $('div.filter-till input')[1].value;
                   params['start'] = filterFrom ? new Date(filterFrom).toISOString() : null;
@@ -323,20 +323,20 @@ Attendees.gatherings = {
           showColon: false,
         },
         template: (data, itemElement) => {
-          Attendees.gatherings.gatheringsDatagrid = Attendees.gatherings.initFilteredGatheringsDatagrid(data, itemElement);
+          Attendees.attendances.gatheringsDatagrid = Attendees.attendances.initFilteredGatheringsDatagrid(data, itemElement);
         },
       },
     ],
   },
 
   selectAllMeets: () => {
-    const availableMeetsDxTagBox = Attendees.gatherings.filtersForm.getEditor('meets');
+    const availableMeetsDxTagBox = Attendees.attendances.filtersForm.getEditor('meets');
     const availableMeetSlugs = availableMeetsDxTagBox.option('items').flatMap(assembly => assembly.items.map(meet => meet.slug));
     availableMeetsDxTagBox.option('value', availableMeetSlugs);
   },  // loop in loop because of options grouped by assembly
 
   initFilteredGatheringsDatagrid: (data, itemElement) => {
-    const $gatheringDatagrid = $("<div id='gatherings-datagrid-container'>").dxDataGrid(Attendees.gatherings.gatheringDatagridConfig);
+    const $gatheringDatagrid = $("<div id='gatherings-datagrid-container'>").dxDataGrid(Attendees.attendances.gatheringDatagridConfig);
     itemElement.append($gatheringDatagrid);
     return $gatheringDatagrid.dxDataGrid('instance');
   },
@@ -542,18 +542,18 @@ Attendees.gatherings = {
         }
     },
     onInitNewRow: (rowData) => {
-      Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', 'Adding Gathering');
+      Attendees.attendances.gatheringsDatagrid.option('editing.popup.title', 'Adding Gathering');
     },
     onEditingStart: (e) => {
       if (e.data && typeof e.data === 'object') {
-        Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[e.data['site_type']];
+        Attendees.attendances.contentTypeEndpoint = Attendees.attendances.contentTypeEndpoints[e.data['site_type']];
         const prefix = Attendees.utilities.editingEnabled ? 'Editing: ' : 'Info: ';
-        Attendees.gatherings.gatheringsDatagrid.option('editing.popup.title', prefix + e.data['gathering_label'] + '@' + e.data['site']);
+        Attendees.attendances.gatheringsDatagrid.option('editing.popup.title', prefix + e.data['gathering_label'] + '@' + e.data['site']);
       }
     },
     onEditorPrepared: (e) => {
       if (e.dataField === 'site_id') {
-        Attendees.gatherings.siteIdElement = e;
+        Attendees.attendances.siteIdElement = e;
       }
     },
     columns: [
@@ -574,9 +574,9 @@ Attendees.gatherings = {
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('meets-endpoint-by-id'))
                   .done((result) => {
-                    if (Object.keys(Attendees.gatherings.meetScheduleRules).length < 1 && result.data && result.data[0]) {
+                    if (Object.keys(Attendees.attendances.meetScheduleRules).length < 1 && result.data && result.data[0]) {
                       result.data.forEach(meet=>{
-                        Attendees.gatherings.meetScheduleRules[meet.slug] = {meetStart: meet.start, meetFinish: meet.finish, rules: meet.schedule_rules};
+                        Attendees.attendances.meetScheduleRules[meet.slug] = {meetStart: meet.start, meetFinish: meet.finish, rules: meet.schedule_rules};
                       }); // schedule rules needed for gathering generation
                     }
                     d.resolve(result.data);
@@ -641,10 +641,10 @@ Attendees.gatherings = {
         },
         setCellValue: (rowData, value) => {
           rowData.site_id = undefined;
-          Attendees.gatherings.contentTypeEndpoint = Attendees.gatherings.contentTypeEndpoints[value];
+          Attendees.attendances.contentTypeEndpoint = Attendees.attendances.contentTypeEndpoints[value];
           rowData.site_type = value;
 //          $('div.in-popup-site-id input')[1].value=''; Todo 20210814: can't clear site_id dxlookup after it reload
-//          Attendees.gatherings.siteIdElement.value = undefined;
+//          Attendees.attendances.siteIdElement.value = undefined;
         },
         lookup: {
           hint: 'select a location type',
@@ -657,7 +657,7 @@ Attendees.gatherings = {
                 const d = new $.Deferred();
                 $.get($('form.filters-dxform').data('content-type-models-endpoint'), {query: 'location'})
                   .done((result) => {
-                    Attendees.gatherings.contentTypeEndpoints = result.data.reduce((obj, item) => ({...obj, [item.id]: item.endpoint}) ,{});
+                    Attendees.attendances.contentTypeEndpoints = result.data.reduce((obj, item) => ({...obj, [item.id]: item.endpoint}) ,{});
                     d.resolve(result.data);
                   });
                 return d.promise();
@@ -667,7 +667,7 @@ Attendees.gatherings = {
                 $.get($('form.filters-dxform').data('content-type-models-endpoint') + key + '/', {query: 'location'})
                   .done((result) => {
                     if (result.data && result.data[0] && result.data[0].endpoint) {
-                      Attendees.gatherings.contentTypeEndpoint = result.data[0].endpoint;
+                      Attendees.attendances.contentTypeEndpoint = result.data[0].endpoint;
                     }
                     d.resolve(result.data);
                   });
@@ -695,9 +695,9 @@ Attendees.gatherings = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchArgs) => {
-                if (Attendees.gatherings.contentTypeEndpoint) {
+                if (Attendees.attendances.contentTypeEndpoint) {
                   const d = new $.Deferred();
-                  $.get(Attendees.gatherings.contentTypeEndpoint, searchArgs)
+                  $.get(Attendees.attendances.contentTypeEndpoint, searchArgs)
                     .done((result) => {
                       d.resolve(result.data);
                     });
@@ -705,9 +705,9 @@ Attendees.gatherings = {
                 }
               },
               byKey: (key) => {
-                if (Attendees.gatherings.contentTypeEndpoint) {
+                if (Attendees.attendances.contentTypeEndpoint) {
                   const d = new $.Deferred();
-                  $.get(Attendees.gatherings.contentTypeEndpoint + key + '/')
+                  $.get(Attendees.attendances.contentTypeEndpoint + key + '/')
                     .done((result) => {
                     if (result && result.id && parseInt(key) === result.id) {
                       result.id = key;
@@ -726,5 +726,5 @@ Attendees.gatherings = {
 };
 
 $(document).ready(() => {
-  Attendees.gatherings.init();
+  Attendees.attendances.init();
 });

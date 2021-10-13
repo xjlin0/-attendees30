@@ -28,24 +28,28 @@ class AttendanceService:
                 current user participated gatherings will also show up.
         :param organization_slug:
         :param meet_slugs:
-        :param gathering_ids:
+        :param gathering_ids: optional
         :param gathering_start:
         :param gathering_finish:
         :return:  user participation Attendances with coworkers Attendances
         """
+        filters = {
+            'gathering__meet__assembly__division__organization__slug': organization_slug,
+            'gathering__meet__slug__in': meet_slugs,
+            'gathering__start__gte': gathering_start,
+            'gathering__finish__lte': gathering_finish,
+        }
+
+        if gathering_ids is not None:
+            filters['gathering__id__in'] = gathering_ids
+
         return Attendance.objects.select_related(
                     'character',
                     'team',
                     'attending',
                     'gathering',
                     'attending__attendee',
-                ).filter(
-                    gathering__meet__assembly__division__organization__slug=organization_slug,
-                    gathering__id__in=gathering_ids,
-                    gathering__meet__slug__in=meet_slugs,
-                    gathering__start__gte=gathering_start,
-                    gathering__finish__lte=gathering_finish,
-                ).order_by(
+                ).filter(**filters).order_by(
                     'gathering__meet',
                     '-gathering__start',
                     'character__display_order',

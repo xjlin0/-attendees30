@@ -32,6 +32,7 @@ class MessageTemplateAdmin(admin.ModelAdmin):
     def truncate_template(self, obj):
         return list(obj.templates.values())[0][:100] + '...'
 
+
 class AssemblyAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},

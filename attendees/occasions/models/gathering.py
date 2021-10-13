@@ -42,7 +42,7 @@ class Gathering(TimeStampedModel, SoftDeletableModel, Utility):
         db_table = 'occasions_gatherings'
         ordering = ['meet', 'start']
         constraints = [
-            models.UniqueConstraint(fields=['meet_id', 'site_type_id', 'site_id', 'start'], condition=models.Q(is_removed=False), name='uniq_meet_location_time')
+            models.UniqueConstraint(fields=['meet_id', 'site_type', 'site_id', 'start'], condition=models.Q(is_removed=False), name='uniq_meet_location_time')
         ]
 
     def __str__(self):

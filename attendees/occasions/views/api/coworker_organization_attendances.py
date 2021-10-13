@@ -23,15 +23,15 @@ class ApiCoworkerOrganizationAttendancesViewSet(viewsets.ModelViewSet):
         :query: Find all gatherings of all Attendances of the current user, query everyone's
                 Attendances in the found gatherings, so all coworker's Attendances in the
                 current user participated gatherings will also show up.
-        :return:  Attendance
+        :return:  Attendances
         """
         current_user = self.request.user
         current_user_organization = current_user.organization
+        gathering_ids = None if current_user.can_see_all_organizational_meets_attendees else current_user.attendee.attendings.values_list('gathering__id', flat=True).distinct().order_by()
         if current_user_organization:
-            # Todo: probably need to check if the meets belongs to the organization?
             return AttendanceService.by_organization_meets_gatherings_intervals(
                 organization_slug=current_user_organization.slug,
-                gathering_ids=current_user.attendee.attendings.values_list('gathering__id', flat=True).distinct().order_by(),
+                gathering_ids=gathering_ids,
                 meet_slugs=self.request.query_params.getlist('meets[]', []),
                 gathering_start=self.request.query_params.get('start', None),
                 gathering_finish=self.request.query_params.get('finish', None),

@@ -6,6 +6,7 @@ from attendees.occasions.views import (
     datagrid_user_organization_attendances_list_view,
     datagrid_coworker_organization_attendances_list_view,
     gatherings_list_view,
+    attendances_list_view,
     organization_meets_viewset,
     api_family_organization_attendances_viewset,
     api_family_organization_characters_viewset,
@@ -132,5 +133,9 @@ urlpatterns = [
         view=gatherings_list_view,
         name='gatherings_list_view',
     ),
-    #
+    path(
+        'attendances/',
+        view=attendances_list_view,
+        name='attendances_list_view',
+    ),
 ]
