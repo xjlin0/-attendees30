@@ -99,7 +99,7 @@ All libraries are included to facilitate offline development
   <summary>Click to expand all</summary>
 
 - [x] make auth group not organization specific, and counselling note check on organization
-- [ ] Past can replace Note, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance)
+- [ ] Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance with category for active/inactive)
   - [x] make Past model generic
   - [ ] any past status list (Past level)
   - [ ] Attendance roaster to Past auto conversion
@@ -107,6 +107,7 @@ All libraries are included to facilitate offline development
   - [x] server side process of Attendees list & search page
   - [x] AttendingMeet form of Attendee update page
   - [x] [PR#3](https://github.com/xjlin0/attendees30/pull/3) FamilyAttendee datagrid of Attendee update page
+  - [x] [PR#1](https://github.com/xjlin0/attendees30/pull/1) Move Address to Contact
   - [x] [PR#2](https://github.com/xjlin0/attendees30/pull/2) Personal & family Address of Attendee update page
   - [x] [PR#4](https://github.com/xjlin0/attendees30/pull/4) Dynamic contacts of Attendee update page
   - [x] [PR#9](https://github.com/xjlin0/attendees30/pull/9) Permission controlled blocks in single attendee update page, i.e. different blocks/user-settings for different groups
@@ -116,6 +117,7 @@ All libraries are included to facilitate offline development
   - [x] [PR#16](https://github.com/xjlin0/attendees30/pull/16) delete function for human error
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
+  - [ ] Rich format of note for Past on UI?
 - [x] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages
   - [x] [PR#18](https://github.com/xjlin0/attendees30/pull/18) remove attendee list page dependency of path params and take search params from user for assembly slug
@@ -125,15 +127,16 @@ All libraries are included to facilitate offline development
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
   - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
+- [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) data [backup/restore](https://cookiecutter-django.readthedocs.io/en/latest/docker-postgres-backups.html) to survive new releases and migrations
 - [ ] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
-  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) from Attendee detail and attendee list page
+  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) from Attendee detail and attendee list page
 - [ ] AttendingMeet list (server side processing)
-  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) new attendance datagrid filtered by meets and date ranges
-  - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) auto-generation of AttendingMeet by django-schedule with 
+  - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#27](https://github.com/xjlin0/attendees30/pull/27) auto-generation of AttendingMeet by django-schedule with 
 - [ ] Attendance list (server side processing with auto-generation)
-  - [ ] [PR#27](https://github.com/xjlin0/attendees30/pull/27) new attendance datagrid filtered by meets and date ranges
-  - [ ] [PR#28](https://github.com/xjlin0/attendees30/pull/28) auto-generation attendance by attending meet and recent attendance status
-  - [ ] [PR#29](https://github.com/xjlin0/attendees30/pull/29) member list (attendance level with editing category)
+  - [ ] [PR#28](https://github.com/xjlin0/attendees30/pull/28) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#29](https://github.com/xjlin0/attendees30/pull/29) auto-generation attendance by attending meet and recent attendance status
+  - [ ] [PR#30](https://github.com/xjlin0/attendees30/pull/30) member list (attendance level with editing category)
 - [ ] Create roaster page (no real-time update for multiple coworkers in v1)
   - [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
 - [ ] Division specific menu links, such as including selected meets in the search params
@@ -143,9 +146,9 @@ All libraries are included to facilitate offline development
   - [ ] find library and install: django-pghistory maybe
   - [ ] each model level version
   - [ ] document aggregation level version
-- [ ] upgrade to Django 3.2LTS or 4
+- [ ] upgrade to Django 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
    -[ ] use Django JSONField instead of Postgres JSONField
-   -[ ] With Cookiecutter, decide async or not (uvicorn high CPU usage)
+   -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage)
 - [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?
