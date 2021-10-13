@@ -124,10 +124,11 @@ All libraries are included to facilitate offline development
   - [x] [PR#20](https://github.com/xjlin0/attendees30/pull/20) gatherings datagrid filtered by meets and date ranges
   - [x] [PR#21](https://github.com/xjlin0/attendees30/pull/21) django-schedule with Meet
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
+  - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
 - [ ] Attendance list (server side processing with auto-generation)
-  - [ ] [PR#23](https://github.com/xjlin0/attendees30/pull/23) new attendance datagrid filtered by meets and date ranges
-  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) auto-generation attendance by attending meet and recent attendance status
-  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) member list (attendance level with editing category)
+  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) new attendance datagrid filtered by meets and date ranges
+  - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) auto-generation attendance by attending meet and recent attendance status
+  - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) member list (attendance level with editing category)
 - [ ] Create roaster page (no real-time update in v1)
   - [ ] Coworker roaster on phone/web, X: characters, Y: dates(gatherings)
 - [ ] Attending list and AttendingMeet (new design with server side processing)
