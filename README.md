@@ -158,7 +158,9 @@ All libraries are included to facilitate offline development
    -[ ] use Django JSONField instead of Postgres JSONField
    -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage, but web_socket can be only with use_async)
 - [ ] deploy to AWS EC2
-- [ ] Export directory booklet pdf
+- [ ] Export pdf
+  - [ ] directory booklet
+  - [ ] mail labels (avery template) or printing envelops
 - [ ] i18n Translation on model data, django-parler maybe?
 
 </details>
