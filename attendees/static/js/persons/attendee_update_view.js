@@ -2215,12 +2215,16 @@ Attendees.datagridUpdate = {
         dataField: 'attendee.infos.names.original',
         allowEditing: false,
         cellTemplate: (container, rowData) => {
+          const name1 = `${rowData.data.attendee.first_name ? rowData.data.attendee.first_name : ''} ${rowData.data.attendee.last_name ? rowData.data.attendee.last_name : ''}`.trim();
+          const name2 = `${rowData.data.attendee.last_name2 ? rowData.data.attendee.last_name2 : ''}${rowData.data.attendee.first_name2 ? rowData.data.attendee.first_name2 : ''}`.trim();
+          const fullName = `${name1 ? name1 : ''} ${name2 ? name2 : ''}`.trim();
+
           if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
-            $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
+            $('<span>', {text: fullName}).appendTo(container);
           } else {
             const attrs = {
               class: 'text-info',
-              text: rowData.data.attendee.infos.names.original,
+              text: fullName,
               href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
             };
             $('<a>', attrs).appendTo(container);
@@ -2748,7 +2752,13 @@ Attendees.datagridUpdate = {
         lookup: {
           valueExpr: 'id',
           displayExpr: (item) => {
-            return item ? '(' + item.gender[0] + ") " + item.infos.names.original : null;
+            if (item) {
+              const name1 = `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`.trim();
+              const name2 = `${item.last_name2 ? item.last_name2 : ''}${item.first_name2 ? item.first_name2 : ''}`.trim();
+              return `(${item.gender[0]}) ${`${name1 ? name1 : ''} ${name2 ? name2 : ''}`.trim()}`.trim();
+            } else {
+              return null;
+            }
           },
           dataSource: {
             store: new DevExpress.data.CustomStore({

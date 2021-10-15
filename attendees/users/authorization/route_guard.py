@@ -41,7 +41,7 @@ class SpyGuard(UserPassesTestMixin):
         if targeting_attendee_id:
             if current_attendee:
                 if str(current_attendee.id) == targeting_attendee_id:
-                    return self.request.resolver_match.url_name == Menu.ATTENDEE_UPDATE_VIEW
+                    return True  # self.request.resolver_match.url_name == Menu.ATTENDEE_UPDATE_VIEW # for make spy guard only allows self/new at certian view
                 if current_attendee.under_same_org_with(targeting_attendee_id):
                     return self.request.user.privileged() or current_attendee.can_schedule_attendee(targeting_attendee_id)
         else:

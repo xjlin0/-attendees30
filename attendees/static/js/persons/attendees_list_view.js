@@ -148,9 +148,11 @@ Attendees.dataAttendees = {
       dataType: "string",
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
+        const name1 = `${rowData.data.first_name ? rowData.data.first_name: ''} ${rowData.data.last_name ? rowData.data.last_name : ''}`.trim();
+        const name2 = `${rowData.data.last_name2 ? rowData.data.last_name2 : ''}${rowData.data.first_name2 ? rowData.data.first_name2: ''}`.trim();
         const attrs = {
           "class": "text-info",
-          "text": rowData.data.infos.names.original,
+          "text": `${name1 ? name1 : ''} ${name2 ? name2 : ''}`.trim(),
           "href": Attendees.dataAttendees.attendeeUrn + rowData.data.id,
         };
         $($('<a>', attrs)).appendTo(container);
@@ -198,14 +200,20 @@ Attendees.dataAttendees = {
       dataType: "string",
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
-        const phones = [];
-        if (rowData.data.infos.contacts.phone1) phones.push(rowData.data.infos.contacts.phone1);
-        if (rowData.data.infos.contacts.phone2) phones.push(rowData.data.infos.contacts.phone2);
-        const attrs = {
-          "class": "text-info",
-          "text": phones.join(', '),
-        };
-        $($('<span>', attrs)).appendTo(container);
+        let phones = 0;
+        for (let key in rowData.data.infos.contacts) {
+          if (key.match(/phone/gi) && rowData.data.infos.contacts[key]) {
+            const phoneNumber = rowData.data.infos.contacts[key].trim();
+            const attrs = {
+              "class": "text-info",
+              "text": phoneNumber,
+              "href": `tel:${phoneNumber}`,
+            };
+            if (phones > 0) {$('<span>', {text: ', '}).appendTo(container);}
+            $('<a>', attrs).appendTo(container);
+            phones++;
+          }
+        }
       },
     },
     {
@@ -216,14 +224,20 @@ Attendees.dataAttendees = {
       dataType: 'string',
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
-        const emails = [];
-        if (rowData.data.infos.contacts.email1) emails.push(rowData.data.infos.contacts.email1);
-        if (rowData.data.infos.contacts.email2) emails.push(rowData.data.infos.contacts.email2);
-        const attrs = {
-          class: 'text-info',
-          text: emails.join(', '),
-        };
-        $($('<span>', attrs)).appendTo(container);
+        let emails = 0;
+        for (let key in rowData.data.infos.contacts) {
+          if (key.match(/email/gi) && rowData.data.infos.contacts[key]) {
+            const email = rowData.data.infos.contacts[key].trim();
+            const attrs = {
+              "class": "text-info",
+              "text": email,
+              "href": `mailto:${email}`,
+            };
+            if (emails > 0) {$('<span>', {text: ', '}).appendTo(container);}
+            $('<a>', attrs).appendTo(container);
+            emails++;
+          }
+        }
       },
     },
   ],
