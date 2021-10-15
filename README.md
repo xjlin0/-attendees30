@@ -136,7 +136,7 @@ All libraries are included to facilitate offline development
   - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
 - [x] data [db backup/restore](https://cookiecutter-django.readthedocs.io/en/latest/docker-postgres-backups.html) to survive new releases and migrations
 - [ ] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
-  - [ ] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
+  - [x] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
   - [ ] [PR#25](https://github.com/xjlin0/attendees30/pull/25) from Attendee detail and attendee list page
 - [ ] AttendingMeet list (server side processing)
   - [ ] [PR#26](https://github.com/xjlin0/attendees30/pull/26) new attendance datagrid filtered by meets and date ranges

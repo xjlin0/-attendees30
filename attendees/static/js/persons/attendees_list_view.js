@@ -148,9 +148,11 @@ Attendees.dataAttendees = {
       dataType: "string",
       allowHeaderFiltering: false,
       cellTemplate: (container, rowData) => {
+        const name1 = `${rowData.data.first_name ? rowData.data.first_name: ''} ${rowData.data.last_name ? rowData.data.last_name : ''}`.trim();
+        const name2 = `${rowData.data.last_name2 ? rowData.data.last_name2 : ''}${rowData.data.first_name2 ? rowData.data.first_name2: ''}`.trim();
         const attrs = {
           "class": "text-info",
-          "text": rowData.data.infos.names.original,
+          "text": `${name1 ? name1 : ''} ${name2 ? name2 : ''}`.trim(),
           "href": Attendees.dataAttendees.attendeeUrn + rowData.data.id,
         };
         $($('<a>', attrs)).appendTo(container);
