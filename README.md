@@ -154,9 +154,9 @@ All libraries are included to facilitate offline development
   - [ ] find library and install: django-pghistory maybe
   - [ ] each model level version
   - [ ] document aggregation level version
-- [ ] upgrade to Django 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
+- [ ] upgrade to Django 3.1, 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
    -[ ] use Django JSONField instead of Postgres JSONField
-   -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage)
+   -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage, but web_socket can be only with use_async)
 - [ ] deploy to AWS EC2
 - [ ] Export directory booklet pdf
 - [ ] i18n Translation on model data, django-parler maybe?
