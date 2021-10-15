@@ -69,9 +69,29 @@
 ## data models
 https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
-## How to start dev env
+## [How to start dev env on Windows](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html)
 
-All libraries are included to facilitate offline development
+All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
+* Install [git](https://git-scm.com/downloads) and [docker for windows](https://docs.docker.com/install), which includes docker-compose.
+* clone the repo by `git clone git@github.com:xjlin0/attendees30.git` and cd the repo directory `attendees30`
+* create a fake [sendgrid credential](https://docs.gravityforms.com/sendgrid-api-key/) files by `start notepad .envs/.local/sendgrid.env` and save the following fake content.
+```
+SENDGRID_API_KEY=FAKE
+DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
+```
+* build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
+* upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
+* create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
+* import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
+* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin/users/user/
+* use browser to open http://192.168.99.100:8008/ and http://192.168.99.100:8025/
+* Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
+* Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
+* remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
+
+## How to start dev env on MacOS
+
+All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
 * check local python version, Django coockie cutter is developed with Python 3
 * There is no need to have local Django or Postgres running, but on MacOS you will need Virtualbox from https://www.virtualbox.org
@@ -80,6 +100,11 @@ All libraries are included to facilitate offline development
 * start the local docker machine by `sudo systemctl start docker`
 * start a docker machine named "dev" by `docker-machine create --driver virtualbox dev`
 * get all env variables from "dev" by `eval $(docker-machine env dev)`
+* create a fake sendgrid credential files by `vi .envs/.local/sendgrid.env` and save the following fake content.
+```
+SENDGRID_API_KEY=FAKE
+DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
+```
 * build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
 * create migration files by `docker-compose -f local.yml run --rm django python manage.py makemigrations`
 * migrate db by `docker-compose -f local.yml run --rm django python manage.py migrate`
@@ -87,8 +112,8 @@ All libraries are included to facilitate offline development
 * create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
 * import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
   (data were created by `docker-compose -f local.yml run django python manage.py dumpdata --exclude users.user --exclude admin.logentry --exclude sessions.session --exclude contenttypes.contenttype --exclude sites.site --exclude account.emailaddress --exclude account.emailconfirmation --exclude socialaccount.socialtoken --exclude auth.permission --indent 2 > fixtures/db_seed2.json`)
-* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8000/admin/users/user/
-* use browser to open http://192.168.99.100:8000/ and http://192.168.99.100:8025/
+* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin/users/user/
+* use browser to open http://192.168.99.100:8008/ and http://192.168.99.100:8025/
 * Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
