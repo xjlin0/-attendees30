@@ -7,25 +7,20 @@
 {% block extra_css %}
   <link rel="preload"
         as="style"
-        href="https://cdn3.devexpress.com/jslib/21.1.6/css/dx.common.css"
+        href="{% static 'devextreme/dx.common.css' %}"
         onload="this.rel='stylesheet'">
 
   <link rel="preload"
         as="style"
-        href="https://cdn3.devexpress.com/jslib/21.1.6/css/dx.light.compact.css"
+        href="{% static 'devextreme/dx.light.compact.css' %}"
         onload="this.rel='stylesheet'">
 {% endblock extra_css %}
 
 {% block extra_head %}
-<!--  <script defer-->
-<!--          type="text/javascript"-->
-<!--          src="{% static 'devextreme/dx.all.js' %}"-->
-<!--          integrity="sha384-75bK4ZLEELlSEhSd8ULWOVWeCIoijhm7UqBORRx8R8emDvmmBq6sCWelRfb/sy1b sha512-4lb4h12Ql1C0JLhPnJWhEL2X6HrwrCP4XGJXorIxtV5xGUNfC6bmz/9A64bhERmYzi6UCU6d8yGKXIBQQ/iH9Q=="-->
-<!--          crossorigin="anonymous">-->
   <script defer
           type="text/javascript"
-          src="https://cdn3.devexpress.com/jslib/21.1.6/js/dx.all.js"
-          integrity="sha384-75bK4ZLEELlSEhSd8ULWOVWeCIoijhm7UqBORRx8R8emDvmmBq6sCWelRfb/sy1b sha512-4lb4h12Ql1C0JLhPnJWhEL2X6HrwrCP4XGJXorIxtV5xGUNfC6bmz/9A64bhERmYzi6UCU6d8yGKXIBQQ/iH9Q=="
+          src="{% static 'devextreme/dx.all.min.js' %}"
+          integrity="sha256-3yi1QgXajjT5E8ZOUey5/GJwHdmtr3I3mQmYuKsid8g="
           crossorigin="anonymous">
   </script>
 
