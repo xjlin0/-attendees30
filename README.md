@@ -72,6 +72,22 @@
 ## data models
 https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
 
+## [How to start dev env on Linux](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html)
+* double check if the dev port 8008 is open on fire wall
+* install docker and docker-compose, such as `sudo apt  install docker docker-compose`
+* add web user to the docker group by `sudo usermod -aG docker <<web user name>>  && sudo service docker restart`
+* Assuming git is available, git clone the repo by `git clone https://github.com/xjlin0/attendees30.git`
+* create a fake [sendgrid credential](https://docs.gravityforms.com/sendgrid-api-key/) files by `vi .envs/.local/sendgrid.env` and save the following fake content.
+```
+SENDGRID_API_KEY=FAKE
+DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
+```
+* build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
+* upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
+* create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
+* import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
+* go to Django admin to add the first organization and all groups to the first user (superuser) at http://<<your domain name>>:8008/admin/users/user/
+
 ## [How to start dev env on Windows](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html)
 
 All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.

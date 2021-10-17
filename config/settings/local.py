@@ -12,7 +12,7 @@ SECRET_KEY = env(
     default="fVkuTQ5d3QS47k5kR5E2Mfwhi3z2UcICZwuKir9b5ueYV0ojePSC5yC6yTULDWwv",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "192.168.99.100", "192.168.1.116"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "192.168.99.100", "192.168.1.116", "'cfcc-test.tk", "xjlin0.tk"]
 
 # CACHES
 # ------------------------------------------------------------------------------
