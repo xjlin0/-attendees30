@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_head %}
+<script defer
+        type="text/javascript"
+        src="{% static 'js/users/profile.js' %}">
+</script>
+{% endblock extra_head %}
+
 {% block title %}User: {{ object.username }}{% endblock %}
 
 {% block content %}
@@ -27,6 +34,7 @@
   </div>
 
 </div>
+<p id="browser-detection">Your browser does not support JavaScript</p>
 <!-- End Action buttons -->
 {% endif %}
 

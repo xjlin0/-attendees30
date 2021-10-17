@@ -1,4 +1,7 @@
-# attendee
+# Attendees
+## An app for general event management
+- Tracking who/when/where/what of any activities with attendance records.
+- Monolith architecture based on dockers of [Python Django](https://github.com/pydanny/cookiecutter-django) and Javascript([DevExtreme](https://js.devexpress.com/Licensing/#NonCommercial)) on Postgres & Redis
 
 <img src="draft_screenshot.png"  alt="participations_screenshot_draft" width="100%"/>
 
