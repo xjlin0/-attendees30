@@ -1,7 +1,7 @@
 # Attendees
 ## An app for general event management
 - Tracking who/when/where/what of any activities with attendance records.
-- Monolith architecture based on dockers of [Python Django](https://github.com/pydanny/cookiecutter-django) and Javascript([DevExtreme](https://js.devexpress.com/Licensing/#NonCommercial)) on Postgres & Redis
+- Monolith architecture based on dockers of [Python Django](https://github.com/pydanny/cookiecutter-django) and Javascript([DevExtreme](https://js.devexpress.com/Licensing/#NonCommercial)) on Postgres/PostGIS & Redis
 
 <img src="draft_screenshot.png"  alt="participations_screenshot_draft" width="100%"/>
 
@@ -71,6 +71,90 @@
 
 ## data models
 https://dbdiagram.io/d/5d5ff66eced98361d6dddc48
+
+## [Deploy on Linux](https://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html)
+
+<details>
+  <summary>Click to expand all</summary>
+
+* if other staging ran previously (such as local), please remove it like `docker-compose -f local.yml down -v`
+* double check the domain name in `compose/production/traefik/traefik.yml` and `attendees/contrib/sites/migrations/0003_set_site_domain_and_name.py`
+* setup env variables for django secret key:
+```
+export DJANGO_ALLOWED_HOSTS=("your.domain.name")
+export DJANGO_SECRET_KEY=<<production Django secret key>>
+```
+* install docker and docker-compose, such as `sudo apt  install docker docker-compose`
+* add web user to the docker group by `sudo usermod -aG docker <<web user name>>  && sudo service docker restart`
+* Assuming git is available, git clone the repo by `git clone https://github.com/xjlin0/attendees30.git`
+* create a production setting by `vi .envs/.production/.django` and save the following content.
+```
+# General
+# ------------------------------------------------------------------------------
+# DJANGO_READ_DOT_ENV_FILE=True
+DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_SECRET_KEY=<<your django secret key>>
+DJANGO_ADMIN_URL=<<any cryptic string as admin path>>
+DJANGO_ALLOWED_HOSTS=<<your domain name>>
+ENV_NAME=production
+# Security
+# ------------------------------------------------------------------------------
+# TIP: better off using DNS, however, redirect is OK too
+DJANGO_SECURE_SSL_REDIRECT=False
+# SSL_CERT_DIR=/etc/ssl/certs
+# SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+# Email
+# ------------------------------------------------------------------------------
+DJANGO_SERVER_EMAIL=
+
+MAILGUN_API_KEY=
+MAILGUN_DOMAIN=
+
+
+# AWS
+# ------------------------------------------------------------------------------
+DJANGO_AWS_ACCESS_KEY_ID=
+DJANGO_AWS_SECRET_ACCESS_KEY=
+DJANGO_AWS_STORAGE_BUCKET_NAME=
+
+# django-allauth
+# ------------------------------------------------------------------------------
+DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+
+# Gunicorn
+# ------------------------------------------------------------------------------
+WEB_CONCURRENCY=4
+
+
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Celery
+# ------------------------------------------------------------------------------
+
+# Flower
+CELERY_FLOWER_USER=<<YOUR CELERY_FLOWER_USER NAME>>
+CELERY_FLOWER_PASSWORD=<<YOUR CELERY_FLOWER_PASSWORD>>
+
+```
+* create a production setting by `vi .envs/.production/.postgres` and save the following content.
+```
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=attendees
+POSTGRES_USER=<<production database user name>>
+POSTGRES_PASSWORD=<<production database user password>>
+```
+* create a fake [sendgrid credential](https://docs.gravityforms.com/sendgrid-api-key/) files by `vi .envs/.local/sendgrid.env` and save the following fake content.
+```
+SENDGRID_API_KEY=FAKE
+DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
+```
+* build and start the local machine by `docker-compose -f production.yml build`
+</details>
 
 ## [How to start dev env on Linux](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html)
 * double check if the dev port 8008 is open on fire wall
