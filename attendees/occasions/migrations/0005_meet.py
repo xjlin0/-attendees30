@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                 ('site_type', models.ForeignKey(help_text='site: django_content_type id for table name', on_delete=models.SET(0), to='contenttypes.ContentType')),
                 ('site_id', models.CharField(default='0', max_length=36)),
                 ('assembly', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='occasions.Assembly')),
+                ('major_character', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='occasions.Character')),
                 ('slug', models.SlugField(max_length=50, unique=True)),
                 ('display_name', models.CharField(blank=True, null=True, db_index=True, help_text='The Rock, Little Foot, singspiration, A/V control, etc.', max_length=50)),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"info": "...", "url": "https://..."}. Please keep {} here even no data', null=True)),

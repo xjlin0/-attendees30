@@ -1163,7 +1163,7 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendings/?characters=d7c8Fd_cfcch_congregation_data_general",
+      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendings/?characters=d7c8Fd_cfcch_congregation_data_roaster",
       "url_name": "datagrid_assembly_data_attendings",
       "display_name": "\u6703\u773e\u53c3\u8207 attending",
       "display_order": 3200,
@@ -1518,7 +1518,7 @@
       "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "CFCCH",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
           "attendance_character_to_past_categories": {
             "baptisee": 5
@@ -5949,7 +5949,7 @@
       "assembly": 5,
       "display_name": "\u5e38\u505a\u79ae\u62dc\u6703\u773e",
       "display_order": 0,
-      "slug": "d7c8Fd_cfcch_congregation_data_general",
+      "slug": "d7c8Fd_cfcch_congregation_data_roaster",
       "info": null,
       "type": "audience"
     }
@@ -6105,6 +6105,21 @@
     }
   },
   {
+    "model": "occasions.character",
+    "pk": 26,
+    "fields": {
+      "created": "2021-10-22T15:09:58.833Z",
+      "modified": "2021-10-22T15:18:05.224Z",
+      "is_removed": false,
+      "assembly": 5,
+      "display_name": " visitor",
+      "display_order": 0,
+      "slug": "d7c8Fd_cfcch_congregation_data_visitor",
+      "info": null,
+      "type": "internal"
+    }
+  },
+  {
     "model": "occasions.meet",
     "pk": -1,
     "fields": {
@@ -6112,6 +6127,7 @@
       "modified": "2021-04-08T14:03:35.930Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": null,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
@@ -6134,6 +6150,7 @@
       "modified": "2021-04-08T14:03:55.729Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 25,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
@@ -6156,6 +6173,7 @@
       "modified": "2021-04-08T16:37:22.469Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": 1,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:44Z",
@@ -6177,6 +6195,7 @@
       "modified": "2021-04-08T16:37:34.616Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": 1,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:56Z",
@@ -6198,6 +6217,7 @@
       "modified": "2021-04-08T14:04:29.830Z",
       "is_removed": false,
       "assembly": 2,
+      "major_character": 6,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:55:20Z",
@@ -6219,6 +6239,7 @@
       "modified": "2021-04-08T16:40:16.599Z",
       "is_removed": false,
       "assembly": 4,
+      "major_character": 7,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:19Z",
@@ -6240,6 +6261,7 @@
       "modified": "2021-04-08T16:37:02.414Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:54:57Z",
@@ -6261,6 +6283,7 @@
       "modified": "2021-04-08T16:36:49.060Z",
       "is_removed": false,
       "assembly": 3,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:03Z",
@@ -6282,6 +6305,7 @@
       "modified": "2021-04-08T14:01:38.639Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 15,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
@@ -6304,6 +6328,7 @@
       "modified": "2021-04-08T16:13:39.869Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 23,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:54:35Z",
@@ -6325,6 +6350,7 @@
       "modified": "2021-04-08T16:14:05.544Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 22,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:54:24Z",
@@ -6346,6 +6372,7 @@
       "modified": "2021-04-08T16:32:15.494Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:28:40Z",
@@ -6367,6 +6394,7 @@
       "modified": "2021-04-08T16:34:17.114Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:30:54Z",
@@ -6388,6 +6416,7 @@
       "modified": "2021-04-08T16:34:34.804Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:34:41Z",
@@ -6409,6 +6438,7 @@
       "modified": "2021-04-08T16:34:54.420Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:28:13Z",
@@ -6430,6 +6460,7 @@
       "modified": "2021-04-08T16:35:15.657Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:32:20Z",
@@ -6451,6 +6482,7 @@
       "modified": "2021-04-08T16:35:33.036Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:38:38Z",
@@ -6472,12 +6504,35 @@
       "modified": "2021-10-22T06:23:39.106Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 24,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
       "finish": "2200-05-12T15:54:46Z",
       "display_name": "baptized \u5df2\u53d7\u6d17",
       "slug": "d7c8Fd_cfcch_congregation_baptized",
+      "infos": {
+        "default_time_zone": "America/Los_Angeles"
+      },
+      "site_type": 35,
+      "site_id": "1"
+    }
+  },
+  {
+    "model": "occasions.meet",
+    "pk": 17,
+    "fields": {
+      "created": "2020-10-09T22:34:04.419Z",
+      "modified": "2021-10-22T06:23:39.106Z",
+      "is_removed": false,
+      "assembly": 5,
+      "major_character": 25,
+      "shown_audience": true,
+      "audience_editable": false,
+      "start": "2020-05-12T14:54:44Z",
+      "finish": "2200-05-12T15:54:46Z",
+      "display_name": "baptized \u5df2\u4fe1\u4e3b",
+      "slug": "d7c8Fd_cfcch_congregation_believer",
       "infos": {
         "default_time_zone": "America/Los_Angeles"
       },

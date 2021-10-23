@@ -22,6 +22,7 @@ class Meet(TimeStampedModel, SoftDeletableModel, Utility):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     assembly = models.ForeignKey('occasions.Assembly', null=True, blank=True, on_delete=models.SET_NULL)
     attendings = models.ManyToManyField('persons.Attending', through='persons.AttendingMeet', related_name="attendings")
+    major_character = models.ForeignKey('occasions.Character', null=True, blank=True, on_delete=models.SET_NULL)
     shown_audience = models.BooleanField('show AttendingMeet to participant?', null=False, blank=False, db_index=True, default=True, help_text="[some meets are only for internal records] show the AttendingMeet to attendee?")
     audience_editable = models.BooleanField('participant can edit AttendingMeet?', null=False, blank=False, default=True, help_text="[some meets are editable only by coworkers] participant can edit AttendingMeet?")
     start = models.DateTimeField(null=False, blank=False, default=Utility.now_with_timezone)

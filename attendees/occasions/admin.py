@@ -119,11 +119,11 @@ class MeetAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     fieldsets = (
         (None, {"fields": (tuple(['start', 'finish', 'slug']),
-                           tuple(['display_name', 'infos', 'shown_audience', 'audience_editable']),
+                           tuple(['display_name', 'major_character', 'infos', 'shown_audience', 'audience_editable']),
                            tuple(['site_type', 'assembly', 'site_id']),
                            tuple(['id', 'created', 'modified']),
                            ),
-                'classes': ['hijack', ],
+                # 'classes': ['hijack', ],  # the above entire fieldset
                 }),
     )
 
