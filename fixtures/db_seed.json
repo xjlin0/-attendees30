@@ -6112,7 +6112,7 @@
       "modified": "2021-10-22T15:18:05.224Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": " visitor",
+      "display_name": "\u8a2a\u5ba2 visitor",
       "display_order": 0,
       "slug": "d7c8Fd_cfcch_congregation_data_visitor",
       "info": null,
@@ -6302,7 +6302,7 @@
     "pk": 7,
     "fields": {
       "created": "2020-05-09T22:34:04.419Z",
-      "modified": "2021-04-08T14:01:38.639Z",
+      "modified": "2021-10-23T18:06:43.299Z",
       "is_removed": false,
       "assembly": 5,
       "major_character": 15,
@@ -6310,7 +6310,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
       "finish": "2200-05-12T15:54:46Z",
-      "display_name": "\u4e3b\u65e5\u5d07\u62dc Sunday service roaster",
+      "display_name": "\u5e38\u505a\u79ae\u62dc Worship roaster",
       "slug": "d7c8Fd_cfcch_congregation_roaster",
       "infos": {
         "default_time_zone": "America/Los_Angeles",
@@ -6501,7 +6501,7 @@
     "pk": 16,
     "fields": {
       "created": "2020-10-09T22:34:04.419Z",
-      "modified": "2021-10-22T06:23:39.106Z",
+      "modified": "2021-10-23T18:08:26.928Z",
       "is_removed": false,
       "assembly": 5,
       "major_character": 24,
@@ -6509,7 +6509,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
       "finish": "2200-05-12T15:54:46Z",
-      "display_name": "baptized \u5df2\u53d7\u6d17",
+      "display_name": "\u5df2\u53d7\u6d17 baptized",
       "slug": "d7c8Fd_cfcch_congregation_baptized",
       "infos": {
         "default_time_zone": "America/Los_Angeles"
@@ -6523,7 +6523,7 @@
     "pk": 17,
     "fields": {
       "created": "2020-10-09T22:34:04.419Z",
-      "modified": "2021-10-22T06:23:39.106Z",
+      "modified": "2021-10-23T18:08:14.380Z",
       "is_removed": false,
       "assembly": 5,
       "major_character": 25,
@@ -6531,7 +6531,7 @@
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
       "finish": "2200-05-12T15:54:46Z",
-      "display_name": "baptized \u5df2\u4fe1\u4e3b",
+      "display_name": "\u5df2\u4fe1\u4e3b believer",
       "slug": "d7c8Fd_cfcch_congregation_believer",
       "infos": {
         "default_time_zone": "America/Los_Angeles"
