@@ -21,7 +21,7 @@ def post_save_handler_for_past_to_create_attendingmeet(sender, **kwargs):
         organization = created_past.organization
         category_id = str(created_past.category.id)  # json can only have string as key, not numbers
         meet_id = organization.infos.get('settings', {}).get('past_category_to_attendingmeet_meet', {}).get(category_id)
-        if meet_id:
+        if meet_id and 'importer' not in created_past.infos.get('created_reason', ''):  # skip for access importer
             meet = Meet.objects.filter(pk=meet_id).first()
             if meet:
                 target_attendee = created_past.subject

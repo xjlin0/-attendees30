@@ -2968,6 +2968,9 @@ Attendees.datagridUpdate = {
                       of: window,
                     },
                   }, 'success', 2000);
+                if (args.type === 'status') {
+                  Attendees.datagridUpdate.attendingMeetDatagrid.refresh();
+                }
               },
             });
           },

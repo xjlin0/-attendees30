@@ -480,7 +480,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         #         }
                         #     )  # don't add infos__access_address_id so future query will only get one at family level
                     else:
-                        print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
+                        print("\nBad data, cannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 
                 update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, roaster_character, roaster_gathering)
             else:
@@ -736,7 +736,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
         meet=visitor_meet,
         defaults={
             'character': general_character,
-            'category': 'primary',
+            'category': 'importer',
             'start': visitor_meet.start,
             'finish': visitor_meet.finish,
         },
@@ -748,7 +748,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
             meet=roaster_meet,
             defaults={
                 'character': general_character,
-                'category': 'primary',
+                'category': 'importer',
                 'start': roaster_meet.start,
                 'finish': datetime.now(pdt) + timedelta(365),  # whoever don't attend for a year won't be counted anymore
             },
@@ -808,7 +808,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             'attending': data_attending,
             'meet': member_meet,
             'character': member_character,
-            'category': 'active',
+            'category': 'active',  # member category has to be active or inactive
             'start': member_since_or_now,
             'finish': member_meet.finish,
         }
@@ -840,6 +840,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
         )
 
         member_since_text = Utility.presence(attendee.progressions.get('member_since'))
+        member_since_reason = ', member since ' + member_since_text if member_since_text else ''
         Past.objects.update_or_create(
             organization=data_assembly.division.organization,
             content_type=attendee_content_type,
@@ -848,7 +849,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             display_name="會員已信主 member's believer",
             when=None,  # can't find the exact receive date just by membership
             infos={
-                'created_reason': 'CFCCH membership from importer' + (', member since ' + member_since_text) if member_since_text else '',
+                'created_reason': 'CFCCH membership from importer' + member_since_reason,
             },
         )
         Past.objects.update_or_create(
@@ -859,7 +860,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             display_name="會員已受浸 member's baptized",
             when=None,  # can't find the exact baptism date just by membership
             infos={
-                'created_reason': 'CFCCH membership from importer' + (', member since ' + member_since_text) if member_since_text else '',
+                'created_reason': 'CFCCH membership from importer' + member_since_reason,
             },
         )
 
@@ -870,7 +871,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
                 'attending': data_attending,
                 'meet': believer_meet,
                 'character': believer_character,
-                'category': 'believer',
+                'category': 'importer',
                 'start': member_since_or_now,
                 'finish': believer_meet.finish,
             },
@@ -883,7 +884,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
                 'attending': data_attending,
                 'meet': baptized_meet,
                 'character': baptisee_character,
-                'category': 'baptized',
+                'category': 'importer',
                 'start': member_since_or_now,
                 'finish': baptized_meet.finish,
             },
@@ -939,7 +940,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'attending': directory_attending,
                         'meet': directory_meet,
                         'character': directory_character,
-                        'category': 'secondary',
+                        'category': 'importer',
                         'start': directory_gathering.start,
                         'finish': directory_gathering.finish,
                     }
