@@ -849,7 +849,8 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             display_name="會員已信主 member's believer",
             when=None,  # can't find the exact receive date just by membership
             infos={
-                'created_reason': 'CFCCH membership from importer' + member_since_reason,
+                **Utility.relationship_infos(),
+                'comment': 'CFCCH membership from importer' + member_since_reason,
             },
         )
         Past.objects.update_or_create(
@@ -860,7 +861,8 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             display_name="會員已受浸 member's baptized",
             when=None,  # can't find the exact baptism date just by membership
             infos={
-                'created_reason': 'CFCCH membership from importer' + member_since_reason,
+                **Utility.relationship_infos(),
+                'comment': 'CFCCH membership from importer' + member_since_reason,
             },
         )
 

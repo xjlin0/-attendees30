@@ -3151,6 +3151,7 @@ Attendees.datagridUpdate = {
                     of: window,
                   },
                 }, 'success', 2000);
+              Attendees.datagridUpdate.statusDatagrid.refresh();
             },
           });
         },

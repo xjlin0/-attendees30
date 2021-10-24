@@ -27,6 +27,6 @@ def common_variables(request):  # TODO move organization info to view
         'user_organization_name': user_organization_name,
         'user_organization_name_slug': user_organization_name_slug,
         'user_api_allowed_url_name': json.dumps({name: True for name in request.user.allowed_url_names()} if hasattr(request.user, 'allowed_url_names') else {}),
-        'user_attendee_id': request.user.attendee_uuid_str() if hasattr(request.user, 'attendee_uuid_str') else None,  # could be different when admin browser others
+        'user_attendee_id': request.user.attendee_uuid_str() if hasattr(request.user, 'attendee_uuid_str') else None,  # Anonymous User does not have attendee_uuid_str, also could be different when admin browser others
         'main_menus': main_menus,
     }

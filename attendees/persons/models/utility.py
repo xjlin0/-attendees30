@@ -49,7 +49,9 @@ class Utility:
         return {
                     "default_time_zone": settings.CLIENT_DEFAULT_TIME_ZONE,
                     "settings": {
-                      "past_category_to_attendingmeet_meet":  {}
+                      "attendee_to_attending": True,
+                      "past_category_to_attendingmeet_meet": {},
+                      "attendingmeet_meet_to_past_category": {},
                     },
                     "groups_see_all_meets_attendees": [],
                     "contacts": {},

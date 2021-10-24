@@ -256,6 +256,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [x] [PR#16](https://github.com/xjlin0/attendees30/pull/16) delete function for human error
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
+  - [ ] some relationship may be internal and only shows to cowokers/admin, in category/boolean/infos column?
   - [ ] Rich format of note for Past on UI?
 - [x] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages
@@ -288,8 +289,8 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [ ] each model level version
   - [ ] document aggregation level version
 - [ ] upgrade to Django 3.1, 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
-   -[ ] use Django JSONField instead of Postgres JSONField
-   -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage, but web_socket can be only with use_async)
+   -[ ] 3.1: use Django JSONField instead of Postgres JSONField
+   -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage in Mac only, but web_socket can be only with use_async)
 - [ ] deploy to AWS EC2
    - [x] [PR#25](https://github.com/xjlin0/attendees30/pull/25) ensure libraries loaded other than MacOS
 - [ ] Export pdf

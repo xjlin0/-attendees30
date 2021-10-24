@@ -1497,6 +1497,8 @@
       "infos": {
         "settings": {
           "opencc_convert": true,
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {},
           "past_category_to_attendingmeet_meet": {}
         },
         "acronym": null,
@@ -1520,6 +1522,11 @@
       "infos": {
         "settings": {
           "opencc_convert": true,
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {
+            "17": 4,
+            "16": 5
+          },
           "past_category_to_attendingmeet_meet": {
             "4": 17,
             "5": 16
@@ -1562,6 +1569,8 @@
       "infos": {
         "settings": {
           "opencc_convert": true,
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {},
           "past_category_to_attendingmeet_meet": {}
         },
         "acronym": "Kingdom",
