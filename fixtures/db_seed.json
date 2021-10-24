@@ -1495,9 +1495,9 @@
       "slug": "a8dE2e_none",
       "display_name": "No organization assigned",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {}
+          "past_category_to_attendingmeet_meet": {}
         },
         "acronym": null,
         "contacts": {},
@@ -1520,8 +1520,9 @@
       "infos": {
         "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {
-            "baptisee": 5
+          "past_category_to_attendingmeet_meet": {
+            "4": 17,
+            "5": 16
           }
         },
         "acronym": "CFCCH",
@@ -1559,9 +1560,9 @@
       "slug": "faBd6C_heaven",
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {}
+          "past_category_to_attendingmeet_meet": {}
         },
         "acronym": "Kingdom",
         "contacts": {},

@@ -7,7 +7,8 @@ from rest_framework import viewsets
 from django.db.models import Q
 from rest_framework.exceptions import PermissionDenied
 
-from attendees.persons.models import Attendee, Utility, Past
+from attendees.occasions.models import Meet
+from attendees.persons.models import Attendee, Utility, Past, AttendingMeet
 from attendees.persons.serializers import PastSerializer
 from attendees.users.authorization.route_guard import SpyGuard
 from attendees.users.models import MenuAuthGroup
@@ -66,7 +67,26 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
             return qs.exclude(category__display_name=Past.COUNSELING)
 
     def perform_create(self, serializer):  #SpyGuard ensured requester & target_attendee belongs to the same org.
-        serializer.save(organization=self.request.user.organization)
+        user_organization = self.request.user.organization
+        string_category_id = str(self.request.data['category'])
+        creating_meet_id = user_organization.infos['settings']['past_category_to_attendingmeet_meet'][string_category_id]
+
+        if creating_meet_id:
+            target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+            first_attending = target_attendee.attendings.first()
+            if first_attending:
+                meet = Meet.objects.get(pk=creating_meet_id)
+                defaults = {'character': meet.major_character, 'finish': Utility.forever()}
+                if self.request.data['when']:
+                    defaults['start'] = self.request.data['when']
+                Utility.update_or_create_last(
+                    AttendingMeet,
+                    update=False,
+                    filters={'meet': meet, 'attending': first_attending, 'is_removed': False},
+                    defaults=defaults,
+                )
+
+        serializer.save(organization=user_organization)
 
 
 api_categorized_pasts_viewset = ApiCategorizedPastsViewSet

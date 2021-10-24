@@ -48,8 +48,8 @@ class Utility:
     def organization_infos():
         return {
                     "default_time_zone": settings.CLIENT_DEFAULT_TIME_ZONE,
-                    "flags": {
-                      "attendance_character_to_past_categories":  {}
+                    "settings": {
+                      "past_category_to_attendingmeet_meet":  {}
                     },
                     "groups_see_all_meets_attendees": [],
                     "contacts": {},
@@ -141,6 +141,29 @@ class Utility:
 
         return None
 
+    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None):
+        """
+        Sililar to update_or_create(), it'll search by the filters dictionary, get the last by
+        order_by, update its values specified by defaults dictionary, return created and obj
+
+        :param order_key: order by condition.
+        :param update: boolean: do you want to update the object if any matched?
+        :param defaults: new values will be updated to the matched object
+        :param filters:
+        :return: tuple of updated/created object, created boolean
+        """
+        obj = klass.objects.filter(**filters).order_by(order_key).last()
+        created = False
+        if obj:
+            if update:
+                for key, value in defaults.items():
+                    setattr(obj, key, value)
+        else:
+            filters.update(defaults)
+            obj = klass(**filters)
+            created = True
+        obj.save()
+        return obj, created
 
     # @property
     # def notes(self):
