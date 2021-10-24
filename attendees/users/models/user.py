@@ -72,7 +72,7 @@ class User(AbstractUser):
         return self.belongs_to_groups_of(organization_counselor_groups)
 
     def attendee_uuid_str(self):
-        return str(self.attendee.id) if self.attendee else ''
+        return str(self.attendee.id) if hasattr(self, 'attendee') else ''
 
     def attend_divisions_of(self, division_slugs):
         return self.attendee and self.attendee.attending_set.filter(divisions__slug__in=division_slugs).exists()

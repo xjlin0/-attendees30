@@ -48,7 +48,7 @@ class PastAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        counseling_category = Category.objects.get(type='note', display_name=Past.COUNSELING)
+        counseling_category = Category.objects.filter(type='note', display_name=Past.COUNSELING).first()
 
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
@@ -170,7 +170,7 @@ class NoteAdmin(SummernoteModelAdmin):
 
     def get_queryset(self, request):  # even super user cannot see all in DjangoAdmin
         qs = super().get_queryset(request)
-        counseling_category = Category.objects.get(type='note', display_name=Note.COUNSELING)
+        counseling_category = Category.objects.filter(type='note', display_name=Note.COUNSELING).first()
 
         if request.resolver_match.func.__name__ == 'changelist_view':
             messages.warning(request, 'Not all, but only those notes accessible to you will be listed here.')
