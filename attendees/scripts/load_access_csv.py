@@ -1010,7 +1010,7 @@ def update_attendee_photo(attendee, photo_names):
 
 
 def return_two_phones(phones):
-    cleaned_phones = list(set([re.sub("[^0-9\+]+", "", p) for p in phones if (p and not p.isspace())]))
+    cleaned_phones = list(set([re.sub("[^0-9\+()-]+", "", p) for p in phones if (p and not p.isspace())]))
     return (cleaned_phones + [None, None])[0:2]
 
 
@@ -1028,12 +1028,16 @@ def save_two_phones(attendee, phone):
 
 def add_int_code(phone, default='+1'):
     if phone and not phone.isspace():
+        if '-' not in phone and len(phone) == 10:
+            phone = f'({phone[0:3]}){phone[3:6]}-{phone[6:10]}'
+
         if '+' in phone:
             return phone
         else:
             return default + phone
     else:
         return None
+
 
 def check_all_headers():
     #households_headers = ['HouseholdID', 'HousholdLN', 'HousholdFN', 'SpouseFN', 'AddressID', 'HouseholdPhone', 'HouseholdFax', 'AttendenceCount', 'FlyerMailing', 'CardMailing', 'UpdateDir', 'PrintDir', 'LastUpdate', 'HouseholdNote', 'FirstDate', '海沃之友', 'Congregation']

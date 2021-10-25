@@ -196,7 +196,7 @@ Attendees.datagridUpdate = {
         elementAttr: {
           class: 'attendee-form-submits',  // for toggling editing mode
         },
-        text: 'Add more contact',
+        text: 'Add more contacts',
         icon: 'email',  // or 'fas fa-comment-dots'
         stylingMode: 'outlined',
         type: 'success',
@@ -586,7 +586,6 @@ Attendees.datagridUpdate = {
         colSpan: 24,
         colCount: 24,
         cssClass: 'h6 not-shrinkable',
-        caption: ' ',
         itemType: 'group',
         items: [
           {
@@ -907,11 +906,13 @@ Attendees.datagridUpdate = {
       {
         colSpan: 7,
         dataField: 'actual_birthday',
+        helpText: 'month / day / year',
         editorType: 'dxDateBox',
         label: {
           text: 'Real birthday',
         },
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
           elementAttr: {
             title: 'month, day and year are all required',
@@ -942,35 +943,37 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: 'infos.contacts.phone1',
+        dataField: 'infos.contacts.phone1',  // DxTextBox maskRules can't accept variable length of country codes
+        helpText: 'format: +1(510)123-4567',
         label: {
           text: 'phone1',
         },
         editorOptions: {
-          placeholder: 'begin with +1',
+          placeholder: '+1(000)000-0000',
         },
         validationRules: [
           {
             type: 'pattern',
-            pattern: /^(\+\d{1,3})([-,0-9a-zA-Z]{10,})$/,
-            message: "Tel# must begin with '+' national&area code like +15108870152. No parenthesis",
+            pattern: /^(\+\d{1,3})(\(\d{1,3}\))([0-9a-zA-Z]{2,6})-([,0-9a-zA-Z]{3,10})$/,
+            message: "Must be '+' national&area code like +1(510)123-4567,890 Comma for extension",
           },
         ],
       },
       {
         colSpan: 7,
         dataField: 'infos.contacts.phone2',
+        helpText: 'ie. +1(000)000-0000',
         label: {
           text: 'phone2',
         },
         editorOptions: {
-          placeholder: 'begin with +1',
+          placeholder: '+1(000)000-0000',
         },
         validationRules: [
           {
             type: 'pattern',
-            pattern: /^(\+\d{1,3})([-,0-9a-zA-Z]{10,})$/,
-            message: "Tel# must begin with '+' national&area code like +15108870152. No parenthesis",
+            pattern: /^(\+\d{1,3})(\(\d{1,3}\))([0-9a-zA-Z]{2,6})-([,0-9a-zA-Z]{3,10})$/,
+            message: "Must be '+' national&area code like +1(510)123-4567,890 Comma for extension",
           },
         ],
       },
@@ -987,6 +990,12 @@ Attendees.datagridUpdate = {
         label: {
           text: 'email1',
         },
+        validationRules: [
+          {
+            type: "email",
+            message: "Email is invalid"
+          },
+        ],
       },
       {
         colSpan: 7,
@@ -994,6 +1003,12 @@ Attendees.datagridUpdate = {
         label: {
           text: 'email2',
         },
+        validationRules: [
+          {
+            type: "email",
+            message: "Email is invalid"
+          },
+        ],
       },
       {
         colSpan: 7,
