@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from attendees.occasions.models import Meet
-from .models import Attendee, AttendingMeet, Category, Past, Utility
+from attendees.persons.models import Attendee, Attending, AttendingMeet, Category, Past, Utility
 
 
 @receiver(post_save, sender=Past)
@@ -76,7 +76,31 @@ def post_save_handler_for_attendingmeet_to_create_past(sender, **kwargs):
                 )
 
 
-# @receiver(post_save, sender=Attendee)
-# def post_save_handler_for_attendee_to_attending(sender, **kwargs):
-#     print("hi post_save_handler_for_attendee_to_attending here is kwargs:, ", kwargs)
-#     pass
+@receiver(post_save, sender=Attendee)
+def post_save_handler_for_attendee_to_attending(sender, **kwargs):
+    """
+    To let coworker easily create AttendingMeet/Past, here is automatic creation
+    of Attending after creating Attendee by settings from Organization.infos
+
+    :param sender: sender Class, Attendee
+    :param kwargs:
+    :return: None
+    """
+    if not kwargs.get('raw') and kwargs.get('created'):  # to skip extra creation in loaddata seed
+        created_attendee = kwargs.get('instance')
+        organization = created_attendee.division.organization  # Maybe 0 in access importer
+
+        if 'importer' not in created_attendee.infos.get('created_reason', '') and organization.infos.get('settings', {}).get('attendee_to_attending'):  # skip for access importer
+            defaults = {
+                'category': 'auto-created',
+                'infos': {
+                    'created_reason': 'Auto created by Attendee creation',
+                },
+            }
+
+            Utility.update_or_create_last(
+                Attending,
+                update=False,  # order_key='modified',  # Past id is UUID and out of order
+                filters={'attendee': created_attendee, 'is_removed': False},
+                defaults=defaults,
+            )

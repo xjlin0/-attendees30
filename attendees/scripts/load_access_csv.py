@@ -384,12 +384,14 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
                     'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                     'infos': {
+                        **Utility.attendee_infos(),
                         'fixed': {
                             'access_people_household_id': household_id,
                             'access_people_values': people,
                         },
                         'contacts': contacts,
                         'names': {},
+                        'created_reason': 'CFCCH member/directory registration from importer',
                     }
                 }
 
