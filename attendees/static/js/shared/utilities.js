@@ -38,7 +38,7 @@ Attendees.utilities = {
   },
 
   toggleDxFormGroups: (animationSpeed="fast") => {
-    $(".dx-form-group-caption")
+    $(".h6:not(.not-shrinkable) .dx-form-group-caption")
       .each(function () {
         $(this)
           .prepend(
