@@ -48,6 +48,7 @@ Attendees.datagridUpdate = {
     division: 0,       // will be assigned later
     display_name: '',  // will be assigned later
   },
+  meetCharacters: null,
 
   init: () => {
     console.log('/static/js/persons/attendee_update_view.js');
@@ -3303,10 +3304,10 @@ Attendees.datagridUpdate = {
         groupIndex: 0,
         validationRules: [{type: 'required'}],
         caption: 'Group (Assembly)',
-        setCellValue: (rowData, value) => {
-          rowData.assembly = value;
-          rowData.meet = null;
-          rowData.character = null;
+        setCellValue: (newData, value, currentData) => {
+          newData.assembly = value;
+          newData.meet = null;
+          newData.character = null;
         },
         lookup: {
           valueExpr: 'id',
@@ -3332,6 +3333,11 @@ Attendees.datagridUpdate = {
         dataField: 'meet',
         caption: 'Activity (Meet)',
         validationRules: [{type: 'required'}],
+        setCellValue: (newData, value, currentData) => {
+          newData.meet = value;
+          const majorCharacter = Attendees.datagridUpdate.meetCharacters[value];
+          if (majorCharacter && currentData.character === null) {newData.character = majorCharacter;}
+        },  // setting majorCharacter of the corresponding meet
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
@@ -3341,7 +3347,15 @@ Attendees.datagridUpdate = {
               store: new DevExpress.data.CustomStore({
                 key: 'id',
                 load: (searchOpts) => {
-                  return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, searchOpts.filter);
+                  const d = new $.Deferred();
+                  $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, searchOpts.filter)
+                    .done((result) => {
+                      if (Attendees.datagridUpdate.meetCharacters === null) {
+                        Attendees.datagridUpdate.meetCharacters = result.data.reduce((all, now)=> {all[now.id] = now.major_character; return all}, {});
+                      }  // cache the every meet's major characters for later use
+                      d.resolve(result);
+                    });
+                  return d.promise();
                 },
                 byKey: (key) => {
                   const d = new $.Deferred();
