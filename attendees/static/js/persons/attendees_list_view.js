@@ -132,6 +132,11 @@ Attendees.dataAttendees = {
         showPageSizeSelector: true,
         allowedPageSizes: [10, 30, 5000]
     },
+    stateStoring: {
+      enabled: true,
+      type: "sessionStorage",
+      storageKey: "attendeesAttendeesList",
+    },
     columns: null,  // will be initialized later.
     },
 

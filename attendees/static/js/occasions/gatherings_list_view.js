@@ -476,6 +476,11 @@ Attendees.gatherings = {
       showInfo: true,
       showNavigationButtons: true,
     },
+    stateStoring: {
+      enabled: true,
+      type: "sessionStorage",
+      storageKey: "attendeesGatheringsList",
+    },
     loadPanel: {
       message: 'Fetching...',
       enabled: true,
