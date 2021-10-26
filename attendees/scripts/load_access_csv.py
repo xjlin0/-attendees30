@@ -11,7 +11,7 @@ from address.models import Locality, State, Address
 
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
 from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
-     Relationship, Registration, Attending, AttendingMeet
+    Relationship, Registration, Attending, AttendingMeet, Past, Category
 from attendees.users.admin import User
 from attendees.whereabouts.models import Place, Division
 
@@ -26,10 +26,13 @@ def import_household_people_address(
         data_assembly_slug,
         member_meet_slug,
         directory_meet_slug,
-        member_character_slug,
-        directory_character_slug,
+        baptized_meet_slug,
+        # member_character_slug,
+        # directory_character_slug,
         roaster_meet_slug,
-        data_general_character_slug,
+        believer_meet_slug,
+        # data_general_character_slug,
+        # data_baptisee_character_slug,
     ):
     """
     Entry function of entire importer, it execute importers in sequence and print out results.
@@ -42,10 +45,9 @@ def import_household_people_address(
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_gathering
     :param directory_meet_slug: key of directory_gathering
-    :param member_character_slug: key of member_character
-    :param directory_character_slug: key of directory_character
+    :param baptized_meet_slug: key of baptized_meet_slug
     :param roaster_meet_slug: key of roaster_meet_slug
-    :param data_general_character_slug: key of data_general_character_slug
+    :param believer_meet_slug: key of believer_meet_slug
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
     if User.objects.count() < 1:
@@ -67,10 +69,10 @@ def import_household_people_address(
         initial_relationship_count = Relationship.objects.count()
         upserted_address_count = import_addresses(addresses, california, division1_slug)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
-        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug)
+        upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, baptized_meet_slug, roaster_meet_slug, believer_meet_slug)
 
         if upserted_address_count and upserted_household_id_count and upserted_attendee_count:
-            upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug)
+            upserted_relationship_count = reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug)
             print("\n\nProcessing results of importing/updating Access export csv files:\n")
             print('Number of address successfully imported/updated: ', upserted_address_count)
             print('Initial contact count: ', initial_contact_count, '. final contact count: ', Place.objects.count(), end="\n")
@@ -290,16 +292,16 @@ def import_households(households, division1_slug, division2_slug):
     return successfully_processed_count
 
 
-def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, member_character_slug, roaster_meet_slug, data_general_character_slug):
+def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, baptized_meet_slug, roaster_meet_slug, believer_meet_slug):
     """
     Importer of each people from MS Access.
     :param peoples: file content of people accessible by headers, from MS Access
     :param division3_slug: key of division 3  # kid
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
-    :param member_character_slug: key of member_character
+    :param baptized_meet_slug: key of baptized_meet_slug
     :param roaster_meet_slug: key of roaster_meet_slug
-    :param data_general_character_slug: key of data_general_character_slug
+    :param believer_meet_slug: key of believer_meet_slug
     :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
     """
     gender_converter = {
@@ -337,10 +339,16 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
     roaster_gathering = Gathering.objects.filter(meet=roaster_meet).last()
-    pdt = pytz.timezone('America/Los_Angeles')
-    member_character = Character.objects.get(slug=member_character_slug)
-    general_character = Character.objects.get(slug=data_general_character_slug)
-    # attendee_content_type = ContentType.objects.get_for_model(Attendee)
+    # pdt = pytz.timezone('America/Los_Angeles')
+    member_character = member_meet.major_character
+    roaster_character = roaster_meet.major_character
+    attendee_content_type = ContentType.objects.get_for_model(Attendee)
+    baptized_meet = Meet.objects.get(slug=baptized_meet_slug)
+    baptized_category = Category.objects.filter(type='status', display_name='baptized').first()
+    baptisee_character = baptized_meet.major_character
+    believer_category = Category.objects.filter(type='status', display_name='receive').first()
+    believer_meet = Meet.objects.get(slug=believer_meet_slug)
+    believer_character = believer_meet.major_character
     successfully_processed_count = 0  # Somehow peoples.line_num incorrect, maybe csv file come with extra new lines.
     photo_import_results = []
     for people in peoples:
@@ -376,12 +384,14 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
                     'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                     'infos': {
+                        **Utility.attendee_infos(),
                         'fixed': {
                             'access_people_household_id': household_id,
                             'access_people_values': people,
                         },
                         'contacts': contacts,
                         'names': {},
+                        'created_reason': 'CFCCH member/directory registration from importer',
                     }
                 }
 
@@ -411,7 +421,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering)
+                update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -472,9 +482,9 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         #         }
                         #     )  # don't add infos__access_address_id so future query will only get one at family level
                     else:
-                        print("\nCannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
+                        print("\nBad data, cannot find the household id: ", household_id, ' for people: ', people, " Other columns of this people will still be saved. Continuing. \n")
 
-                update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering)
+                update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, roaster_character, roaster_gathering)
             else:
                 print('There is no household_id or first/lastname of the people: ', people)
             successfully_processed_count += 1
@@ -486,7 +496,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     return successfully_processed_count, photo_import_results  # list(filter(None.__ne__, photo_import_results))
 
 
-def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug, directory_character_slug):
+def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
     """
     Reprocess extra data (email/relationship) from FamilyAttendee, also do data correction of Role
     :param data_assembly_slug: key of data_assembly
@@ -506,7 +516,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     data_assembly = Assembly.objects.get(slug=data_assembly_slug)
     directory_meet = Meet.objects.get(slug=directory_meet_slug)
     directory_gathering = Gathering.objects.filter(meet=directory_meet).last()
-    directory_character = Character.objects.get(slug=directory_character_slug)
+    directory_character = directory_meet.major_character
     imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')  # excludes seed data
     successfully_processed_count = 0
     for family in imported_families:
@@ -706,7 +716,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
             'assembly': data_assembly,
             'infos': {
                 'access_household_id': access_household_id,
-                'created_reason': 'CFCC member/directory registration from importer',
+                'created_reason': 'CFCCH member/directory registration from importer',
             }
         }
     )
@@ -718,7 +728,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
             'registration': data_registration,
             'attendee': attendee,
             'infos': {
-                'created_reason': 'CFCC member/directory registration from importer',
+                'created_reason': 'CFCCH member/directory registration from importer',
             }
         }
     )
@@ -728,7 +738,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
         meet=visitor_meet,
         defaults={
             'character': general_character,
-            'category': 'primary',
+            'category': 'importer',
             'start': visitor_meet.start,
             'finish': visitor_meet.finish,
         },
@@ -740,7 +750,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
             meet=roaster_meet,
             defaults={
                 'character': general_character,
-                'category': 'primary',
+                'category': 'importer',
                 'start': roaster_meet.start,
                 'finish': datetime.now(pdt) + timedelta(365),  # whoever don't attend for a year won't be counted anymore
             },
@@ -760,13 +770,13 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
                 'finish': roaster_gathering.finish,
                 'infos': {
                     'access_household_id': access_household_id,
-                    'created_reason': 'CFCC member/directory registration from importer',
+                    'created_reason': 'CFCCH member/directory registration from importer',
                 },
             }
         )
 
 
-def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member_character, member_gathering):
+def update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category):
     if attendee.progressions.get('cfcc_member'):
         access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
@@ -777,7 +787,7 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'assembly': data_assembly,
                 'infos': {
                     'access_household_id': access_household_id,
-                    'created_reason': 'CFCC member/directory registration from importer',
+                    'created_reason': 'CFCCH member/directory registration from importer',
                 }
             }
         )
@@ -790,17 +800,18 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'attendee': attendee,
                 'infos': {
                     'access_household_id': access_household_id,
-                    'created_reason': 'CFCC member/directory registration from importer',
+                    'created_reason': 'CFCCH member/directory registration from importer',
                 }
             }
         )
 
+        member_since_or_now = Utility.parsedate_or_now(attendee.progressions.get('member_since'))
         member_attending_meet_default = {
             'attending': data_attending,
             'meet': member_meet,
             'character': member_character,
-            'category': 'active',
-            'start': Utility.parsedate_or_now(attendee.progressions.get('member_since')),
+            'category': 'active',  # member category has to be active or inactive
+            'start': member_since_or_now,
             'finish': member_meet.finish,
         }
 
@@ -825,9 +836,62 @@ def update_attendee_membership(pdt, attendee, data_assembly, member_meet, member
                 'finish': member_gathering.finish,
                 'infos': {
                     'access_household_id': access_household_id,
-                    'created_reason': 'CFCC member/directory registration from importer',
+                    'created_reason': 'CFCCH member/directory registration from importer',
                 },
             }
+        )
+
+        member_since_text = Utility.presence(attendee.progressions.get('member_since'))
+        member_since_reason = ', member since ' + member_since_text if member_since_text else ''
+        Past.objects.update_or_create(
+            organization=data_assembly.division.organization,
+            content_type=attendee_content_type,
+            object_id=attendee.id,
+            category=believer_category,
+            display_name="會員已信主 member's believer",
+            when=None,  # can't find the exact receive date just by membership
+            infos={
+                **Utility.relationship_infos(),
+                'comment': 'CFCCH membership from importer' + member_since_reason,
+            },
+        )
+        Past.objects.update_or_create(
+            organization=data_assembly.division.organization,
+            content_type=attendee_content_type,
+            object_id=attendee.id,
+            category=baptized_category,
+            display_name="會員已受浸 member's baptized",
+            when=None,  # can't find the exact baptism date just by membership
+            infos={
+                **Utility.relationship_infos(),
+                'comment': 'CFCCH membership from importer' + member_since_reason,
+            },
+        )
+
+        AttendingMeet.objects.update_or_create(
+            attending=data_attending,
+            meet=believer_meet,
+            defaults={
+                'attending': data_attending,
+                'meet': believer_meet,
+                'character': believer_character,
+                'category': 'importer',
+                'start': member_since_or_now,
+                'finish': believer_meet.finish,
+            },
+        )
+
+        AttendingMeet.objects.update_or_create(
+            attending=data_attending,
+            meet=baptized_meet,
+            defaults={
+                'attending': data_attending,
+                'meet': baptized_meet,
+                'character': baptisee_character,
+                'category': 'importer',
+                'start': member_since_or_now,
+                'finish': baptized_meet.finish,
+            },
         )
 
 
@@ -854,7 +918,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                     'assembly': data_assembly,
                     'infos': {
                         'access_household_id': access_household_id,
-                        'created_reason': 'CFCC member/directory registration from importer',
+                        'created_reason': 'CFCCH member/directory registration from importer',
                     }
                 }
             )
@@ -868,7 +932,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'attendee': family_member,
                         'infos': {
                             'access_household_id': access_household_id,
-                            'created_reason': 'CFCC member/directory registration from importer',
+                            'created_reason': 'CFCCH member/directory registration from importer',
                         }
                     }
                 )
@@ -880,7 +944,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'attending': directory_attending,
                         'meet': directory_meet,
                         'character': directory_character,
-                        'category': 'secondary',
+                        'category': 'importer',
                         'start': directory_gathering.start,
                         'finish': directory_gathering.finish,
                     }
@@ -900,7 +964,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                         'finish': directory_gathering.finish,
                         'infos': {
                             'access_household_id': access_household_id,
-                            'created_reason': 'CFCC member/directory registration from importer',
+                            'created_reason': 'CFCCH member/directory registration from importer',
                         },
                     }
                 )
@@ -946,7 +1010,7 @@ def update_attendee_photo(attendee, photo_names):
 
 
 def return_two_phones(phones):
-    cleaned_phones = list(set([re.sub("[^0-9\+]+", "", p) for p in phones if (p and not p.isspace())]))
+    cleaned_phones = list(set([re.sub("[^0-9\+()-]+", "", p) for p in phones if (p and not p.isspace())]))
     return (cleaned_phones + [None, None])[0:2]
 
 
@@ -964,12 +1028,16 @@ def save_two_phones(attendee, phone):
 
 def add_int_code(phone, default='+1'):
     if phone and not phone.isspace():
+        if '-' not in phone and len(phone) == 10:
+            phone = f'({phone[0:3]}){phone[3:6]}-{phone[6:10]}'
+
         if '+' in phone:
             return phone
         else:
             return default + phone
     else:
         return None
+
 
 def check_all_headers():
     #households_headers = ['HouseholdID', 'HousholdLN', 'HousholdFN', 'SpouseFN', 'AddressID', 'HouseholdPhone', 'HouseholdFax', 'AttendenceCount', 'FlyerMailing', 'CardMailing', 'UpdateDir', 'PrintDir', 'LastUpdate', 'HouseholdNote', 'FirstDate', '海沃之友', 'Congregation']
@@ -988,10 +1056,13 @@ def run(
         data_assembly_slug,
         member_meet_slug,
         directory_meet_slug,
-        member_character_slug,
-        directory_character_slug,
+        baptized_meet_slug,
+        # member_character_slug,
+        # directory_character_slug,
         roaster_meet_slug,
-        data_general_character_slug,
+        # data_general_character_slug,
+        # data_baptisee_character_slug,
+        believer_meet_slug,
         *extras
     ):
     """
@@ -1005,10 +1076,9 @@ def run(
     :param data_assembly_slug: key of data_assembly
     :param member_meet_slug: key of member_meet
     :param directory_meet_slug: key of directory_meet
-    :param member_character_slug: key of member_character
-    :param directory_character_slug: key of directory_character
+    :param baptized_meet_slug: key of baptized_meet
     :param roaster_meet_slug: key of roaster_meet_slug
-    :param data_general_character_slug: key of data_general_character_slug
+    :param believer_meet_slug: key of believer_meet_slug
     :param extras: optional other arguments
     :return: None, but write to Attendees db (create or update)
     """
@@ -1023,10 +1093,10 @@ def run(
     print("Reading data_assembly_slug: ", data_assembly_slug)
     print("Reading member_meet_slug: ", member_meet_slug)
     print("Reading directory_meet_slug: ", directory_meet_slug)
-    print("Reading member_character_slug: ", member_character_slug)
-    print("Reading directory_character_slug: ", directory_character_slug)
+    # print("Reading member_character_slug: ", member_character_slug)
+    # print("Reading directory_character_slug: ", directory_character_slug)
     print("Reading roaster_meet_slug: ", roaster_meet_slug)
-    print("Reading data_general_character_slug: ", data_general_character_slug)
+    print("Reading believer_meet_slug: ", believer_meet_slug)
     print("Reading extras: ", extras)
     print("Divisions required for importing, running commands: docker-compose -f local.yml run django python manage.py runscript load_access_csv --script-args path/tp/household.csv path/to/people.csv path/to/address.csv division1_slug division2_slug division3_slug member_data_assembly_member_meet_slug directory_meet_slug member_character_slug directory_character_slug")
 
@@ -1042,8 +1112,11 @@ def run(
                 data_assembly_slug,
                 member_meet_slug,
                 directory_meet_slug,
-                member_character_slug,
-                directory_character_slug,
+                baptized_meet_slug,
+                # member_character_slug,
+                # directory_character_slug,
                 roaster_meet_slug,
-                data_general_character_slug,
+                believer_meet_slug,
+                # data_general_character_slug,
+                # data_baptisee_character_slug,
             )

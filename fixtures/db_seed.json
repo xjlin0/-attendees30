@@ -1163,7 +1163,7 @@
       "category": "main",
       "parent": 12,
       "html_type": "a",
-      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendings/?characters=d7c8Fd_cfcch_congregation_data_general",
+      "urn": "/persons/cfcch_data_management/cfcch_congregation_data/datagrid_assembly_data_attendings/?characters=d7c8Fd_cfcch_congregation_data_roaster",
       "url_name": "datagrid_assembly_data_attendings",
       "display_name": "\u6703\u773e\u53c3\u8207 attending",
       "display_order": 3200,
@@ -1495,9 +1495,11 @@
       "slug": "a8dE2e_none",
       "display_name": "No organization assigned",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {}
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {},
+          "past_category_to_attendingmeet_meet": {}
         },
         "acronym": null,
         "contacts": {},
@@ -1518,10 +1520,16 @@
       "slug": "d7c8Fd_cfcc_hayward",
       "display_name": "CFCCH",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {
-            "baptisee": 5
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {
+            "17": 4,
+            "16": 5
+          },
+          "past_category_to_attendingmeet_meet": {
+            "4": 17,
+            "5": 16
           }
         },
         "acronym": "CFCCH",
@@ -1559,9 +1567,11 @@
       "slug": "faBd6C_heaven",
       "display_name": "\u5929\u5802 Heaven",
       "infos": {
-        "flags": {
+        "settings": {
           "opencc_convert": true,
-          "attendance_character_to_past_categories": {}
+          "attendee_to_attending": true,
+          "attendingmeet_meet_to_past_category": {},
+          "past_category_to_attendingmeet_meet": {}
         },
         "acronym": "Kingdom",
         "contacts": {},
@@ -2297,11 +2307,11 @@
     "pk": 3,
     "fields": {
       "created": "2021-05-23T12:55:51.864Z",
-      "modified": "2021-05-23T12:59:01.791Z",
+      "modified": "2021-10-22T15:12:40.352Z",
       "is_removed": false,
       "type": "status",
       "display_order": 0,
-      "display_name": "believe",
+      "display_name": "general",
       "infos": {}
     }
   },
@@ -2460,6 +2470,45 @@
       "type": "call",
       "display_order": 0,
       "display_name": "private",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 16,
+    "fields": {
+      "created": "2021-10-22T15:14:47.127Z",
+      "modified": "2021-10-22T15:14:47.127Z",
+      "is_removed": false,
+      "type": "education",
+      "display_order": 0,
+      "display_name": "primary",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 17,
+    "fields": {
+      "created": "2021-10-22T15:15:04.108Z",
+      "modified": "2021-10-22T15:15:04.108Z",
+      "is_removed": false,
+      "type": "education",
+      "display_order": 0,
+      "display_name": "secondary",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 18,
+    "fields": {
+      "created": "2021-10-22T15:15:15.508Z",
+      "modified": "2021-10-22T15:15:15.508Z",
+      "is_removed": false,
+      "type": "education",
+      "display_order": 0,
+      "display_name": "alternative",
       "infos": {}
     }
   },
@@ -5910,7 +5959,7 @@
       "assembly": 5,
       "display_name": "\u5e38\u505a\u79ae\u62dc\u6703\u773e",
       "display_order": 0,
-      "slug": "d7c8Fd_cfcch_congregation_data_general",
+      "slug": "d7c8Fd_cfcch_congregation_data_roaster",
       "info": null,
       "type": "audience"
     }
@@ -6010,10 +6059,10 @@
     "pk": 22,
     "fields": {
       "created": "2020-06-19T21:58:12.422Z",
-      "modified": "2021-04-08T16:46:32.730Z",
+      "modified": "2021-10-22T15:08:18.181Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "\u5165\u7c4d\u6703\u54e1",
+      "display_name": "\u5165\u7c4d\u6703\u54e1 member",
       "display_order": 0,
       "slug": "d7c8Fd_cfcch_congregation_data_member",
       "info": null,
@@ -6025,12 +6074,57 @@
     "pk": 23,
     "fields": {
       "created": "2020-06-19T21:58:12.422Z",
-      "modified": "2021-04-08T17:47:00.152Z",
+      "modified": "2021-10-22T15:08:34.366Z",
       "is_removed": false,
       "assembly": 5,
-      "display_name": "\u5217\u5165\u901a\u8a0a\u9304",
+      "display_name": "\u5217\u5165\u901a\u8a0a\u9304 in directory",
       "display_order": 0,
       "slug": "d7c8Fd_cfcch_congregation_data_directory",
+      "info": null,
+      "type": "internal"
+    }
+  },
+  {
+    "model": "occasions.character",
+    "pk": 24,
+    "fields": {
+      "created": "2020-10-09T21:58:12.422Z",
+      "modified": "2021-10-08T16:46:32.730Z",
+      "is_removed": false,
+      "assembly": 5,
+      "display_name": "\u5df2\u53d7\u6d78 baptisee",
+      "display_order": 0,
+      "slug": "d7c8Fd_cfcch_congregation_data_baptisee",
+      "info": null,
+      "type": "internal"
+    }
+  },
+  {
+    "model": "occasions.character",
+    "pk": 25,
+    "fields": {
+      "created": "2021-10-22T15:09:58.833Z",
+      "modified": "2021-10-22T15:18:05.224Z",
+      "is_removed": false,
+      "assembly": 5,
+      "display_name": "\u5df2\u4fe1\u4e3b believer",
+      "display_order": 0,
+      "slug": "d7c8Fd_cfcch_congregation_data_believer",
+      "info": null,
+      "type": "internal"
+    }
+  },
+  {
+    "model": "occasions.character",
+    "pk": 26,
+    "fields": {
+      "created": "2021-10-22T15:09:58.833Z",
+      "modified": "2021-10-22T15:18:05.224Z",
+      "is_removed": false,
+      "assembly": 5,
+      "display_name": "\u8a2a\u5ba2 visitor",
+      "display_order": 0,
+      "slug": "d7c8Fd_cfcch_congregation_data_visitor",
       "info": null,
       "type": "internal"
     }
@@ -6043,6 +6137,7 @@
       "modified": "2021-04-08T14:03:35.930Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": null,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
@@ -6065,6 +6160,7 @@
       "modified": "2021-04-08T14:03:55.729Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 25,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",
@@ -6087,6 +6183,7 @@
       "modified": "2021-04-08T16:37:22.469Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": 1,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:44Z",
@@ -6108,6 +6205,7 @@
       "modified": "2021-04-08T16:37:34.616Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": 1,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:56Z",
@@ -6129,6 +6227,7 @@
       "modified": "2021-04-08T14:04:29.830Z",
       "is_removed": false,
       "assembly": 2,
+      "major_character": 6,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:55:20Z",
@@ -6150,6 +6249,7 @@
       "modified": "2021-04-08T16:40:16.599Z",
       "is_removed": false,
       "assembly": 4,
+      "major_character": 7,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:19Z",
@@ -6171,6 +6271,7 @@
       "modified": "2021-04-08T16:37:02.414Z",
       "is_removed": false,
       "assembly": 1,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:54:57Z",
@@ -6192,6 +6293,7 @@
       "modified": "2021-04-08T16:36:49.060Z",
       "is_removed": false,
       "assembly": 3,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": true,
       "start": "2020-05-12T14:53:03Z",
@@ -6210,14 +6312,15 @@
     "pk": 7,
     "fields": {
       "created": "2020-05-09T22:34:04.419Z",
-      "modified": "2021-04-08T14:01:38.639Z",
+      "modified": "2021-10-23T18:06:43.299Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 15,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-05-12T14:54:44Z",
-      "finish": "2099-05-12T15:54:46Z",
-      "display_name": "\u4e3b\u65e5\u5d07\u62dc roaster",
+      "finish": "2200-05-12T15:54:46Z",
+      "display_name": "\u5e38\u505a\u79ae\u62dc Worship roaster",
       "slug": "d7c8Fd_cfcch_congregation_roaster",
       "infos": {
         "default_time_zone": "America/Los_Angeles",
@@ -6235,6 +6338,7 @@
       "modified": "2021-04-08T16:13:39.869Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 23,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:54:35Z",
@@ -6256,6 +6360,7 @@
       "modified": "2021-04-08T16:14:05.544Z",
       "is_removed": false,
       "assembly": 5,
+      "major_character": 22,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:54:24Z",
@@ -6277,6 +6382,7 @@
       "modified": "2021-04-08T16:32:15.494Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:28:40Z",
@@ -6298,6 +6404,7 @@
       "modified": "2021-04-08T16:34:17.114Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:30:54Z",
@@ -6319,6 +6426,7 @@
       "modified": "2021-04-08T16:34:34.804Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T15:34:41Z",
@@ -6340,6 +6448,7 @@
       "modified": "2021-04-08T16:34:54.420Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:28:13Z",
@@ -6361,6 +6470,7 @@
       "modified": "2021-04-08T16:35:15.657Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:32:20Z",
@@ -6382,6 +6492,7 @@
       "modified": "2021-04-08T16:35:33.036Z",
       "is_removed": false,
       "assembly": 6,
+      "major_character": null,
       "shown_audience": true,
       "audience_editable": false,
       "start": "2020-07-17T16:38:38Z",
@@ -6393,6 +6504,50 @@
       },
       "site_type": 37,
       "site_id": "2"
+    }
+  },
+  {
+    "model": "occasions.meet",
+    "pk": 16,
+    "fields": {
+      "created": "2020-10-09T22:34:04.419Z",
+      "modified": "2021-10-23T18:08:26.928Z",
+      "is_removed": false,
+      "assembly": 5,
+      "major_character": 24,
+      "shown_audience": true,
+      "audience_editable": false,
+      "start": "2020-05-12T14:54:44Z",
+      "finish": "2200-05-12T15:54:46Z",
+      "display_name": "\u5df2\u53d7\u6d17 baptized",
+      "slug": "d7c8Fd_cfcch_congregation_baptized",
+      "infos": {
+        "default_time_zone": "America/Los_Angeles"
+      },
+      "site_type": 35,
+      "site_id": "1"
+    }
+  },
+  {
+    "model": "occasions.meet",
+    "pk": 17,
+    "fields": {
+      "created": "2020-10-09T22:34:04.419Z",
+      "modified": "2021-10-23T18:08:14.380Z",
+      "is_removed": false,
+      "assembly": 5,
+      "major_character": 25,
+      "shown_audience": true,
+      "audience_editable": false,
+      "start": "2020-05-12T14:54:44Z",
+      "finish": "2200-05-12T15:54:46Z",
+      "display_name": "\u5df2\u4fe1\u4e3b believer",
+      "slug": "d7c8Fd_cfcch_congregation_believer",
+      "infos": {
+        "default_time_zone": "America/Los_Angeles"
+      },
+      "site_type": 35,
+      "site_id": "1"
     }
   },
   {
@@ -9256,7 +9411,7 @@
       "modified": "2021-04-08T13:55:47.966Z",
       "is_removed": false,
       "organization": 1,
-      "display_name": "\u672a\u6307\u5b9aunspecified",
+      "display_name": "\u672a\u6307\u5b9a CFCCH unspecified",
       "slug": "cfcch_unspecified",
       "audience_auth_group": 0
     }
@@ -9344,14 +9499,14 @@
     "pk": "0498c414-abd3-4173-add1-5e42053760e4",
     "fields": {
       "created": "1999-04-11T19:36:20.422Z",
-      "modified": "2020-11-16T16:06:28.012Z",
+      "modified": "2021-10-22T15:24:30.318Z",
       "is_removed": false,
       "division": 2,
       "user": null,
       "first_name": "David",
-      "last_name": "\u5927\u885b",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u5927\u885b",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9361,14 +9516,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "David \u5927\u885b"
+          "original": "David \u5927\u885b",
+          "simplified": "David \u5927\u536b",
+          "traditional": "David \u5927\u885b",
+          "romanization": "David Da Wei "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9377,14 +9530,14 @@
     "pk": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
     "fields": {
       "created": "1999-04-11T19:32:19.822Z",
-      "modified": "2020-11-16T16:04:00.996Z",
+      "modified": "2021-10-22T15:24:47.679Z",
       "is_removed": false,
       "division": 2,
       "user": 2,
-      "first_name": "\u590f\u7532",
-      "last_name": "Hagar",
-      "first_name2": null,
-      "last_name2": null,
+      "first_name": "Hagar",
+      "last_name": "",
+      "first_name2": "\u590f\u7532",
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9396,14 +9549,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "\u590f\u7532 Hagar"
+          "original": "Hagar \u590f\u7532",
+          "simplified": "Hagar \u590f\u7532",
+          "traditional": "Hagar \u590f\u7532",
+          "romanization": "Hagar Xia Jia "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9412,14 +9563,14 @@
     "pk": "3566e642-3624-42e3-9644-c54b08d8c6d6",
     "fields": {
       "created": "1999-04-11T19:37:15.410Z",
-      "modified": "2020-11-16T16:12:08.159Z",
+      "modified": "2021-10-22T15:25:07.861Z",
       "is_removed": false,
       "division": 1,
       "user": null,
-      "first_name": "\u53c3\u5b6b",
-      "last_name": "Samson",
+      "first_name": "Samson",
+      "last_name": "",
       "first_name2": "\u53c3\u5b6b",
-      "last_name2": null,
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9430,14 +9581,12 @@
         "fixed": {},
         "names": {
           "nick": "\u5f1f\u5144",
-          "original": "\u53c3\u5b6b Samson \u53c3\u5b6b"
+          "original": "Samson \u53c3\u5b6b",
+          "simplified": "Samson \u53c2\u5b59",
+          "traditional": "Samson \u53c3\u5b6b",
+          "romanization": "Samson Can Sun "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9481,14 +9630,14 @@
     "pk": "3833d04e-0897-45da-abf6-7d750f0baee7",
     "fields": {
       "created": "1999-04-11T19:34:37.600Z",
-      "modified": "2020-11-16T16:06:33.797Z",
+      "modified": "2021-10-22T15:25:28.948Z",
       "is_removed": false,
       "division": 2,
       "user": null,
-      "first_name": "\u4e9e\u6bd4\u8a72",
-      "last_name": "Abigail",
+      "first_name": "Abigail",
+      "last_name": "",
       "first_name2": "\u4e9e\u6bd4\u8a72",
-      "last_name2": null,
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9499,14 +9648,12 @@
         "fixed": {},
         "names": {
           "nick": "\u8001\u59ca",
-          "original": "\u4e9e\u6bd4\u8a72 Abigail \u4e9e\u6bd4\u8a72"
+          "original": "Abigail \u4e9e\u6bd4\u8a72",
+          "simplified": "Abigail \u4e9a\u6bd4\u8be5",
+          "traditional": "Abigail \u4e9e\u6bd4\u8a72",
+          "romanization": "Abigail Ya Bi Gai "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9515,14 +9662,14 @@
     "pk": "44e894a1-1190-4916-992a-b5eb41b35b16",
     "fields": {
       "created": "1999-04-11T19:35:12.234Z",
-      "modified": "2020-11-16T16:11:45.427Z",
+      "modified": "2021-10-22T15:25:58.218Z",
       "is_removed": false,
       "division": 1,
       "user": null,
-      "first_name": "\u5e95\u6ce2\u62c9",
-      "last_name": "Deborah",
+      "first_name": "Deborah",
+      "last_name": "",
       "first_name2": "\u5e95\u6ce2\u62c9",
-      "last_name2": null,
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9533,14 +9680,12 @@
         "fixed": {},
         "names": {
           "nick": "\u6230\u795e\u4e48\u4e48",
-          "original": "\u5e95\u6ce2\u62c9 Deborah \u5e95\u6ce2\u62c9"
+          "original": "Deborah \u5e95\u6ce2\u62c9",
+          "simplified": "Deborah \u5e95\u6ce2\u62c9",
+          "traditional": "Deborah \u5e95\u6ce2\u62c9",
+          "romanization": "Deborah Di Bo La "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9549,14 +9694,14 @@
     "pk": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
     "fields": {
       "created": "1999-11-16T04:02:53.691Z",
-      "modified": "2020-11-16T16:04:50.316Z",
+      "modified": "2021-10-22T15:26:24.178Z",
       "is_removed": false,
       "division": 3,
       "user": null,
-      "first_name": "\u4ee5\u6383",
-      "last_name": "Esau",
-      "first_name2": null,
-      "last_name2": null,
+      "first_name": "Esau",
+      "last_name": "",
+      "first_name2": "\u4ee5\u6383",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9566,14 +9711,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "\u4ee5\u6383 Esau"
+          "original": "Esau \u4ee5\u6383",
+          "simplified": "Esau \u4ee5\u626b",
+          "traditional": "Esau \u4ee5\u6383",
+          "romanization": "Esau Yi Sao "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9582,14 +9725,14 @@
     "pk": "786a9d44-379f-4671-9004-5b3d0bd0227b",
     "fields": {
       "created": "1999-05-10T01:02:35.482Z",
-      "modified": "2020-11-16T16:12:51.991Z",
+      "modified": "2021-10-22T15:26:42.273Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Chileab",
-      "last_name": "\u57fa\u5229\u62bc",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u57fa\u5229\u62bc",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9599,14 +9742,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "Chileab \u57fa\u5229\u62bc"
+          "original": "Chileab \u57fa\u5229\u62bc",
+          "simplified": "Chileab \u57fa\u5229\u62bc",
+          "traditional": "Chileab \u57fa\u5229\u62bc",
+          "romanization": "Chileab Ji Li Ya "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9615,14 +9756,14 @@
     "pk": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
     "fields": {
       "created": "1999-04-11T19:33:26.486Z",
-      "modified": "2020-11-16T16:01:35.300Z",
+      "modified": "2021-10-22T15:27:02.762Z",
       "is_removed": false,
       "division": 3,
       "user": null,
-      "first_name": "\u4ee5\u5be6\u746a\u5229",
-      "last_name": "Ishmael",
-      "first_name2": null,
-      "last_name2": null,
+      "first_name": "Ishmael",
+      "last_name": "",
+      "first_name2": "\u4ee5\u5be6\u746a\u5229",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": "2010-02-04",
@@ -9637,14 +9778,12 @@
         },
         "names": {
           "nick": "\u5927\u5bf6",
-          "original": "\u4ee5\u5be6\u746a\u5229 Ishmael"
+          "original": "Ishmael \u4ee5\u5be6\u746a\u5229",
+          "simplified": "Ishmael \u4ee5\u5b9e\u739b\u5229",
+          "traditional": "Ishmael \u4ee5\u5be6\u746a\u5229",
+          "romanization": "Ishmael Yi Shi Ma Li "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9653,14 +9792,14 @@
     "pk": "8b3b2130-9ec4-469b-9b64-efef141fceee",
     "fields": {
       "created": "1999-11-16T02:06:06.493Z",
-      "modified": "2020-11-16T16:05:13.871Z",
+      "modified": "2021-10-22T15:27:23.507Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Rebecca",
-      "last_name": "\u5229\u767e\u52a0",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u5229\u767e\u52a0",
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9670,14 +9809,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "Rebecca \u5229\u767e\u52a0"
+          "original": "Rebecca \u5229\u767e\u52a0",
+          "simplified": "Rebecca \u5229\u767e\u52a0",
+          "traditional": "Rebecca \u5229\u767e\u52a0",
+          "romanization": "Rebecca Li Bai Jia "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9686,14 +9823,14 @@
     "pk": "97922785-9025-40ad-9a5f-a9545f884644",
     "fields": {
       "created": "1999-05-10T01:00:09.119Z",
-      "modified": "2020-11-16T16:06:50.067Z",
+      "modified": "2021-10-22T15:27:39.124Z",
       "is_removed": false,
       "division": 6,
       "user": null,
       "first_name": "Nabal",
-      "last_name": "\u62ff\u516b",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u62ff\u516b",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9703,14 +9840,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "Nabal \u62ff\u516b"
+          "original": "Nabal \u62ff\u516b",
+          "simplified": "Nabal \u62ff\u516b",
+          "traditional": "Nabal \u62ff\u516b",
+          "romanization": "Nabal Na Ba "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9719,14 +9854,14 @@
     "pk": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
     "fields": {
       "created": "1999-04-11T19:31:50.659Z",
-      "modified": "2021-07-09T15:49:13.626Z",
+      "modified": "2021-10-22T15:28:28.385Z",
       "is_removed": false,
       "division": 1,
       "user": 1,
-      "first_name": "superuser1",
-      "last_name": "system admin1",
-      "first_name2": "superuser2",
-      "last_name2": "Lastnam2",
+      "first_name": "superuser",
+      "last_name": "system admin",
+      "first_name2": "\u7ba1\u7406\u54e1",
+      "last_name2": "\u8d85\u7d1a\u4f7f\u7528\u8005",
       "gender": "MALE",
       "actual_birthday": "1980-01-01",
       "estimated_birthday": null,
@@ -9746,15 +9881,16 @@
         },
         "names": {
           "nick": "root",
-          "original": "superuser1 system admin1 Lastnam2superuser2",
-          "simplified": "Lastnam2superuser2",
-          "traditional": "Lastnam2superuser2"
+          "original": "superuser system admin \u8d85\u7d1a\u4f7f\u7528\u8005\u7ba1\u7406\u54e1",
+          "simplified": "superuser system admin \u8d85\u7ea7\u4f7f\u7528\u8005\u7ba1\u7406\u5458",
+          "traditional": "superuser system admin \u8d85\u7d1a\u4f7f\u7528\u8005\u7ba1\u7406\u54e1",
+          "romanization": "superuser system admin Chao Ji Shi Yong Zhe Guan Li Yuan "
         },
         "contacts": {
           "email1": "5greata@email.com",
           "email2": "5greatb@email.com",
-          "phone1": "+15555555555",
-          "phone2": "+25555555555"
+          "phone1": "+1(555)555-5555",
+          "phone2": "+44(191)203-7010"
         }
       }
     }
@@ -9764,13 +9900,13 @@
     "pk": "aa24758f-cc70-4353-b1d7-9c616b3db425",
     "fields": {
       "created": "1999-04-11T19:38:16.323Z",
-      "modified": "2021-07-11T14:55:53.581Z",
+      "modified": "2021-10-22T15:28:56.077Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Abraham",
-      "last_name": "\u4e9e\u4f2f\u62c9\u7f55",
-      "first_name2": "",
+      "last_name": "",
+      "first_name2": "\u4e9e\u4f2f\u62c9\u7f55",
       "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
@@ -9785,14 +9921,15 @@
         "names": {
           "nick": "",
           "original": "Abraham \u4e9e\u4f2f\u62c9\u7f55",
-          "simplified": "",
-          "traditional": ""
+          "simplified": "Abraham \u4e9a\u4f2f\u62c9\u7f55",
+          "traditional": "Abraham \u4e9e\u4f2f\u62c9\u7f55",
+          "romanization": "Abraham Ya Bo La Han "
         },
         "contacts": {
           "email1": "6coola@email.com",
           "email2": "6coolb@email.com",
-          "phone1": "+16666666666",
-          "phone2": "+26666666666"
+          "phone1": "+1(666)666-6666",
+          "phone2": "+(86)6666-66666"
         }
       }
     }
@@ -9802,14 +9939,14 @@
     "pk": "be687517-d7bf-407a-8088-e3ed64ca62b8",
     "fields": {
       "created": "1999-11-16T02:06:58.862Z",
-      "modified": "2020-11-16T16:04:59.784Z",
+      "modified": "2021-10-22T15:29:18.343Z",
       "is_removed": false,
       "division": 3,
       "user": null,
       "first_name": "James",
-      "last_name": "\u96c5\u5404",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u96c5\u5404",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9819,14 +9956,12 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "James \u96c5\u5404"
+          "original": "James \u96c5\u5404",
+          "simplified": "James \u96c5\u5404",
+          "traditional": "James \u96c5\u5404",
+          "romanization": "James Ya Ge "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9835,14 +9970,14 @@
     "pk": "d7e6ec14-302e-46a3-9f32-537d1fc0256b",
     "fields": {
       "created": "1999-04-11T19:37:45.378Z",
-      "modified": "2020-11-16T16:12:43.817Z",
+      "modified": "2021-10-22T15:29:43.443Z",
       "is_removed": false,
       "division": 3,
       "user": null,
       "first_name": "Lydia",
-      "last_name": "\u5442\u5e95\u4e9e",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u5442\u5e95\u4e9e",
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9855,14 +9990,12 @@
         "fixed": {},
         "names": {
           "nick": "\u63a8\u96c5\u63a8\u5587\u7684\u5442\u5e95\u4e9e",
-          "original": "Lydia \u5442\u5e95\u4e9e"
+          "original": "Lydia \u5442\u5e95\u4e9e",
+          "simplified": "Lydia \u5415\u5e95\u4e9a",
+          "traditional": "Lydia \u5442\u5e95\u4e9e",
+          "romanization": "Lydia Lu Di Ya "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9871,14 +10004,14 @@
     "pk": "e8c025ec-9ea2-4d61-8df3-9daeecbfb849",
     "fields": {
       "created": "1999-04-11T19:34:03.252Z",
-      "modified": "2020-11-16T16:06:05.152Z",
+      "modified": "2021-10-22T15:30:15.077Z",
       "is_removed": false,
       "division": 3,
       "user": null,
       "first_name": "John",
-      "last_name": "\u7d04\u7ff0",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u7d04\u7ff0",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9889,14 +10022,12 @@
         "fixed": {},
         "names": {
           "nick": "\u4f7f\u5f92\u7d04\u7ff0",
-          "original": "John \u7d04\u7ff0"
+          "original": "John \u7d04\u7ff0",
+          "simplified": "John \u7ea6\u7ff0",
+          "traditional": "John \u7d04\u7ff0",
+          "romanization": "John Yue Han "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9905,14 +10036,14 @@
     "pk": "f3b780ad-c736-490e-8731-58b96dfd81f8",
     "fields": {
       "created": "1999-04-11T19:38:00.844Z",
-      "modified": "2020-11-16T16:04:32.705Z",
+      "modified": "2021-10-22T15:30:35.889Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Isaac",
-      "last_name": "\u4ee5\u6492",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u4ee5\u6492",
+      "last_name2": "",
       "gender": "MALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9922,13 +10053,16 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "Isaac \u4ee5\u6492"
+          "original": "Isaac \u4ee5\u6492",
+          "simplified": "Isaac \u4ee5\u6492",
+          "traditional": "Isaac \u4ee5\u6492",
+          "romanization": "Isaac Yi Sa "
         },
         "contacts": {
           "email1": "7coola@email.com",
           "email2": "7coolb@email.com",
-          "phone1": "+17777777777",
-          "phone2": "+27777777777"
+          "phone1": "+1(777)777-7777",
+          "phone2": "+27(77)777-7777"
         }
       }
     }
@@ -9938,14 +10072,14 @@
     "pk": "fa61941f-79a4-423e-872c-0bb9662e4351",
     "fields": {
       "created": "1999-04-11T19:36:42.735Z",
-      "modified": "2020-11-16T16:11:38.639Z",
+      "modified": "2021-10-22T15:30:57.300Z",
       "is_removed": false,
       "division": 2,
       "user": null,
-      "first_name": "\u4ee5\u65af\u5e16",
-      "last_name": "Esther",
-      "first_name2": null,
-      "last_name2": null,
+      "first_name": "Esther",
+      "last_name": "",
+      "first_name2": "\u4ee5\u65af\u5e16",
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9956,14 +10090,12 @@
         "fixed": {},
         "names": {
           "nick": "\u7687\u540e",
-          "original": "\u4ee5\u65af\u5e16 Esther"
+          "original": "Esther \u4ee5\u65af\u5e16",
+          "simplified": "Esther \u4ee5\u65af\u5e16",
+          "traditional": "Esther \u4ee5\u65af\u5e16",
+          "romanization": "Esther Yi Si Tie "
         },
-        "contacts": {
-          "email1": null,
-          "email2": null,
-          "phone1": null,
-          "phone2": null
-        }
+        "contacts": {}
       }
     }
   },
@@ -9972,14 +10104,14 @@
     "pk": "ffd3881a-7a77-437a-ba11-c90610839523",
     "fields": {
       "created": "1999-04-11T19:38:35.150Z",
-      "modified": "2020-11-16T16:04:14.875Z",
+      "modified": "2021-10-22T15:31:20.648Z",
       "is_removed": false,
       "division": 1,
       "user": null,
       "first_name": "Sarah",
-      "last_name": "\u6492\u62c9",
-      "first_name2": null,
-      "last_name2": null,
+      "last_name": "",
+      "first_name2": "\u6492\u62c9",
+      "last_name2": "",
       "gender": "FEMALE",
       "actual_birthday": null,
       "estimated_birthday": null,
@@ -9989,13 +10121,16 @@
       "infos": {
         "fixed": {},
         "names": {
-          "original": "Sarah \u6492\u62c9"
+          "original": "Sarah \u6492\u62c9",
+          "simplified": "Sarah \u6492\u62c9",
+          "traditional": "Sarah \u6492\u62c9",
+          "romanization": "Sarah Sa La "
         },
         "contacts": {
           "email1": "8coola@email.com",
           "email2": "8coolb@email.com",
-          "phone1": "+18888888888",
-          "phone2": "+28888888888"
+          "phone1": "+1(888)888-8888",
+          "phone2": "+2(888)888-8888"
         }
       }
     }

@@ -48,6 +48,7 @@ Attendees.datagridUpdate = {
     division: 0,       // will be assigned later
     display_name: '',  // will be assigned later
   },
+  meetCharacters: null,
 
   init: () => {
     console.log('/static/js/persons/attendee_update_view.js');
@@ -61,6 +62,23 @@ Attendees.datagridUpdate = {
     $("div.form-container").on('click', 'button.place-button', e => Attendees.datagridUpdate.initPlacePopupDxForm(e));
     $("div.form-container").on('click', 'button.family-button', e => Attendees.datagridUpdate.initFamilyAttrPopupDxForm(e));
     Attendees.datagridUpdate.attachContactAddButton();
+
+    $(window).keydown((event) => {
+      if (event.keyCode === 13) {
+        DevExpress.ui.notify(
+          {
+            message: 'Click the "Save Attendee" button to save data',
+            width: 500,
+            position: {
+              my: 'center',
+              at: 'center',
+              of: window,
+            },
+          }, 'warning', 1000);
+        event.preventDefault();
+        return false;
+      } // prevent user to submit form by hitting enter
+    });
     // add listeners for Family, counselling, etc.
   },
 
@@ -179,7 +197,7 @@ Attendees.datagridUpdate = {
         elementAttr: {
           class: 'attendee-form-submits',  // for toggling editing mode
         },
-        text: 'Add more contact',
+        text: 'Add more contacts',
         icon: 'email',  // or 'fas fa-comment-dots'
         stylingMode: 'outlined',
         type: 'success',
@@ -566,122 +584,143 @@ Attendees.datagridUpdate = {
 
     const buttonItems = [
       {
-        itemType: 'button',
-        name: 'mainAttendeeFormSubmit',
-        horizontalAlignment: 'left',
-        buttonOptions: {
-          elementAttr: {
-            class: 'attendee-form-submits',  // for toggling editing mode
-          },
-          disabled: !Attendees.utilities.editingEnabled,
-          text: 'Save Attendee details and photo',
-          icon: 'save',
-          hint: 'save attendee data in the page',
-          type: 'default',
-          useSubmitBehavior: true,
-          onClick: (e) => {
-            if (Attendees.datagridUpdate.attendeeMainDxForm.validate().isValid && confirm('Are you sure?')) {
+        colSpan: 24,
+        colCount: 24,
+        cssClass: 'h6 not-shrinkable',
+        itemType: 'group',
+        items: [
+          {
+            itemType: 'button',
+            name: 'mainAttendeeFormSubmit',
+            horizontalAlignment: 'left',
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-submits',  // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled,
+              text: 'Save Attendee details and photo',
+              icon: 'save',
+              hint: 'save attendee data in the page',
+              type: 'default',
+              useSubmitBehavior: false,
+              onClick: (e) => {
+                const validationResults = Attendees.datagridUpdate.attendeeMainDxForm.validate();
+                if (validationResults.isValid && confirm('Are you sure?')) {
 
-              const userData = new FormData($('form#attendee-update-form')[0]);
-              if (!$('input[name="photo"]')[0].value) {
-                userData.delete('photo')
-              }
-              const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
-              userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
-              userData.set('infos', JSON.stringify(userInfos));
-
-              $.ajax({
-                url: Attendees.datagridUpdate.attendeeAjaxUrl,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                data: userData,
-                method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
-                success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
-                  const parser = new URL(window.location);
-                  parser.searchParams.set('success', 'Saving attendee success');
-
-                  if (parser.href.split('/').pop().startsWith('new')){
-                    const newAttendeeIdUrl = '/' + response.id;
-                    window.location = parser.href.replace('/new', newAttendeeIdUrl);
-                  }else {
-                    window.location = parser.href;
+                  const userData = new FormData($('form#attendee-update-form')[0]);
+                  if (!$('input[name="photo"]')[0].value) {
+                    userData.delete('photo')
                   }
-                },
-                error: (response) => {
-                  console.log('Failed to save data for main AttendeeForm, error: ', response);
-                  console.log('formData: ', [...userData]);
+                  const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
+                  userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
+                  userData.set('infos', JSON.stringify(userInfos));
+
+                  $.ajax({
+                    url: Attendees.datagridUpdate.attendeeAjaxUrl,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    data: userData,
+                    method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
+                    success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
+                      const parser = new URL(window.location);
+                      parser.searchParams.set('success', 'Saving attendee success');
+
+                      if (parser.href.split('/').pop().startsWith('new')) {
+                        const newAttendeeIdUrl = '/' + response.id;
+                        window.location = parser.href.replace('/new', newAttendeeIdUrl);
+                      } else {
+                        window.location = parser.href;
+                      }
+                    },
+                    error: (response) => {
+                      console.log('Failed to save data for main AttendeeForm, error: ', response);
+                      console.log('formData: ', [...userData]);
+                      DevExpress.ui.notify(
+                        {
+                          message: 'saving attendee error',
+                          width: 500,
+                          position: {
+                            my: 'center',
+                            at: 'center',
+                            of: window,
+                          },
+                        }, 'error', 5000);
+                    },
+                  });
+                } else if (!validationResults.isValid) {
+                  validationMessages = validationResults.brokenRules.reduce((all, now) => {all.push(now.message); return all}, []);
                   DevExpress.ui.notify(
                     {
-                      message: 'saving attendee error',
+                      message: validationMessages.join('. '),
                       width: 500,
                       position: {
                         my: 'center',
                         at: 'center',
                         of: window,
                       },
-                    }, 'error', 5000);
-                },
-              });
-            }
-          }
-        },
-      },
-      {
-        itemType: 'button',
-        name: 'mainAttendeeFormDelete',
-        horizontalAlignment: 'left',
-        buttonOptions: {
-          elementAttr: {
-            class: 'attendee-form-delete',  // for toggling editing mode
+                    }, 'error', 2000);
+                }
+              }
+            },
           },
-          disabled: !Attendees.utilities.editingEnabled,
-          text: "Delete all of Attendee's data",
-          icon: 'trash',
-          hint: "delete attendee's all data in the page",
-          type: 'danger',
-          onClick: (e) => {
-            if (confirm('Are you sure to delete all data of the attendee? Everything of the attendee will be removed.  Instead, seetting finish/deathday is usually enough!')) {
-              window.scrollTo(0,0);
-              $('div.spinner-border').show();
-              $.ajax({
-                url: Attendees.datagridUpdate.attendeeAjaxUrl,
-                method: 'DELETE',
-                success: (response) => {
-                  $('div.spinner-border').hide();
-                  DevExpress.ui.notify(
-                    {
-                      message: 'delete attendee success',
-                      width: 500,
-                      position: {
-                        my: 'center',
-                        at: 'center',
-                        of: window,
-                      },
-                    }, 'info', 2500);
-                  window.location = new URL(window.location.origin);
-                },
-                error: (response) => {
-                  console.log('Failed to delete data for main AttendeeForm, error: ', response);
-                  DevExpress.ui.notify(
-                    {
-                      message: 'saving attendee error',
-                      width: 500,
-                      position: {
-                        my: 'center',
-                        at: 'center',
-                        of: window,
-                      },
-                    }, 'error', 5000);
-                },
-              });
-            }
-          }
-        },
+          {
+            itemType: 'button',
+            name: 'mainAttendeeFormDelete',
+            horizontalAlignment: 'left',
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-delete',  // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled,
+              text: "Delete all of Attendee's data",
+              icon: 'trash',
+              hint: "delete attendee's all data in the page",
+              type: 'danger',
+              onClick: (e) => {
+                if (confirm('Are you sure to delete all data of the attendee? Everything of the attendee will be removed.  Instead, seetting finish/deathday is usually enough!')) {
+                  window.scrollTo(0, 0);
+                  $('div.spinner-border').show();
+                  $.ajax({
+                    url: Attendees.datagridUpdate.attendeeAjaxUrl,
+                    method: 'DELETE',
+                    success: (response) => {
+                      $('div.spinner-border').hide();
+                      DevExpress.ui.notify(
+                        {
+                          message: 'delete attendee success',
+                          width: 500,
+                          position: {
+                            my: 'center',
+                            at: 'center',
+                            of: window,
+                          },
+                        }, 'info', 2500);
+                      window.location = new URL(window.location.origin);
+                    },
+                    error: (response) => {
+                      console.log('Failed to delete data for main AttendeeForm, error: ', response);
+                      DevExpress.ui.notify(
+                        {
+                          message: 'saving attendee error',
+                          width: 500,
+                          position: {
+                            my: 'center',
+                            at: 'center',
+                            of: window,
+                          },
+                        }, 'error', 5000);
+                    },
+                  });
+                }
+              }
+            },
+          },
+        ],
       },
     ];
 
-    const originalItems = [...basicItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems ), ...buttonItems];
+    const originalItems = [...basicItems, ...buttonItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems )];
 
     return {
       showValidationSummary: true,
@@ -868,11 +907,13 @@ Attendees.datagridUpdate = {
       {
         colSpan: 7,
         dataField: 'actual_birthday',
+        helpText: 'month / day / year',
         editorType: 'dxDateBox',
         label: {
           text: 'Real birthday',
         },
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
           elementAttr: {
             title: 'month, day and year are all required',
@@ -903,17 +944,39 @@ Attendees.datagridUpdate = {
       },
       {
         colSpan: 7,
-        dataField: 'infos.contacts.phone1',
+        dataField: 'infos.contacts.phone1',  // DxTextBox maskRules can't accept variable length of country codes
+        helpText: 'format: +1(510)123-4567',
         label: {
           text: 'phone1',
         },
+        editorOptions: {
+          placeholder: '+1(000)000-0000',
+        },
+        validationRules: [
+          {
+            type: 'pattern',
+            pattern: /^(\+\d{1,3})(\(\d{1,3}\))([0-9a-zA-Z]{2,6})-([,0-9a-zA-Z]{3,10})$/,
+            message: "Must be '+' national&area code like +1(510)123-4567,890 Comma for extension",
+          },
+        ],
       },
       {
         colSpan: 7,
         dataField: 'infos.contacts.phone2',
+        helpText: 'ie. +1(000)000-0000',
         label: {
           text: 'phone2',
         },
+        editorOptions: {
+          placeholder: '+1(000)000-0000',
+        },
+        validationRules: [
+          {
+            type: 'pattern',
+            pattern: /^(\+\d{1,3})(\(\d{1,3}\))([0-9a-zA-Z]{2,6})-([,0-9a-zA-Z]{3,10})$/,
+            message: "Must be '+' national&area code like +1(510)123-4567,890 Comma for extension",
+          },
+        ],
       },
       {
         colSpan: 7,
@@ -928,6 +991,12 @@ Attendees.datagridUpdate = {
         label: {
           text: 'email1',
         },
+        validationRules: [
+          {
+            type: "email",
+            message: "Email is invalid"
+          },
+        ],
       },
       {
         colSpan: 7,
@@ -935,6 +1004,12 @@ Attendees.datagridUpdate = {
         label: {
           text: 'email2',
         },
+        validationRules: [
+          {
+            type: "email",
+            message: "Email is invalid"
+          },
+        ],
       },
       {
         colSpan: 7,
@@ -2968,6 +3043,9 @@ Attendees.datagridUpdate = {
                       of: window,
                     },
                   }, 'success', 2000);
+                if (args.type === 'status') {
+                  Attendees.datagridUpdate.attendingMeetDatagrid.refresh();
+                }
               },
             });
           },
@@ -3148,6 +3226,7 @@ Attendees.datagridUpdate = {
                     of: window,
                   },
                 }, 'success', 2000);
+              Attendees.datagridUpdate.statusDatagrid.refresh();
             },
           });
         },
@@ -3225,10 +3304,10 @@ Attendees.datagridUpdate = {
         groupIndex: 0,
         validationRules: [{type: 'required'}],
         caption: 'Group (Assembly)',
-        setCellValue: (rowData, value) => {
-          rowData.assembly = value;
-          rowData.meet = null;
-          rowData.character = null;
+        setCellValue: (newData, value, currentData) => {
+          newData.assembly = value;
+          newData.meet = null;
+          newData.character = null;
         },
         lookup: {
           valueExpr: 'id',
@@ -3254,6 +3333,11 @@ Attendees.datagridUpdate = {
         dataField: 'meet',
         caption: 'Activity (Meet)',
         validationRules: [{type: 'required'}],
+        setCellValue: (newData, value, currentData) => {
+          newData.meet = value;
+          const majorCharacter = Attendees.datagridUpdate.meetCharacters[value];
+          if (majorCharacter && currentData.character === null) {newData.character = majorCharacter;}
+        },  // setting majorCharacter of the corresponding meet
         lookup: {
           valueExpr: 'id',
           displayExpr: 'display_name',
@@ -3263,7 +3347,15 @@ Attendees.datagridUpdate = {
               store: new DevExpress.data.CustomStore({
                 key: 'id',
                 load: (searchOpts) => {
-                  return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, searchOpts.filter);
+                  const d = new $.Deferred();
+                  $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.meetsEndpoint, searchOpts.filter)
+                    .done((result) => {
+                      if (Attendees.datagridUpdate.meetCharacters === null) {
+                        Attendees.datagridUpdate.meetCharacters = result.data.reduce((all, now)=> {all[now.id] = now.major_character; return all}, {});
+                      }  // cache the every meet's major characters for later use
+                      d.resolve(result);
+                    });
+                  return d.promise();
                 },
                 byKey: (key) => {
                   const d = new $.Deferred();

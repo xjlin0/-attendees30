@@ -170,8 +170,8 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         name2 = f"{self.last_name2 or ''}{self.first_name2 or ''}".strip()
         both_names = f"{name} {name2}".strip()
         self.infos['names']['original'] = both_names
-        self.infos['names']['romanization'] = unidecode(both_names)  # remove accents & get phonetic
-        if self.division.organization.infos.get('flags', {}).get('opencc_convert'):  # Let search work in either language
+        self.infos['names']['romanization'] = unidecode(both_names).strip()  # remove accents & get phonetic
+        if self.division.organization.infos.get('settings', {}).get('opencc_convert'):  # Let search work in either language
             s2t_converter = opencc.OpenCC('s2t.json')
             t2s_converter = opencc.OpenCC('t2s.json')
             self.infos['names']['traditional'] = s2t_converter.convert(both_names)

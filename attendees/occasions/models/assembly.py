@@ -30,7 +30,7 @@ class Assembly(TimeStampedModel, SoftDeletableModel, Utility):
     class Meta:
         db_table = 'occasions_assemblies'
         verbose_name_plural = 'Assemblies'
-        ordering = ('display_order',)
+        ordering = ('division', 'display_order',)
         indexes = [
             GinIndex(fields=['infos'], name='assembly_infos_gin', ),
         ]

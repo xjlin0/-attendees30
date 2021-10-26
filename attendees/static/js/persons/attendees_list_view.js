@@ -136,11 +136,6 @@ Attendees.dataAttendees = {
     },
 
   initialAttendeesColumns: [
-//    {
-//      caption: "attendee_id",
-//      dataField: "id",
-//      dataType: "string",
-//    },
     {
       caption: "Full name",
       // allowSorting: false,
@@ -156,6 +151,22 @@ Attendees.dataAttendees = {
         };
         $($('<a>', attrs)).appendTo(container);
       },
+    },
+    {
+      dataField: "first_name",
+      visible: false,
+    },
+    {
+      dataField: "last_name",
+      visible: false,
+    },
+    {
+      dataField: "last_name2",
+      visible: false,
+    },
+    {
+      dataField: "first_name2",
+      visible: false,
     },
     {
       dataHtmlTitle: "showing only divisions of current user organization",
