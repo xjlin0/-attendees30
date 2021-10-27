@@ -8,6 +8,14 @@ from . import Utility#, Note
 
 
 class Past(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
+    """
+    Model to store Note/Status/Education, etc. Need to implement audience permissions. For example,
+    coworker A wrote some notes of user B, however these notes may/should not be shared with user B.
+    One potential way is to have infos similar to infos__show_secret__all_counselors_: True
+    infos__show_secret__ATTENDEE: True so whoever can access to attendee, including user B, can see it
+    infos__show_secret__COWORKER or ORGANIZER: True so only coworker/organizer, not user B, can see it
+    """
+
     COUNSELING = 'counseling'  # for private data, and only assigned counselors
     ALL_COUNSELORS = 'all_counselors_'  # for private data, but accessible to all counselors
     #notes = GenericRelation(Note)

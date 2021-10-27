@@ -1761,13 +1761,14 @@ Attendees.datagridUpdate = {
                     const addressMaybeEdited = Attendees.datagridUpdate.placePopupDxForm.itemOption('NewAddressItems').visible;
 
                     if (addressMaybeEdited) {  // no address id means user creating new address
-                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.extra").option('value');
-                      const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value');
-                      const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value');
-                      const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value');
-                      const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value');
+                      const newAddressExtra = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.extra").option('value').trim();
+                      const newStreetNumber = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.street_number").option('value').trim();
+                      const newRoute = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.route").option('value').trim();
+                      const newCity = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.city").option('value').trim();
+                      const newZIP = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.postal_code").option('value').trim();
                       const newStateAttrs = Attendees.datagridUpdate.placePopupDxForm.getEditor("address.state_id")._options;
-                      const newAddressText = newStreetNumber + ' ' + newRoute + (newAddressExtra ? ', ' + newAddressExtra : '') + ', ' + newCity + ', ' + newStateAttrs.selectedItem.code + ' ' + newZIP + ', ' + newStateAttrs.selectedItem.country_name;
+                      const newAddressWithoutZip = [newStreetNumber, newRoute, newAddressExtra, newCity, newStateAttrs.selectedItem.code].filter(item => !!item).join(', ');
+                      const newAddressText = newAddressWithoutZip + (newZIP ? ', ' + newZIP + ', ' : ', ' ) + newStateAttrs.selectedItem.country_name;
 
                       if (!(userData.address && userData.address.id)) {
                         userData.address = {

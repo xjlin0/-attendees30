@@ -1487,6 +1487,31 @@
   },
   {
     "model": "whereabouts.organization",
+    "pk": -1,
+    "fields": {
+      "created": "2021-04-11T18:15:20.284Z",
+      "modified": "2021-04-12T05:55:41.743Z",
+      "is_removed": false,
+      "slug": "a8b72E_archived",
+      "display_name": "archived organization for archived attendees",
+      "infos": {
+        "settings": {
+          "opencc_convert": true,
+          "attendee_to_attending": false,
+          "attendingmeet_meet_to_past_category": {},
+          "past_category_to_attendingmeet_meet": {}
+        },
+        "acronym": "archived",
+        "contacts": {},
+        "hostname": "organization.archived",
+        "counselor": [],
+        "data_admins": [],
+        "default_time_zone": "America/Los_Angeles"
+      }
+    }
+  },
+  {
+    "model": "whereabouts.organization",
     "pk": 0,
     "fields": {
       "created": "2021-04-11T18:15:20.284Z",
@@ -2509,6 +2534,84 @@
       "type": "education",
       "display_order": 0,
       "display_name": "alternative",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 19,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "guest",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 20,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "interesting",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 21,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "catechumen",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 22,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "disbeliever",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 23,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "coworker",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 24,
+    "fields": {
+      "created": "2021-05-23T13:01:21.838Z",
+      "modified": "2021-05-23T13:01:21.838Z",
+      "is_removed": false,
+      "type": "status",
+      "display_order": 0,
+      "display_name": "deacon",
       "infos": {}
     }
   },
@@ -6160,7 +6263,7 @@
       "modified": "2021-04-08T14:03:55.729Z",
       "is_removed": false,
       "assembly": 5,
-      "major_character": 25,
+      "major_character": 26,
       "shown_audience": false,
       "audience_editable": false,
       "start": "2020-05-12T14:53:44Z",

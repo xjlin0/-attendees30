@@ -124,32 +124,30 @@ def import_addresses(addresses, california, division1_slug):
             state = Utility.presence(address_dict.get('State'))
             street = Utility.presence(address_dict.get('Street'))
             city = Utility.presence(address_dict.get('City'))
-            zip_code = Utility.presence(address_dict.get('Zip'))
-            if address_id and street and state == california.code:
-                # locality, locality_created = Locality.objects.update_or_create(
-                #     name=city,
-                #     postal_code=zip_code or '',  # Locality.postal_code allow blank but not null
-                #     state=california
-                # )
+            zip_code = Utility.presence(address_dict.get('Zip'), '')  # Locality.postal_code allow blank but not null
+            if address_id and state == california.code:  # Only process US data
+                address = {
+                    'type': 'city',
+                    'locality': Utility.presence(address_dict.get('City')),
+                    'postal_code': zip_code,
+                    'state': california.name,
+                    'state_code': california.code,
+                    'country': 'USA',
+                    'country_code': 'US',
+                    'raw': f"{city}, {state} {zip_code}".strip(),
+                }
 
-                possible_extras = re.findall('((?i)(apt|unit|#| \D{1}\d+).+)$', street)  # Get extra info such as Apt#
-                address_extra = possible_extras[0][0].strip() if possible_extras else ''
-                street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
+                if street:
+                    possible_extras = re.findall('((?i)(apt|unit|#| \D{1}\d+).+)$', street)  # Get extra info such as Apt#
+                    address_extra = possible_extras[0][0].strip() if possible_extras else ''
+                    street_strs = street.replace(address_extra, '').strip().strip(',').split(' ')
+                    address['street_number'] = street_strs[0]
+                    address['route'] = ' '.join(street_strs[1:])
+                    address['extra'] = Utility.presence(address_extra)
+                    address['raw'] = f"{street}, {address['raw']}"
 
                 contact_values = {
-                    'address': {
-                        'street_number': street_strs[0],
-                        'route': ' '.join(street_strs[1:]),
-                        'type': 'street',
-                        'extra': Utility.presence(address_extra),
-                        'locality': Utility.presence(address_dict.get('City')),
-                        'postal_code': Utility.presence(address_dict.get('Zip')) or '',
-                        'state': california.name,
-                        'state_code': california.code,
-                        'country': 'USA',
-                        'country_code': 'US',
-                        'raw': f"{street}, {city}, {state} {zip_code}",
-                    },
+                    'address': address,
                     'organization': organization,
                     'infos': {
                         **Utility.default_infos(),
@@ -539,7 +537,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     husband.gender = GenderEnum.MALE.name
                     husband.save()
                     husband_familyattendee = husband.familyattendee_set.first()
-                    husband_familyattendee.role=husband_role
+                    husband_familyattendee.role = husband_role
                     husband_familyattendee.save()
 
                     wife.gender = GenderEnum.FEMALE.name

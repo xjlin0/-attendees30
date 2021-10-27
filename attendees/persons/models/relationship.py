@@ -7,6 +7,14 @@ from . import Utility, Note, Attendee
 
 
 class Relationship(UUIDModel, TimeStampedModel, SoftDeletableModel, Utility):
+    """
+    Model to store relationships. Need to implement audience permissions. For example,
+    coworker A wrote some notes of user B, however these notes may/should not be shared with user B.
+    One potential way is to have infos similar to infos__show_secret__all_counselors_: True
+    infos__show_secret__ATTENDEE: True so whoever can access to attendee, including user B, can see it
+    infos__show_secret__COWORKER or ORGANIZER: True so only coworker/organizer, not user B, can see it
+    """
+
     notes = GenericRelation(Note)
     from_attendee = models.ForeignKey(Attendee, related_name='from_attendee', on_delete=models.CASCADE)
     to_attendee = models.ForeignKey(Attendee, related_name='to_attendee', on_delete=models.CASCADE)
