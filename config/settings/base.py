@@ -331,5 +331,6 @@ REST_FRAMEWORK = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+SUBDIRECTORY = ''  # if deployed at subdirectory of other domain, put subdirectory here
 CLIENT_DEFAULT_TIME_ZONE = 'America/Los_Angeles'
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'  # For django-address: environment variable will override it

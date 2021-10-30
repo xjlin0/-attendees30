@@ -6,6 +6,7 @@ import time
 from django.db.models import Q
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.http import Http404
 from django.shortcuts import render
@@ -56,11 +57,11 @@ class DatagridUserOrganizationAttendancesListView(ListView):
             else:
                 # chosen_character_slugs = self.request.GET.getlist('characters', [])
                 # context.update({'chosen_character_slugs': chosen_character_slugs})
-                context.update({'teams_endpoint': f"/occasions/api/organization_meet_teams/"})
-                context.update({'gatherings_endpoint': f"/occasions/api/family_organization_gatherings/"})
-                context.update({'characters_endpoint': f"/occasions/api/family_organization_characters/"})
-                context.update({'attendings_endpoint': f"/persons/api/family_organization_attendings/"})
-                context.update({'attendances_endpoint': f"/occasions/api/family_organization_attendances/"})
+                context.update({'teams_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/organization_meet_teams/"})
+                context.update({'gatherings_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/family_organization_gatherings/"})
+                context.update({'characters_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/family_organization_characters/"})
+                context.update({'attendings_endpoint': f"{settings.SUBDIRECTORY}/persons/api/family_organization_attendings/"})
+                context.update({'attendances_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/family_organization_attendances/"})
                 return render(self.request, self.get_template_names()[0], context)
         else:
             time.sleep(2)

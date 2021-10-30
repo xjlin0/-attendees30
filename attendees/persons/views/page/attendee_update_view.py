@@ -36,29 +36,29 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
-            'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
+            'empty_image_link': f"{settings.SUBDIRECTORY}{settings.STATIC_URL}images/empty.png",
             'show_create_nonfamily_attendee': show_create_nonfamily_attendee,
-            'characters_endpoint': '/occasions/api/user_assembly_characters/',
-            'meets_endpoint': '/occasions/api/user_assembly_meets/',
-            'attendingmeets_endpoint': '/persons/api/datagrid_data_attendingmeet/',
-            'assemblies_endpoint': '/occasions/api/user_assemblies/',
-            'divisions_endpoint': '/whereabouts/api/user_divisions/',
-            'addresses_endpoint': '/whereabouts/api/all_addresses/',
-            'states_endpoint': '/whereabouts/api/all_states/',
-            'relations_endpoint': '/persons/api/all_relations/',
-            'pasts_endpoint': '/persons/api/categorized_pasts/',
-            'categories_endpoint': '/persons/api/all_categories/',
-            'registrations_endpoint': '/persons/api/all_registrations/',
-            'relationships_endpoint': '/persons/api/attendee_relationships/',
-            'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not be families
-            'attendee_families_endpoint': f"/persons/api/attendee_families/",
-            'attendings_endpoint': '/persons/api/attendee_attendings/',
-            'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
+            'characters_endpoint': f'{settings.SUBDIRECTORY}/occasions/api/user_assembly_characters/',
+            'meets_endpoint': f'{settings.SUBDIRECTORY}/occasions/api/user_assembly_meets/',
+            'attendingmeets_endpoint': f'{settings.SUBDIRECTORY}/persons/api/datagrid_data_attendingmeet/',
+            'assemblies_endpoint': f'{settings.SUBDIRECTORY}/occasions/api/user_assemblies/',
+            'divisions_endpoint': f'{settings.SUBDIRECTORY}/whereabouts/api/user_divisions/',
+            'addresses_endpoint': f'{settings.SUBDIRECTORY}/whereabouts/api/all_addresses/',
+            'states_endpoint': f'{settings.SUBDIRECTORY}/whereabouts/api/all_states/',
+            'relations_endpoint': f'{settings.SUBDIRECTORY}/persons/api/all_relations/',
+            'pasts_endpoint': f'{settings.SUBDIRECTORY}/persons/api/categorized_pasts/',
+            'categories_endpoint': f'{settings.SUBDIRECTORY}/persons/api/all_categories/',
+            'registrations_endpoint': f'{settings.SUBDIRECTORY}/persons/api/all_registrations/',
+            'relationships_endpoint': f'{settings.SUBDIRECTORY}/persons/api/attendee_relationships/',
+            'related_attendees_endpoint': f'{settings.SUBDIRECTORY}/persons/api/related_attendees/',  # may not be families
+            'attendee_families_endpoint': f'{settings.SUBDIRECTORY}/persons/api/attendee_families/',
+            'attendings_endpoint': f'{settings.SUBDIRECTORY}/persons/api/attendee_attendings/',
+            'family_attendees_endpoint': f'{settings.SUBDIRECTORY}/persons/api/datagrid_data_familyattendees/',
             'targeting_attendee_id': targeting_attendee_id,
             # 'current_organization_slug': current_organization_slug,
             # 'current_division_slug': current_division_slug,
             # 'current_assembly_id': current_assembly_id,
-            'attendee_urn': f"/persons/attendee/",
+            'attendee_urn': f'{settings.SUBDIRECTORY}/persons/attendee/',
         })
         return context
 
@@ -68,7 +68,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
                 pass
 
             else:
-                context.update({'attendee_endpoint': "/persons/api/datagrid_data_attendee/"})
+                context.update({'attendee_endpoint': f'{settings.SUBDIRECTORY}/persons/api/datagrid_data_attendee/'})
                 return render(self.request, self.get_template_names()[0], context)
         else:
             time.sleep(2)

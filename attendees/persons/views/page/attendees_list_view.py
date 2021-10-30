@@ -1,4 +1,5 @@
 from django.views.generic.list import ListView
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -34,7 +35,7 @@ class AttendeesListView(RouteGuard, ListView):
             'family_attendances_urn': family_attendances_menu.urn if family_attendances_menu else None,
             'available_meets_json': dumps(list(available_meets)),
             'allowed_to_create_attendee': allowed_to_create_attendee,
-            'create_attendee_urn': f'/persons/attendee/new',
+            'create_attendee_urn': f'{settings.SUBDIRECTORY}/persons/attendee/new',
         })
         return context
 
@@ -46,14 +47,14 @@ class AttendeesListView(RouteGuard, ListView):
         else:
             # chosen_character_slugs = self.request.GET.getlist('characters', [])
             # context.update({'chosen_character_slugs': chosen_character_slugs})
-            context.update({'divisions_endpoint': f"/whereabouts/api/user_divisions/"})
-            # context.update({'teams_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
-            # context.update({'attendees_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
-            context.update({'attendee_urn': f"/persons/attendee/"})
-            # context.update({'gatherings_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
-            # context.update({'characters_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
-            # context.update({'attendings_endpoint': f"/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})
-            # context.update({'attendances_endpoint': f"/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendances/"})
+            context.update({'divisions_endpoint': f'{settings.SUBDIRECTORY}/whereabouts/api/user_divisions/'})
+            # context.update({'teams_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_teams/"})
+            # context.update({'attendees_endpoint': f"{settings.SUBDIRECTORY}/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendees/"})
+            context.update({'attendee_urn': f'{settings.SUBDIRECTORY}/persons/attendee/'})
+            # context.update({'gatherings_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_gatherings/"})
+            # context.update({'characters_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_characters/"})
+            # context.update({'attendings_endpoint': f"{settings.SUBDIRECTORY}/persons/api/{context['current_division_slug']}/{context['current_assembly_slug']}/data_attendings/"})
+            # context.update({'attendances_endpoint': f"{settings.SUBDIRECTORY}/occasions/api/{context['current_division_slug']}/{context['current_assembly_slug']}/assembly_meet_attendances/"})
             return render(self.request, self.get_template_names()[0], context)
         # else:
         #     time.sleep(2)

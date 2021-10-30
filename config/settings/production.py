@@ -196,3 +196,5 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+SUBDIRECTORY = ''  # if deployed at subdirectory of other domain, put subdirectory here
+
