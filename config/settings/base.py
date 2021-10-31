@@ -4,7 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
-
+FORCE_SCRIPT_NAME = None
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # attendees/
 APPS_DIR = ROOT_DIR / "attendees"
@@ -152,7 +152,7 @@ MIDDLEWARE = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-root
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = "/static/"
+STATIC_URL = f"{FORCE_SCRIPT_NAME or ''}/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
@@ -242,7 +242,7 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = f"{FORCE_SCRIPT_NAME or ''}admin/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("""Jack Jack""", "xjlin0@gmail.com")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
