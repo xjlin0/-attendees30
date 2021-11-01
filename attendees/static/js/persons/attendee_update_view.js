@@ -219,7 +219,7 @@ Attendees.datagridUpdate = {
         items: [
 
           {
-            dataField: 'photo',
+            dataField: 'photo_path',
             label: {
               location: 'top',
               text: ' ',  // empty space required for removing label
