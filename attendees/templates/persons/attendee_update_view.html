@@ -7,6 +7,11 @@
 {% block extra_css %}
   <link rel="preload"
         as="style"
+        href="{% static 'css/project.css' %}"
+        onload="this.rel='stylesheet'">
+
+  <link rel="preload"
+        as="style"
         href="{% static 'devextreme/dx.common.css' %}"
         onload="this.rel='stylesheet'">
 
