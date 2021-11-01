@@ -84,6 +84,7 @@ Attendees.datagridUpdate = {
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-dead').dxButton('instance').option('disabled', !enabled);
     $('div.attendee-form-delete').dxButton('instance').option('disabled', !enabled);
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
@@ -716,6 +717,27 @@ Attendees.datagridUpdate = {
               }
             },
           },
+          {
+            itemType: 'button',
+            name: 'mainAttendeeFormDead',
+            horizontalAlignment: 'left',
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-dead',  // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled && !Attendees.datagridUpdate.attendeeMainDxForm.getEditor("deathday").option('value'),
+              text: 'Attendee past away',
+              icon: 'close',
+              hint: 'Attendee pass away, so ending all his activities',
+              type: 'normal',
+              useSubmitBehavior: false,
+              onClick: (e) => {
+                if (confirm('Did attendee pass away? Every activity of the attendee will be set to be ended (not deleted).')) {
+
+                }
+              },
+            },
+          }
         ],
       },
     ];
@@ -928,6 +950,7 @@ Attendees.datagridUpdate = {
         },
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
           elementAttr: {
             title: 'pick any day of your best guess year for the age estimation',
@@ -939,6 +962,7 @@ Attendees.datagridUpdate = {
         dataField: 'deathday',
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
         },
       },
