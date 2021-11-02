@@ -13,8 +13,8 @@
     "fields": {
       "minute": "30",
       "hour": "1",
-      "day_of_week": "*",
-      "day_of_month": "1",
+      "day_of_week": "1",
+      "day_of_month": "*",
       "month_of_year": "*",
       "timezone": "UTC"
     }

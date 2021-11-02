@@ -725,7 +725,7 @@ Attendees.datagridUpdate = {
               elementAttr: {
                 class: 'attendee-form-dead',  // for toggling editing mode
               },
-              disabled: !Attendees.utilities.editingEnabled && !Attendees.datagridUpdate.attendeeMainDxForm.getEditor("deathday").option('value'),
+              disabled: !Attendees.utilities.editingEnabled,
               text: 'Attendee past away',
               icon: 'close',
               hint: 'Attendee pass away, so ending all his activities',
@@ -734,7 +734,7 @@ Attendees.datagridUpdate = {
               onClick: (e) => {
                 if (confirm('Did attendee pass away? Every activity of the attendee will be set to be ended (not deleted).')) {
 
-                }
+                } // Attendees.datagridUpdate.attendeeMainDxForm.getEditor("deathday").option('value')
               },
             },
           }
@@ -2401,7 +2401,7 @@ Attendees.datagridUpdate = {
         }
       },
       {
-        dataField: 'start',
+        dataField: 'deathday',
         dataType: 'date',
         editorOptions: {
           dateSerializationFormat: 'yyyy-MM-dd',

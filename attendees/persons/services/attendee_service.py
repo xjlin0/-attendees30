@@ -69,7 +69,7 @@ class AttendeeService:
     @staticmethod
     def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
         """
-        return target_attendee's related ones according to current_user permissions
+        return target_attendee's related ones, including dead ones, according to current_user permissions
         :param current_user:
         :param target_attendee:
         :param querying_attendee_id:
@@ -114,7 +114,11 @@ class AttendeeService:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, meets, current_user)
 
-        init_query = Q(division__organization=current_user.organization)
+        init_query = Q(
+            division__organization=current_user.organization,
+            deathday__isnull=True,
+            is_removed=False,
+        )
         # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, meets, current_user), Q.AND)
