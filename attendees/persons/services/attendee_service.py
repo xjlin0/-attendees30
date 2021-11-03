@@ -265,4 +265,4 @@ class AttendeeService:
             attendee_user.delete()
         else:
             attendee.delete()
-        # Todo 20211102: GDPR deletion requires history removal too
+        # Todo 20211102: CCPA deletion requires history removal too

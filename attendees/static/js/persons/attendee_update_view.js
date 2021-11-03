@@ -617,7 +617,7 @@ Attendees.datagridUpdate = {
               },
               disabled: !Attendees.utilities.editingEnabled,
               text: 'Passed away',
-              icon: 'fas fa-dizzy',  // close
+              icon: 'fas fa-dizzy',
               hint: 'Attendee passed away, sadly ending all activities',
               type: 'danger',
               stylingMode: 'outlined',
