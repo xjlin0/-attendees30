@@ -84,6 +84,7 @@ Attendees.datagridUpdate = {
 
   toggleEditing: (enabled) => {
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
+    $('div.attendee-form-dead').dxButton('instance').option('disabled', !enabled);
     $('div.attendee-form-delete').dxButton('instance').option('disabled', !enabled);
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
@@ -603,65 +604,25 @@ Attendees.datagridUpdate = {
               hint: 'save attendee data in the page',
               type: 'default',
               useSubmitBehavior: false,
-              onClick: (e) => {
-                const validationResults = Attendees.datagridUpdate.attendeeMainDxForm.validate();
-                if (validationResults.isValid && confirm('Are you sure?')) {
-
-                  const userData = new FormData($('form#attendee-update-form')[0]);
-                  if (!$('input[name="photo"]')[0].value) {
-                    userData.delete('photo')
-                  }
-                  const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
-                  userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
-                  userData.set('infos', JSON.stringify(userInfos));
-
-                  $.ajax({
-                    url: Attendees.datagridUpdate.attendeeAjaxUrl,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    data: userData,
-                    method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
-                    success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
-                      const parser = new URL(window.location);
-                      parser.searchParams.set('success', 'Saving attendee success');
-
-                      if (parser.href.split('/').pop().startsWith('new')) {
-                        const newAttendeeIdUrl = '/' + response.id;
-                        window.location = parser.href.replace('/new', newAttendeeIdUrl);
-                      } else {
-                        window.location = parser.href;
-                      }
-                    },
-                    error: (response) => {
-                      console.log('Failed to save data for main AttendeeForm, error: ', response);
-                      console.log('formData: ', [...userData]);
-                      DevExpress.ui.notify(
-                        {
-                          message: 'saving attendee error',
-                          width: 500,
-                          position: {
-                            my: 'center',
-                            at: 'center',
-                            of: window,
-                          },
-                        }, 'error', 5000);
-                    },
-                  });
-                } else if (!validationResults.isValid) {
-                  validationMessages = validationResults.brokenRules.reduce((all, now) => {all.push(now.message); return all}, []);
-                  DevExpress.ui.notify(
-                    {
-                      message: validationMessages.join('. '),
-                      width: 500,
-                      position: {
-                        my: 'center',
-                        at: 'center',
-                        of: window,
-                      },
-                    }, 'error', 2000);
-                }
-              }
+              onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Are you sure?', {}),
+            },
+          },
+          {
+            itemType: 'button',
+            name: 'mainAttendeeFormDead',
+            horizontalAlignment: 'left',
+            buttonOptions: {
+              elementAttr: {
+                class: 'attendee-form-dead',  // for toggling editing mode
+              },
+              disabled: !Attendees.utilities.editingEnabled,
+              text: 'Passed away',
+              icon: 'fas fa-dizzy',
+              hint: 'Attendee passed away, sadly ending all activities',
+              type: 'danger',
+              stylingMode: 'outlined',
+              useSubmitBehavior: false,
+              onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Did attendee die? All activities of the attendee will be ended (not deleted).', {'X-End-All-Attendee-Activities': true}),
             },
           },
           {
@@ -673,12 +634,12 @@ Attendees.datagridUpdate = {
                 class: 'attendee-form-delete',  // for toggling editing mode
               },
               disabled: !Attendees.utilities.editingEnabled,
-              text: "Delete all of Attendee's data",
+              text: "CCPA Delete",
               icon: 'trash',
               hint: "delete attendee's all data in the page",
               type: 'danger',
               onClick: (e) => {
-                if (confirm('Are you sure to delete all data of the attendee? Everything of the attendee will be removed.  Instead, seetting finish/deathday is usually enough!')) {
+                if (confirm("Did you receive people's formal request to delete all data of the attendee? Everything of the attendee will be removed.  Instead, setting finish/deathday is usually enough!")) {
                   window.scrollTo(0, 0);
                   $('div.spinner-border').show();
                   $.ajax({
@@ -738,6 +699,72 @@ Attendees.datagridUpdate = {
         return item.apiUrlName ? item.apiUrlName in Attendees.utilities.userApiAllowedUrlNames : true;
       }),
     };
+  },
+
+  submitAttendeeForm: (e, confirmMessage, extraHeaders) => {
+    const validationResults = Attendees.datagridUpdate.attendeeMainDxForm.validate();
+    if (validationResults.isValid && confirm(confirmMessage)) {
+      if (extraHeaders && extraHeaders['X-End-All-Attendee-Activities']) {
+        const deathdayEditor = Attendees.datagridUpdate.attendeeMainDxForm.getEditor("deathday");
+        if (!deathdayEditor.option('value')) {
+          deathdayEditor.option('value', new Date().toISOString());
+        }
+      }
+      const userData = new FormData($('form#attendee-update-form')[0]);
+      if (!$('input[name="photo"]')[0].value) {
+        userData.delete('photo')
+      }
+      const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
+      userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
+      userData.set('infos', JSON.stringify(userInfos));
+
+      $.ajax({
+        url: Attendees.datagridUpdate.attendeeAjaxUrl,
+        contentType: false,
+        processData: false,
+        headers: extraHeaders,
+        dataType: 'json',
+        data: userData,
+        method: Attendees.datagridUpdate.attendeeId && Attendees.datagridUpdate.attendeeId !== 'new' ? 'PUT' : 'POST',
+        success: (response) => {  // Todo: update photo link, temporarily reload to bypass the requirement
+          const parser = new URL(window.location);
+          parser.searchParams.set('success', 'Saving attendee success');
+
+          if (parser.href.split('/').pop().startsWith('new')) {
+            const newAttendeeIdUrl = '/' + response.id;
+            window.location = parser.href.replace('/new', newAttendeeIdUrl);
+          } else {
+            window.location = parser.href;
+          }
+        },
+        error: (response) => {
+          console.log('Failed to save data for main AttendeeForm, error: ', response);
+          console.log('formData: ', [...userData]);
+          DevExpress.ui.notify(
+            {
+              message: 'saving attendee error',
+              width: 500,
+              position: {
+                my: 'center',
+                at: 'center',
+                of: window,
+              },
+            }, 'error', 5000);
+        },
+      });
+    } else if (!validationResults.isValid) {
+      validationMessages = validationResults.brokenRules.reduce((all, now) => {all.push(now.message); return all}, []);
+      DevExpress.ui.notify(
+        {
+          message: validationMessages.join('. '),
+          width: 500,
+          position: {
+            my: 'center',
+            at: 'center',
+            of: window,
+          },
+        }, 'error', 2000);
+    }
   },
 
   attendeeNameValidator: () => {
@@ -928,6 +955,7 @@ Attendees.datagridUpdate = {
         },
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
           elementAttr: {
             title: 'pick any day of your best guess year for the age estimation',
@@ -939,6 +967,7 @@ Attendees.datagridUpdate = {
         dataField: 'deathday',
         editorType: 'dxDateBox',
         editorOptions: {
+          showClearButton: true,
           placeholder: 'click calendar',
         },
       },
@@ -2377,7 +2406,7 @@ Attendees.datagridUpdate = {
         }
       },
       {
-        dataField: 'start',
+        dataField: 'deathday',
         dataType: 'date',
         editorOptions: {
           dateSerializationFormat: 'yyyy-MM-dd',

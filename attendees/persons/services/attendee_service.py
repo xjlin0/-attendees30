@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from datetime import datetime, timezone
 from django.contrib.postgres.aggregates.general import ArrayAgg
 from django.db.models import Q, F, Func, Case, When
 from django.db.models.expressions import OrderBy
@@ -69,7 +69,7 @@ class AttendeeService:
     @staticmethod
     def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
         """
-        return target_attendee's related ones according to current_user permissions
+        return target_attendee's related ones, including dead ones, according to current_user permissions
         :param current_user:
         :param target_attendee:
         :param querying_attendee_id:
@@ -114,7 +114,11 @@ class AttendeeService:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, meets, current_user)
 
-        init_query = Q(division__organization=current_user.organization)
+        init_query = Q(
+            division__organization=current_user.organization,
+            deathday__isnull=True,
+            is_removed=False,
+        )
         # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, meets, current_user), Q.AND)
@@ -201,6 +205,30 @@ class AttendeeService:
         return field_converter.get(query_field, query_field).replace('.', '__')
 
     @staticmethod
+    def end_all_activities(attendee):
+        """ FamilyAttendee is not deleted since many people still memorise their passed away families """
+        for attending in attendee.attendings.all():
+            AttendingService.end_all_activities(attending)
+
+        now = datetime.now(timezone.utc)
+        attendee.pasts.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+        attendee.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+
+        for family in attendee.families.filter(is_removed=False):
+            if family.familyattendee_set.filter(
+                (Q(finish__isnull=True) | Q(finish__gte=now)),
+                attendee__deathday__isnull=True,
+                is_removed=False,
+                attendee__is_removed=False
+            ).count() < 1:  # single household family (after attendee's deathday updated)
+                family.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+
+        attendee_user = attendee.user
+        if attendee_user:
+            attendee_user.is_active = False
+            attendee_user.save()
+
+    @staticmethod
     def destroy_with_associations(attendee):
         for attending in attendee.attendings.filter(is_removed=False):
             AttendingService.destroy_with_associations(attending)
@@ -227,8 +255,14 @@ class AttendeeService:
                 registration.save()
 
         old_photo = attendee.photo
-        if old_photo:
+        if old_photo:  # Todo 20211102: may need to search photos of attendee name due to repeating import
             old_file = Path(old_photo.path)
             old_file.unlink(missing_ok=True)
 
-        attendee.delete()
+        if hasattr(attendee, 'user'):
+            attendee_user = attendee.user
+            attendee.delete()
+            attendee_user.delete()
+        else:
+            attendee.delete()
+        # Todo 20211102: CCPA deletion requires history removal too

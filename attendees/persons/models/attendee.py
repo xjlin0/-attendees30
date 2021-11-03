@@ -151,8 +151,8 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     # also attendee.related_ones will return deleted relationship, so extra filter is required (.filter(relationship__is_removed = False))
 
     def clean(self):
-        if not (self.last_name or self.last_name2):
-            raise ValidationError("You must specify a last_name")
+        if not (self.last_name or self.last_name2 or self.first_name or self.first_name2):
+            raise ValidationError("You must specify at least a name")
 
     def get_absolute_url(self):
         return reverse('/persons/attendee_detail_view/', kwargs={'pk': self.pk})
