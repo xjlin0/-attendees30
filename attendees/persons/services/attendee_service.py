@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from datetime import datetime, timezone
 from django.contrib.postgres.aggregates.general import ArrayAgg
 from django.db.models import Q, F, Func, Case, When
 from django.db.models.expressions import OrderBy
@@ -205,6 +205,30 @@ class AttendeeService:
         return field_converter.get(query_field, query_field).replace('.', '__')
 
     @staticmethod
+    def end_all_activities(attendee):
+        """ FamilyAttendee is not deleted since many people still memorise their passed away families """
+        for attending in attendee.attendings.all():
+            AttendingService.end_all_activities(attending)
+
+        now = datetime.now(timezone.utc)
+        attendee.pasts.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+        attendee.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+
+        for family in attendee.families.filter(is_removed=False):
+            if family.familyattendee_set.filter(
+                (Q(finish__isnull=True) | Q(finish__gte=now)),
+                attendee__deathday__isnull=True,
+                is_removed=False,
+                attendee__is_removed=False
+            ).count() < 1:  # single household family (after attendee's deathday updated)
+                family.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
+
+        attendee_user = attendee.user
+        if attendee_user:
+            attendee_user.is_active = False
+            attendee_user.save()
+
+    @staticmethod
     def destroy_with_associations(attendee):
         for attending in attendee.attendings.filter(is_removed=False):
             AttendingService.destroy_with_associations(attending)
@@ -231,8 +255,14 @@ class AttendeeService:
                 registration.save()
 
         old_photo = attendee.photo
-        if old_photo:
+        if old_photo:  # Todo 20211102: may need to search photos of attendee name due to repeating import
             old_file = Path(old_photo.path)
             old_file.unlink(missing_ok=True)
 
-        attendee.delete()
+        if hasattr(attendee, 'user'):
+            attendee_user = attendee.user
+            attendee.delete()
+            attendee_user.delete()
+        else:
+            attendee.delete()
+        # Todo 20211102: GDPR deletion requires history removal too

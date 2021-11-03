@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from attendees.occasions.models import Attendance
 from attendees.persons.models import Attending
 from django.db.models.expressions import F
@@ -66,6 +67,18 @@ class AttendingService:
                 attendingmeet__character__slug__in=character_slugs,
                 meets__assembly__slug=assembly_slug,
             ).distinct()
+
+    @staticmethod
+    def end_all_activities(attending):
+        now = datetime.now(timezone.utc)
+        ongoing_attendingmeets = attending.attendingmeet_set.filter(Q(finish__isnull=True) | Q(finish__gte=now))
+        ongoing_attendingmeets.update(finish=now)
+        for ongoing_attendingmeet in ongoing_attendingmeets:
+            Attendance.objects.filter(
+                (Q(finish__isnull=True) | Q(finish__gte=now)),
+                gathering__meet=ongoing_attendingmeet.meet,
+                attending=ongoing_attendingmeet.attending,
+            ).update(finish=now)
 
     @staticmethod
     def destroy_with_associations(attending):

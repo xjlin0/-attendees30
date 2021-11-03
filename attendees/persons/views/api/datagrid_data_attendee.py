@@ -75,6 +75,16 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
 
         return qs.filter(division__organization=current_user.organization)
 
+    def perform_update(self, serializer):
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        if self.request.user.privileged_to_edit(target_attendee.id):  # intentionally forbid user delete him/herself
+            instance = serializer.save()
+            if self.request.META.get('HTTP_X_END_ALL_ATTENDEE_ACTIVITIES'):
+                AttendeeService.end_all_activities(instance)
+        else:
+            time.sleep(2)
+            raise PermissionDenied(detail=f'Not allowed to update {target_attendee.__class__.__name__}')
+
     def perform_destroy(self, instance):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         if self.request.user.privileged_to_edit(target_attendee.id):  # intentionally forbid user delete him/herself
