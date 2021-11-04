@@ -259,8 +259,8 @@ class AttendeeService:
             old_file = Path(old_photo.path)
             old_file.unlink(missing_ok=True)
 
-        if hasattr(attendee, 'user'):
-            attendee_user = attendee.user
+        attendee_user = attendee.user
+        if attendee_user:
             attendee.delete()
             attendee_user.delete()
         else:
