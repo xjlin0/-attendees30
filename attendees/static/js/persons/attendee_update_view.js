@@ -38,6 +38,7 @@ Attendees.datagridUpdate = {
     display_name: 'main',
     // content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
+  duplicatesForNewAttendeeDatagrid: null,
   familyAttendeeDatagrid: null,
   familyAttrPopupDxForm: null,
   familyAttrPopupDxFormData: {},
@@ -150,7 +151,7 @@ Attendees.datagridUpdate = {
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
-    Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.attendeeUrn;
+    Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn;
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     // Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
     $.ajaxSetup({
@@ -294,6 +295,29 @@ Attendees.datagridUpdate = {
       },
     ];
 
+    const potentialDuplicatesForNewAttendee = [
+      {
+        colSpan: 24,
+        colCount: 24,
+        caption: "Maybe it already exists, so there's no need to create new?",
+        cssClass: 'h6',
+        itemType: 'group',
+        items: [
+          {
+            colSpan: 24,
+            dataField: 'duplicates_new_attendee',
+            name: 'duplicatesForNewAttendeeDatagrid',
+            label: {
+              location: 'top',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            template: (data, itemElement) => Attendees.datagridUpdate.initDuplicatesForNewAttendeeDatagrid(data, itemElement),
+          }
+        ],
+      },
+    ];
+
     const moreItems = [
       {
         colSpan: 24,
@@ -391,7 +415,7 @@ Attendees.datagridUpdate = {
         items: [
           {
             colSpan: 24,
-            dataField: 'familyattendee_set',
+            dataField: 'families',
             name: 'familyAttrs',
             label: {
               text: 'families',
@@ -400,7 +424,7 @@ Attendees.datagridUpdate = {
               Attendees.datagridUpdate.familyButtonFactory({
                 text: 'New family for attendee+',
                 disabled: !Attendees.utilities.editingEnabled,
-                title: '+ Add the attendee to a new family',
+                title: '+ Create a new family for the attendee',
                 type: 'button',
                 class: 'family-button-new family-button btn-outline-primary btn button btn-sm ',
               }).appendTo(itemElement);
@@ -583,105 +607,114 @@ Attendees.datagridUpdate = {
       },
     ];
 
+    const saveButtons = [
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormSubmit',
+        horizontalAlignment: 'left',
+        buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-submits',  // for toggling editing mode
+          },
+          disabled: !Attendees.utilities.editingEnabled,
+          text: 'Save Attendee details and photo',
+          icon: 'save',
+          hint: 'save attendee data in the page',
+          type: 'default',
+          useSubmitBehavior: false,
+          onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Are you sure?', {}),
+        },
+      },
+    ];
+
+    const deadAndDeleteButtons = [
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormDead',
+        horizontalAlignment: 'left',
+        buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-dead',  // for toggling editing mode
+          },
+          disabled: !Attendees.utilities.editingEnabled,
+          text: 'Passed away',
+          icon: 'fas fa-dizzy',
+          hint: 'Attendee passed away, sadly ending all activities',
+          type: 'danger',
+          stylingMode: 'outlined',
+          useSubmitBehavior: false,
+          onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Did attendee die? All activities of the attendee will be ended (not deleted).', {'X-End-All-Attendee-Activities': true}),
+        },
+      },
+      {
+        itemType: 'button',
+        name: 'mainAttendeeFormDelete',
+        horizontalAlignment: 'left',
+        buttonOptions: {
+          elementAttr: {
+            class: 'attendee-form-delete',  // for toggling editing mode
+          },
+          disabled: !Attendees.utilities.editingEnabled,
+          text: "Delete attendee",
+          icon: 'trash',
+          hint: "delete attendee's all data in the page",
+          type: 'danger',
+          onClick: (e) => {
+            if (confirm("Sure to delete ALL data of the attendee? Everything of the attendee will be removed.  Instead, setting finish/deathday is usually enough!")) {
+              window.scrollTo(0, 0);
+              $('div.spinner-border').show();
+              $.ajax({
+                url: Attendees.datagridUpdate.attendeeAjaxUrl,
+                method: 'DELETE',
+                success: (response) => {
+                  $('div.spinner-border').hide();
+                  DevExpress.ui.notify(
+                    {
+                      message: 'delete attendee success',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'info', 2500);
+                  window.location = new URL(window.location.origin);
+                },
+                error: (response) => {
+                  console.log('Failed to delete data for main AttendeeForm, error: ', response);
+                  DevExpress.ui.notify(
+                    {
+                      message: 'saving attendee error',
+                      width: 500,
+                      position: {
+                        my: 'center',
+                        at: 'center',
+                        of: window,
+                      },
+                    }, 'error', 5000);
+                },
+              });
+            }
+          }
+        },
+      },
+    ];
+
     const buttonItems = [
       {
         colSpan: 24,
         colCount: 24,
         cssClass: 'h6 not-shrinkable',
         itemType: 'group',
-        items: [
-          {
-            itemType: 'button',
-            name: 'mainAttendeeFormSubmit',
-            horizontalAlignment: 'left',
-            buttonOptions: {
-              elementAttr: {
-                class: 'attendee-form-submits',  // for toggling editing mode
-              },
-              disabled: !Attendees.utilities.editingEnabled,
-              text: 'Save Attendee details and photo',
-              icon: 'save',
-              hint: 'save attendee data in the page',
-              type: 'default',
-              useSubmitBehavior: false,
-              onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Are you sure?', {}),
-            },
-          },
-          {
-            itemType: 'button',
-            name: 'mainAttendeeFormDead',
-            horizontalAlignment: 'left',
-            buttonOptions: {
-              elementAttr: {
-                class: 'attendee-form-dead',  // for toggling editing mode
-              },
-              disabled: !Attendees.utilities.editingEnabled,
-              text: 'Passed away',
-              icon: 'fas fa-dizzy',
-              hint: 'Attendee passed away, sadly ending all activities',
-              type: 'danger',
-              stylingMode: 'outlined',
-              useSubmitBehavior: false,
-              onClick: (e) => Attendees.datagridUpdate.submitAttendeeForm(e, 'Did attendee die? All activities of the attendee will be ended (not deleted).', {'X-End-All-Attendee-Activities': true}),
-            },
-          },
-          {
-            itemType: 'button',
-            name: 'mainAttendeeFormDelete',
-            horizontalAlignment: 'left',
-            buttonOptions: {
-              elementAttr: {
-                class: 'attendee-form-delete',  // for toggling editing mode
-              },
-              disabled: !Attendees.utilities.editingEnabled,
-              text: "CCPA Delete",
-              icon: 'trash',
-              hint: "delete attendee's all data in the page",
-              type: 'danger',
-              onClick: (e) => {
-                if (confirm("Did you receive people's formal request to delete all data of the attendee? Everything of the attendee will be removed.  Instead, setting finish/deathday is usually enough!")) {
-                  window.scrollTo(0, 0);
-                  $('div.spinner-border').show();
-                  $.ajax({
-                    url: Attendees.datagridUpdate.attendeeAjaxUrl,
-                    method: 'DELETE',
-                    success: (response) => {
-                      $('div.spinner-border').hide();
-                      DevExpress.ui.notify(
-                        {
-                          message: 'delete attendee success',
-                          width: 500,
-                          position: {
-                            my: 'center',
-                            at: 'center',
-                            of: window,
-                          },
-                        }, 'info', 2500);
-                      window.location = new URL(window.location.origin);
-                    },
-                    error: (response) => {
-                      console.log('Failed to delete data for main AttendeeForm, error: ', response);
-                      DevExpress.ui.notify(
-                        {
-                          message: 'saving attendee error',
-                          width: 500,
-                          position: {
-                            my: 'center',
-                            at: 'center',
-                            of: window,
-                          },
-                        }, 'error', 5000);
-                    },
-                  });
-                }
-              }
-            },
-          },
-        ],
+        items: Attendees.datagridUpdate.attendeeId === 'new' ?
+          [...saveButtons] :
+          [...saveButtons, ...deadAndDeleteButtons],
       },
     ];
 
-    const originalItems = [...basicItems, ...buttonItems, ...(Attendees.datagridUpdate.attendeeId === 'new' ? [] : moreItems )];
+    const originalItems = Attendees.datagridUpdate.attendeeId === 'new' ?
+      [...basicItems, ...potentialDuplicatesForNewAttendee, ...buttonItems] :
+      [...basicItems, ...buttonItems, ...moreItems];
 
     return {
       showValidationSummary: true,
@@ -2132,6 +2165,57 @@ Attendees.datagridUpdate = {
     },
   }),
 
+
+  ///////////////////////  Potential duplicate Attendees Datagrid under new Attendee DxForm  ///////////////////////
+
+  initDuplicatesForNewAttendeeDatagrid: (data, itemElement) => {
+    const $myDatagrid = $("<div id='duplicates-new-attendee-datagrid-container'>").dxDataGrid(Attendees.datagridUpdate.duplicatesForNewAttendeeDatagridConfig);
+    itemElement.append($myDatagrid);
+    Attendees.datagridUpdate.duplicatesForNewAttendeeDatagrid = $myDatagrid.dxDataGrid('instance');
+  },
+
+  duplicatesForNewAttendeeDatagridConfig: {
+    dataSource: {
+      store: new DevExpress.data.CustomStore({
+        key: 'id',
+        load: () => {
+          const firstName = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('first_name').option('value');
+          const lastName = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('last_name').option('value');
+          const firstName2 = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('first_name2').option('value');
+          const lastName2 = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('last_name2').option('value');
+          const phone1 = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('last_name2').option('value');
+
+          if (firstName || lastName || firstName2 || lastName2 || phone1) {
+            const searchData = [firstName, lastName, firstName2, lastName2, phone1].filter(name => name).map(name => ["infos", "contains", name]).flatMap(e => [e, 'or']);
+            const d = new $.Deferred();
+            $.get("/persons/api/datagrid_data_attendees/", {take: 10, filter: JSON.stringify(searchData)})
+              .done((result) => {
+                d.resolve(result.data);
+              });
+            return d.promise();
+          }
+        },
+      }),
+    },
+    columns: [
+      {
+        caption: "Full name",
+        // allowSorting: false,
+        dataField: "infos.names",
+        name: 'infos.names.original',
+        dataType: "string",
+        allowHeaderFiltering: false,
+        cellTemplate: (container, rowData) => {
+          const attrs = {
+            "class": "text-info",
+            "text": rowData.data.infos.names.original,
+            "href": Attendees.datagridUpdate.attendeeUrn + rowData.data.id,
+          };
+          $($('<a>', attrs)).appendTo(container);
+        },
+      },
+    ],
+  },
 
   ///////////////////////  Family Attendees Datagrid in main DxForm  ///////////////////////
 
