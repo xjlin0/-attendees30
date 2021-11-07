@@ -212,6 +212,7 @@ Attendees.datagridUpdate = {
   },
 
   getAttendeeFormConfigs: () => {  // this is the place to control blocks of AttendeeForm
+    const isCreatingNewAttendee = Attendees.datagridUpdate.attendeeId === 'new';
     const basicItems = [
       {
         colSpan: 4,
@@ -706,13 +707,11 @@ Attendees.datagridUpdate = {
         colCount: 24,
         cssClass: 'h6 not-shrinkable',
         itemType: 'group',
-        items: Attendees.datagridUpdate.attendeeId === 'new' ?
-          [...saveButtons] :
-          [...saveButtons, ...deadAndDeleteButtons],
+        items: isCreatingNewAttendee ? [...saveButtons] : [...saveButtons, ...deadAndDeleteButtons],
       },
     ];
 
-    const originalItems = Attendees.datagridUpdate.attendeeId === 'new' ?
+    const originalItems = isCreatingNewAttendee ?
       [...basicItems, ...potentialDuplicatesForNewAttendee, ...buttonItems] :
       [...basicItems, ...buttonItems, ...moreItems];
 
@@ -725,6 +724,9 @@ Attendees.datagridUpdate = {
       },
       onFieldDataChanged: (e) => {
         Attendees.datagridUpdate.attendeeMainDxForm.validate();
+        if (isCreatingNewAttendee) {
+          Attendees.datagridUpdate.duplicatesForNewAttendeeDatagrid.refresh();
+        }
       },
       colCount: 24,
       formData: null, // will be fetched
@@ -2188,8 +2190,8 @@ Attendees.datagridUpdate = {
           if (firstName || lastName || firstName2 || lastName2 || phone1) {
             const searchData = [firstName, lastName, firstName2, lastName2, phone1].filter(name => name).map(name => ["infos", "contains", name]).flatMap(e => [e, 'or']);
             const d = new $.Deferred();
-            $.get("/persons/api/datagrid_data_attendees/", {take: 10, filter: JSON.stringify(searchData)})
-              .done((result) => {
+            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeSearch, {take: 10, filter: JSON.stringify(searchData)})
+              .done( result => {
                 d.resolve(result.data);
               });
             return d.promise();
@@ -2197,12 +2199,14 @@ Attendees.datagridUpdate = {
         },
       }),
     },
+    allowColumnReordering: true,
+    columnAutoWidth: true,
+    allowColumnResizing: true,
     columns: [
       {
         caption: "Full name",
-        // allowSorting: false,
         dataField: "infos.names",
-        name: 'infos.names.original',
+        allowSorting: false,
         dataType: "string",
         allowHeaderFiltering: false,
         cellTemplate: (container, rowData) => {
@@ -2212,6 +2216,49 @@ Attendees.datagridUpdate = {
             "href": Attendees.datagridUpdate.attendeeUrn + rowData.data.id,
           };
           $($('<a>', attrs)).appendTo(container);
+        },
+      },
+      {
+        dataField: 'gender',
+        allowSorting: false,
+      },
+      {
+        dataField: 'division',
+        allowSorting: false,
+        lookup: {
+          valueExpr: 'id',
+          displayExpr: 'display_name',
+          dataSource: {
+            store: new DevExpress.data.CustomStore({
+              key: 'id',
+              load: () => {
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
+              },
+              byKey: (key) => {
+                const d = new $.Deferred();
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
+                  .done( result => {
+                    d.resolve(result.data);
+                  });
+                return d.promise();
+              },
+            }),
+          },
+        }
+      },
+      {
+        caption: "Birthday Y-M-D",
+        dataField: "birthday",
+        dataType: "string",
+        allowSorting: false,
+        allowHeaderFiltering: false,
+        cellTemplate: (container, rowData) => {
+          if (rowData.data.actual_birthday || rowData.data.estimated_birthday) {
+            const attrs = {
+              "text": rowData.data.actual_birthday ? rowData.data.actual_birthday : `around ${rowData.data.estimated_birthday}`,
+            };
+            $($('<p>', attrs)).appendTo(container);
+          }
         },
       },
     ],
