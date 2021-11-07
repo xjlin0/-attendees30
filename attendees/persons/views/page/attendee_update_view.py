@@ -57,7 +57,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
             'targeting_attendee_id': targeting_attendee_id,
             # 'current_organization_slug': current_organization_slug,
             # 'current_division_slug': current_division_slug,
-            'attendee_search': '/persons/api/datagrid_data_attendees',
+            'attendee_search': '/persons/api/datagrid_data_attendees/',
             'attendee_urn': f"/persons/attendee/",
         })
         return context

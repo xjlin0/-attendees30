@@ -2190,7 +2190,7 @@ Attendees.datagridUpdate = {
           if (firstName || lastName || firstName2 || lastName2 || phone1) {
             const searchData = [firstName, lastName, firstName2, lastName2, phone1].filter(name => name).map(name => ["infos", "contains", name]).flatMap(e => [e, 'or']);
             const d = new $.Deferred();
-            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeSearch, {take: 10, filter: JSON.stringify(searchData)})
+            $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeSearch, {include_dead: true, take: 10, filter: JSON.stringify(searchData)})
               .done( result => {
                 d.resolve(result.data);
               });
@@ -2202,6 +2202,8 @@ Attendees.datagridUpdate = {
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
     columns: [
       {
         caption: "Full name",
@@ -2257,9 +2259,12 @@ Attendees.datagridUpdate = {
             const attrs = {
               "text": rowData.data.actual_birthday ? rowData.data.actual_birthday : `around ${rowData.data.estimated_birthday}`,
             };
-            $($('<p>', attrs)).appendTo(container);
+            $($('<span>', attrs)).appendTo(container);
           }
         },
+      },
+      {
+        dataField: "deathday",
       },
     ],
   },

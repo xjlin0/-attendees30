@@ -27,12 +27,13 @@ class ApiDatagridDataAttendeesViewSet(ModelViewSet):  # from GenericAPIView
         orderby_string = self.request.query_params.get('sort', '[{"selector":"id","desc":false}]')  # default order
         meets_string = self.request.query_params.get('meets', '[]')
         filters_list_string = self.request.query_params.get('filter', '[]')
-
+        include_dead = self.request.query_params.get('include_dead')
         return AttendeeService.by_datagrid_params(
             current_user=self.request.user,
             meets=ast.literal_eval(meets_string),
             orderby_string=orderby_string,
             filters_list=ast.literal_eval(filters_list_string),
+            include_dead=include_dead,
         )  # Datagrid can't send array in standard url params since filters can be dynamic nested arrays
 
 
