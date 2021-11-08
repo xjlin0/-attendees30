@@ -153,6 +153,34 @@ Attendees.utilities = {
     email1: null,
     email2: null,
   },
+
+  phoneNumberFormatter: (rawNumberText) => {
+    if (rawNumberText) {
+      switch (true) {
+        case rawNumberText.startsWith('+1') && rawNumberText.length === 12:  // US
+          return `${rawNumberText.slice(0, 2)}(${rawNumberText.slice(2, 5)})${rawNumberText.slice(5, 8)}-${rawNumberText.slice(8)}`;
+        case rawNumberText.startsWith('+86') && [11, 12, 13].includes(rawNumberText.length):  // China
+          if (rawNumberText.length < 13) {
+            return `${rawNumberText.slice(0, 3)}(${rawNumberText.slice(3, 5)})${rawNumberText.slice(5, 9)}-${rawNumberText.slice(9)}`;
+          } else {
+            return `${rawNumberText.slice(0, 3)}(${rawNumberText.slice(3, 6)})${rawNumberText.slice(6, 10)}-${rawNumberText.slice(10)}`;
+          }
+        case rawNumberText.startsWith('+886') && [12, 13].includes(rawNumberText.length):  // Taiwan
+          if (rawNumberText.length > 12 && rawNumberText[4] === '9') {
+            return `${rawNumberText.slice(0, 4)}(${rawNumberText.slice(4, 7)})${rawNumberText.slice(7, 10)}-${rawNumberText.slice(10)}`;
+          } else if (rawNumberText.length > 12) {
+            return `${rawNumberText.slice(0, 4)}(${rawNumberText.slice(4, 5)})${rawNumberText.slice(5, 9)}-${rawNumberText.slice(9)}`;
+          } else {
+            return `${rawNumberText.slice(0, 4)}(${rawNumberText.slice(4, 5)})${rawNumberText.slice(5, 8)}-${rawNumberText.slice(8)}`;
+          }
+        case rawNumberText.startsWith('+852') && rawNumberText.length === 12:  // HK
+          return `${rawNumberText.slice(0, 1)}(${rawNumberText.slice(1, 4)})${rawNumberText.slice(4, 8)}-${rawNumberText.slice(8)}`;
+        default:
+          return rawNumberText;
+      }
+    }
+    return '';
+  }
 };
 
 $(document).ready(() => {

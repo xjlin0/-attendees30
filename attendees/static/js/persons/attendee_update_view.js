@@ -90,6 +90,8 @@ Attendees.datagridUpdate = {
     $('span.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('button.attending-button-new, button.family-button-new, button.place-button-new, input.form-check-input').prop('disabled', !enabled);
     Attendees.datagridUpdate.attendeeMainDxForm.option('readOnly', !enabled);
+    Attendees.datagridUpdate.phone1.option('readOnly', !enabled);
+    Attendees.datagridUpdate.phone2.option('readOnly', !enabled);
     Attendees.datagridUpdate.attendeePhotoFileUploader.option('disabled', !enabled);
 
     if (enabled) {
@@ -1016,6 +1018,16 @@ Attendees.datagridUpdate = {
         editorOptions: {
           placeholder: '+1(000)000-0000',
         },
+        template: (data, itemElement) => {
+          const options = {
+            readOnly: !Attendees.utilities.editingEnabled,
+            value: Attendees.utilities.phoneNumberFormatter(data.editorOptions.value),
+            onValueChanged: (e) => data.component.updateData(data.dataField, e.value.replace(/[-()]/g, '')),
+          };
+          const phoneEditor = $("<div id='attendee-mainform-phone1'>").dxTextBox(options);
+          itemElement.append(phoneEditor);
+          Attendees.datagridUpdate.phone1 = phoneEditor.dxTextBox('instance');
+        },
         validationRules: [
           {
             type: 'pattern',
@@ -1033,6 +1045,16 @@ Attendees.datagridUpdate = {
         },
         editorOptions: {
           placeholder: '+1(000)000-0000',
+        },
+        template: (data, itemElement) => {
+          const options = {
+            readOnly: !Attendees.utilities.editingEnabled,
+            value: Attendees.utilities.phoneNumberFormatter(data.editorOptions.value),
+            onValueChanged: (e) => data.component.updateData(data.dataField, e.value.replace(/[-()]/g, '')),
+          };
+          const phoneEditor = $("<div id='attendee-mainform-phone2'>").dxTextBox(options);
+          itemElement.append(phoneEditor);
+          Attendees.datagridUpdate.phone2 = phoneEditor.dxTextBox('instance');
         },
         validationRules: [
           {
@@ -1150,7 +1172,7 @@ Attendees.datagridUpdate = {
           {
             dataField: 'contactValue',
             editorOptions: {
-              placeholder: 'for example: WeiXin',
+              placeholder: 'for example: JohnSmith1225',
             },
             helpText: 'Contact such as name@email.com/+15101234567 etc',
             label: {

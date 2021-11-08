@@ -227,7 +227,7 @@ Attendees.dataAttendees = {
             const phoneNumber = rowData.data.infos.contacts[key].trim();
             const attrs = {
               "class": "text-info",
-              "text": phoneNumber,
+              "text": Attendees.utilities.phoneNumberFormatter(phoneNumber),
               "href": `tel:${phoneNumber}`,
             };
             if (phones > 0) {$('<span>', {text: ', '}).appendTo(container);}
