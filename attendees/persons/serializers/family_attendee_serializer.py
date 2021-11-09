@@ -6,7 +6,7 @@ from attendees.persons.serializers import FamilySerializer, AttendeeSerializer
 
 class FamilyAttendeeSerializer(serializers.ModelSerializer):
     family = FamilySerializer(many=False)
-    attendee = AttendeeSerializer(many=False)
+    # attendee = AttendeeSerializer(many=False)
 
     class Meta:
         model = FamilyAttendee
@@ -24,12 +24,13 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         new_attendee_data = validated_data.get('attendee', {})
         if new_family:
             validated_data['family'] = new_family
-
+        print("hi 27 here is new_attendee_data: ", new_attendee_data)
         if new_attendee_data:
-            attendee, attendee_created = Attendee.objects.update_or_create(
-                id=new_attendee_data.get('id'),
-                defaults=new_attendee_data,
-            )
+            # attendee, attendee_created = Attendee.objects.update_or_create(
+            #     id=new_attendee_data.get('id'),
+            #     defaults=new_attendee_data,
+            # )
+            attendee = Attendee.objects.get(pk=new_attendee_data)
             validated_data['attendee'] = attendee
         # Todo: 20210517  create relationships among families such as siblings, etc
         obj, created = FamilyAttendee.objects.update_or_create(

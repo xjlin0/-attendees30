@@ -144,9 +144,9 @@ urlpatterns = [
     ),
     path(
         'attendee/new',
-        kwargs={'attendee_id': 'new', 'show_create_nonfamily_attendee': False},
+        kwargs={'attendee_id': 'new', 'show_create_attendee': False},
         view=attendee_update_view,
-        name='attendee_create_view',  # for create non-family-attendee permission
+        name='attendee_create_view',  # for create attendee permission
     ),
     path(
         'attendee/<str:attendee_id>',

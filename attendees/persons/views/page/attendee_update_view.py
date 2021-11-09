@@ -1,13 +1,14 @@
-import time
+from time import sleep
+from json import dumps
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
 from django.shortcuts import render
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import UpdateView
 
-from attendees.occasions.models import Assembly
 from attendees.persons.models import Attendee, Family
+from attendees.whereabouts.models import Division
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.users.models import Menu
 from attendees.utils.view_helpers import get_object_or_delayed_403
@@ -27,17 +28,13 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # current_division_slug = self.kwargs.get('division_slug', None)
-        # current_organization_slug = self.kwargs.get('organization_slug', None)
-        # current_assembly_slug = self.kwargs.get('assembly_slug', 'cfcch_unspecified')
-        # current_assembly_id = Assembly.objects.get(slug=current_assembly_slug).id
         targeting_attendee_id = self.kwargs.get('attendee_id', self.request.user.attendee_uuid_str())  # if more logic needed when create new, a new view will be better
-        show_create_nonfamily_attendee = self.kwargs.get('show_create_nonfamily_attendee', Menu.user_can_create_attendee(self.request.user))
+        show_create_attendee = self.kwargs.get('show_create_attendee', Menu.user_can_create_attendee(self.request.user))
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
             'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
-            'show_create_nonfamily_attendee': show_create_nonfamily_attendee,
+            'show_create_attendee': show_create_attendee,
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
             'meets_endpoint': '/occasions/api/user_assembly_meets/',
             'attendingmeets_endpoint': '/persons/api/datagrid_data_attendingmeet/',
@@ -55,8 +52,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
             'attendings_endpoint': '/persons/api/attendee_attendings/',
             'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
             'targeting_attendee_id': targeting_attendee_id,
-            # 'current_organization_slug': current_organization_slug,
-            # 'current_division_slug': current_division_slug,
+            'divisions': dumps(list(Division.objects.filter(organization=self.request.user.attendee.division.organization).values("id", "display_name"))),  # to avoid simultaneous AJAX calls
             'attendee_search': '/persons/api/datagrid_data_attendees/',
             'attendee_urn': f"/persons/attendee/",
         })
@@ -71,7 +67,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
                 context.update({'attendee_endpoint': "/persons/api/datagrid_data_attendee/"})
                 return render(self.request, self.get_template_names()[0], context)
         else:
-            time.sleep(2)
+            sleep(2)
             raise Http404('Have you registered any events of the organization?')
 
 

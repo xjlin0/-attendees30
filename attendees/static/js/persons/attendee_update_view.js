@@ -50,6 +50,7 @@ Attendees.datagridUpdate = {
     display_name: '',  // will be assigned later
   },
   meetCharacters: null,
+  divisionIdNames: null,
 
   init: () => {
     console.log('/static/js/persons/attendee_update_view.js');
@@ -96,19 +97,19 @@ Attendees.datagridUpdate = {
 
     if (enabled) {
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', true);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', false);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', true);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', true);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', true);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', true);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
     } else {
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', false);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', true);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', false);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', false);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', false);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', false);
+      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('family.id', 'groupIndex', 0);
 
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
@@ -153,6 +154,8 @@ Attendees.datagridUpdate = {
 
   initAttendeeForm: () => {
     Attendees.datagridUpdate.attendeeAttrs = document.querySelector('div.datagrid-attendee-update');
+    Attendees.datagridUpdate.divisions = JSON.parse(Attendees.datagridUpdate.attendeeAttrs.dataset.divisions);
+    Attendees.datagridUpdate.divisionIdNames = Attendees.datagridUpdate.divisions.reduce((obj, item) => ({...obj, [item.id]: item.display_name}) ,{});
     Attendees.datagridUpdate.attendeeUrn = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn;
     Attendees.datagridUpdate.attendeeId = document.querySelector('input[name="attendee-id"]').value;
     // Attendees.datagridUpdate.placeDefaults.object_id = Attendees.datagridUpdate.attendeeId;
@@ -640,9 +643,9 @@ Attendees.datagridUpdate = {
             class: 'attendee-form-dead',  // for toggling editing mode
           },
           disabled: !Attendees.utilities.editingEnabled,
-          text: 'Passed away',
+          text: 'Pass away',
           icon: 'fas fa-dizzy',
-          hint: 'Attendee passed away, sadly ending all activities',
+          hint: "Attendee sadly passed away, let's ending all activities",
           type: 'danger',
           stylingMode: 'outlined',
           useSubmitBehavior: false,
@@ -909,11 +912,13 @@ Attendees.datagridUpdate = {
               key: 'id',
               loadMode: 'raw',
               load: () => {
-                const d = $.Deferred();
-                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint).done((response) => {
-                  d.resolve(response.data);
-                });
-                return d.promise();
+                // const d = $.Deferred();
+                // $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint)
+                //   .done( response => {
+                //     d.resolve(response.data);
+                //   });
+                // return d.promise();
+                return Attendees.datagridUpdate.divisions;
               }
             })
           }),
@@ -2337,6 +2342,7 @@ Attendees.datagridUpdate = {
           });
         },
         insert: function (values) {
+console.log("hi 2340 here is inserting values: ", values);
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
             method: 'POST',
@@ -2464,112 +2470,154 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: 'attendee.gender',
+        dataField: 'attendee',
         validationRules: [{type: 'required'}],
-        caption: 'Gender',
-        lookup: {
-          valueExpr: 'name',
-          displayExpr: 'name',
-          dataSource: Attendees.utilities.genderEnums(),
-        }
-      },
-      {
-        caption: 'Full name',
-        dataField: 'attendee.infos.names.original',
-        allowEditing: false,
-        cellTemplate: (container, rowData) => {
-          if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
-            $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
-          } else {
-            const attrs = {
-              class: 'text-info',
-              text: rowData.data.attendee.infos.names.original,
-              href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
-            };
-            $('<a>', attrs).appendTo(container);
-          }
-        },
-      },
-      {
-        caption: 'First name',
-        dataField: 'attendee.first_name',
-        visible: false,
-        validationRules: [
-          {
-            type: 'stringLength',
-            max: 25,
-            message: 'first name cannot exceed 25 characters'
-          },
-        ],
-      },
-      {
-        caption: 'Last name',
-        dataField: 'attendee.last_name',
-        visible: false,
-        validationRules: [
-          {
-            type: 'stringLength',
-            max: 25,
-            message: 'last name cannot exceed 25 characters'
-          },
-        ],
-      },
-      {
-        caption: 'Last name2',
-        dataField: 'attendee.last_name2',
-        visible: false,
-        validationRules: [
-          {
-            type: 'stringLength',
-            max: 8,
-            message: 'last name 2 cannot exceed 8 characters'
-          },
-        ],
-      },
-      {
-        caption: 'First name2',
-        dataField: 'attendee.first_name2',
-        visible: false,
-        validationRules: [
-          {
-            type: 'stringLength',
-            max: 12,
-            message: 'last name 2 cannot exceed 12 characters'
-          },
-        ],
-      },
-      {
-        dataField: 'attendee.division',
-        validationRules: [{type: 'required'}],
-        caption: 'Attendee Division',
+        caption: 'Attendee',
         lookup: {
           valueExpr: 'id',
-          displayExpr: 'display_name',
+          displayExpr: (item) => {
+            const division_name = Attendees.datagridUpdate.divisionIdNames[item.division] ? ` [${Attendees.datagridUpdate.divisionIdNames[item.division]}] ` : '';
+            return item ? `(${item.gender[0]}) ${item.infos.names.original}${division_name}${item.deathday ? ', deathday: ' + item.deathday : ''}` : null;
+          },
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => {
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
+              load: (searchOpts) => {
+                const params = {};
+                if (searchOpts.searchValue) {
+                  const searchCondition = ['infos__names', searchOpts.searchOperation, searchOpts.searchValue];
+                  params.filter = JSON.stringify(searchCondition);
+                }
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint, params);
               },
               byKey: (key) => {
                 const d = new $.Deferred();
-                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
-                  .done((result) => {
+                $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relatedAttendeesEndpoint + key + '/')
+                  .done( result => {
                     d.resolve(result.data);
                   });
                 return d.promise();
               },
             }),
           },
-        }
-      },
-      {
-        dataField: 'deathday',
-        dataType: 'date',
-        editorOptions: {
-          dateSerializationFormat: 'yyyy-MM-dd',
         },
       },
+
+
+
+
+
+
+
+
+
+      // {
+      //   dataField: 'attendee.gender',
+      //   validationRules: [{type: 'required'}],
+      //   caption: 'Gender',
+      //   lookup: {
+      //     valueExpr: 'name',
+      //     displayExpr: 'name',
+      //     dataSource: Attendees.utilities.genderEnums(),
+      //   }
+      // },
+      // {
+      //   caption: 'Full name',
+      //   dataField: 'attendee.infos.names.original',
+      //   allowEditing: false,
+      //   cellTemplate: (container, rowData) => {
+      //     if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
+      //       $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
+      //     } else {
+      //       const attrs = {
+      //         class: 'text-info',
+      //         text: rowData.data.attendee.infos.names.original,
+      //         href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
+      //       };
+      //       $('<a>', attrs).appendTo(container);
+      //     }
+      //   },
+      // },
+      // {
+      //   caption: 'First name',
+      //   dataField: 'attendee.first_name',
+      //   visible: false,
+      //   validationRules: [
+      //     {
+      //       type: 'stringLength',
+      //       max: 25,
+      //       message: 'first name cannot exceed 25 characters'
+      //     },
+      //   ],
+      // },
+      // {
+      //   caption: 'Last name',
+      //   dataField: 'attendee.last_name',
+      //   visible: false,
+      //   validationRules: [
+      //     {
+      //       type: 'stringLength',
+      //       max: 25,
+      //       message: 'last name cannot exceed 25 characters'
+      //     },
+      //   ],
+      // },
+      // {
+      //   caption: 'Last name2',
+      //   dataField: 'attendee.last_name2',
+      //   visible: false,
+      //   validationRules: [
+      //     {
+      //       type: 'stringLength',
+      //       max: 8,
+      //       message: 'last name 2 cannot exceed 8 characters'
+      //     },
+      //   ],
+      // },
+      // {
+      //   caption: 'First name2',
+      //   dataField: 'attendee.first_name2',
+      //   visible: false,
+      //   validationRules: [
+      //     {
+      //       type: 'stringLength',
+      //       max: 12,
+      //       message: 'last name 2 cannot exceed 12 characters'
+      //     },
+      //   ],
+      // },
+      // {
+      //   dataField: 'attendee.division',
+      //   validationRules: [{type: 'required'}],
+      //   caption: 'Attendee Division',
+      //   lookup: {
+      //     valueExpr: 'id',
+      //     displayExpr: 'display_name',
+      //     dataSource: {
+      //       store: new DevExpress.data.CustomStore({
+      //         key: 'id',
+      //         load: () => {
+      //           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
+      //         },
+      //         byKey: (key) => {
+      //           const d = new $.Deferred();
+      //           $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
+      //             .done((result) => {
+      //               d.resolve(result.data);
+      //             });
+      //           return d.promise();
+      //         },
+      //       }),
+      //     },
+      //   }
+      // },
+      // {
+      //   dataField: 'deathday',
+      //   dataType: 'date',
+      //   editorOptions: {
+      //     dateSerializationFormat: 'yyyy-MM-dd',
+      //   },
+      // },
       {
         dataField: 'finish',
         dataType: 'date',
