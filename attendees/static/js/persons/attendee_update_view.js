@@ -2473,10 +2473,22 @@ console.log("hi 2340 here is inserting values: ", values);
         dataField: 'attendee',
         validationRules: [{type: 'required'}],
         caption: 'Attendee',
+        cellTemplate: (container, rowData) => {
+          if (rowData.value === Attendees.datagridUpdate.attendeeId) {
+            $('<span>', {text: rowData.displayValue}).appendTo(container);
+          } else {
+            const attrs = {
+              class: 'text-info',
+              text: rowData.displayValue,
+              href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.value,
+            };
+            $('<a>', attrs).appendTo(container);
+          }
+        },
         lookup: {
           valueExpr: 'id',
           displayExpr: (item) => {
-            const division_name = Attendees.datagridUpdate.divisionIdNames[item.division] ? ` [${Attendees.datagridUpdate.divisionIdNames[item.division]}] ` : '';
+            const division_name = Attendees.datagridUpdate.divisionIdNames[item.division] ? ` [${Attendees.datagridUpdate.divisionIdNames[item.division]}]` : '';
             return item ? `(${item.gender[0]}) ${item.infos.names.original}${division_name}${item.deathday ? ', deathday: ' + item.deathday : ''}` : null;
           },
           dataSource: {
@@ -2502,122 +2514,13 @@ console.log("hi 2340 here is inserting values: ", values);
           },
         },
       },
-
-
-
-
-
-
-
-
-
-      // {
-      //   dataField: 'attendee.gender',
-      //   validationRules: [{type: 'required'}],
-      //   caption: 'Gender',
-      //   lookup: {
-      //     valueExpr: 'name',
-      //     displayExpr: 'name',
-      //     dataSource: Attendees.utilities.genderEnums(),
-      //   }
-      // },
-      // {
-      //   caption: 'Full name',
-      //   dataField: 'attendee.infos.names.original',
-      //   allowEditing: false,
-      //   cellTemplate: (container, rowData) => {
-      //     if (rowData.data.attendee.id === Attendees.datagridUpdate.attendeeId) {
-      //       $('<span>', {text: rowData.data.attendee.infos.names.original}).appendTo(container);
-      //     } else {
-      //       const attrs = {
-      //         class: 'text-info',
-      //         text: rowData.data.attendee.infos.names.original,
-      //         href: Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeUrn + rowData.data.attendee.id,
-      //       };
-      //       $('<a>', attrs).appendTo(container);
-      //     }
-      //   },
-      // },
-      // {
-      //   caption: 'First name',
-      //   dataField: 'attendee.first_name',
-      //   visible: false,
-      //   validationRules: [
-      //     {
-      //       type: 'stringLength',
-      //       max: 25,
-      //       message: 'first name cannot exceed 25 characters'
-      //     },
-      //   ],
-      // },
-      // {
-      //   caption: 'Last name',
-      //   dataField: 'attendee.last_name',
-      //   visible: false,
-      //   validationRules: [
-      //     {
-      //       type: 'stringLength',
-      //       max: 25,
-      //       message: 'last name cannot exceed 25 characters'
-      //     },
-      //   ],
-      // },
-      // {
-      //   caption: 'Last name2',
-      //   dataField: 'attendee.last_name2',
-      //   visible: false,
-      //   validationRules: [
-      //     {
-      //       type: 'stringLength',
-      //       max: 8,
-      //       message: 'last name 2 cannot exceed 8 characters'
-      //     },
-      //   ],
-      // },
-      // {
-      //   caption: 'First name2',
-      //   dataField: 'attendee.first_name2',
-      //   visible: false,
-      //   validationRules: [
-      //     {
-      //       type: 'stringLength',
-      //       max: 12,
-      //       message: 'last name 2 cannot exceed 12 characters'
-      //     },
-      //   ],
-      // },
-      // {
-      //   dataField: 'attendee.division',
-      //   validationRules: [{type: 'required'}],
-      //   caption: 'Attendee Division',
-      //   lookup: {
-      //     valueExpr: 'id',
-      //     displayExpr: 'display_name',
-      //     dataSource: {
-      //       store: new DevExpress.data.CustomStore({
-      //         key: 'id',
-      //         load: () => {
-      //           return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint);
-      //         },
-      //         byKey: (key) => {
-      //           const d = new $.Deferred();
-      //           $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.divisionsEndpoint, {division_id: key})
-      //             .done((result) => {
-      //               d.resolve(result.data);
-      //             });
-      //           return d.promise();
-      //         },
-      //       }),
-      //     },
-      //   }
-      // },
-      // {
-      //   dataField: 'deathday',
-      //   dataType: 'date',
-      //   editorOptions: {
-      //     dateSerializationFormat: 'yyyy-MM-dd',
-      //   },
-      // },
+      {
+        dataField: 'start',
+        dataType: 'date',
+        editorOptions: {
+          dateSerializationFormat: 'yyyy-MM-dd',
+        },
+      },
       {
         dataField: 'finish',
         dataType: 'date',
