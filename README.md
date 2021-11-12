@@ -300,6 +300,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 - [ ] Export pdf
   - [ ] directory booklet
   - [ ] mail labels (avery template) or printing envelops
+  - [ ] Todo: 20210517 When creating FamilyAttendee, also auto create relationships among families such as siblings, etc
 - [ ] i18n Translation on model data, django-parler maybe?
 
 </details>
@@ -311,4 +312,14 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 
 - [ ] for ordinary users:
    -[ ] even as scheduler seeing other's attendee detail view, the joined meet doesn't show group name (i.e. Hagar cannot see Ishmael in "the Rock")
+   -[ ] If manager A checked "secret shared with you" for a Past/Relationships, manager B can't see it (expected) and creating another relationship will fail due to uniq constrain (not expected). If relating uniq constraint, after manager B create the very same relationship, manager A will see duplicated relationship.
+</details>
+
+## Design decisions:
+
+<details>
+  <summary>Click to expand all</summary>
+
+- [ ] for all users:
+   -[ ] There is no decision on display notes/infos of Relationships/FamilyAttendee/Past. Ordinary end users can see their families, so role-dependent showing/hiding notes columns need designs, such as storing allowed columns in Menu.infos read by User.allowed_url_names()?  Currently UI only expose separated sections on Past which conditionally show to ordinary end users.
 </details>
