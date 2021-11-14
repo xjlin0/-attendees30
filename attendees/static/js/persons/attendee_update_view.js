@@ -2822,7 +2822,7 @@ console.log("hi 2340 here is inserting values: ", values);
             success: (result) => {
               DevExpress.ui.notify(
                 {
-                  message: 'update success, please reload page if changing family',
+                  message: 'update success', // please reload page if changing family?
                   width: 500,
                   position: {
                     my: 'center',
@@ -3023,7 +3023,7 @@ console.log("hi 2340 here is inserting values: ", values);
         caption: 'Contact when Main attendee in emergency',
         dataType: "boolean",
         calculateCellValue: (rowData) => {
-          return rowData.scheduler ? rowData.scheduler : false;
+          return rowData.emergency_contact ? rowData.emergency_contact : false;
         },
       },
       {

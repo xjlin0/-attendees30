@@ -273,9 +273,9 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [x] [PR#22](https://github.com/xjlin0/attendees30/pull/22) can gathering generation automatic?
   - [x] [PR#23](https://github.com/xjlin0/attendees30/pull/23) sorting & grouping by server side processing
 - [x] data [db backup/restore](https://cookiecutter-django.readthedocs.io/en/latest/docker-postgres-backups.html) to survive new releases and migrations
-- [ ] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
+- [x] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
   - [x] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
-  - [ ] from Attendee detail and attendee list page
+  - [x] [PR#28](https://github.com/xjlin0/attendees30/pull/28) from Attendee detail and attendee list page
 - [ ] AttendingMeet list (server side processing)
   - [ ] new attendance datagrid filtered by meets and date ranges
   - [ ] auto-generation of AttendingMeet by django-schedule with certain Past
@@ -312,7 +312,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 
 - [ ] for ordinary users:
    -[ ] even as scheduler seeing other's attendee detail view, the joined meet doesn't show group name (i.e. Hagar cannot see Ishmael in "the Rock")
-   -[ ] If manager A checked "secret shared with you" for a Past/Relationships, manager B can't see it (expected) and creating another relationship will fail due to uniq constrain (not expected). If relating uniq constraint, after manager B create the very same relationship, manager A will see duplicated relationship.
+   -[ ] If manager A checked "secret shared with you" for a model with "share secret with you" and uniq constrain such as Relationship, manager B can't see it (expected) and creating another relationship will fail due to uniq constrain (not expected). If relating uniq constraint, after manager B create the very same relationship, manager A will see duplicated relationship.
 </details>
 
 ## Design decisions:
@@ -321,5 +321,6 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   <summary>Click to expand all</summary>
 
 - [ ] for all users:
+   -[ ] show_secret in Relationship/Past are based on attendee id instead of user id, since secret relationship exists regardless of user accounts. For example, kid X bullied kid Y, and counsellors can configure kids parents & teachers to see it regardless of parent/teachers user accounts existence or switches.
    -[ ] There is no decision on display notes/infos of Relationships/FamilyAttendee/Past. Ordinary end users can see their families, so role-dependent showing/hiding notes columns need designs, such as storing allowed columns in Menu.infos read by User.allowed_url_names()?  Currently UI only expose separated sections on Past which conditionally show to ordinary end users.
 </details>
