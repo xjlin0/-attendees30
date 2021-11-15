@@ -77,12 +77,12 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
     def perform_create(self, serializer):
         instance = serializer.save()
         family_id = self.request.META.get('HTTP_X_ADD_FAMILY')
-        if family_id:
-            instance = serializer.save()
+        role_id = self.request.META.get('HTTP_X_FAMILY_ROLE')
+        if family_id and role_id:
             FamilyAttendee.objects.create(
                 family=family_id,
                 attendee=instance,
-                role=Relation.objects.first()
+                role=role_id,
             )
 
     def perform_update(self, serializer):

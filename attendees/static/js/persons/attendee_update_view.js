@@ -796,6 +796,15 @@ Attendees.datagridUpdate = {
       if (!$('input[name="photo"]')[0].value) {
         userData.delete('photo')
       }
+
+      console.log("hi 800 here is userData before deletion: ", [...userData]);
+      if (Attendees.datagridUpdate.attendeeId === 'new' && Attendees.datagridUpdate.familyAttrDefaults.id) {
+        extraHeaders['X-Add-Family'] = Attendees.datagridUpdate.familyAttrDefaults.id;
+        extraHeaders['X-Family-Role'] = userData.get('role');
+        userData.delete('role');
+      }
+      console.log("hi 806 here is userData after deletion: ", [...userData]);
+
       const userInfos = Attendees.datagridUpdate.attendeeFormConfigs.formData.infos;
       userInfos['contacts'] = Attendees.utilities.trimBothKeyAndValueButKeepBasicContacts(userInfos.contacts);  // remove emptied contacts
       userData.set('infos', JSON.stringify(userInfos));
