@@ -99,4 +99,4 @@ class User(AbstractUser):
         return self.groups.filter(
             menuauthgroup__menu__organization=self.organization,
             menuauthgroup__menu__category=menu_category,
-        ).values_list('menuauthgroup__menu__url_name', flat=True)
+        ).values_list('menuauthgroup__menu__url_name', flat=True).distinct()

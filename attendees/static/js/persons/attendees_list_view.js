@@ -129,13 +129,19 @@ Attendees.dataAttendees = {
         pageSize:10
     },
     pager: {
+        visible: true,
         showPageSizeSelector: true,
         allowedPageSizes: [10, 30, 5000]
     },
     stateStoring: {
       enabled: true,
-      type: "sessionStorage",
       storageKey: "attendeesAttendeesList",
+      type: "custom",  // "sessionStorage",
+      customLoad: () => JSON.parse(sessionStorage.getItem("attendeesAttendeesList")),
+      customSave: (state) => {
+        if (state && state.searchText) {state.searchText = "";}  // don't store user search terms
+        sessionStorage.setItem("attendeesAttendeesList", JSON.stringify(state));
+      },
     },
     columns: null,  // will be initialized later.
     },
@@ -221,7 +227,7 @@ Attendees.dataAttendees = {
             const phoneNumber = rowData.data.infos.contacts[key].trim();
             const attrs = {
               "class": "text-info",
-              "text": phoneNumber,
+              "text": Attendees.utilities.phoneNumberFormatter(phoneNumber),
               "href": `tel:${phoneNumber}`,
             };
             if (phones > 0) {$('<span>', {text: ', '}).appendTo(container);}

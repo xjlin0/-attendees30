@@ -104,22 +104,21 @@ class AttendeeService:
                 return target_attendee.related_ones.all()
 
     @staticmethod
-    def by_datagrid_params(current_user, meets, orderby_string, filters_list):
+    def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):
         """
         :param current_user:
         :param meets: attendee participated assembly ids. Exception: if assembly is in organization's all_access_assemblies, all attendee of the same org will be return
         :param orderby_string:
         :param filters_list:
+        :param include_dead:
         :return:
         """
         orderby_list = AttendeeService.orderby_parser(orderby_string, meets, current_user)
+        init_query_q = {'division__organization': current_user.organization, 'is_removed': False}
+        if not include_dead:
+            init_query_q['deathday__isnull'] = True
 
-        init_query = Q(
-            division__organization=current_user.organization,
-            deathday__isnull=True,
-            is_removed=False,
-        )
-        # Todo: need filter on attending_meet finish_date
+        init_query = Q(**init_query_q) # Todo: need filter on attending_meet finish_date
 
         final_query = init_query.add(AttendeeService.filter_parser(filters_list, meets, current_user), Q.AND)
         qs = Attendee.objects if current_user.can_see_all_organizational_meets_attendees() else current_user.attendee.scheduling_attendees()
@@ -259,8 +258,8 @@ class AttendeeService:
             old_file = Path(old_photo.path)
             old_file.unlink(missing_ok=True)
 
-        if hasattr(attendee, 'user'):
-            attendee_user = attendee.user
+        attendee_user = attendee.user
+        if attendee_user:
             attendee.delete()
             attendee_user.delete()
         else:

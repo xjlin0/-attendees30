@@ -51,6 +51,7 @@ class ApiCategorizedPastsViewSet(LoginRequiredMixin, SpyGuard, viewsets.ModelVie
             qs = target_attendee.pasts.filter(
                 Q(organization=self.request.user.organization),
                 Q(category__type=category__type),
+                Q(is_removed=False),
                 (   Q(infos__show_secret={})
                     |
                     Q(infos__show_secret__isnull=True)
