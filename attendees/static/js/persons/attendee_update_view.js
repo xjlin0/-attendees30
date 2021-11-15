@@ -169,6 +169,8 @@ Attendees.datagridUpdate = {
     if (Attendees.datagridUpdate.attendeeId === 'new') {
       Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
       $('h3.page-title').text('New Attendee: more data can be entered after save');
+      const urlParams = new URLSearchParams(window.location.search);
+      Attendees.datagridUpdate.familyAttrDefaults.id = urlParams.get('familyId');
       window.top.document.title = 'New Attendee';
       Attendees.utilities.editingEnabled = true;
       Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
@@ -323,6 +325,46 @@ Attendees.datagridUpdate = {
         ],
       },
     ];
+
+    if (Attendees.datagridUpdate.familyAttrDefaults.id) {
+      potentialDuplicatesForNewAttendee.unshift({
+        colSpan: 24,
+        colCount: 24,
+        caption: "What is the role of the new Attendee in the family?",
+        cssClass: 'h6 not-shrinkable',
+        itemType: 'group',
+        items: [
+          {
+            colSpan: 12,
+            dataField: 'role',
+            editorType: 'dxLookup',
+            isRequired: true,
+            label: {
+              text: 'Family Role',
+            },
+            editorOptions: {
+              valueExpr: 'id',
+              displayExpr: 'title',
+              placeholder: 'Select a value...',
+              dataSource: new DevExpress.data.DataSource({
+                paginate: false,
+                store: new DevExpress.data.CustomStore({
+                  key: 'id',
+                  load: (searchOpts) => {
+                    const params = {take: 100};
+                    if (searchOpts.searchValue) {
+                      const searchCondition = ['title', searchOpts.searchOperation, searchOpts.searchValue];
+                      params.filter = JSON.stringify(searchCondition);
+                    }
+                    return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, params);
+                  },
+                }),
+              }),
+            },
+          },
+        ],
+      });
+    }
 
     const moreItems = [
       {
