@@ -2940,8 +2940,13 @@ console.log("hi 2340 here is inserting values: ", values);
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => {
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 100});
+              load: (searchOpts) => {
+                const params = {take: 100};
+                if (searchOpts.searchValue) {
+                  const searchCondition = ['title', searchOpts.searchOperation, searchOpts.searchValue];
+                  params.filter = JSON.stringify(searchCondition);
+                }
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, params);
               },
               byKey: (key) => {
                 const d = new $.Deferred();
