@@ -39,6 +39,7 @@ Attendees.datagridUpdate = {
     // content_type: parseInt(document.querySelector('div.datagrid-attendee-update').dataset.attendeeContenttypeId),
   },
   duplicatesForNewAttendeeDatagrid: null,
+  families: [],
   familyAttendeeDatagrid: null,
   familyAttrPopupDxForm: null,
   familyAttrPopupDxFormData: {},
@@ -97,21 +98,13 @@ Attendees.datagridUpdate = {
 
     if (enabled) {
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', false);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', true);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', true);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', true);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', true);
-
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
+      if (Attendees.datagridUpdate.families.length > 0) {
+        Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee').option('disabled', false);
+      }
     } else {
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name', 'visible', false);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name', 'visible', false);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.last_name2', 'visible', false);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.first_name2', 'visible', false);
-      // Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('attendee.infos.names.original', 'visible', true);
+      Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee').option('disabled', true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('family.id', 'groupIndex', 0);
-
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
@@ -168,9 +161,10 @@ Attendees.datagridUpdate = {
 
     if (Attendees.datagridUpdate.attendeeId === 'new') {
       Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
-      $('h3.page-title').text('New Attendee: more data can be entered after save');
       const urlParams = new URLSearchParams(window.location.search);
       Attendees.datagridUpdate.familyAttrDefaults.id = urlParams.get('familyId');
+      Attendees.datagridUpdate.familyAttrDefaults.name = urlParams.get('familyName');
+      $('h3.page-title').text(`New Attendee ${Attendees.datagridUpdate.familyAttrDefaults.name ? ' for '+Attendees.datagridUpdate.familyAttrDefaults.name + ' family': ''}: more data can be entered after save`);
       window.top.document.title = 'New Attendee';
       Attendees.utilities.editingEnabled = true;
       Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
@@ -191,11 +185,24 @@ Attendees.datagridUpdate = {
           Attendees.datagridUpdate.initListeners();
           Attendees.datagridUpdate.familyAttrDefaults.division = response.division;
           Attendees.datagridUpdate.familyAttrDefaults.display_name = response.infos.names.original + ' family';
+          Attendees.datagridUpdate.patchNewAttendeeDropDown(null);
         },
         error: (response) => {
           console.log('Failed to fetch data in Attendees.datagridUpdate.initAttendeeForm(), error: ', response);
         },
       });
+    }
+  },
+
+  patchNewAttendeeDropDown: (newFamily) => {
+    if (newFamily) {
+      Attendees.datagridUpdate.families.push(newFamily);
+    } else {
+      Attendees.datagridUpdate.families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
+    }
+    if (Attendees.datagridUpdate.families.length > 0) {
+      const newAttendeeDxDropDownButton = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee');
+      newAttendeeDxDropDownButton.option('dataSource', Attendees.datagridUpdate.families);
     }
   },
 
@@ -462,8 +469,8 @@ Attendees.datagridUpdate = {
         itemType: 'group',
         items: [
           {
-            colSpan: 24,
-            dataField: 'families',
+            colSpan: 20,
+            dataField: 'familyattendee_set',
             name: 'familyAttrs',
             label: {
               text: 'families',
@@ -483,6 +490,27 @@ Attendees.datagridUpdate = {
                   }
                 });
               }
+            },
+          },
+          {
+            colSpan: 4,
+            dataField: 'new_attendee',
+            editorType: 'dxDropDownButton',
+            label: {
+              location: 'left',
+              text: ' ',  // empty space required for removing label
+              showColon: false,
+            },
+            editorOptions: {
+              disabled: true,
+              text: '+New family member',
+              icon: 'user',
+              items: Attendees.datagridUpdate.families,
+              keyExpr: 'id',
+              displayExpr: (item) => item ? `Add to ${item.display_name} family` : null,
+              onItemClick: (item) => {
+                window.location.href = `new?familyId=${item.itemData.id}&familyName=${item.itemData.display_name}`;
+              },
             },
           },
           {
@@ -2714,6 +2742,7 @@ console.log("hi 2340 here is inserting values: ", values);
                             },
                           }, 'success', 2500);
 
+                        if (!userData.id) { Attendees.datagridUpdate.patchNewAttendeeDropDown(savedFamily); }
                         if (familyAttrButton.value) {
                           familyAttrButton.textContent(savedFamily.display_name)
                         } else {
@@ -2816,8 +2845,7 @@ console.log("hi 2340 here is inserting values: ", values);
 
   fetchFamilyAttrFormData: (familyAttrButton) => {
     if (familyAttrButton.value) {
-      const families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
-      const fetchedFamily = families.find(x => x.id === familyAttrButton.value);
+      const fetchedFamily = Attendees.datagridUpdate.families && Attendees.datagridUpdate.families.find(x => x.id === familyAttrButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedFamily) {
         $('p.family-member-count')[0].textContent = fetchedFamily.attendees.length;
         if (fetchedFamily.attendees.length > 1) {$('.family-delete-button').text('Remove attendee from Family')}
