@@ -67,13 +67,14 @@ class AttendeeService:
         return []
 
     @staticmethod
-    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
+    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list, self_included):
         """
         return target_attendee's related ones, including dead ones, according to current_user permissions
         :param current_user:
         :param target_attendee:
         :param querying_attendee_id:
         :param filters_list:
+        :param self_included: indicate if return result should include the target_attendee
         :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
         """
 
@@ -97,11 +98,12 @@ class AttendeeService:
             final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
             # Todo 20210807 query.add() doesn't need reassign to a different variable
             if current_user.privileged:
+                priority_list = list(target_attendee.related_ones.values_list('id', flat=True))+[target_attendee.id] if self_included else target_attendee.related_ones.values_list('id')
                 return Attendee.objects.filter(final_query).order_by(
-                    Case(When(id__in=target_attendee.related_ones.values_list('id'), then=0), default=1)
+                    Case(When(id__in=priority_list, then=0), default=1)
                 )  # https://stackoverflow.com/a/52047221/4257237
             else:
-                return target_attendee.related_ones.all()
+                return list(target_attendee.related_ones.all())+[target_attendee] if self_included else target_attendee.related_ones.all()
 
     @staticmethod
     def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):

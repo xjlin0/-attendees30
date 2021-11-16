@@ -2432,7 +2432,6 @@ Attendees.datagridUpdate = {
           });
         },
         insert: function (values) {
-console.log("hi 2340 here is inserting values: ", values);
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
             method: 'POST',
@@ -2585,7 +2584,7 @@ console.log("hi 2340 here is inserting values: ", values);
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: (searchOpts) => {
-                const params = {};
+                const params = {self: 'included'};
                 if (searchOpts.searchValue) {
                   const searchCondition = ['infos__names', searchOpts.searchOperation, searchOpts.searchValue];
                   params.filter = JSON.stringify(searchCondition);
