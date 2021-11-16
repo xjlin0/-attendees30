@@ -1,6 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 
 from django.shortcuts import render
 from django.db.models import F, Q
@@ -9,13 +8,12 @@ from attendees.persons.models import Utility
 from attendees.users.authorization import RouteGuard
 from attendees.users.models import Menu
 from json import dumps
-import logging
+# import logging
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
-@method_decorator([login_required], name='dispatch')
-class AttendeesListView(RouteGuard, ListView):
+class AttendeesListView(LoginRequiredMixin, RouteGuard, ListView):
     queryset = []
     template_name = 'persons/attendees_list_view.html'
 

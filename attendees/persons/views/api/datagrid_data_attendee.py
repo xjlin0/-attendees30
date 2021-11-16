@@ -8,9 +8,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 
-from attendees.persons.models import Attendee
+from attendees.persons.models import Attendee, FamilyAttendee, Relation, Family
 from attendees.persons.services import AttendeeService
 from attendees.persons.serializers import AttendeeMinimalSerializer
 
@@ -74,6 +73,17 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
             )
 
         return qs.filter(division__organization=current_user.organization)
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        family_id = self.request.META.get('HTTP_X_ADD_FAMILY')
+        role_id = self.request.META.get('HTTP_X_FAMILY_ROLE')
+        if family_id and role_id:
+            FamilyAttendee.objects.create(
+                family=get_object_or_404(Family, pk=family_id),
+                attendee=instance,
+                role=get_object_or_404(Relation, pk=role_id),
+            )
 
     def perform_update(self, serializer):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
