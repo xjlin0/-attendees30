@@ -9,7 +9,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.viewsets import ModelViewSet
 
-from attendees.persons.models import Attendee, FamilyAttendee, Relation
+from attendees.persons.models import Attendee, FamilyAttendee, Relation, Family
 from attendees.persons.services import AttendeeService
 from attendees.persons.serializers import AttendeeMinimalSerializer
 
@@ -80,9 +80,9 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
         role_id = self.request.META.get('HTTP_X_FAMILY_ROLE')
         if family_id and role_id:
             FamilyAttendee.objects.create(
-                family=family_id,
+                family=get_object_or_404(Family, pk=family_id),
                 attendee=instance,
-                role=role_id,
+                role=get_object_or_404(Relation, pk=role_id),
             )
 
     def perform_update(self, serializer):
