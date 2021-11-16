@@ -86,6 +86,7 @@ Attendees.datagridUpdate = {
   },
 
   toggleEditing: (enabled) => {
+    const newAttendeeDxDropDownButton = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('add_new_attendee');
     $('div.attendee-form-submits').dxButton('instance').option('disabled', !enabled);
     $('div.attendee-form-dead').dxButton('instance').option('disabled', !enabled);
     $('div.attendee-form-delete').dxButton('instance').option('disabled', !enabled);
@@ -100,10 +101,10 @@ Attendees.datagridUpdate = {
       Attendees.datagridUpdate.familyAttendeeDatagrid.clearGrouping();
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.clearGrouping();
       if (Attendees.datagridUpdate.families.length > 0) {
-        Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee').option('disabled', false);
+        newAttendeeDxDropDownButton.option('disabled', false);
       }
     } else {
-      Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee').option('disabled', true);
+      newAttendeeDxDropDownButton.option('disabled', true);
       Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('family.id', 'groupIndex', 0);
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
@@ -160,12 +161,14 @@ Attendees.datagridUpdate = {
     });
 
     if (Attendees.datagridUpdate.attendeeId === 'new') {
-      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
       const urlParams = new URLSearchParams(window.location.search);
       Attendees.datagridUpdate.familyAttrDefaults.id = urlParams.get('familyId');
       Attendees.datagridUpdate.familyAttrDefaults.name = urlParams.get('familyName');
-      $('h3.page-title').text(`New Attendee ${Attendees.datagridUpdate.familyAttrDefaults.name ? ' for '+Attendees.datagridUpdate.familyAttrDefaults.name + ' family': ''}: more data can be entered after save`);
-      window.top.document.title = 'New Attendee';
+      const titleWithFamilyName = Attendees.datagridUpdate.familyAttrDefaults.name ? Attendees.datagridUpdate.familyAttrDefaults.name + ' family': '';
+
+      Attendees.datagridUpdate.attendeeAjaxUrl = Attendees.datagridUpdate.attendeeAttrs.dataset.attendeeEndpoint;
+      $('h3.page-title').text(`New person ${titleWithFamilyName}: more data can be entered after save`);
+      window.top.document.title = `New person ${titleWithFamilyName}`;
       Attendees.utilities.editingEnabled = true;
       Attendees.datagridUpdate.attendeeFormConfigs = Attendees.datagridUpdate.getAttendeeFormConfigs();
       Attendees.datagridUpdate.attendeeMainDxForm = $("div.datagrid-attendee-update").dxForm(Attendees.datagridUpdate.attendeeFormConfigs).dxForm('instance');
@@ -195,14 +198,23 @@ Attendees.datagridUpdate = {
   },
 
   patchNewAttendeeDropDown: (newFamily) => {
+    const newAttendeeDxDropDownButton = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('add_new_attendee');
+    const $newAttendeeLinkWithoutFamily = $('a.add-new-attendee');
     if (newFamily) {
       Attendees.datagridUpdate.families.push(newFamily);
     } else {
       Attendees.datagridUpdate.families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
     }
     if (Attendees.datagridUpdate.families.length > 0) {
-      const newAttendeeDxDropDownButton = Attendees.datagridUpdate.attendeeMainDxForm.getEditor('new_attendee');
       newAttendeeDxDropDownButton.option('dataSource', Attendees.datagridUpdate.families);
+      newAttendeeDxDropDownButton.option('hint', 'Select a family to add a new member');
+      Attendees.datagridUpdate.families.forEach(family => {
+        const $newAttendeeLinkWithFamily = $newAttendeeLinkWithoutFamily.clone();
+        $newAttendeeLinkWithFamily.attr('href', `new?familyId=${family.id}&familyName=for%20${family.display_name}`);
+        $newAttendeeLinkWithFamily.attr('title', `Add a new member to ${family.display_name} family`);
+        $newAttendeeLinkWithFamily.text(`+New member to ${family.display_name} family`);
+        $newAttendeeLinkWithFamily.insertBefore($newAttendeeLinkWithoutFamily);
+      });
     }
   },
 
@@ -337,7 +349,7 @@ Attendees.datagridUpdate = {
       potentialDuplicatesForNewAttendee.unshift({
         colSpan: 24,
         colCount: 24,
-        caption: "What is the role of the new Attendee in the family?",
+        caption: "What is the role of the new member in the family?",
         cssClass: 'h6 not-shrinkable',
         itemType: 'group',
         items: [
@@ -494,7 +506,7 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 4,
-            dataField: 'new_attendee',
+            dataField: 'add_new_attendee',
             editorType: 'dxDropDownButton',
             label: {
               location: 'left',
@@ -504,12 +516,13 @@ Attendees.datagridUpdate = {
             editorOptions: {
               disabled: true,
               text: '+New family member',
+              hint: 'Need at least one family to add family members',
               icon: 'user',
               items: Attendees.datagridUpdate.families,
               keyExpr: 'id',
               displayExpr: (item) => item ? `Add to ${item.display_name} family` : null,
               onItemClick: (item) => {
-                window.location.href = `new?familyId=${item.itemData.id}&familyName=${item.itemData.display_name}`;
+                window.location.href = `new?familyId=${item.itemData.id}&familyName=for%20${item.itemData.display_name}`;
               },
             },
           },
