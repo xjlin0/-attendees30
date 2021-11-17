@@ -91,6 +91,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
             instance = serializer.save()
             if self.request.META.get('HTTP_X_END_ALL_ATTENDEE_ACTIVITIES'):
                 AttendeeService.end_all_activities(instance)
+                #Todo 20211116 remove scheduler and emergency contact from passed away attendees
         else:
             time.sleep(2)
             raise PermissionDenied(detail=f'Not allowed to update {target_attendee.__class__.__name__}')

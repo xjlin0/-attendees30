@@ -563,6 +563,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
                 husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
                 wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
+                if not wife:  # widow? (since parents number is 2)
+                    wife = family.attendees.filter(familyattendee__role__title='self').order_by('created').first()
 
                 save_two_phones(husband, potential_primary_phone)
                 save_two_phones(wife, potential_secondary_phone)

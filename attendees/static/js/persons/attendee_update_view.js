@@ -2544,7 +2544,7 @@ Attendees.datagridUpdate = {
             store: new DevExpress.data.CustomStore({
               key: 'id',
               load: () => {
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint);
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 999});
               },
               byKey: (key) => {
                 const d = new $.Deferred();
