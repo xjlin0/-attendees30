@@ -744,7 +744,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
         },
     )
 
-    if attendee.infos.get('fixed', {}).get('attendance_count'):
+    if attendee.infos.get('fixed', {}).get('attendance_count') in ['1', 'TRUE', 1]:
         AttendingMeet.objects.update_or_create(
             attending=data_attending,
             meet=roaster_meet,
@@ -777,7 +777,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
 
 
 def update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category):
-    if attendee.progressions.get('cfcc_member'):
+    if attendee.progressions.get('cfcc_member') in ['1', 'TRUE', 1]:
         access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
             assembly=data_assembly,
@@ -905,7 +905,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
     :param directory_gathering: directory_gathering
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
-    if family.infos.get('access_household_values', {}).get('PrintDir') == 'TRUE':
+    if family.infos.get('access_household_values', {}).get('PrintDir') in ['1', 'TRUE', 1]:
         access_household_id = family.infos.get('access_household_id')
         househead = family.attendees.order_by('familyattendee__display_order').first()
 
