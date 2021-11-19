@@ -1,5 +1,6 @@
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from attendees.occasions.models import Character
+from attendees.persons.models import AttendingMeet
 
 
 class CharacterService:
@@ -34,11 +35,12 @@ class CharacterService:
                 )  # another way is to get assemblys from registration, but it relies on attendingmeet validations
 
     @staticmethod
-    def by_organization_assemblies(organization, assemblies):
-        return Character.objects.filter(
-                    assembly__division__organization=organization,
-                    assembly__in=assemblies,
-                ).order_by(
+    def by_organization_assemblies(organization, assemblies, target_attendee):
+        filters = {'assembly__division__organization': organization}
+        if assemblies:
+            filters['assembly__in'] = assemblies
+        return Character.objects.filter(**filters).order_by(
+                    Case(When(id__in=AttendingMeet.objects.filter(attending__attendee=target_attendee).values_list('character').distinct(), then=0), default=1),
                     'display_order',
                 )
 

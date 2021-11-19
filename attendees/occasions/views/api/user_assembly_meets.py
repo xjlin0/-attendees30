@@ -20,11 +20,11 @@ class ApiUserAssemblyMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
         current_user_organization = current_user.organization
         #  Todo: this endpoint is used by datagrid_attendee_update_view page (with params). Do check if the editor and the editing target relations and permissions
         if current_user_organization:
-            assemblies = self.request.query_params.getlist('assemblies[]', current_user.attendee.attendings.values_list('gathering__meet__assembly', flat=True))
-            return Meet.objects.filter(
-                assembly__in=assemblies,
-                assembly__division__organization=current_user_organization,
-            ).annotate(
+            filters = {'assembly__division__organization': current_user_organization}
+            assemblies = self.request.query_params.getlist('assemblies[]')
+            if assemblies:
+                filters['assembly__in'] = assemblies
+            return Meet.objects.filter(**filters).annotate(
                 assembly_name=F('assembly__display_name'),
             )
 

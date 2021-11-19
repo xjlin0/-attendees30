@@ -167,6 +167,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 SENDGRID_API_KEY=FAKE
 DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 ```
+* collect static file: `docker-compose -f local.yml run django python /app/manage.py collectstatic`
 * build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
 * Ensure the MailHog is not publicly available such as https://your.domain.name:8025
 * Ensure the db password in .envs/.local/.postgres changed
