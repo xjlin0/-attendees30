@@ -98,7 +98,7 @@ class FamilyAdmin(admin.ModelAdmin):
 
 class FamilyAttendeeAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'family', 'attendee', 'role', 'modified')
+    list_display = ('id', 'family', 'attendee', 'role', 'infos')
 
 
 class RelationAdmin(admin.ModelAdmin):
@@ -115,7 +115,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
     inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)
-    list_display = ('id', 'full_name', 'progressions', 'infos')
+    list_display = ('id', 'full_name', 'infos')
 
     def full_name(self, obj):
         return obj.infos.get('names', {}).get('original')

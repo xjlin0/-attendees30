@@ -75,10 +75,10 @@ class ApiAttendeeRelationshipsViewSet(LoginRequiredMixin, SpyGuard, viewsets.Mod
         ).first()
         if existing_relationship and existing_relationship.infos.get('show_secret'):  # current manager can't see existing record & try to create one, means existing record must be secret
             existing_relationship.infos['show_secret'][current_user_attendee_id] = True
-            existing_relationship.infos['updated_by'][current_user_attendee_id] = Utility.now_with_timezone().isoformat()
+            existing_relationship.infos['updating_attendees'][current_user_attendee_id] = Utility.now_with_timezone().isoformat()
             existing_relationship.save()  # manager's new data is intentionally discarded to show previous data
         else:
-            serializer.validated_data['infos']['updated_by'] = {current_user_attendee_id: Utility.now_with_timezone().isoformat()}
+            serializer.validated_data['infos']['updating_attendees'] = {current_user_attendee_id: Utility.now_with_timezone().isoformat()}
             serializer.save()
 
     def perform_update(self, serializer):
@@ -92,7 +92,7 @@ class ApiAttendeeRelationshipsViewSet(LoginRequiredMixin, SpyGuard, viewsets.Mod
         existing_relationship = get_object_or_404(Relationship, pk=self.kwargs.get('pk'))
         if 'show_secret' in serializer.validated_data.get('infos', {}):
             if serializer.validated_data['infos']['show_secret']:  # user is checking "secret shared with you"
-                for updater_attendee_id in existing_relationship.infos.get('updated_by', {}):
+                for updater_attendee_id in existing_relationship.infos.get('updating_attendees', {}):
                     serializer.validated_data['infos']['show_secret'][updater_attendee_id] = True
                     existing_relationship.infos['show_secret'][updater_attendee_id] = True
                 for new_attendee_id in serializer.validated_data['infos']['show_secret']:
@@ -100,7 +100,7 @@ class ApiAttendeeRelationshipsViewSet(LoginRequiredMixin, SpyGuard, viewsets.Mod
             else:  # user is unchecking "secret shared with you", making it public
                 existing_relationship.infos['show_secret'] = {}
         serializer.validated_data['infos'] = existing_relationship.infos
-        serializer.validated_data['infos']['updated_by'][self.request.user.attendee_uuid_str()] = Utility.now_with_timezone().isoformat()
+        serializer.validated_data['infos']['updating_attendees'][self.request.user.attendee_uuid_str()] = Utility.now_with_timezone().isoformat()
         serializer.save()
 
     def perform_destroy(self, instance):
@@ -110,7 +110,7 @@ class ApiAttendeeRelationshipsViewSet(LoginRequiredMixin, SpyGuard, viewsets.Mod
         such records, it will only remove manager A from secret shared with you of infos.
         """
         current_user_attendee_id = self.request.user.attendee_uuid_str()
-        instance.infos['updated_by'][current_user_attendee_id] = Utility.now_with_timezone().isoformat()
+        instance.infos['updating_attendees'][current_user_attendee_id] = Utility.now_with_timezone().isoformat()
         if len(instance.infos.get('show_secret', {})) > 1:  # manager must able to see record before delete
             del instance.infos['show_secret'][current_user_attendee_id]
             instance.save()

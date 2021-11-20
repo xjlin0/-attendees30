@@ -1,4 +1,4 @@
-import pytz, re
+import pytz, re, sys
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -61,11 +61,11 @@ class Utility:
 
     @staticmethod
     def attendee_infos():
-        return {"names": {}, "fixed": {}, "contacts": {}}
+        return {"names": {}, "fixed": {}, "contacts": {}, "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {}}
 
     @staticmethod
     def relationship_infos():
-        return {"show_secret": {}, "updated_by": {}, "comment": None, "body": None}
+        return {"show_secret": {}, "updating_attendees": {}, "comment": None, "body": None}
 
     @staticmethod
     def forever():  # 1923 years from now
@@ -156,15 +156,22 @@ class Utility:
         """
         obj = klass.objects.filter(**filters).order_by(order_key).last()
         created = False
-        if obj:
-            if update:
-                for key, value in defaults.items():
-                    setattr(obj, key, value)
-        else:
-            filters.update(defaults)
-            obj = klass(**filters)
-            created = True
-        obj.save()
+        try:
+            if obj:
+                if update:
+                    for key, value in defaults.items():
+                        setattr(obj, key, value)
+            else:
+                filters.update(defaults)
+                obj = klass(**filters)
+                created = True
+            obj.save()
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            print("hi 171 here is e: ", e)
+            print('at line: ', exc_tb.tb_lineno)
+            print("hi 173 here is defaults: ", defaults)
+            print("hi 174 here is obj: ", obj)
         return obj, created
 
     # @property

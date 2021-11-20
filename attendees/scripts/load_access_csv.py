@@ -380,7 +380,6 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     'first_name2': None,
                     'last_name2': None,
                     'gender': gender_converter.get(Utility.presence(people.get('Sex', '').upper()), GenderEnum.UNSPECIFIED).name,
-                    'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                     'infos': {
                         **Utility.attendee_infos(),
                         'fixed': {
@@ -389,6 +388,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         },
                         'contacts': contacts,
                         'names': {},
+                        'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
+                        "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {},
                         'created_reason': 'CFCCH member/directory registration from importer',
                     }
                 }
@@ -777,7 +778,7 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
 
 
 def update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category):
-    if attendee.progressions.get('cfcc_member') in ['1', 'TRUE', 1]:
+    if attendee.infos.get('progressions', {}).get('cfcc_member') in ['1', 'TRUE', 1]:
         access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
         data_registration, data_registration_created = Registration.objects.update_or_create(
             assembly=data_assembly,
@@ -805,7 +806,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             }
         )
 
-        member_since_or_now = Utility.parsedate_or_now(attendee.progressions.get('member_since'))
+        member_since_or_now = Utility.parsedate_or_now(attendee.infos.get('progressions', {}).get('member_since'))
         member_attending_meet_default = {
             'attending': data_attending,
             'meet': member_meet,
@@ -841,7 +842,7 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             }
         )
 
-        member_since_text = Utility.presence(attendee.progressions.get('member_since'))
+        member_since_text = Utility.presence(attendee.infos.get('progressions', {}).get('member_since'))
         member_since_reason = ', member since ' + member_since_text if member_since_text else ''
         Past.objects.update_or_create(
             organization=data_assembly.division.organization,
