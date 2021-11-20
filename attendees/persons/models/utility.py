@@ -86,13 +86,13 @@ class Utility:
                 return string.strip()
 
     @staticmethod
-    def parsedate_or_now(date_text, default_format='%Y-%m-%d', default_timezone=pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE)):
-        parsed_date = Utility.now_with_timezone()
+    def parsedate_or_now(date_text, default_format='%Y-%m-%d', default_timezone=pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE), default_date=None):
+        parsed_date = default_date if default_date else Utility.now_with_timezone()
         if isinstance(date_text, str):
             if date_text.count('/') == 2 and default_format.count('-') == 2:
                 default_format = '%m/%d/%Y'
             try:
-                parsing_datetime = datetime.strptime(date_text, default_format)
+                parsing_datetime = datetime.strptime(date_text.strip().strip("'"), default_format)
                 parsed_date = parsing_datetime.astimezone(default_timezone)
             except:
                 print("\nCannot parse date for date_text: ", date_text)
@@ -104,10 +104,12 @@ class Utility:
         boolean_converter = {
             'TRUE': True,
             'FALSE': False,
+            '1': True,
+            1: True,
         }
 
         if isinstance(original_value, str):
-            value = Utility.presence(original_value) if strip_first else original_value
+            value = original_value.strip().strip("'") if strip_first else original_value
             if value.upper() in boolean_converter:
                 return boolean_converter.get(value.upper())
             else:

@@ -295,6 +295,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [ ] each model level version
   - [ ] document aggregation level version
 - [ ] upgrade to Django 3.1, 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
+   -[ ] accept partial date on all attending/past, etc by django-date-extensions
    -[ ] 3.1: use Django JSONField instead of Postgres JSONField
    -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage in Mac only, but web_socket can be only with use_async)
 - [ ] deploy to AWS EC2

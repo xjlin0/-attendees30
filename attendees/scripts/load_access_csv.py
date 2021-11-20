@@ -420,7 +420,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                 )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
-                update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category)
+                update_attendee_membership_and_other(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category)
 
                 if household_role:   # filling temporary family roles
                     family = Family.objects.filter(infos__access_household_id=household_id).first()
@@ -709,30 +709,15 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roaster_meet, general_character, roaster_gathering):
     pdt = pytz.timezone('America/Los_Angeles')
     access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
-    data_registration, data_registration_created = Registration.objects.update_or_create(
+    data_registration = Registration.objects.filter(
         assembly=data_assembly,
         registrant=attendee,
-        defaults={
-            'registrant': attendee,  # admin/secretary may change for future members.
-            'assembly': data_assembly,
-            'infos': {
-                'access_household_id': access_household_id,
-                'created_reason': 'CFCCH member/directory registration from importer',
-            }
-        }
-    )
+    ).first()
 
-    data_attending, data_attending_created = Attending.objects.update_or_create(
+    data_attending = Attending.objects.filter(
         attendee=attendee,
         registration=data_registration,
-        defaults={
-            'registration': data_registration,
-            'attendee': attendee,
-            'infos': {
-                'created_reason': 'CFCCH member/directory registration from importer',
-            }
-        }
-    )
+    ).first()
 
     AttendingMeet.objects.update_or_create(
         attending=data_attending,
@@ -777,35 +762,41 @@ def update_attendee_worship_roaster(attendee, data_assembly, visitor_meet, roast
         )
 
 
-def update_attendee_membership(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category):
-    if attendee.infos.get('progressions', {}).get('cfcc_member') in ['1', 'TRUE', 1]:
-        access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
-        data_registration, data_registration_created = Registration.objects.update_or_create(
-            assembly=data_assembly,
-            registrant=attendee,
-            defaults={
-                'registrant': attendee,  # admin/secretary may change for future members.
-                'assembly': data_assembly,
-                'infos': {
-                    'access_household_id': access_household_id,
-                    'created_reason': 'CFCCH member/directory registration from importer',
-                }
+def update_attendee_membership_and_other(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category):
+    access_household_id = attendee.infos.get('fixed', {}).get('access_people_household_id')
+    data_registration, data_registration_created = Registration.objects.update_or_create(
+        assembly=data_assembly,
+        registrant=attendee,
+        defaults={
+            'registrant': attendee,  # admin/secretary may change for future members.
+            'assembly': data_assembly,
+            'infos': {
+                'access_household_id': access_household_id,
+                'created_reason': 'CFCCH member/directory registration from importer',
             }
-        )
+        }
+    )
 
-        data_attending, data_attending_created = Attending.objects.update_or_create(
-            attendee=attendee,
-            registration=data_registration,
-            defaults={
-                'registration': data_registration,
-                'attendee': attendee,
-                'infos': {
-                    'access_household_id': access_household_id,
-                    'created_reason': 'CFCCH member/directory registration from importer',
-                }
+    data_attending, data_attending_created = Attending.objects.update_or_create(
+        attendee=attendee,
+        registration=data_registration,
+        defaults={
+            'registration': data_registration,
+            'attendee': attendee,
+            'infos': {
+                'access_household_id': access_household_id,
+                'created_reason': 'CFCCH member/directory registration from importer',
             }
-        )
+        }
+    )
 
+    is_member = False
+    bap_date_text = None
+    if attendee.infos.get('progressions', {}).get('baptized_since') or attendee.infos.get('progressions', {}).get('baptism_location'):
+        bap_date_text = Utility.parsedate_or_now(attendee.infos.get('progressions', {}).get('baptized_since'))
+
+    if Utility.boolean_or_datetext_or_original(attendee.infos.get('progressions', {}).get('cfcc_member')):
+        is_member = True
         member_since_or_now = Utility.parsedate_or_now(attendee.infos.get('progressions', {}).get('member_since'))
         member_attending_meet_default = {
             'attending': data_attending,
@@ -856,18 +847,6 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
                 'comment': 'CFCCH membership from importer' + member_since_reason,
             },
         )
-        Past.objects.update_or_create(
-            organization=data_assembly.division.organization,
-            content_type=attendee_content_type,
-            object_id=attendee.id,
-            category=baptized_category,
-            display_name="會員已受浸 member's baptized",
-            when=None,  # can't find the exact baptism date just by membership
-            infos={
-                **Utility.relationship_infos(),
-                'comment': 'CFCCH membership from importer' + member_since_reason,
-            },
-        )
 
         AttendingMeet.objects.update_or_create(
             attending=data_attending,
@@ -882,6 +861,12 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
             },
         )
 
+    if bap_date_text or is_member:
+        member_date_text = Utility.presence(attendee.infos.get('progressions', {}).get('member_since'))
+        member_date_or_now = Utility.parsedate_or_now(member_date_text)
+        bap_date_or_now = Utility.parsedate_or_now(bap_date_text)
+        baptized_date_or_now = min(member_date_or_now, bap_date_or_now)
+        bap_date_or_unknown = Utility.parsedate_or_now(bap_date_text, default_date='unknown')
         AttendingMeet.objects.update_or_create(
             attending=data_attending,
             meet=baptized_meet,
@@ -890,8 +875,21 @@ def update_attendee_membership(baptized_meet, baptized_category, attendee_conten
                 'meet': baptized_meet,
                 'character': baptisee_character,
                 'category': 'importer',
-                'start': member_since_or_now,
+                'start': baptized_date_or_now,
                 'finish': baptized_meet.finish,
+            },
+        )
+
+        Past.objects.update_or_create(
+            organization=data_assembly.division.organization,
+            content_type=attendee_content_type,
+            object_id=attendee.id,
+            category=baptized_category,
+            display_name='已受洗 baptized',
+            when=None if baptized_date_or_now.date() == datetime.today().date() else baptized_date_or_now,
+            infos={
+                **Utility.relationship_infos(),
+                'comment': f'[Importer] possible date: {bap_date_or_unknown}',
             },
         )
 
