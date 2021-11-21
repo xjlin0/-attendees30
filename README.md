@@ -243,7 +243,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   <summary>Click to expand all</summary>
 
 - [x] make auth group not organization specific, and counselling note check on organization
-- [ ] Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as attendance with category for active/inactive)
+- [ ] Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as AttendingMeet with category for active/inactive)
   - [x] make Past model generic
   - [ ] any past status list (Past level)
   - [ ] Attendance roaster to Past auto conversion
@@ -277,8 +277,9 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 - [x] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
   - [x] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
   - [x] [PR#28](https://github.com/xjlin0/attendees30/pull/28) from Attendee detail and attendee list page
+  - [ ] importer load_access_csv need to import bap date and believer, not only by membership.
 - [ ] AttendingMeet list (server side processing)
-  - [ ] new attendance datagrid filtered by meets and date ranges
+  - [ ] new AttendingMeet datagrid filtered by meets and date ranges
   - [ ] auto-generation of AttendingMeet by django-schedule with certain Past
 - [ ] Attendance list (server side processing with auto-generation)
   - [ ] new attendance datagrid filtered by meets and date ranges
@@ -294,6 +295,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [ ] each model level version
   - [ ] document aggregation level version
 - [ ] upgrade to Django 3.1, 3.2LTS or 4, depends on Django Cookie-cutter's support of DEFAULT_AUTO_FIELD
+   -[ ] accept partial date on all attending/past, etc by django-date-extensions
    -[ ] 3.1: use Django JSONField instead of Postgres JSONField
    -[ ] With Django Cookie-cutter, decide async or not (uvicorn high CPU usage in Mac only, but web_socket can be only with use_async)
 - [ ] deploy to AWS EC2

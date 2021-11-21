@@ -19,7 +19,7 @@ class ApiUserAssemblyMeetsViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     def get_queryset(self):
         current_user = self.request.user
         current_user_organization = current_user.organization
-        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
+        target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID', current_user.attendee_uuid_str()))
         #  Todo: this endpoint is used by datagrid_attendee_update_view page (with params). Do check if the editor and the editing target relations and permissions
         if current_user_organization:
             filters = {'assembly__division__organization': current_user_organization}

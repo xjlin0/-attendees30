@@ -1,4 +1,4 @@
-import pytz, re
+import pytz, re, sys
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -61,11 +61,11 @@ class Utility:
 
     @staticmethod
     def attendee_infos():
-        return {"names": {}, "fixed": {}, "contacts": {}}
+        return {"names": {}, "fixed": {}, "contacts": {}, "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {}}
 
     @staticmethod
     def relationship_infos():
-        return {"show_secret": {}, "updated_by": {}, "comment": None, "body": None}
+        return {"show_secret": {}, "updating_attendees": {}, "comment": None, "body": None}
 
     @staticmethod
     def forever():  # 1923 years from now
@@ -86,13 +86,13 @@ class Utility:
                 return string.strip()
 
     @staticmethod
-    def parsedate_or_now(date_text, default_format='%Y-%m-%d', default_timezone=pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE)):
-        parsed_date = Utility.now_with_timezone()
+    def parsedate_or_now(date_text, default_format='%Y-%m-%d', default_timezone=pytz.timezone(settings.CLIENT_DEFAULT_TIME_ZONE), default_date=None):
+        parsed_date = default_date if default_date else Utility.now_with_timezone()
         if isinstance(date_text, str):
             if date_text.count('/') == 2 and default_format.count('-') == 2:
                 default_format = '%m/%d/%Y'
             try:
-                parsing_datetime = datetime.strptime(date_text, default_format)
+                parsing_datetime = datetime.strptime(date_text.strip().strip("'"), default_format)
                 parsed_date = parsing_datetime.astimezone(default_timezone)
             except:
                 print("\nCannot parse date for date_text: ", date_text)
@@ -104,10 +104,14 @@ class Utility:
         boolean_converter = {
             'TRUE': True,
             'FALSE': False,
+            '1': True,
+            '0': False,
+            1: True,
+            0: False,
         }
 
         if isinstance(original_value, str):
-            value = Utility.presence(original_value) if strip_first else original_value
+            value = original_value.strip().strip("'") if strip_first else original_value
             if value.upper() in boolean_converter:
                 return boolean_converter.get(value.upper())
             else:
@@ -143,7 +147,7 @@ class Utility:
 
         return None
 
-    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None):
+    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None, exception_save=False, excpetion_print_data=False):
         """
         Sililar to update_or_create(), it'll search by the filters dictionary, get the last by
         order_by, update its values specified by defaults dictionary, return created and obj
@@ -152,19 +156,30 @@ class Utility:
         :param update: boolean: do you want to update the object if any matched?
         :param defaults: new values will be updated to the matched object
         :param filters:
+        :param exception_save: resave in the exception block, internally used only for import debug
         :return: tuple of updated/created object, created boolean
         """
         obj = klass.objects.filter(**filters).order_by(order_key).last()
         created = False
-        if obj:
-            if update:
-                for key, value in defaults.items():
-                    setattr(obj, key, value)
-        else:
-            filters.update(defaults)
-            obj = klass(**filters)
-            created = True
-        obj.save()
+        try:
+            if obj:
+                if update:
+                    for key, value in defaults.items():
+                        setattr(obj, key, value)
+            else:
+                filters.update(defaults)
+                obj = klass(**filters)
+                created = True
+            obj.save()
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            print(f"\nUtility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
+            print(f"and data of {klass} obj#{obj.id}")
+            if excpetion_print_data:
+                print(f"with defaults: {defaults} and obj: {obj}")
+            # breakpoint()
+            if exception_save:
+                obj.save()
         return obj, created
 
     # @property

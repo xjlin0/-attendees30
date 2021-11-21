@@ -1225,6 +1225,7 @@ Attendees.datagridUpdate = {
       at: 'center',
       of: window,
     },
+    showCloseButton: true,  // for mobile browser
     dragEnabled: true,
     contentTemplate: (e) => {
       const formContainer = $('<div class="contact-form">');
@@ -1394,6 +1395,7 @@ Attendees.datagridUpdate = {
         if ($existingAttendeeSelector) $existingAttendeeSelector.close();
       },
       dragEnabled: true,
+      showCloseButton: true,  // for mobile browser
       contentTemplate: (e) => {
         const formContainer = $('<div class="attendingForm">');
         Attendees.datagridUpdate.attendingPopupDxForm = formContainer.dxForm({
@@ -1710,6 +1712,7 @@ Attendees.datagridUpdate = {
         if ($existingStateSelector) $existingStateSelector.close();
       },
       dragEnabled: true,
+      showCloseButton: true,  // for mobile browser
       contentTemplate: (e) => {
         const formContainer = $('<div class="locate-form">');
         Attendees.datagridUpdate.placePopupDxForm = formContainer.dxForm({
@@ -2642,6 +2645,7 @@ Attendees.datagridUpdate = {
         of: window,
       },
       dragEnabled: true,
+      showCloseButton: true,  // for mobile browser
       contentTemplate: (e) => {
         const formContainer = $('<div class="familyAttrForm">');
         Attendees.datagridUpdate.familyAttrPopupDxForm = formContainer.dxForm({
@@ -3368,6 +3372,7 @@ Attendees.datagridUpdate = {
     mode: 'popup',
     popup: {
       showTitle: true,
+      showCloseButton: true,  // for mobile browser
       title: 'Editing note of Attendee'
     },
     form: {

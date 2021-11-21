@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('last_name2', models.CharField(blank=True, db_index=True, max_length=8, null=True)),
                 ('gender', models.CharField(choices=GenderEnum.choices(), default=GenderEnum.UNSPECIFIED, max_length=11)),
                 ('photo', PrivateFileField(blank=True, null=True, storage=PrivateFileSystemStorage(), upload_to='attendee_portrait', verbose_name='Photo')),
-                ('progressions', JSONField(blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data', null=True)),
+                # ('progressions', JSONField(blank=True, default=dict, help_text='Example: {"Christian": true, "baptized": {"time": "12/31/2020", "place":"SF"}}. Please keep {} here even no data', null=True)),
                 ('infos', JSONField(blank=True, null=True, default=Utility.attendee_infos, help_text='Example: {"fixed": {"food_pref": "peanut allergy", "nick_name": "John"}}. Please keep {} here even no data')),
             ],
             options={
@@ -68,8 +68,8 @@ class Migration(migrations.Migration):
             model_name='attendee',
             index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='attendee_infos_gin'),
         ),
-        migrations.AddIndex(
-            model_name='attendee',
-            index=django.contrib.postgres.indexes.GinIndex(fields=['progressions'], name='attendee_progressions_gin'),
-        ),
+        # migrations.AddIndex(
+        #     model_name='attendee',
+        #     index=django.contrib.postgres.indexes.GinIndex(fields=['progressions'], name='attendee_progressions_gin'),
+        # ),
     ]
