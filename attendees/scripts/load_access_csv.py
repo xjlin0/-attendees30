@@ -833,33 +833,8 @@ def update_attendee_membership_and_other(baptized_meet, baptized_category, atten
             }
         )
 
-        member_since_text = Utility.presence(attendee.infos.get('progressions', {}).get('member_since'))
-        member_since_reason = ', member since ' + member_since_text if member_since_text else ''
-        Past.objects.update_or_create(
-            organization=data_assembly.division.organization,
-            content_type=attendee_content_type,
-            object_id=attendee.id,
-            category=believer_category,
-            display_name="會員已信主 member's believer",
-            when=None,  # can't find the exact receive date just by membership
-            infos={
-                **Utility.relationship_infos(),
-                'comment': 'CFCCH membership from importer' + member_since_reason,
-            },
-        )
-
-        AttendingMeet.objects.update_or_create(
-            attending=data_attending,
-            meet=believer_meet,
-            defaults={
-                'attending': data_attending,
-                'meet': believer_meet,
-                'character': believer_character,
-                'category': 'importer',
-                'start': member_since_or_now,
-                'finish': believer_meet.finish,
-            },
-        )
+        # member_since_text = Utility.presence(attendee.infos.get('progressions', {}).get('member_since'))
+        # member_since_reason = ', member since ' + member_since_text if member_since_text else ''
 
     if bap_date_text or is_member:
         member_date_text = Utility.presence(attendee.infos.get('progressions', {}).get('member_since'))
@@ -892,6 +867,33 @@ def update_attendee_membership_and_other(baptized_meet, baptized_category, atten
                 'comment': f'[Importer] possible date: {bap_date_or_unknown}',
             },
         )
+
+    if is_member or Utility.boolean_or_datetext_or_original(attendee.infos.get('progressions', {}).get('christian')):
+        AttendingMeet.objects.update_or_create(
+            attending=data_attending,
+            meet=believer_meet,
+            defaults={
+                'attending': data_attending,
+                'meet': believer_meet,
+                'character': believer_character,
+                'category': 'importer',
+                'start': Utility.now_with_timezone(),
+                'finish': believer_meet.finish,
+            },
+        )
+
+        defaults = {
+            'organization': data_assembly.division.organization,
+            'content_type': attendee_content_type,
+            'object_id': attendee.id,
+            'category': believer_category,
+            'display_name': '已信主 Christian',
+        }
+        Utility.update_or_create_last(
+            Past,
+            filters=defaults,
+            defaults=defaults,
+        )  # Somehow this throw exception but saving seems fine
 
 
 def update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering):

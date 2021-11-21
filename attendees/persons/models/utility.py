@@ -105,7 +105,9 @@ class Utility:
             'TRUE': True,
             'FALSE': False,
             '1': True,
+            '0': False,
             1: True,
+            0: False,
         }
 
         if isinstance(original_value, str):
@@ -174,6 +176,7 @@ class Utility:
             print('at line: ', exc_tb.tb_lineno)
             print("hi 173 here is defaults: ", defaults)
             print("hi 174 here is obj: ", obj)
+            # breakpoint()
         return obj, created
 
     # @property
