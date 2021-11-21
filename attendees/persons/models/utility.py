@@ -147,7 +147,7 @@ class Utility:
 
         return None
 
-    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None):
+    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None, exception_save=False, excpetion_print_data=False):
         """
         Sililar to update_or_create(), it'll search by the filters dictionary, get the last by
         order_by, update its values specified by defaults dictionary, return created and obj
@@ -156,6 +156,7 @@ class Utility:
         :param update: boolean: do you want to update the object if any matched?
         :param defaults: new values will be updated to the matched object
         :param filters:
+        :param exception_save: resave in the exception block, internally used only for import debug
         :return: tuple of updated/created object, created boolean
         """
         obj = klass.objects.filter(**filters).order_by(order_key).last()
@@ -172,11 +173,13 @@ class Utility:
             obj.save()
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            print("hi 171 here is e: ", e)
-            print('at line: ', exc_tb.tb_lineno)
-            print("hi 173 here is defaults: ", defaults)
-            print("hi 174 here is obj: ", obj)
+            print(f"\nUtility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
+            print(f"and data of {klass} obj#{obj.id}")
+            if excpetion_print_data:
+                print(f"with defaults: {defaults} and obj: {obj}")
             # breakpoint()
+            if exception_save:
+                obj.save()
         return obj, created
 
     # @property

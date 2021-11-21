@@ -893,7 +893,8 @@ def update_attendee_membership_and_other(baptized_meet, baptized_category, atten
             Past,
             filters=defaults,
             defaults=defaults,
-        )  # Somehow this throw exception but saving seems fine
+            exception_save=True,  # Somehow believer Past throw exception on first saving but persisted data seems fine
+        )
 
 
 def update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering):
