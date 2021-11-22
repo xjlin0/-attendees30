@@ -32,11 +32,11 @@ class DatagridUserOrganizationAttendancesListView(ListView):
         context = super().get_context_data(**kwargs)
 
         available_meets = Meet.objects.filter(
-            Q(attendings__attendee=attendee)
-            |
-            Q(attendings__attendee__in=attendee.related_ones.filter(
-                from_attendee__scheduler=True,
-            ))
+            Q(attendings__attendee=attendee),
+            # |
+            # Q(attendings__attendee__in=attendee.related_ones.filter(
+            #     from_attendee__scheduler=True,
+            # ))
         ).order_by(
             'display_name',
         ).distinct()  # get all user's and user care receivers' joined meets, no time limit on the first load

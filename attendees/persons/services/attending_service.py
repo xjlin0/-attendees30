@@ -40,11 +40,11 @@ class AttendingService:
         :return: all Attendings with participating meets(group) and character(role)
         """
         return Attending.objects.select_related().prefetch_related().filter(
-                    Q(attendee=attendee)
-                    |
-                    Q(attendee__in=attendee.related_ones.filter(
-                        from_attendee__scheduler=True,
-                    )),
+                    Q(attendee=attendee),
+                    # |
+                    # Q(attendee__in=attendee.related_ones.filter(
+                    #     from_attendee__scheduler=True,
+                    # )),
                     meets__slug__in=meet_slugs,
                     meets__assembly__division__organization=current_user_organization,
                 ).annotate(

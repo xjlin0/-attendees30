@@ -24,11 +24,11 @@ class CharacterService:
 
         """
         return Character.objects.filter(
-                    Q(assembly__in=user.attendee.attendings.values_list('gathering__meet__assembly'))
-                    |
-                    Q(assembly__in=user.attendee.related_ones.filter(
-                        from_attendee__scheduler=True
-                    ).values_list('attendings__gathering__meet__assembly')),
+                    Q(assembly__in=user.attendee.attendings.values_list('gathering__meet__assembly')),
+                    # |
+                    # Q(assembly__in=user.attendee.related_ones.filter(
+                    #     from_attendee__scheduler=True
+                    # ).values_list('attendings__gathering__meet__assembly')),
                     assembly__division__organization__slug=user.organization.slug,
                 ).order_by(
                     'display_order',

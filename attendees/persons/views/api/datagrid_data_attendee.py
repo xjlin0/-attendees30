@@ -9,7 +9,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.viewsets import ModelViewSet
 
-from attendees.persons.models import Attendee, FamilyAttendee, Relation, Family, Relationship
+from attendees.persons.models import Attendee, FolkAttendee, Relation, Folk  #, Relationship
 from attendees.persons.services import AttendeeService
 from attendees.persons.serializers import AttendeeMinimalSerializer
 
@@ -76,11 +76,11 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
 
     def perform_create(self, serializer):
         instance = serializer.save()
-        family_id = self.request.META.get('HTTP_X_ADD_FAMILY')
+        folk_id = self.request.META.get('HTTP_X_ADD_FOLK')
         role_id = self.request.META.get('HTTP_X_FAMILY_ROLE')
-        if family_id and role_id:
-            FamilyAttendee.objects.create(
-                family=get_object_or_404(Family, pk=family_id),
+        if folk_id and role_id:
+            FolkAttendee.objects.create(
+                folk=get_object_or_404(Folk, pk=folk_id),
                 attendee=instance,
                 role=get_object_or_404(Relation, pk=role_id),
             )
@@ -91,7 +91,7 @@ class ApiDatagridDataAttendeeViewSet(LoginRequiredMixin, ModelViewSet):  # from 
             instance = serializer.save()
             if self.request.META.get('HTTP_X_END_ALL_ATTENDEE_ACTIVITIES'):
                 AttendeeService.end_all_activities(instance)
-                Relationship.objects.filter(Q(to_attendee=target_attendee) | Q(from_attendee=target_attendee)).update(emergency_contact=False, scheduler=False)
+                # Relationship.objects.filter(Q(to_attendee=target_attendee) | Q(from_attendee=target_attendee)).update(emergency_contact=False, scheduler=False)
         else:
             time.sleep(2)
             raise PermissionDenied(detail=f'Not allowed to update {target_attendee.__class__.__name__}')

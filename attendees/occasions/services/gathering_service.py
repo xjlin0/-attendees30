@@ -27,11 +27,11 @@ class GatheringService:
         :return:  all Gatherings of the logged in user and their kids/care receivers.
         """
         return Gathering.objects.filter(
-            Q(meet__in=user.attendee.attendings.values_list('gathering__meet'))
-            |
-            Q(meet__in=user.attendee.related_ones.filter(
-                from_attendee__scheduler=True
-            ).values_list('attendings__gathering__meet')),
+            Q(meet__in=user.attendee.attendings.values_list('gathering__meet')),
+            # |
+            # Q(meet__in=user.attendee.related_ones.filter(
+            #     from_attendee__scheduler=True
+            # ).values_list('attendings__gathering__meet')),
             meet__slug__in=meet_slugs,
             meet__assembly__division__organization__slug=user.organization.slug,
         ).order_by(

@@ -15,25 +15,25 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Family',
+            name='Folk',
             fields=[
                 ('id', model_utils.fields.UUIDField(default=uuid4, editable=False, primary_key=True, serialize=False)),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
                 ('division', models.ForeignKey(default=0, blank=False, null=False, on_delete=models.SET(0), to='whereabouts.Division')),
+                ('category', models.ForeignKey(help_text="subtype: for education it's primary/high/college sub-types etc", default=25, on_delete=models.SET(0), to='persons.Category')),
                 ('display_order', models.SmallIntegerField(db_index=True, default=0)),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"2010id": "3"}. Please keep {} here even no data', null=True)),
             ],
             options={
-                'verbose_name_plural': 'Families',
-                'db_table': 'persons_families',
-                'ordering': ('display_order', '-modified'),
+                'db_table': 'persons_folks',
+                'ordering': ('division', 'category', 'display_order', '-modified'),
             },
         ),
         migrations.AddIndex(
-            model_name='family',
-            index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='family_infos_gin'),
+            model_name='folk',
+            index=django.contrib.postgres.indexes.GinIndex(fields=['infos'], name='folk_infos_gin'),
         ),
     ]

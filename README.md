@@ -243,7 +243,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   <summary>Click to expand all</summary>
 
 - [x] make auth group not organization specific, and counselling note check on organization
-- [ ] Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as AttendingMeet with category for active/inactive)
+- [x] [PR#30](https://github.com/xjlin0/attendees30/pull/30) Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as AttendingMeet with category for active/inactive)
   - [x] make Past model generic
   - [ ] any past status list (Past level)
   - [ ] Attendance roaster to Past auto conversion
@@ -277,7 +277,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 - [x] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
   - [x] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
   - [x] [PR#28](https://github.com/xjlin0/attendees30/pull/28) from Attendee detail and attendee list page
-  - [ ] importer load_access_csv need to import bap date and believer, not only by membership.
+  - [x] [PR#30](https://github.com/xjlin0/attendees30/pull/30) importer load_access_csv need to import bap date and believer, not only by membership.
 - [ ] AttendingMeet list (server side processing)
   - [ ] new AttendingMeet datagrid filtered by meets and date ranges
   - [ ] auto-generation of AttendingMeet by django-schedule with certain Past

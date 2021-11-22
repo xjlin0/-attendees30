@@ -1,14 +1,14 @@
-from attendees.persons.models import Family, FamilyAttendee, Relation, Utility, Attendee
+from attendees.persons.models import Folk, FolkAttendee, Relation, Utility, Attendee
 from attendees.whereabouts.serializers import PlaceSerializer
 
 from rest_framework import serializers
 
 
-class FamilySerializer(serializers.ModelSerializer):
+class FolkSerializer(serializers.ModelSerializer):
     places = PlaceSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Family
+        model = Folk
         fields = '__all__'
 
     def create(self, validated_data):
@@ -18,27 +18,28 @@ class FamilySerializer(serializers.ModelSerializer):
         raw_data = self._kwargs.get('data', {})
         family_id = raw_data.get('id')
 
-        family, family_created = Family.objects.update_or_create(
+        folk, folk_created = Folk.objects.update_or_create(
             id=family_id,
+            category=25,  # Todo 20211121 : change this to accept UI value
             defaults=validated_data,
         )
 
-        if family_created:
+        if folk_created:
             for attendee_id in raw_data.get('attendees', []):
                 unspecified_role = Relation.objects.filter(title='unspecified').first
                 attendee = Attendee.objects.get(pk=attendee_id)
-                FamilyAttendee.objects.update_or_create(
+                FolkAttendee.objects.update_or_create(
                     attendee=attendee,
-                    family=family,
+                    folk=folk,
                     defaults={
                         'attendee': attendee,
-                        'family': family,
+                        'folk': folk,
                         'role': unspecified_role,
                         'start': Utility.now_with_timezone()
                     },
                 )
 
-        return family
+        return folk
 
     def update(self, instance, validated_data):
         """
@@ -46,7 +47,7 @@ class FamilySerializer(serializers.ModelSerializer):
 
         """
 
-        obj, created = Family.objects.update_or_create(
+        obj, created = Folk.objects.update_or_create(
             id=instance.id,
             defaults=validated_data,
         )

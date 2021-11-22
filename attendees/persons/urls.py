@@ -7,15 +7,15 @@ from attendees.persons.views import (
     api_all_registrations_viewset,
     api_categorized_pasts_viewset,
     api_assembly_meet_attendings_viewset,
-    api_attendee_families_viewset,
+    api_attendee_folks_viewset,
     api_data_attendings_viewset,
     api_datagrid_data_attendees_viewset,
     api_datagrid_data_attendee_viewset,
     api_related_attendees_viewset,
     api_datagrid_data_attendingmeet_viewset,
     api_assembly_meet_attendees_viewset,
-    api_datagrid_data_familyattendees_viewset,
-    api_attendee_relationships_viewset,
+    api_datagrid_data_folkattendees_viewset,
+    # api_attendee_relationships_viewset,
     datagrid_assembly_all_attendings_list_view,
     attendees_list_view,
     datagrid_assembly_data_attendings_list_view,
@@ -75,7 +75,7 @@ router.register(
 )
 router.register(
     'api/datagrid_data_familyattendees',
-    api_datagrid_data_familyattendees_viewset,
+    api_datagrid_data_folkattendees_viewset,
     basename='familyattendee',
 )
 router.register(
@@ -83,11 +83,11 @@ router.register(
     api_all_relations_viewset,
     basename='relation',
 )
-router.register(
-    'api/attendee_relationships',
-    api_attendee_relationships_viewset,
-    basename='relationship',
-)
+# router.register(
+#     'api/attendee_relationships',
+#     api_attendee_relationships_viewset,
+#     basename='relationship',
+# )
 router.register(
     'api/categorized_pasts',
     api_categorized_pasts_viewset,
@@ -110,7 +110,7 @@ router.register(
 )
 router.register(
     'api/attendee_families',
-    api_attendee_families_viewset,
+    api_attendee_folks_viewset,
     basename='family',
 )
 

@@ -2616,6 +2616,32 @@
     }
   },
   {
+    "model": "persons.category",
+    "pk": 25,
+    "fields": {
+      "created": "2021-05-22T22:20:43.067Z",
+      "modified": "2021-05-22T22:25:39.965Z",
+      "is_removed": false,
+      "type": "folk",
+      "display_order": 0,
+      "display_name": "Family",
+      "infos": {}
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 26,
+    "fields": {
+      "created": "2021-05-22T22:20:43.067Z",
+      "modified": "2021-05-22T22:25:39.965Z",
+      "is_removed": false,
+      "type": "folk",
+      "display_order": 0,
+      "display_name": "Other",
+      "infos": {}
+    }
+  },
+  {
     "model": "persons.past",
     "pk": "070ade81-dbf4-47c4-a1e0-046f553021b8",
     "fields": {
@@ -2723,65 +2749,69 @@
     }
   },
   {
-    "model": "persons.family",
+    "model": "persons.folk",
     "pk": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
     "fields": {
       "created": "1999-05-02T22:02:57.456Z",
       "modified": "2020-05-02T22:02:57.456Z",
       "is_removed": false,
       "division": 1,
+      "category": 25,
       "display_name": "Abraham & Sarah",
       "display_order": 0,
       "infos": {}
     }
   },
   {
-    "model": "persons.family",
+    "model": "persons.folk",
     "pk": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
     "fields": {
       "created": "1999-05-10T00:46:32.567Z",
       "modified": "2020-11-16T04:14:46.595Z",
       "is_removed": false,
       "division": 2,
+      "category": 25,
       "display_name": "David&Abigail",
       "display_order": 0,
       "infos": {}
     }
   },
   {
-    "model": "persons.family",
+    "model": "persons.folk",
     "pk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
     "fields": {
       "created": "1999-11-16T02:07:31.509Z",
       "modified": "2020-11-16T04:15:45.122Z",
       "is_removed": false,
       "division": 1,
+      "category": 25,
       "display_name": "Issac & Rebecca",
       "display_order": 0,
       "infos": {}
     }
   },
   {
-    "model": "persons.family",
+    "model": "persons.folk",
     "pk": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
     "fields": {
       "created": "1999-05-02T21:17:26.399Z",
       "modified": "2020-11-16T04:15:07.313Z",
       "is_removed": false,
       "division": 2,
+      "category": 25,
       "display_name": "Hagar & Ishmael",
       "display_order": 0,
       "infos": {}
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 1,
     "fields": {
       "created": "1999-05-02T21:17:26.404Z",
       "modified": "2020-11-16T04:15:07.315Z",
       "is_removed": false,
-      "family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
+      "folk": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
       "role": 2,
       "display_order": 0,
@@ -2791,13 +2821,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 2,
     "fields": {
       "created": "1999-05-02T21:17:26.405Z",
       "modified": "2020-05-02T21:17:26.405Z",
       "is_removed": false,
-      "family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
+      "folk": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
       "role": 3,
       "display_order": 2,
@@ -2807,13 +2837,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 3,
     "fields": {
       "created": "1999-05-02T21:40:25.188Z",
       "modified": "2020-11-16T04:15:07.314Z",
       "is_removed": false,
-      "family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
+      "folk": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
       "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "role": 1,
       "display_order": 1,
@@ -2823,13 +2853,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 4,
     "fields": {
       "created": "1999-05-02T22:02:57.464Z",
       "modified": "2020-05-02T22:02:57.464Z",
       "is_removed": false,
-      "family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
+      "folk": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
       "role": 1,
       "display_order": 0,
@@ -2839,13 +2869,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 5,
     "fields": {
       "created": "1999-05-02T22:02:57.465Z",
       "modified": "2020-05-02T22:02:57.465Z",
       "is_removed": false,
-      "family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
+      "folk": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
       "role": 2,
       "display_order": 1,
@@ -2855,13 +2885,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 6,
     "fields": {
       "created": "1999-05-02T22:02:57.465Z",
       "modified": "2020-05-02T22:02:57.465Z",
       "is_removed": false,
-      "family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
+      "folk": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
       "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
       "role": 3,
       "display_order": 2,
@@ -2871,13 +2901,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 7,
     "fields": {
       "created": "1999-11-16T04:14:12.375Z",
       "modified": "2020-11-16T04:14:12.375Z",
       "is_removed": false,
-      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "folk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
       "role": 5,
       "display_order": 0,
@@ -2887,13 +2917,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 8,
     "fields": {
       "created": "1999-11-16T04:14:12.375Z",
       "modified": "2020-11-16T04:14:12.375Z",
       "is_removed": false,
-      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "folk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
       "role": 6,
       "display_order": 1,
@@ -2903,13 +2933,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 9,
     "fields": {
       "created": "1999-11-16T04:14:12.376Z",
       "modified": "2020-11-16T04:15:45.124Z",
       "is_removed": false,
-      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "folk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
       "role": 3,
       "display_order": 2,
@@ -2919,13 +2949,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 10,
     "fields": {
       "created": "1999-11-16T04:14:12.376Z",
       "modified": "2020-11-16T04:15:45.123Z",
       "is_removed": false,
-      "family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
+      "folk": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
       "attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
       "role": 3,
       "display_order": 3,
@@ -2935,13 +2965,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 11,
     "fields": {
       "created": "1999-11-16T04:14:46.578Z",
       "modified": "2020-11-16T04:14:46.578Z",
       "is_removed": false,
-      "family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
+      "folk": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "attendee": "0498c414-abd3-4173-add1-5e42053760e4",
       "role": 5,
       "display_order": 0,
@@ -2951,13 +2981,13 @@
     }
   },
   {
-    "model": "persons.familyattendee",
+    "model": "persons.folkattendee",
     "pk": 12,
     "fields": {
       "created": "1999-11-16T04:14:46.579Z",
       "modified": "2020-11-16T04:14:46.579Z",
       "is_removed": false,
-      "family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
+      "folk": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
       "attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
       "role": 6,
       "display_order": 1,
@@ -3559,742 +3589,6 @@
       "scheduler": false,
       "relative": true,
       "consanguinity": false
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "12ebea3e-1092-4396-904a-61cc25c9cf21",
-    "fields": {
-      "created": "1999-11-16T03:36:05.884Z",
-      "modified": "2020-11-16T03:36:05.884Z",
-      "is_removed": false,
-      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "relation": 2,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "19f5a848-ac42-40da-9442-1559379f94d9",
-    "fields": {
-      "created": "1999-04-30T17:12:36.196Z",
-      "modified": "2020-05-03T21:23:20.034Z",
-      "is_removed": false,
-      "from_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "to_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "relation": 3,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "1bc330b8-a06c-4554-9c47-3c7bbaca2606",
-    "fields": {
-      "created": "1999-04-30T17:03:01.768Z",
-      "modified": "2020-05-03T21:23:58.156Z",
-      "is_removed": false,
-      "from_attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "to_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "relation": 5,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "21515a24-d05d-4a8a-b747-35d1c1257b48",
-    "fields": {
-      "created": "1999-11-16T04:03:38.520Z",
-      "modified": "2020-11-16T04:03:38.520Z",
-      "is_removed": false,
-      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "relation": 2,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "2223bdd8-7ccb-400e-98bd-90703c6495ca",
-    "fields": {
-      "created": "1999-04-30T17:13:26.572Z",
-      "modified": "2020-05-03T21:23:13.641Z",
-      "is_removed": false,
-      "from_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "to_attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "relation": 6,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "275b02a0-57eb-4349-86d3-5d7065f98bde",
-    "fields": {
-      "created": "1999-05-10T00:47:27.139Z",
-      "modified": "2020-05-10T00:47:27.139Z",
-      "is_removed": false,
-      "from_attendee": "0498c414-abd3-4173-add1-5e42053760e4",
-      "to_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "relation": 6,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "2f456691-f8c3-43e6-a766-4a4539c22e97",
-    "fields": {
-      "created": "1999-04-30T17:01:07.157Z",
-      "modified": "2020-05-03T21:24:16.653Z",
-      "is_removed": false,
-      "from_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "to_attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "relation": 7,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "2ffd9ab9-2a2c-47fa-ae8c-02a31e45b9ed",
-    "fields": {
-      "created": "1999-05-10T01:02:35.490Z",
-      "modified": "2020-05-10T01:02:35.490Z",
-      "is_removed": false,
-      "from_attendee": "786a9d44-379f-4671-9004-5b3d0bd0227b",
-      "to_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "relation": 2,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "30fa3a46-bbe2-4777-9c88-d92e22e6cfa8",
-    "fields": {
-      "created": "1999-04-30T16:58:59.298Z",
-      "modified": "2020-05-03T21:24:29.941Z",
-      "is_removed": false,
-      "from_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "to_attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "relation": 2,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "383519b9-e928-4ef6-b270-5916a0fb040a",
-    "fields": {
-      "created": "1999-04-30T16:54:19.925Z",
-      "modified": "2020-05-03T21:24:35.989Z",
-      "is_removed": false,
-      "from_attendee": "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9",
-      "to_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "relation": 3,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "39e1f45d-508b-48c1-8597-fc3753a1b9d5",
-    "fields": {
-      "created": "1999-04-30T17:08:11.007Z",
-      "modified": "2020-05-03T21:23:40.983Z",
-      "is_removed": false,
-      "from_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "relation": 3,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "3a3a7696-7769-4cfd-9aff-274bd483626d",
-    "fields": {
-      "created": "2020-12-05T17:58:26.523Z",
-      "modified": "2020-12-10T01:44:55.934Z",
-      "is_removed": false,
-      "from_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "to_attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
-      "relation": 18,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": null,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "3c055055-ed00-4fa2-9b7f-854ba60a4879",
-    "fields": {
-      "created": "1999-11-16T04:03:38.519Z",
-      "modified": "2020-11-16T04:03:38.519Z",
-      "is_removed": false,
-      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "relation": 1,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "3d736b41-8e3c-4dc0-a370-7a043e444de5",
-    "fields": {
-      "created": "1999-11-16T04:03:38.521Z",
-      "modified": "2020-11-16T04:03:38.521Z",
-      "is_removed": false,
-      "from_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "relation": 8,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "462f3730-94af-41e2-9621-599504d6bdfb",
-    "fields": {
-      "created": "1999-04-30T17:02:30.512Z",
-      "modified": "2020-05-03T21:24:09.051Z",
-      "is_removed": false,
-      "from_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "to_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "relation": 1,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "ad4153c4-9a36-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "4c5abbe4-dca6-425c-a8c9-46c85fdf4294",
-    "fields": {
-      "created": "1999-04-30T17:07:39.971Z",
-      "modified": "2020-05-03T21:23:47.186Z",
-      "is_removed": false,
-      "from_attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "to_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "relation": 5,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "613e29cb-3a68-48c7-b629-bb9406a3cdf9",
-    "fields": {
-      "created": "1999-05-10T01:02:35.491Z",
-      "modified": "2020-05-10T01:02:35.491Z",
-      "is_removed": false,
-      "from_attendee": "786a9d44-379f-4671-9004-5b3d0bd0227b",
-      "to_attendee": "0498c414-abd3-4173-add1-5e42053760e4",
-      "relation": 1,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "6f2e2643-489f-48e3-865e-8957ad282d8d",
-    "fields": {
-      "created": "1999-04-30T16:59:31.809Z",
-      "modified": "2020-04-30T16:59:31.809Z",
-      "is_removed": false,
-      "from_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "relation": 10,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": null,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "6fc28d86-50fe-4e54-8483-5b5b0e97891f",
-    "fields": {
-      "created": "1999-11-16T04:04:19.273Z",
-      "modified": "2020-11-16T04:05:41.606Z",
-      "is_removed": false,
-      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "relation": 3,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "72e5f3a3-7ee8-480e-b100-19f792e8267f",
-    "fields": {
-      "created": "1999-11-16T03:35:33.700Z",
-      "modified": "2020-11-16T03:35:33.700Z",
-      "is_removed": false,
-      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "relation": 5,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "7b5532e9-8b47-418e-8761-4550aa000c2b",
-    "fields": {
-      "created": "2020-12-05T17:58:26.523Z",
-      "modified": "2020-12-10T01:44:55.934Z",
-      "is_removed": false,
-      "from_attendee": "a48e4375-1a64-4c4f-beb3-8f088bf77340",
-      "to_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "relation": 18,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": null,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "81bd6ea5-56f8-476c-ab60-61b135ab5002",
-    "fields": {
-      "created": "1999-05-10T01:00:09.126Z",
-      "modified": "2020-05-10T01:00:09.126Z",
-      "is_removed": false,
-      "from_attendee": "97922785-9025-40ad-9a5f-a9545f884644",
-      "to_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "relation": 26,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": null,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "8cb4e6b4-271f-4b8a-9986-71d87b9fbdf8",
-    "fields": {
-      "created": "1999-05-10T00:47:03.810Z",
-      "modified": "2020-05-10T00:47:03.810Z",
-      "is_removed": false,
-      "from_attendee": "3833d04e-0897-45da-abf6-7d750f0baee7",
-      "to_attendee": "0498c414-abd3-4173-add1-5e42053760e4",
-      "relation": 5,
-      "emergency_contact": true,
-      "scheduler": false,
-      "in_family": "249335f0-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "9c0ae675-12f1-4387-8c55-ce22633c8764",
-    "fields": {
-      "created": "1999-11-16T02:08:30.603Z",
-      "modified": "2020-11-16T02:08:30.603Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "relation": 6,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "a3f6fb78-5384-4a58-babd-ffabd53cbaad",
-    "fields": {
-      "created": "1999-04-30T16:59:56.071Z",
-      "modified": "2020-04-30T16:59:56.071Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "80f2e82f-0a72-49ea-b3e2-3fc892c49599",
-      "relation": 10,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": null,
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "ad653fed-f96f-4501-866d-c86b3a718a80",
-    "fields": {
-      "created": "1999-11-16T03:36:05.883Z",
-      "modified": "2020-11-16T03:36:05.883Z",
-      "is_removed": false,
-      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "to_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "relation": 1,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "b7f2e4ed-f216-4c3d-ae78-824e0e25e143",
-    "fields": {
-      "created": "1999-11-16T04:03:58.162Z",
-      "modified": "2020-11-16T04:05:31.279Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "relation": 3,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "c934de85-4d39-4272-8840-9d3c2f211767",
-    "fields": {
-      "created": "1999-11-16T04:04:45.083Z",
-      "modified": "2020-11-16T04:05:02.444Z",
-      "is_removed": false,
-      "from_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "to_attendee": "55ee6cde-b6ce-4551-b531-89507cee6ae1",
-      "relation": 8,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "dd45dc7f-8021-4fae-8956-d6d9fa355c00",
-    "fields": {
-      "created": "1999-04-30T17:09:50.403Z",
-      "modified": "2020-05-03T21:23:26.078Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "aa24758f-cc70-4353-b1d7-9c616b3db425",
-      "relation": 1,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "edea9cc3-8fe7-41ee-be4d-57a9d8bd7eb1",
-    "fields": {
-      "created": "1999-04-30T17:08:49.579Z",
-      "modified": "2020-05-03T21:23:34.587Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "ffd3881a-7a77-437a-ba11-c90610839523",
-      "relation": 2,
-      "emergency_contact": true,
-      "scheduler": true,
-      "in_family": "10ef8af8-9a37-11ea-b554-dd12bf8b78b9",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "fde81a30-a2d0-4cb7-9a80-257c25a809a4",
-    "fields": {
-      "created": "1999-11-16T03:34:47.908Z",
-      "modified": "2020-11-16T03:34:47.908Z",
-      "is_removed": false,
-      "from_attendee": "f3b780ad-c736-490e-8731-58b96dfd81f8",
-      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "relation": 3,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
-    }
-  },
-  {
-    "model": "persons.relationship",
-    "pk": "ffc413ad-9492-4ad9-aa9e-52cf222fbac3",
-    "fields": {
-      "created": "1999-11-16T03:35:33.701Z",
-      "modified": "2020-11-16T03:35:33.701Z",
-      "is_removed": false,
-      "from_attendee": "8b3b2130-9ec4-469b-9b64-efef141fceee",
-      "to_attendee": "be687517-d7bf-407a-8088-e3ed64ca62b8",
-      "relation": 3,
-      "emergency_contact": false,
-      "scheduler": false,
-      "in_family": "2d8cbe28-c658-4896-9a9a-caafb1c2b72f",
-      "start": null,
-      "finish": null,
-      "infos": {
-        "comment": null,
-        "updating_attendees": {},
-        "body": null,
-        "show_secret": {}
-      }
     }
   },
   {

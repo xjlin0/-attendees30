@@ -1,15 +1,15 @@
 from rest_framework import serializers
 
-from attendees.persons.models import FamilyAttendee, Family, Attendee
-from attendees.persons.serializers import FamilySerializer
+from attendees.persons.models import FolkAttendee, Folk, Attendee
+from attendees.persons.serializers import FolkSerializer
 
 
-class FamilyAttendeeSerializer(serializers.ModelSerializer):
-    family = FamilySerializer(many=False)
+class FolkAttendeeSerializer(serializers.ModelSerializer):
+    folk = FolkSerializer(many=False)
     # attendee = AttendeeSerializer(many=False)
 
     class Meta:
-        model = FamilyAttendee
+        model = FolkAttendee
         fields = '__all__'
         # fields = [f.name for f in model._meta.fields if f.name not in ['is_removed']] + [
         #     'family',
@@ -17,13 +17,13 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Create or update `FamilyAttendee` instance, given the validated data.
+        Create or update `FolkAttendee` instance, given the validated data.
         """
-        familyattendee_id = self._kwargs.get('data', {}).get('id')
-        new_family = Family.objects.filter(pk=self._kwargs.get('data', {}).get('family', {}).get('id')).first()
+        folkattendee_id = self._kwargs.get('data', {}).get('id')
+        new_folk = Folk.objects.filter(pk=self._kwargs.get('data', {}).get('folk', {}).get('id')).first()
         new_attendee_id = validated_data.get('attendee', {})
-        if new_family:
-            validated_data['family'] = new_family
+        if new_folk:
+            validated_data['folk'] = new_folk
         print("hi 27 here is validated_data: ", validated_data)
         if new_attendee_id:
             # attendee, attendee_created = Attendee.objects.update_or_create(
@@ -33,25 +33,25 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
             attendee = Attendee.objects.get(pk=new_attendee_id)
             validated_data['attendee'] = attendee
         # Todo: 20210517  create relationships among families such as siblings, etc
-        obj, created = FamilyAttendee.objects.update_or_create(
-            id=familyattendee_id,
+        obj, created = FolkAttendee.objects.update_or_create(
+            id=folkattendee_id,
             defaults=validated_data,
         )
         return obj
 
     def update(self, instance, validated_data):
         """
-        Update and return an existing `FamilyAttendee` instance, given the validated data.
+        Update and return an existing `FolkAttendee` instance, given the validated data.
 
         """
-        new_family = Family.objects.filter(pk=self._kwargs.get('data', {}).get('family', {}).get('id')).first()
+        new_folk = Folk.objects.filter(pk=self._kwargs.get('data', {}).get('folk', {}).get('id')).first()
         new_attendee_id = validated_data.get('attendee', {})
         print("hi 49 here is validated_data: ", validated_data)
-        if new_family:
-            # instance.family = new_family
-            validated_data['family'] = new_family
+        if new_folk:
+            # instance.folk = new_folk
+            validated_data['folk'] = new_folk
         # else:
-        #     validated_data['family'] = instance.family
+        #     validated_data['folk'] = instance.folk
 
         if new_attendee_id:
             # attendee, attendee_created = Attendee.objects.update_or_create(
@@ -63,7 +63,7 @@ class FamilyAttendeeSerializer(serializers.ModelSerializer):
         # else:
         #     validated_data['attendee'] = instance.attendee
         # Todo: 20210517  update relationships among families such as siblings, etc
-        obj, created = FamilyAttendee.objects.update_or_create(
+        obj, created = FolkAttendee.objects.update_or_create(
             id=instance.id,
             defaults=validated_data,
         )

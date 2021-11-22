@@ -4,9 +4,9 @@ from .past_serializer import PastSerializer
 from .relation_serializer import RelationSerializer
 from .attendee import AttendeeSerializer
 from .attending import AttendingSerializer
-from .family_serializer import FamilySerializer
-from .relationship_serializer import RelationshipSerializer
-from .family_attendee_serializer import FamilyAttendeeSerializer
+from .folk_serializer import FolkSerializer
+# from .relationship_serializer import RelationshipSerializer
+from .folk_attendee_serializer import FolkAttendeeSerializer
 from .attendee_minimal_serializer import AttendeeMinimalSerializer
 from .attending_attendee_serializer import AttendingAttendeeSerializer
 from .registration_serializer import RegistrationSerializer

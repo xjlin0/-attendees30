@@ -839,8 +839,8 @@ Attendees.datagridUpdate = {
       }
 
       if (Attendees.datagridUpdate.attendeeId === 'new' && Attendees.datagridUpdate.familyAttrDefaults.id) {
-        extraHeaders['X-Add-Family'] = Attendees.datagridUpdate.familyAttrDefaults.id;
-        extraHeaders['X-Family-Role'] = userData.get('role');
+        extraHeaders['X-Add-Folk'] = Attendees.datagridUpdate.familyAttrDefaults.id;
+        extraHeaders['X-Folk-Role'] = userData.get('role');
         userData.delete('role');
       }
 

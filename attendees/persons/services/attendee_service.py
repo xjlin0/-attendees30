@@ -8,8 +8,8 @@ from django.http import Http404
 from rest_framework.utils import json
 
 from attendees.occasions.models import Meet
-from attendees.persons.models import Attendee, Relationship, Registration
-from attendees.persons.services import AttendingService, FamilyService
+from attendees.persons.models import Attendee, Registration  #, Relationship
+from attendees.persons.services import AttendingService, FolkService
 
 
 class AttendeeService:
@@ -85,7 +85,7 @@ class AttendeeService:
                 qs = Attendee.objects
 
             else:
-                qs = target_attendee.related_ones
+                qs = target_attendee # .related_ones
 
             return qs.filter(
                     pk=querying_attendee_id,
@@ -98,12 +98,13 @@ class AttendeeService:
             final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
             # Todo 20210807 query.add() doesn't need reassign to a different variable
             if current_user.privileged:
-                priority_list = list(target_attendee.related_ones.values_list('id', flat=True))+[target_attendee.id] if self_included else target_attendee.related_ones.values_list('id')
-                return Attendee.objects.filter(final_query).order_by(
-                    Case(When(id__in=priority_list, then=0), default=1)
-                )  # https://stackoverflow.com/a/52047221/4257237
-            else:
-                return list(target_attendee.related_ones.all())+[target_attendee] if self_included else target_attendee.related_ones.all()
+                # priority_list = list(target_attendee.related_ones.values_list('id', flat=True))+[target_attendee.id] if self_included else target_attendee.related_ones.values_list('id')
+                return Attendee.objects.filter(final_query)
+                #     .order_by(
+                #     Case(When(id__in=priority_list, then=0), default=1)
+                # )  # https://stackoverflow.com/a/52047221/4257237
+            # else:
+            #     return list(target_attendee.related_ones.all())+[target_attendee] if self_included else target_attendee.related_ones.all()
 
     @staticmethod
     def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):
@@ -236,17 +237,17 @@ class AttendeeService:
 
         attendee.pasts.filter(is_removed=False).delete()
 
-        Relationship.objects.filter(
-            (Q(from_attendee=attendee)
-             |
-             Q(to_attendee=attendee)),
-            is_removed=False,
-        ).delete()
+        # Relationship.objects.filter(
+        #     (Q(from_attendee=attendee)
+        #      |
+        #      Q(to_attendee=attendee)),
+        #     is_removed=False,
+        # ).delete()
 
         attendee.places.filter(is_removed=False).delete()
 
         for family in attendee.families.filter(is_removed=False):
-            FamilyService.destroy_with_associations(family, attendee)
+            FolkService.destroy_with_associations(family, attendee)
 
         for registration in Registration.objects.filter(registrant=attendee, is_removed=False):
             registration.registrant = None

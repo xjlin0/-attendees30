@@ -7,7 +7,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import UpdateView
 
-from attendees.persons.models import Attendee, Family
+from attendees.persons.models import Attendee, Folk
 from attendees.whereabouts.models import Division
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.users.models import Menu
@@ -32,7 +32,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
         show_create_attendee = self.kwargs.get('show_create_attendee', Menu.user_can_create_attendee(self.request.user))
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
-            'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
+            'folk_contenttype_id': ContentType.objects.get_for_model(Folk).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'show_create_attendee': show_create_attendee,
             'characters_endpoint': '/occasions/api/user_assembly_characters/',

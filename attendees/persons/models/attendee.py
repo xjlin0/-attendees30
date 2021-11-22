@@ -22,10 +22,11 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     pasts = GenericRelation('persons.Past')
     places = GenericRelation('whereabouts.Place')
     notes = GenericRelation(Note)
-    related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to')
+    # related_ones = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='related_to')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
     user = models.OneToOneField(settings.AUTH_USER_MODEL, default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
+    # families = models.ManyToManyField('persons.Family', through='FamilyAttendee', related_name='families')
+    folks = models.ManyToManyField('persons.Folk', through='FolkAttendee', related_name='folks')
     first_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     last_name = models.CharField(max_length=25, db_index=True, null=True, blank=True)
     first_name2 = models.CharField(max_length=12, db_index=True, null=True, blank=True)
@@ -77,11 +78,12 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         ))
 
     def get_relative_emergency_contacts(self):
-        return self.related_ones.filter(
-                    to_attendee__relation__relative=True,
-                    to_attendee__relation__emergency_contact=True,
-                    to_attendee__finish__gte=datetime.now(timezone.utc),
-                )
+        return []
+                # self.related_ones.filter(
+                #     to_attendee__relation__relative=True,
+                #     to_attendee__relation__emergency_contact=True,
+                #     to_attendee__finish__gte=datetime.now(timezone.utc),
+                # )
 
     def under_same_org_with(self, other_attendee_id):
         if other_attendee_id:
