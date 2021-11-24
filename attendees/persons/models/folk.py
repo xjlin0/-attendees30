@@ -7,11 +7,13 @@ from model_utils.models import TimeStampedModel, SoftDeletableModel, UUIDModel
 
 class Folk(UUIDModel, TimeStampedModel, SoftDeletableModel):
     """
-    Model function as Family (category # 25) or other relationship.
+    Model function as Family (category # 0) or other relationship (category # 25).
+
+    For other relationship, primary attendee needs to be "hidden" role
     """
     places = GenericRelation('whereabouts.Place')
     division = models.ForeignKey('whereabouts.Division', default=0, null=False, blank=False, on_delete=models.SET(0))
-    category = models.ForeignKey('persons.Category', null=False, blank=False, default=25, on_delete=models.SET(0), help_text="subtype: for education it's primary/high/college sub-types etc")
+    category = models.ForeignKey('persons.Category', null=False, blank=False, default=0, on_delete=models.SET(0), help_text='subtype: for folk, 0 is family and 25 is other')
     attendees = models.ManyToManyField('persons.Attendee', through='FolkAttendee', related_name='attendees')
     display_name = models.CharField(max_length=50, blank=True, null=True)
     display_order = models.SmallIntegerField(default=0, blank=False, null=False, db_index=True)

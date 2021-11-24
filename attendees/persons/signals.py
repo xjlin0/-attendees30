@@ -104,3 +104,4 @@ def post_save_handler_for_attendee_to_attending(sender, **kwargs):
                 filters={'attendee': created_attendee, 'is_removed': False},
                 defaults=defaults,
             )
+            # Todo 20211124: create family and relationship folks after save

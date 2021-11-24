@@ -189,28 +189,28 @@ class NoteAdmin(SummernoteModelAdmin):
         return qs.filter(organization=request.user.organization).exclude(category=counseling_category)
 
 
-class RelationshipAdmin(admin.ModelAdmin):
-    formfield_overrides = {
-        fields.JSONField: {'widget': JSONEditorWidget},
-    }
-    search_fields = ('id', 'infos', 'from_attendee__id', 'to_attendee__id')
-    list_display_links = ('relation',)
-    readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.resolver_match.func.__name__ == 'changelist_view':
-            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
-        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
-        return qs.filter(
-            (Q(from_attendee__division__organization=request.user.organization)
-             |
-             Q(to_attendee__division__organization=request.user.organization) ),
-            (Q(**requester_permission)
-             |
-             Q(infos__show_secret={}) ),
-        )
+# class RelationshipAdmin(admin.ModelAdmin):
+#     formfield_overrides = {
+#         fields.JSONField: {'widget': JSONEditorWidget},
+#     }
+#     search_fields = ('id', 'infos', 'from_attendee__id', 'to_attendee__id')
+#     list_display_links = ('relation',)
+#     readonly_fields = ['id', 'created', 'modified']
+#     list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
+#
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.resolver_match.func.__name__ == 'changelist_view':
+#             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+#         requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
+#         return qs.filter(
+#             (Q(from_attendee__division__organization=request.user.organization)
+#              |
+#              Q(to_attendee__division__organization=request.user.organization) ),
+#             (Q(**requester_permission)
+#              |
+#              Q(infos__show_secret={}) ),
+#         )
 
 
 class AttendingMeetAdmin(admin.ModelAdmin):

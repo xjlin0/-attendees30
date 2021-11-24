@@ -10,8 +10,8 @@ from django.core.files import File
 from address.models import Locality, State, Address
 
 from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
-from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
-    Relationship, Registration, Attending, AttendingMeet, Past, Category
+from attendees.persons.models import Utility, GenderEnum, Folk, Relation, Attendee, FolkAttendee, \
+    Registration, Attending, AttendingMeet, Past, Category
 from attendees.users.admin import User
 from attendees.whereabouts.models import Place, Division
 
@@ -390,7 +390,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         'names': {},
                         'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
                         "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {},
-                        'created_reason': 'CFCCH member/directory registration from importer',
+                        'created_reason': 'CFCCH member/directory registration from importer',  # the word "importer" is critical for signal
                     }
                 }
 

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('is_removed', models.BooleanField(default=False)),
                 ('division', models.ForeignKey(default=0, blank=False, null=False, on_delete=models.SET(0), to='whereabouts.Division')),
-                ('category', models.ForeignKey(help_text="subtype: for education it's primary/high/college sub-types etc", default=25, on_delete=models.SET(0), to='persons.Category')),
+                ('category', models.ForeignKey(help_text='subtype: for folk, 0 is family and 25 is other', default=0, on_delete=models.SET(0), to='persons.Category')),
                 ('display_order', models.SmallIntegerField(db_index=True, default=0)),
                 ('display_name', models.CharField(blank=True, max_length=50, null=True)),
                 ('infos', JSONField(blank=True, default=dict, help_text='Example: {"2010id": "3"}. Please keep {} here even no data', null=True)),

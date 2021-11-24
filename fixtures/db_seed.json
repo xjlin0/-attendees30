@@ -95,7 +95,7 @@
     "pk": 1,
     "fields": {
       "event": 1,
-      "content_type": 56,
+      "content_type": 55,
       "object_id": 1,
       "distinction": "room#1"
     }
@@ -1614,7 +1614,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "7",
       "organization": 1,
       "address": 2,
@@ -1830,7 +1830,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "4",
       "organization": 1,
       "address": 9,
@@ -1860,7 +1860,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "6",
       "organization": 1,
       "address": 11,
@@ -1890,7 +1890,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "5",
       "organization": 1,
       "address": 1,
@@ -1920,7 +1920,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "3",
       "organization": 1,
       "address": 10,
@@ -1950,7 +1950,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "1",
       "organization": 1,
       "address": 1,
@@ -1979,7 +1979,7 @@
       "created": "2021-05-05T05:46:36.216Z",
       "modified": "2021-05-05T05:46:36.216Z",
       "is_removed": false,
-      "content_type": 53,
+      "content_type": 52,
       "object_id": "2",
       "organization": 1,
       "address": 1,
@@ -2299,6 +2299,19 @@
       "suite": 4,
       "label": "living room",
       "accessibility": 0
+    }
+  },
+  {
+    "model": "persons.category",
+    "pk": 0,
+    "fields": {
+      "created": "2021-05-22T22:20:43.067Z",
+      "modified": "2021-05-22T22:25:39.965Z",
+      "is_removed": false,
+      "type": "folk",
+      "display_order": 0,
+      "display_name": "Family",
+      "infos": {}
     }
   },
   {
@@ -2624,19 +2637,6 @@
       "is_removed": false,
       "type": "folk",
       "display_order": 0,
-      "display_name": "Family",
-      "infos": {}
-    }
-  },
-  {
-    "model": "persons.category",
-    "pk": 26,
-    "fields": {
-      "created": "2021-05-22T22:20:43.067Z",
-      "modified": "2021-05-22T22:25:39.965Z",
-      "is_removed": false,
-      "type": "folk",
-      "display_order": 0,
       "display_name": "Other",
       "infos": {}
     }
@@ -2756,7 +2756,7 @@
       "modified": "2020-05-02T22:02:57.456Z",
       "is_removed": false,
       "division": 1,
-      "category": 25,
+      "category": 0,
       "display_name": "Abraham & Sarah",
       "display_order": 0,
       "infos": {}
@@ -2770,7 +2770,7 @@
       "modified": "2020-11-16T04:14:46.595Z",
       "is_removed": false,
       "division": 2,
-      "category": 25,
+      "category": 0,
       "display_name": "David&Abigail",
       "display_order": 0,
       "infos": {}
@@ -2784,7 +2784,7 @@
       "modified": "2020-11-16T04:15:45.122Z",
       "is_removed": false,
       "division": 1,
-      "category": 25,
+      "category": 0,
       "display_name": "Issac & Rebecca",
       "display_order": 0,
       "infos": {}
@@ -2798,7 +2798,7 @@
       "modified": "2020-11-16T04:15:07.313Z",
       "is_removed": false,
       "division": 2,
-      "category": 25,
+      "category": 0,
       "display_name": "Hagar & Ishmael",
       "display_order": 0,
       "infos": {}
@@ -3006,7 +3006,7 @@
       "gender": "UNSPECIFIED",
       "reciprocal_ids": "[]",
       "title": "hidden",
-      "display_order": 32767,
+      "display_order": -1,
       "emergency_contact": true,
       "scheduler": true,
       "relative": true,
@@ -3588,6 +3588,57 @@
       "emergency_contact": false,
       "scheduler": false,
       "relative": true,
+      "consanguinity": false
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 35,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "UNSPECIFIED",
+      "reciprocal_ids": "[\"35\"]",
+      "title": "enemy",
+      "display_order": 500,
+      "emergency_contact": false,
+      "scheduler": false,
+      "relative": false,
+      "consanguinity": false
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 36,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "UNSPECIFIED",
+      "reciprocal_ids": "[\"36\"]",
+      "title": "boy/girl friend",
+      "display_order": 52,
+      "emergency_contact": false,
+      "scheduler": false,
+      "relative": false,
+      "consanguinity": false
+    }
+  },
+  {
+    "model": "persons.relation",
+    "pk": 37,
+    "fields": {
+      "created": "2020-04-30T15:19:44.652Z",
+      "modified": "2020-04-30T15:35:18.407Z",
+      "is_removed": false,
+      "gender": "UNSPECIFIED",
+      "reciprocal_ids": "[]",
+      "title": "crush",
+      "display_order": 53,
+      "emergency_contact": false,
+      "scheduler": false,
+      "relative": false,
       "consanguinity": false
     }
   },
@@ -9267,7 +9318,15 @@
           "romanization": "Ishmael Yi Shi Ma Li "
         },
         "contacts": {},
-        "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {}
+        "emergency_contacts": {
+          "aa24758f-cc70-4353-b1d7-9c616b3db425": true,
+          "a48e4375-1a64-4c4f-beb3-8f088bf77340": false,
+          "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9": true
+        },
+        "schedulers": {
+          "22c29cd5-a5ab-46a3-afe6-d5a600c33fc9": true,
+          "a48e4375-1a64-4c4f-beb3-8f088bf77340": false
+        }, "updating_attendees": {}
       }
     }
   },

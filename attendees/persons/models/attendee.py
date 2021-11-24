@@ -16,6 +16,8 @@ from . import GenderEnum, Note, Utility
 
 
 class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
+    FAMILY_CATEGORY = 0
+    HIDDEN_ROLE = 0
     # RELATIVES_KEYWORDS = ['parent', 'mother', 'guardian', 'father', 'caregiver']
     # AS_PARENT_KEYWORDS = ['notifier', 'caregiver']  # to find attendee's parents/caregiver in cowokers view of all activities
     # BE_LISTED_KEYWORDS = ['care receiver']  # let the attendee's attendance showed in their parent/caregiver account
@@ -47,9 +49,31 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def division_label(self):
         return self.division.display_name if self.division else None
 
+    # @property
+    # def other_relations(self):
+    #     return self.folks.exclude(category=self.FAMILY_CATEGORY)
+
+    @property
+    def families(self):
+        return self.folks.filter(category=self.FAMILY_CATEGORY)
+
+    @property
+    def all_related_members(self):
+        return self.__class__.objects.filter(
+            Q(folks__in=self.folks.filter(category=self.FAMILY_CATEGORY))
+            |  # self.folks.all() will include relationships of others
+            Q(folks__in=self.folks.filter(folkattendee__role=self.HIDDEN_ROLE).exclude(category=self.FAMILY_CATEGORY)),
+        ).distinct()
+
+    @property
+    def other_relation_members(self):
+        return self.__class__.objects.filter(
+            folks__in=self.folks.filter(folkattendee__role=self.HIDDEN_ROLE).exclude(category=self.FAMILY_CATEGORY)
+        ).distinct()  # HIDDEN_ROLE indicates the relationship of the attendee, not others
+
     @cached_property
     def family_members(self):
-        return self.__class__.objects.filter(families__in=self.families.all()).distinct()
+        return self.__class__.objects.filter(folks__in=self.folks.filter(category=self.FAMILY_CATEGORY)).distinct()
 
     @cached_property
     def self_phone_numbers(self):
@@ -78,7 +102,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         ))
 
     def get_relative_emergency_contacts(self):
-        return []
+        return self.__class__.objects.filter(pk__in=[k for (k, v) in self.infos.get('emergency_contacts', {}).items() if v])
                 # self.related_ones.filter(
                 #     to_attendee__relation__relative=True,
                 #     to_attendee__relation__emergency_contact=True,
@@ -93,30 +117,35 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     def can_schedule_attendee(self, other_attendee_id):
         if str(self.id) == other_attendee_id:
             return True
-        return self.__class__.objects.filter(
-            (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
-            from_attendee__to_attendee__id=self.id,
-            from_attendee__from_attendee__id=other_attendee_id,
-            from_attendee__scheduler=True,
-            from_attendee__is_removed=False,
+        return Attendee.objects.filter(
+            pk=other_attendee_id,
+            infos__schedulers__contains={str(self.id): True}
         ).exists()
+        # self.__class__.objects.filter(
+        #     (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
+        #     from_attendee__to_attendee__id=self.id,
+        #     from_attendee__from_attendee__id=other_attendee_id,
+        #     from_attendee__scheduler=True,
+        #     from_attendee__is_removed=False,
+        # ).exists()
 
     def scheduling_attendees(self):
         """
-        :return: all attendees that can be scheduled by the self(included) based on relationships. For example, if a kid
-        specified "scheduler" is true in its parent relationship, when calling parent_attendee.scheduling_attendees(),
-        both the kid and the parent will be returned, means the parent can change/see schedule of the kid and the parent.
+        :return: all attendees that can be scheduled by the attendee. For example, if a kid specified its
+        parent by "scheduler" is true in its infos__schedulers, when calling parent_attendee.scheduling_attendees(),
+        the kid will be returned, means the parent can change/see schedule of the kid.
         """
-        return self.__class__.objects.filter(
-            Q(id=self.id)
-            |
-            Q(
-                (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
-                from_attendee__to_attendee__id=self.id,
-                from_attendee__scheduler=True,
-                from_attendee__is_removed=False,
-            )
-        ).distinct()
+        return self.__class__.objects.filter(infos__schedulers__contains={str(self.id): True})
+        # self.__class__.objects.filter(
+        #     Q(id=self.id)
+        #     |
+        #     Q(
+        #         (Q(from_attendee__finish__isnull=True) | Q(from_attendee__finish__gt=Utility.now_with_timezone())),
+        #         from_attendee__to_attendee__id=self.id,
+        #         from_attendee__scheduler=True,
+        #         from_attendee__is_removed=False,
+        #     )
+        # ).distinct()
 
     @cached_property
     def parents_notifiers_names(self):
