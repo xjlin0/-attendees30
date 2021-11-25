@@ -23,10 +23,12 @@ class ApiDatagridDataFolkAttendeesViewsSet(LoginRequiredMixin, SpyGuard, viewset
     def get_queryset(self):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         target_folkattendee_id = self.kwargs.get('pk')
+        category = self.request.query_params.get('category', Attendee.FAMILY_CATEGORY)
         target_attendee_folkattendees = FolkAttendee.objects.filter(
-            folk__in=target_attendee.families.filter(folkattendee__is_removed=False),
+            folk__in=target_attendee.folks.filter(folkattendee__is_removed=False),
+            folk__category=category,
         ).order_by(  # Todo: 20210516 order by attendee's family attendee display_order, such as order_by annotate()
-            '-family__created', 'role__display_order',
+            '-folk__created', 'role__display_order',
         )  # Todo: 20210515 add filter by start/finish for end users but not data-admins
 
         if target_folkattendee_id:

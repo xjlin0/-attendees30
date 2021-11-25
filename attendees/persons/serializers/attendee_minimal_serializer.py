@@ -28,7 +28,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
             # 'display_label',
             # 'division_label',
             # 'parents_notifiers_names',
-            'familyattendee_set',
+            'folkattendee_set',
             'photo_path',
             # 'caregiver_email_addresses',
             'places',

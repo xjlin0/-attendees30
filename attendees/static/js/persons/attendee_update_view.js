@@ -482,7 +482,7 @@ Attendees.datagridUpdate = {
         items: [
           {
             colSpan: 20,
-            dataField: 'familyattendee_set',
+            dataField: 'folkattendee_set',
             name: 'familyAttrs',
             label: {
               text: 'families',
@@ -496,9 +496,9 @@ Attendees.datagridUpdate = {
                 class: 'family-button-new family-button btn-outline-primary btn button btn-sm ',
               }).appendTo(itemElement);
               if (data.editorOptions && data.editorOptions.value) {
-                data.editorOptions.value.forEach(familyAttendee => {
-                  if (familyAttendee && typeof familyAttendee === 'object') {
-                    Attendees.datagridUpdate.familyButtonFactory({value: familyAttendee.family.id, text: familyAttendee.family.display_name}).appendTo(itemElement);
+                data.editorOptions.value.forEach(folkAttendee => {
+                  if (folkAttendee && typeof folkAttendee === 'object') {
+                    Attendees.datagridUpdate.familyButtonFactory({value: folkAttendee.folk.id, text: folkAttendee.folk.display_name}).appendTo(itemElement);
                   }
                 });
               }
@@ -528,7 +528,7 @@ Attendees.datagridUpdate = {
           },
           {
             colSpan: 24,
-            dataField: 'familyattendee_set',
+            dataField: 'folkattendee_set',
             name: 'familyAttendeeDatagrid',
             label: {
               location: 'top',
@@ -2403,7 +2403,7 @@ Attendees.datagridUpdate = {
       store: new DevExpress.data.CustomStore({
         key: 'id',
         load: () => {
-          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint);
+          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {category: 0});
         },
         byKey: (key) => {
           const d = new $.Deferred();
@@ -2435,6 +2435,7 @@ Attendees.datagridUpdate = {
           });
         },
         insert: function (values) {
+          values.category = 0;
           return $.ajax({
             url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
             method: 'POST',
@@ -2520,7 +2521,7 @@ Attendees.datagridUpdate = {
     },
     columns: [
       {
-        dataField: 'family.id',
+        dataField: 'folk.id',
         validationRules: [{type: 'required'}],
         caption: 'Family',
         groupIndex: 0,
@@ -2895,11 +2896,11 @@ Attendees.datagridUpdate = {
       store: new DevExpress.data.CustomStore({
         key: 'id',
         load: () => {
-          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint);
+          return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint, {category: 25});
         },
         byKey: (key) => {
           const d = new $.Deferred();
-          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/')
+          $.get(Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/')
             .done((result) => {
               d.resolve(result.data);
             });
@@ -2907,7 +2908,7 @@ Attendees.datagridUpdate = {
         },
         update: (key, values) => {
           return $.ajax({
-            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
             method: 'PATCH',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -2927,8 +2928,9 @@ Attendees.datagridUpdate = {
           });
         },
         insert: (values) => {
+          values.category = 25;
           return $.ajax({
-            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint,
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -2949,7 +2951,7 @@ Attendees.datagridUpdate = {
         },
         remove: (key) => {
           return $.ajax({
-            url: Attendees.datagridUpdate.attendeeAttrs.dataset.relationshipsEndpoint + key + '/',
+            url: Attendees.datagridUpdate.attendeeAttrs.dataset.familyAttendeesEndpoint + key + '/',
             method: 'DELETE',
             success: (result) => {
               DevExpress.ui.notify(

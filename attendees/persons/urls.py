@@ -76,18 +76,18 @@ router.register(
 router.register(
     'api/datagrid_data_familyattendees',
     api_datagrid_data_folkattendees_viewset,
-    basename='familyattendee',
+    basename='folkattendee',
 )
 router.register(
     'api/all_relations',
     api_all_relations_viewset,
     basename='relation',
 )
-# router.register(
-#     'api/attendee_relationships',
-#     api_attendee_relationships_viewset,
-#     basename='relationship',
-# )
+router.register(
+    'api/attendee_relationships',
+    api_datagrid_data_folkattendees_viewset,  # api_attendee_relationships_viewset,
+    basename='folkattendee',
+)  # Todo 20211125: seperate viewset instead of sending category params
 router.register(
     'api/categorized_pasts',
     api_categorized_pasts_viewset,
