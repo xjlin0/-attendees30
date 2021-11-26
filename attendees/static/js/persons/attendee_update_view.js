@@ -203,7 +203,7 @@ Attendees.datagridUpdate = {
     if (newFamily) {
       Attendees.datagridUpdate.families.push(newFamily);
     } else {
-      Attendees.datagridUpdate.families = Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.map(familyattendee => familyattendee.family);
+      Attendees.datagridUpdate.families = Attendees.datagridUpdate.attendeeFormConfigs.formData.folkattendee_set.map(familyattendee => familyattendee.folk);
     }
     if (Attendees.datagridUpdate.families.length > 0) {
       newAttendeeDxDropDownButton.option('dataSource', Attendees.datagridUpdate.families);
@@ -2519,6 +2519,25 @@ Attendees.datagridUpdate = {
         e.rowElement.attr('title', 'Please scroll up and change main attendee data there!');
       }
     },
+    onRowInserting: (rowData) => {
+      const infos = {show_secret: {}, updating_attendees: {}, comment: null, body: null};
+      if (rowData.data.infos && rowData.data.infos.show_secret) {
+        infos.show_secret[Attendees.utilities.userAttendeeId] = true;
+      }
+      rowData.data.infos = infos;
+    },
+    onRowUpdating: (rowData) => {
+      if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
+        const showSecret = rowData.oldData.infos.show_secret;
+        const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
+        if (isItSecretWithCurrentUser) {
+          showSecret[Attendees.utilities.userAttendeeId] = true;
+        } else {
+          delete showSecret[Attendees.utilities.userAttendeeId];
+        }
+        rowData.newData.infos.show_secret = showSecret;
+      } // Todo 20211126 If user save datagrid with showSecret unchecked, don't let it save as false.  Only save false if previously labelled true.
+    },  // Todo 20211126  NEED TO UPDATE ATTENDEE FOR SCHEDULER AND EMERGENCY_CONTACTS!!!!
     columns: [
       {
         dataField: 'folk.id',
@@ -2605,6 +2624,42 @@ Attendees.datagridUpdate = {
               },
             }),
           },
+        },
+      },
+      {
+        dataField: 'scheduler',
+        calculateCellValue: (rowData) => {
+          const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
+          if (attendeeData && attendeeData.infos) {
+            const schedulers = attendeeData.infos.schedulers;
+            return !!(schedulers && schedulers[rowData.attendee]);
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        dataField: "emergency_contact",
+        calculateCellValue: (rowData) => {
+          const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
+          if (attendeeData && attendeeData.infos) {
+            const emergency_contacts = attendeeData.infos.emergency_contacts;
+            return !!(emergency_contacts && emergency_contacts[rowData.attendee]);
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        caption: 'Secret?',
+        dataField: 'infos.show_secret',
+        calculateCellValue: (rowData) => {
+          if (rowData.infos) {
+            const showSecret = rowData.infos.show_secret;
+            return !!(showSecret && showSecret[Attendees.utilities.userAttendeeId]);
+          } else {
+            return false;
+          }
         },
       },
       {
