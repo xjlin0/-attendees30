@@ -3,7 +3,11 @@ Attendees.datagridUpdate = {
   attendeeMainDxFormDefault: {
     infos: {
       names: {},
-      contacts: {}
+      fixed: {},
+      contacts: {},
+      emergency_contacts: {},
+      schedulers: {},
+      updating_attendees: {}
     }
   },
   attendeeAttrs: null,  // will be assigned later
@@ -105,7 +109,7 @@ Attendees.datagridUpdate = {
       }
     } else {
       newAttendeeDxDropDownButton.option('disabled', true);
-      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('family.id', 'groupIndex', 0);
+      Attendees.datagridUpdate.familyAttendeeDatagrid.columnOption('folk.id', 'groupIndex', 0);
       Attendees.datagridUpdate.relationshipDatagrid && Attendees.datagridUpdate.relationshipDatagrid.columnOption("in_family", "groupIndex", 0);
     }
 
@@ -2151,7 +2155,7 @@ Attendees.datagridUpdate = {
 
   fetchPlaceFormData: (placeButton) => {
     if (placeButton.value) {
-      const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.familyattendee_set.flatMap(familyattendee => familyattendee.family.places));
+      const allPlaces = Attendees.datagridUpdate.attendeeFormConfigs.formData.places.concat(Attendees.datagridUpdate.attendeeFormConfigs.formData.folkattendee_set.flatMap(folkattendee => folkattendee.folk.places));
       const fetchedPlace = allPlaces.find(x => x.id === placeButton.value);
       if (!Attendees.utilities.editingEnabled && fetchedPlace) {
         Attendees.datagridUpdate.placePopupDxFormData = fetchedPlace;
@@ -2526,7 +2530,8 @@ Attendees.datagridUpdate = {
       }
       rowData.data.infos = infos;
     },
-    onRowUpdating: (rowData) => {
+    onRowUpdating: (rowData) => { // checking box will arrive one at a time, never multiple fields simultaneously
+console.log("hi 2534 here is rowData: ", rowData);
       if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
         const showSecret = rowData.oldData.infos.show_secret;
         const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
@@ -2537,6 +2542,55 @@ Attendees.datagridUpdate = {
         }
         rowData.newData.infos.show_secret = showSecret;
       } // Todo 20211126 If user save datagrid with showSecret unchecked, don't let it save as false.  Only save false if previously labelled true.
+      if (rowData.newData && ('schedulers' in rowData.newData || 'emergency_contacts' in rowData.newData) ) {  // user is changing scheduler or emergency_contact
+        const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
+        const previousInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos');
+        console.log("hi 2548 here is attendeeData: ", attendeeData);
+        if (attendeeData && attendeeData.infos) {
+          Object.entries(rowData.newData).forEach(([key, value])=>{
+            attendeeData.infos[key][rowData.oldData.attendee] = value;
+            previousInfos[key][rowData.oldData.attendee] = value;
+          });
+
+          $.ajax({
+            url: Attendees.datagridUpdate.attendeeAjaxUrl,
+            data: JSON.stringify({infos: attendeeData.infos}),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            method: 'PATCH',
+            success: (response) => {
+console.log("hi ajax PATCH to update attendee works here is response: ", response);
+              Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos', previousInfos);
+              Attendees.datagridUpdate.attendeeFormConfigs.formData = attendeeData;
+              // update Attendees.datagridUpdate.attendeeFormConfigs.formData.infos upon AJAX success
+              // DevExpress.ui.notify(
+              //   {
+              //     message: "saving custom contact success",
+              //     width: 500,
+              //     position: {
+              //       my: 'center',
+              //       at: 'center',
+              //       of: window,
+              //     },
+              //   }, 'success', 2500);
+            },
+            error: (response) => {
+              console.log('Failed to save data for scheduler or emergency contacts, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
+              rowData.cancel = true;
+              DevExpress.ui.notify(
+                {
+                  message: 'saving scheduler or emergency contacts error',
+                  width: 500,
+                  position: {
+                    my: 'center',
+                    at: 'center',
+                    of: window,
+                  },
+                }, 'error', 5000);
+            },
+          });
+        }
+      }
     },  // Todo 20211126  NEED TO UPDATE ATTENDEE FOR SCHEDULER AND EMERGENCY_CONTACTS!!!!
     columns: [
       {
@@ -2584,7 +2638,7 @@ Attendees.datagridUpdate = {
       {
         dataField: 'attendee',
         validationRules: [{type: 'required'}],
-        caption: 'Attendee',
+        // caption: 'Attendee',
         cellTemplate: (container, rowData) => {
           if (rowData.value === Attendees.datagridUpdate.attendeeId) {
             $('<span>', {text: rowData.displayValue}).appendTo(container);
@@ -2627,7 +2681,8 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: 'scheduler',
+        dataField: 'schedulers',
+        caption: 'Scheduler',
         calculateCellValue: (rowData) => {
           const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
           if (attendeeData && attendeeData.infos) {
@@ -2639,7 +2694,8 @@ Attendees.datagridUpdate = {
         },
       },
       {
-        dataField: "emergency_contact",
+        dataField: "emergency_contacts",
+        caption: 'Emergency contact',
         calculateCellValue: (rowData) => {
           const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
           if (attendeeData && attendeeData.infos) {
