@@ -2326,6 +2326,10 @@ Attendees.datagridUpdate = {
     allowColumnReordering: true,
     columnAutoWidth: true,
     allowColumnResizing: true,
+    columnChooser: {
+      enabled: true,
+      mode: 'select',
+    },
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     columns: [
@@ -2498,6 +2502,10 @@ Attendees.datagridUpdate = {
     columnResizingMode: 'nextColumn',
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
+    columnChooser: {
+      enabled: true,
+      mode: 'select',
+    },
     loadPanel: {
       message: 'Fetching...',
       enabled: true,
@@ -2575,8 +2583,13 @@ Attendees.datagridUpdate = {
           dataSource: {
             store: new DevExpress.data.CustomStore({
               key: 'id',
-              load: () => {
-                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, {take: 999});
+              load: (searchOpts) => {
+                const params = {take: 999};
+                if (searchOpts.searchValue) {
+                  const searchCondition = ['title', searchOpts.searchOperation, searchOpts.searchValue];
+                  params.filter = JSON.stringify(searchCondition);
+                }
+                return $.getJSON(Attendees.datagridUpdate.attendeeAttrs.dataset.relationsEndpoint, params);
               },
               byKey: (key) => {
                 const d = new $.Deferred();
@@ -3106,6 +3119,10 @@ Attendees.datagridUpdate = {
     columnResizingMode: 'nextColumn',
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
+    columnChooser: {
+      enabled: true,
+      mode: 'select',
+    },
     loadPanel: {
       message: 'Fetching...',
       enabled: true,
@@ -3448,6 +3465,10 @@ Attendees.datagridUpdate = {
       columnResizingMode: 'nextColumn',
       rowAlternationEnabled: true,
       hoverStateEnabled: true,
+      columnChooser: {
+        enabled: true,
+        mode: 'select',
+      },
       loadPanel: {
         message: 'Fetching...',
         enabled: true,
@@ -3619,6 +3640,10 @@ Attendees.datagridUpdate = {
     columnResizingMode: 'nextColumn',
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
+    columnChooser: {
+      enabled: true,
+      mode: 'select',
+    },
     loadPanel: {
       message: 'Fetching...',
       enabled: true,
