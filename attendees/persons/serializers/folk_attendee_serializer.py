@@ -21,17 +21,17 @@ class FolkAttendeeSerializer(serializers.ModelSerializer):
         """
         folkattendee_id = self._kwargs.get('data', {}).get('id')
         new_folk = Folk.objects.filter(pk=self._kwargs.get('data', {}).get('folk', {}).get('id')).first()
-        new_attendee_id = validated_data.get('attendee', {})
+        # new_attendee_id = validated_data.get('attendee', {})
         if new_folk:
             validated_data['folk'] = new_folk
-        print("hi 27 here is validated_data: ", validated_data)
-        if new_attendee_id:
-            # attendee, attendee_created = Attendee.objects.update_or_create(
-            #     id=new_attendee_data.get('id'),
-            #     defaults=new_attendee_data,
-            # )
-            attendee = Attendee.objects.get(pk=new_attendee_id)
-            validated_data['attendee'] = attendee
+        # print("hi 27 here is validated_data: ", validated_data)
+        # if new_attendee_id:
+        #     # attendee, attendee_created = Attendee.objects.update_or_create(
+        #     #     id=new_attendee_data.get('id'),
+        #     #     defaults=new_attendee_data,
+        #     # )
+        #     attendee = Attendee.objects.get(pk=new_attendee_id)
+        #     validated_data['attendee'] = attendee
         # Todo: 20210517  create relationships among families such as siblings, etc
         obj, created = FolkAttendee.objects.update_or_create(
             id=folkattendee_id,
@@ -45,21 +45,21 @@ class FolkAttendeeSerializer(serializers.ModelSerializer):
 
         """
         new_folk = Folk.objects.filter(pk=self._kwargs.get('data', {}).get('folk', {}).get('id')).first()
-        new_attendee_id = validated_data.get('attendee', {})
-        print("hi 49 here is validated_data: ", validated_data)
+        # new_attendee_id = validated_data.get('attendee', {})
+        # print("hi 49 here is validated_data: ", validated_data)
         if new_folk:
             # instance.folk = new_folk
             validated_data['folk'] = new_folk
         # else:
         #     validated_data['folk'] = instance.folk
 
-        if new_attendee_id:
-            # attendee, attendee_created = Attendee.objects.update_or_create(
-            #     id=instance.attendee.id,
-            #     defaults=new_attendee_data,
-            # )
-            attendee = Attendee.objects.get(pk=new_attendee_id)
-            validated_data['attendee'] = attendee
+        # if new_attendee_id:
+        #     # attendee, attendee_created = Attendee.objects.update_or_create(
+        #     #     id=instance.attendee.id,
+        #     #     defaults=new_attendee_data,
+        #     # )
+        #     attendee = Attendee.objects.get(pk=new_attendee_id)
+        #     validated_data['attendee'] = attendee
         # else:
         #     validated_data['attendee'] = instance.attendee
         # Todo: 20210517  update relationships among families such as siblings, etc

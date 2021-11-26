@@ -2529,9 +2529,12 @@ Attendees.datagridUpdate = {
         infos.show_secret[Attendees.utilities.userAttendeeId] = true;
       }
       rowData.data.infos = infos;
+      Attendees.datagridUpdate.alterSchedulersAndEmergencyContacts(rowData.data.attendee, rowData.data, false);
+    },
+    onRowRemoving: (rowData) => {
+      Attendees.datagridUpdate.alterSchedulersAndEmergencyContacts(rowData.data.attendee, Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos'), true);
     },
     onRowUpdating: (rowData) => { // checking box will arrive one at a time, never multiple fields simultaneously
-console.log("hi 2534 here is rowData: ", rowData);
       if (rowData.newData.infos && 'show_secret' in rowData.newData.infos) { // value could be intentionally false to prevent someone seeing it
         const showSecret = rowData.oldData.infos.show_secret;
         const isItSecretWithCurrentUser = rowData.newData.infos.show_secret;
@@ -2542,56 +2545,8 @@ console.log("hi 2534 here is rowData: ", rowData);
         }
         rowData.newData.infos.show_secret = showSecret;
       } // Todo 20211126 If user save datagrid with showSecret unchecked, don't let it save as false.  Only save false if previously labelled true.
-      if (rowData.newData && ('schedulers' in rowData.newData || 'emergency_contacts' in rowData.newData) ) {  // user is changing scheduler or emergency_contact
-        const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
-        const previousInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos');
-        console.log("hi 2548 here is attendeeData: ", attendeeData);
-        if (attendeeData && attendeeData.infos) {
-          Object.entries(rowData.newData).forEach(([key, value])=>{
-            attendeeData.infos[key][rowData.oldData.attendee] = value;
-            previousInfos[key][rowData.oldData.attendee] = value;
-          });
-
-          $.ajax({
-            url: Attendees.datagridUpdate.attendeeAjaxUrl,
-            data: JSON.stringify({infos: attendeeData.infos}),
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            method: 'PATCH',
-            success: (response) => {
-console.log("hi ajax PATCH to update attendee works here is response: ", response);
-              Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos', previousInfos);
-              Attendees.datagridUpdate.attendeeFormConfigs.formData = attendeeData;
-              // update Attendees.datagridUpdate.attendeeFormConfigs.formData.infos upon AJAX success
-              // DevExpress.ui.notify(
-              //   {
-              //     message: "saving custom contact success",
-              //     width: 500,
-              //     position: {
-              //       my: 'center',
-              //       at: 'center',
-              //       of: window,
-              //     },
-              //   }, 'success', 2500);
-            },
-            error: (response) => {
-              console.log('Failed to save data for scheduler or emergency contacts, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
-              rowData.cancel = true;
-              DevExpress.ui.notify(
-                {
-                  message: 'saving scheduler or emergency contacts error',
-                  width: 500,
-                  position: {
-                    my: 'center',
-                    at: 'center',
-                    of: window,
-                  },
-                }, 'error', 5000);
-            },
-          });
-        }
-      }
-    },  // Todo 20211126  NEED TO UPDATE ATTENDEE FOR SCHEDULER AND EMERGENCY_CONTACTS!!!!
+      Attendees.datagridUpdate.alterSchedulersAndEmergencyContacts(rowData.oldData.attendee, rowData.newData, false); // changing fields are only available upon onRowUpdating, not after
+    },
     columns: [
       {
         dataField: 'folk.id',
@@ -2733,6 +2688,55 @@ console.log("hi ajax PATCH to update attendee works here is response: ", respons
         },
       },
     ],
+  },
+
+  alterSchedulersAndEmergencyContacts: (attendeeId, newData, deleting) => {
+    if (newData && ('schedulers' in newData || 'emergency_contacts' in newData) ) {  // user is changing scheduler or emergency_contact
+      const attendeeData = Attendees.datagridUpdate.attendeeFormConfigs && Attendees.datagridUpdate.attendeeFormConfigs.formData;
+      const previousInfos = Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos');
+      if (attendeeData && attendeeData.infos) {
+        Object.entries(newData).forEach(([key, value]) => {
+          if (['schedulers', 'emergency_contacts'].includes(key)) {
+            attendeeData.infos[key][attendeeId] = value;
+            previousInfos[key][attendeeId] = value;
+            if (deleting) {
+              if (attendeeId in attendeeData.infos[key]) {
+                attendeeData.infos[key][attendeeId] = false
+              }
+              if (attendeeId in previousInfos[key]) {
+                previousInfos[key][attendeeId] = false
+              }
+            }
+          }
+        });
+
+        $.ajax({
+          url: Attendees.datagridUpdate.attendeeAjaxUrl,
+          data: JSON.stringify({infos: attendeeData.infos}),
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          method: 'PATCH',
+          success: (response) => {
+            Attendees.datagridUpdate.attendeeMainDxForm.option('formData.infos', previousInfos);
+            Attendees.datagridUpdate.attendeeFormConfigs.formData = attendeeData;
+          },
+          error: (response) => {
+            console.log('Failed to save data for scheduler or emergency contacts, response and infos data: ', response, Attendees.datagridUpdate.attendeeMainDxForm.option('formData').infos);
+            // rowData.cancel = true;
+            DevExpress.ui.notify(
+              {
+                message: 'saving scheduler or emergency contacts error, please try again',
+                width: 500,
+                position: {
+                  my: 'center',
+                  at: 'center',
+                  of: window,
+                },
+              }, 'error', 5000);
+          },
+        });
+      }
+    }
   },
 
 
