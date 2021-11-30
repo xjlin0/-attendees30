@@ -147,7 +147,7 @@ class Utility:
 
         return None
 
-    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None, exception_save=False, excpetion_print_data=False):
+    def update_or_create_last(klass, order_key='pk', update=True, defaults={}, filters={}, exception_save=False, excpetion_print_data=False):
         """
         Sililar to update_or_create(), it'll search by the filters dictionary, get the last by
         order_by, update its values specified by defaults dictionary, return created and obj

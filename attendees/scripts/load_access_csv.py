@@ -392,7 +392,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         'contacts': contacts,
                         'names': {},
                         'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
-                        "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {},
+                        'emergency_contacts': {}, 'schedulers': {}, 'updating_attendees': {},
                         'created_reason': 'CFCCH member/directory registration from importer',  # the word "importer" is critical for signal
                     }
                 }
@@ -468,7 +468,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             display_order = 10
 
                         some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(folk.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(folk.infos.get('access_household_values', {}).get(access_header)) is not None}
-                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {})}
+                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {}), 'emergency_contacts': attendee.infos.get('emergency_contacts', {}), 'schedulers': attendee.infos.get('schedulers', {}), 'updating_attendees': attendee.infos.get('updating_attendees', {})}
 
                         attendee_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
                         if attendee_non_family_folk:
@@ -594,7 +594,7 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                 if not wife:  # widow? (since parents number is 2)
                     wife = folk.attendees.filter(folkattendee__role__title='self').order_by('created').first()
                 if not husband:
-                    print("571, no husband found, here is potential_primary_phone: ", potential_primary_phone)
+                    print("597, no husband found, here is potential_primary_phone: ", potential_primary_phone)
 
                 if husband and wife:  # depend on save by save_two_phones()
                     husband.infos['emergency_contacts'][str(wife.id)] = True
