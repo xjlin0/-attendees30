@@ -173,8 +173,8 @@ class Utility:
             obj.save()
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            print(f"\nUtility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
-            print(f"and data of {klass} obj#{obj.id}")
+            print(f"\nKnown bug: Utility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
+            print(f"and data of {klass} obj#{obj.id} has been saved (pk exist)")
             if excpetion_print_data:
                 print(f"with defaults: {defaults} and obj: {obj}")
             # breakpoint()

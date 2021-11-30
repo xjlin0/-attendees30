@@ -262,6 +262,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
   - [x] some relationship may be internal and only shows to cowokers/admin, in category/boolean/infos column?
+  - [x] Folk model support secret but attendee UI folkattendee doesn't support it
   - [ ] Rich format of note for Past on UI?
 - [x] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages

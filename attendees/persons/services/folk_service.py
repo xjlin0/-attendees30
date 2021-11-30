@@ -12,7 +12,7 @@ class FolkService:
         if family have only one FamilyAttendees (regardless which FamilyAttendees):
             delete family, places, FamilyAttendees and reset non-blood Relationships
 
-        :param folk: a family object
+        :param folk: a folk object
         :param attendee: an attendee object, whose name will be removed from family display_name
         :return: None
         """
@@ -31,5 +31,5 @@ class FolkService:
                     family_name.replace(attendee_name, '')
             folk.display_name = family_name
             folk.save()
-            Relationship.objects.filter(from_attendee=attendee, in_family=folk.id, relation__consanguinity=False, is_removed=False).delete()
+            # Relationship.objects.filter(from_attendee=attendee, in_family=folk.id, relation__consanguinity=False, is_removed=False).delete()
             folk.folkattendee_set.filter(attendee=attendee, is_removed=False).delete()

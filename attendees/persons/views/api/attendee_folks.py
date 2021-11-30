@@ -20,10 +20,11 @@ class ApiAttendeeFolksViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewS
     def get_queryset(self):
         attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         folk_id = self.kwargs.get('pk')
+        category = self.request.query_params.get('category', Attendee.FAMILY_CATEGORY)
         if folk_id:
-            return attendee.families.filter(pk=folk_id)
+            return attendee.folks.filter(pk=folk_id, category=category)
         else:
-            return attendee.families.order_by('display_order')
+            return attendee.folks.filter(category=category).order_by('display_order')
 
     def perform_destroy(self, instance):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))

@@ -210,6 +210,7 @@ def import_households(households, division1_slug, division2_slug):
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     pdt = pytz.timezone('America/Los_Angeles')
+    family_category = Category.objects.get(pk=Attendee.FAMILY_CATEGORY)
     long_time_ago = pdt.localize(datetime(1800, 1, 1), is_dst=None)
     for index, household in enumerate(households, start=1):
         try:
@@ -224,7 +225,7 @@ def import_households(households, division1_slug, division2_slug):
                     'created': long_time_ago + timedelta(index),  # bypass Todo: 20210516 order by attendee's family attendee display_order
                     'display_name': display_name,
                     'division': default_division,
-                    'category': Attendee.FAMILY_CATEGORY,
+                    'category': family_category,
                     'infos': {
                         'access_household_id': household_id,
                         'access_household_values': household,
@@ -338,8 +339,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
     roaster_gathering = Gathering.objects.filter(meet=roaster_meet).last()
-    hidden_role_for_relationship_folk = Relation.objects.get(pk=Attendee.HIDDEN_ROLE)
-    non_family_category = Category.objects.get(pk=Attendee.NON_FAMILY_CATEGORY)
+    # hidden_role_for_relationship_folk = Relation.objects.get(pk=Attendee.HIDDEN_ROLE)
+    # non_family_category = Category.objects.get(pk=Attendee.NON_FAMILY_CATEGORY)
     member_character = member_meet.major_character
     roaster_character = roaster_meet.major_character
     attendee_content_type = ContentType.objects.get_for_model(Attendee)
@@ -421,24 +422,24 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     defaults={k: v for (k, v) in attendee_values.items() if v is not None}
                 )
 
-                potential_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
-                non_family_folk, folk_created = Folk.objects.update_or_create(
-                    id=potential_non_family_folk.id if potential_non_family_folk else None,
-                    defaults={
-                        'division': attendee.division,
-                        'category': non_family_category,
-                        'display_name': f"{attendee.infos['names']['original']} relationship",
-                    }
-                )
-                FolkAttendee.objects.update_or_create(
-                    folk=non_family_folk,
-                    attendee=attendee,
-                    defaults={
-                        'folk': non_family_folk,
-                        'attendee': attendee,
-                        'role': hidden_role_for_relationship_folk,
-                    }
-                )
+                # potential_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
+                # non_family_folk, folk_created = Folk.objects.update_or_create(
+                #     id=potential_non_family_folk.id if potential_non_family_folk else None,
+                #     defaults={
+                #         'division': attendee.division,
+                #         'category': non_family_category,
+                #         'display_name': f"{attendee.infos['names']['original']} relationship",
+                #     }
+                # )
+                # FolkAttendee.objects.update_or_create(
+                #     folk=non_family_folk,
+                #     attendee=attendee,
+                #     defaults={
+                #         'folk': non_family_folk,
+                #         'attendee': attendee,
+                #         'role': hidden_role_for_relationship_folk,
+                #     }
+                # )
 
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
                 update_attendee_membership_and_other(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category)
@@ -468,6 +469,11 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
 
                         some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(folk.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(folk.infos.get('access_household_values', {}).get(access_header)) is not None}
                         attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {})}
+
+                        attendee_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
+                        if attendee_non_family_folk:
+                            attendee_non_family_folk.division = attendee.division
+                            attendee_non_family_folk.save()
 
                         attendee.save()
                         FolkAttendee.objects.update_or_create(

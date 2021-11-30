@@ -8,7 +8,7 @@ from django.http import Http404
 from rest_framework.utils import json
 
 from attendees.occasions.models import Meet
-from attendees.persons.models import Attendee, Registration  #, Relationship
+from attendees.persons.models import Attendee, Registration, Relation, Category, Folk, FolkAttendee  # , Relationship
 from attendees.persons.services import AttendingService, FolkService
 
 
@@ -246,7 +246,7 @@ class AttendeeService:
 
         attendee.places.filter(is_removed=False).delete()
 
-        for family in attendee.families.filter(is_removed=False):
+        for family in attendee.folks.filter(is_removed=False):
             FolkService.destroy_with_associations(family, attendee)
 
         for registration in Registration.objects.filter(registrant=attendee, is_removed=False):
@@ -268,3 +268,25 @@ class AttendeeService:
         else:
             attendee.delete()
         # Todo 20211102: CCPA deletion requires history removal too
+
+    @staticmethod
+    def create_or_update_first_folk(attendee, folk_name, category_id, role_id):
+        potential_non_family_folk = attendee.folks.filter(category=category_id).first()
+        folk, folk_created = Folk.objects.update_or_create(
+            id=potential_non_family_folk.id if potential_non_family_folk else None,
+            defaults={
+                'division': attendee.division,
+                'category': Category.objects.get(pk=category_id),
+                'display_name': folk_name,
+            }
+        )
+        FolkAttendee.objects.update_or_create(
+            folk=folk,
+            attendee=attendee,
+            defaults={
+                'folk': folk,
+                'attendee': attendee,
+                'role': Relation.objects.get(pk=role_id),
+            }
+        )
+        return folk

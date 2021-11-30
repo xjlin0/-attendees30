@@ -25,27 +25,26 @@ class ApiDatagridDataFolkAttendeesViewsSet(LoginRequiredMixin, SpyGuard, viewset
     def get_queryset(self):
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         target_folkattendee_id = self.kwargs.get('pk')
-        category = self.request.query_params.get('category', Attendee.FAMILY_CATEGORY)
-
-        if self.request.user.privileged():
-            target_attendee_folkattendees = FolkAttendee.objects.filter(
-                folk__in=target_attendee.folks.filter(folkattendee__is_removed=False),
-                folk__category=category,
-            )
-
-        else:
-            target_attendee_folkattendees = FolkAttendee.objects.filter(
-                (Q(finish__isnull=True) | Q(finish__gte=datetime.now(timezone.utc))),
-                folk__in=target_attendee.folks.filter(folkattendee__is_removed=False),
-                folk__category=category,
-            )
+        category = self.request.query_params.get('category')
 
         if target_folkattendee_id:
-            return target_attendee_folkattendees.filter(pk=target_folkattendee_id)
+            return FolkAttendee.objects.filter(pk=target_folkattendee_id)
+
         else:
-            return target_attendee_folkattendees.order_by(
-                'display_order', 'role__display_order',
-            )
+            filters = Q(folk__in=target_attendee.folks.filter(folkattendee__is_removed=False))
+
+            if category:
+                filters = filters & Q(folk__category=category)
+
+            if not self.request.user.privileged():
+                expire_filter = Q(finish__isnull=True).add(Q(finish__gte=datetime.now(timezone.utc)), Q.OR)
+                filters = filters & expire_filter
+
+            return FolkAttendee.objects.filter(filters).exclude(
+                    role=Attendee.HIDDEN_ROLE,
+                ).order_by(
+                    'folk', 'folk__display_order', 'display_order', 'role__display_order',
+                )
 
 
 api_datagrid_data_folkattendees_viewset = ApiDatagridDataFolkAttendeesViewsSet
