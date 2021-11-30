@@ -217,7 +217,7 @@ class AttendeeService:
         attendee.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
 
         for family in attendee.families.filter(is_removed=False):
-            if family.familyattendee_set.filter(
+            if family.folkattendee_set.filter(
                 (Q(finish__isnull=True) | Q(finish__gte=now)),
                 attendee__deathday__isnull=True,
                 is_removed=False,
