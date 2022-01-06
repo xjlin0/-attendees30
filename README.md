@@ -191,7 +191,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 * upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
 * create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
 * import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
-* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin/users/user/
+* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin123/users/user/
 ```
 192.168.99.100 is default ip, if your docker use a different IP and browser shows "DisallowedHost"
 Please add your IP to ALLOWED_HOSTS in config/settings/local.py 
@@ -206,25 +206,25 @@ Please add your IP to ALLOWED_HOSTS in config/settings/local.py
 All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
 * check local python version, Django coockie cutter is developed with Python 3
-* There is no need to have local Django or Postgres running, but on MacOS you will need Virtualbox from https://www.virtualbox.org
-* This is docker machine based CentOS, please install docker by `wget -qO- https://get.docker.com/ | sh && sudo usermod -aG docker centos`.
-* Install docker compose by `sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose`
-* start the local docker machine by `sudo systemctl start docker`
+* There is no need to have local Django or Postgres running, but on OSX please install [Virtualbox 6](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0). This repo use deprecated VirtualBox 6.0.24.  Using anything later will need to change /etc/vbox/networks.conf and Host Network Manager configurations.
+* Instead of the latest OSX docker desktop, the repo is using deprecated `docker-machine`. Please [install docker/docker-machine](https://www.datamachines.io/blog/how-to-install-a-docker-machine-on-a-macos) by `brew install docker-machine docker docker-compose`.
+* start the local docker machine by `brew services restart docker-machine`
 * start a docker machine named "dev" by `docker-machine create --driver virtualbox dev`
+* Start the dev virtual machine, your "dev" vm can be run at headless mode. Be sure to check permissions of virtual machine in the system preference.
 * get all env variables from "dev" by `eval $(docker-machine env dev)`
 * create a fake sendgrid credential files by `vi .envs/.local/sendgrid.env` and save the following fake content.
 ```
 SENDGRID_API_KEY=FAKE
 DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 ```
-* build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
+* build and start the local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`.  If there's error about `docker-credential-desktop`,  change credsStore to credStore in `~/.docker/config.json`
 * create migration files by `docker-compose -f local.yml run --rm django python manage.py makemigrations`
 * migrate db by `docker-compose -f local.yml run --rm django python manage.py migrate`
 * upadte content types after migration by `docker-compose -f local.yml run django python manage.py update_content_types`
 * create 2 superusers by `docker-compose -f local.yml run --rm django python manage.py createsuperuser`
 * import the seed data by `docker-compose -f local.yml run django python manage.py loaddata fixtures/db_seed`
   (data were created by `docker-compose -f local.yml run django python manage.py dumpdata --exclude users.user --exclude admin.logentry --exclude sessions.session --exclude contenttypes.contenttype --exclude sites.site --exclude account.emailaddress --exclude account.emailconfirmation --exclude socialaccount.socialtoken --exclude auth.permission --indent 2 > fixtures/db_seed2.json`)
-* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin/users/user/
+* go to Django admin to add the first organization and all groups to the first user (superuser) at http://192.168.99.100:8008/admin123/users/user/
 * use browser to open http://192.168.99.100:8008/ and http://192.168.99.100:8025/
 * Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
