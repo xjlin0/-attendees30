@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.exceptions import PermissionDenied
 
-from attendees.persons.models import Attendee
+from attendees.persons.models import Attendee, Category
 from attendees.persons.serializers import FolkSerializer
 from attendees.persons.services import FolkService
 from attendees.users.authorization.route_guard import SpyGuard
@@ -20,7 +20,7 @@ class ApiAttendeeFolksViewsSet(LoginRequiredMixin, SpyGuard, viewsets.ModelViewS
     def get_queryset(self):
         attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         folk_id = self.kwargs.get('pk')
-        category = self.request.query_params.get('category', Attendee.FAMILY_CATEGORY)
+        category = get_object_or_404(Category, pk=self.request.query_params.get('categoryId', Attendee.FAMILY_CATEGORY))
         if folk_id:
             return attendee.folks.filter(pk=folk_id, category=category)
         else:

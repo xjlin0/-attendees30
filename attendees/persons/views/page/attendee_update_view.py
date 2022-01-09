@@ -47,10 +47,11 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
             'categories_endpoint': '/persons/api/all_categories/',
             'registrations_endpoint': '/persons/api/all_registrations/',
             'relationships_endpoint': '/persons/api/attendee_relationships/',
-            'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not be families
+            'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not only be families
             'attendee_families_endpoint': f"/persons/api/attendee_families/",
             'attendings_endpoint': '/persons/api/attendee_attendings/',
-            'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
+            'family_attendees_endpoint': '/persons/api/datagrid_data_familyattendees/',
+            'family_category_id': Attendee.FAMILY_CATEGORY,
             'targeting_attendee_id': targeting_attendee_id,
             'divisions': dumps(list(Division.objects.filter(organization=self.request.user.attendee.division.organization).values("id", "display_name"))),  # to avoid simultaneous AJAX calls
             'attendee_search': '/persons/api/datagrid_data_attendees/',

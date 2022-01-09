@@ -20,7 +20,6 @@ class FolkSerializer(serializers.ModelSerializer):
 
         folk, folk_created = Folk.objects.update_or_create(
             id=family_id,
-            category=25,  # Todo 20211121 : change this to accept UI value
             defaults=validated_data,
         )
 

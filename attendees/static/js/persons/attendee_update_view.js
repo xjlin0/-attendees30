@@ -353,7 +353,7 @@ Attendees.datagridUpdate = {
       potentialDuplicatesForNewAttendee.unshift({
         colSpan: 24,
         colCount: 24,
-        caption: "What is the role of the new member in the family?",
+        caption: `What is the role of the new member in the ${Attendees.datagridUpdate.familyAttrDefaults.name} family?`,
         cssClass: 'h6 not-shrinkable',
         itemType: 'group',
         items: [
@@ -2874,7 +2874,7 @@ Attendees.datagridUpdate = {
                 onClick: (clickEvent) => {
                   if (Attendees.datagridUpdate.familyAttrPopupDxForm.validate().isValid && confirm('are you sure to submit the popup Family attr Form?')) {
                     const userData = Attendees.datagridUpdate.familyAttrPopupDxForm.option('formData');
-
+                    userData['categoryId'] = Attendees.datagridUpdate.attendeeAttrs.dataset.familyCategoryId;
                     $.ajax({
                       url: ajaxUrl,
                       data: JSON.stringify(userData),
@@ -2896,7 +2896,7 @@ Attendees.datagridUpdate = {
 
                         if (!userData.id) { Attendees.datagridUpdate.patchNewAttendeeDropDown(savedFamily); }
                         if (familyAttrButton.value) {
-                          familyAttrButton.textContent(savedFamily.display_name)
+                          familyAttrButton.textContent = savedFamily.display_name;
                         } else {
                           Attendees.datagridUpdate.familyButtonFactory({value: savedFamily.id, text: savedFamily.display_name}).insertAfter(familyAttrButton);
                         }
