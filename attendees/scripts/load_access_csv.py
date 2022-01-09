@@ -600,8 +600,8 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     husband.infos['emergency_contacts'][str(wife.id)] = True
                     wife.infos['emergency_contacts'][str(husband.id)] = True
 
-                save_two_phones(husband, potential_primary_phone)
-                save_two_phones(wife, potential_secondary_phone)
+                save_two_phones(husband, potential_primary_phone or potential_secondary_phone or '+no phone+')
+                save_two_phones(wife, potential_secondary_phone or potential_primary_phone or '+no phone+')
 
                 hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
                 wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')

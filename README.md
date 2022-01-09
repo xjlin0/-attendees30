@@ -201,7 +201,7 @@ Please add your IP to ALLOWED_HOSTS in config/settings/local.py
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
-## How to start dev env on MacOS
+## How to start dev env on macOS with VirtualBox and docker-machine
 
 All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
