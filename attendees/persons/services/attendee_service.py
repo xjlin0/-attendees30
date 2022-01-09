@@ -79,7 +79,7 @@ class AttendeeService:
         """
 
         if current_user and target_attendee:
-            qs = Attendee.objects if current_user.privileged else target_attendee.related_ones()
+            qs = Attendee.objects if current_user.privileged else target_attendee.related_ones
             if querying_attendee_id:
                 return qs.filter(
                             pk=querying_attendee_id,
@@ -92,7 +92,7 @@ class AttendeeService:
                         Q(is_removed=False), Q.AND)
                     final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
                     return qs.filter(final_query).order_by(
-                        Case(When(id__in=target_attendee.related_ones().values_list('id', flat=True), then=0), default=1)
+                        Case(When(id__in=target_attendee.related_ones.values_list('id', flat=True), then=0), default=1)
                     )  # https://stackoverflow.com/a/52047221/4257237
                 else:
                     return qs
