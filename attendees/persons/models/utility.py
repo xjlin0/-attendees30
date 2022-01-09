@@ -163,7 +163,7 @@ class Utility:
         created = False
         try:
             if obj:
-                if update:
+                if update and defaults:
                     for key, value in defaults.items():
                         setattr(obj, key, value)
             else:

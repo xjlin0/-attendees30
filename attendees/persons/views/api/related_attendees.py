@@ -27,7 +27,7 @@ class ApiRelatedAttendeesViewSet(LoginRequiredMixin, SpyGuard, ModelViewSet):  #
         current_user = self.request.user  # Todo 20210523: guard this API so only admin or scheduler can call it.
         target_attendee = get_object_or_404(Attendee, pk=self.request.META.get('HTTP_X_TARGET_ATTENDEE_ID'))
         querying_attendee_id = self.kwargs.get('pk')
-        self_included = self.request.query_params.get('self')
+        # priority = self.request.query_params.get('priority')
         filters_list_string = self.request.query_params.get('filter', '[]')
         filters_list = ast.literal_eval(filters_list_string)  # copied from ApiDatagridDataAttendeesViewSet
 
@@ -36,7 +36,7 @@ class ApiRelatedAttendeesViewSet(LoginRequiredMixin, SpyGuard, ModelViewSet):  #
                     target_attendee=target_attendee,
                     querying_attendee_id=querying_attendee_id,
                     filters_list=filters_list,
-                    self_included=self_included,
+                    # priority=priority,
                 )
 
 

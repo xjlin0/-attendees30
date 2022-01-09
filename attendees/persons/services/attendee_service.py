@@ -67,25 +67,24 @@ class AttendeeService:
         return []
 
     @staticmethod
-    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list, self_included):
+    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
         """
         return target_attendee's related ones, including dead ones, according to current_user permissions
         :param current_user:
         :param target_attendee:
         :param querying_attendee_id:
         :param filters_list:
-        :param self_included: indicate if return result should include the target_attendee
+        # :param priority: indicate what return result should sort by
         :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
         """
 
-        # Todo: need filter on relationship finish_date?
-
+        related_ones = Attendee.objects.filter(folkattendee__folk__in=target_attendee.folks.all())  # Todo: need filter on relationship finish_date?
         if querying_attendee_id:
             if current_user.privileged:
                 qs = Attendee.objects
 
             else:
-                qs = target_attendee # .related_ones
+                qs = related_ones
 
             return qs.filter(
                     pk=querying_attendee_id,
@@ -96,15 +95,14 @@ class AttendeeService:
             init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
                          Q(is_removed=False), Q.AND)
             final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
+            related_one_ids = related_ones.values_list('id', flat=True)
             # Todo 20210807 query.add() doesn't need reassign to a different variable
             if current_user.privileged:
-                # priority_list = list(target_attendee.related_ones.values_list('id', flat=True))+[target_attendee.id] if self_included else target_attendee.related_ones.values_list('id')
-                return Attendee.objects.filter(final_query)
-                #     .order_by(
-                #     Case(When(id__in=priority_list, then=0), default=1)
-                # )  # https://stackoverflow.com/a/52047221/4257237
-            # else:
-            #     return list(target_attendee.related_ones.all())+[target_attendee] if self_included else target_attendee.related_ones.all()
+                return Attendee.objects.filter(final_query).order_by(
+                    Case(When(id__in=related_one_ids, then=0), default=1)
+                )  # https://stackoverflow.com/a/52047221/4257237
+            else:
+                return related_ones
 
     @staticmethod
     def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):
