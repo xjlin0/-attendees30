@@ -78,30 +78,26 @@ class AttendeeService:
         :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
         """
 
-        related_ones = Attendee.objects.filter(folkattendee__folk__in=target_attendee.folks.all())  # Todo: need filter on relationship finish_date?
-        if querying_attendee_id:
-            if current_user.privileged:
-                qs = Attendee.objects
-
+        if current_user and target_attendee:
+            qs = Attendee.objects if current_user.privileged else target_attendee.related_ones()
+            if querying_attendee_id:
+                return qs.filter(
+                            pk=querying_attendee_id,
+                            division__organization=current_user.organization,
+                            is_removed=False,
+                        )
             else:
-                qs = related_ones
-
-            return qs.filter(
-                    pk=querying_attendee_id,
-                    division__organization=current_user.organization,
-                    is_removed=False,
-                    )
+                if current_user.privileged:
+                    init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
+                        Q(is_removed=False), Q.AND)
+                    final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
+                    return qs.filter(final_query).order_by(
+                        Case(When(id__in=target_attendee.related_ones().values_list('id', flat=True), then=0), default=1)
+                    )  # https://stackoverflow.com/a/52047221/4257237
+                else:
+                    return qs
         else:
-            init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
-                         Q(is_removed=False), Q.AND)
-            final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
-
-            if current_user.privileged:
-                return Attendee.objects.filter(final_query).order_by(
-                    Case(When(id__in=related_ones.values_list('id', flat=True), then=0), default=1)
-                )  # https://stackoverflow.com/a/52047221/4257237
-            else:
-                return related_ones
+            return []
 
     @staticmethod
     def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):

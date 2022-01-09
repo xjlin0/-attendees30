@@ -55,6 +55,10 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
     #     return self.folks.exclude(category=self.FAMILY_CATEGORY)
 
     @property
+    def related_ones(self):  # Todo: need filter on folkattendee finish_date?
+        return self.__class__.objects.filter(folks__in=self.folks.all())
+
+    @property
     def families(self):
         return self.folks.filter(category=self.FAMILY_CATEGORY)
 
