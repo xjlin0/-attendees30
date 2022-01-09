@@ -202,6 +202,8 @@ Please add your IP to ALLOWED_HOSTS in config/settings/local.py
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
 ## How to start dev env on macOS with VirtualBox and docker-machine
+<details>
+  <summary>Click to show deprecated steps to start dev env on macOS with VirtualBox and docker-machine</summary>
 
 All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
@@ -229,6 +231,19 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 * Enter postgres db console by `docker-compose -f local.yml exec postgres psql --username=YBIJMKerEaNYKqzfvMxOlBAesdyiahxk attendees_development`
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
+
+</details>
+
+## How to start dev env with docker desktop on macOS (Apple chip compatible)
+All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
+
+* clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
+* check local python version, Django coockie cutter is developed with Python 3
+* Install pre-commit for python, such as `pip3 install pre-commit` (pre-commit settings are at .git/hooks/pre-commit).
+* There is no need to have local docker machine, Django or Postgres running.
+* Install and start [docker desktop](https://www.docker.com/products/docker-desktop) (including docker compose), and [add local repo directory to file sharing in docker desktop preference](https://docs.docker.com/desktop/mac/#file-sharing).
+* build and start the CentOS based local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
+
 
 ## DB SQL Backup & Restore process (with local.yml)
 * backup current db to container `docker-compose -f local.yml exec postgres backup`
