@@ -1,3 +1,3 @@
 from .attending_service import AttendingService
-from .family_service import FamilyService
+from .folk_service import FolkService
 from .attendee_service import AttendeeService

@@ -9,9 +9,9 @@ from django.core.files import File
 
 from address.models import Locality, State, Address
 
-from attendees.occasions.models import Assembly, Meet, Character, Gathering, Attendance
-from attendees.persons.models import Utility, GenderEnum, Family, Relation, Attendee, FamilyAttendee, \
-    Relationship, Registration, Attending, AttendingMeet, Past, Category
+from attendees.occasions.models import Assembly, Meet, Gathering, Attendance
+from attendees.persons.models import Utility, GenderEnum, Folk, Relation, Attendee, FolkAttendee, \
+    Registration, Attending, AttendingMeet, Past, Category
 from attendees.users.admin import User
 from attendees.whereabouts.models import Place, Division
 
@@ -64,9 +64,9 @@ def import_household_people_address(
     try:
         initial_time = datetime.utcnow()
         initial_contact_count = Place.objects.count()
-        initial_family_count = Family.objects.count()
+        initial_family_count = Folk.objects.filter(category=Attendee.FAMILY_CATEGORY).count()
         initial_attendee_count = Attendee.objects.count()
-        initial_relationship_count = Relationship.objects.count()
+        initial_families_count = FolkAttendee.objects.count()
         upserted_address_count = import_addresses(addresses, california, division1_slug)
         upserted_household_id_count = import_households(households, division1_slug, division2_slug)
         upserted_attendee_count, photo_import_results = import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_slug, baptized_meet_slug, roaster_meet_slug, believer_meet_slug)
@@ -78,16 +78,16 @@ def import_household_people_address(
             print('Initial contact count: ', initial_contact_count, '. final contact count: ', Place.objects.count(), end="\n")
 
             print('Number of households successfully imported/updated: ', upserted_household_id_count)
-            print('Initial family count: ', initial_family_count, '. final family count: ', Family.objects.count(), end="\n")
+            print('Initial family count: ', initial_family_count, '. final family count: ', Folk.objects.filter(category=Attendee.FAMILY_CATEGORY).count(), end="\n")
 
-            place_with_family_count = Place.objects.filter(content_type=ContentType.objects.get_for_model(Family)).count()
+            place_with_family_count = Place.objects.filter(content_type=ContentType.objects.get_for_model(Folk)).count()
             print('Number of place(address) successfully associated with family (originally 0): ', place_with_family_count)
 
             print('Number of people successfully imported/updated: ', upserted_attendee_count)
             print('Initial attendee count: ', initial_attendee_count, '. final attendee count: ', Attendee.objects.count(), end="\n")
 
             print('Number of relationship successfully imported/updated: ', upserted_relationship_count)
-            print('Initial relationship count: ', initial_relationship_count, '. final relationship count: ', Relationship.objects.count(), end="\n")
+            print('Initial relationship count: ', initial_families_count, '. final relationship count: ', FolkAttendee.objects.count(), end="\n")
 
             number_of_attendees_with_photo_assigned = len(photo_import_results)
             attendees_missing_photos = list(filter(None.__ne__, photo_import_results))
@@ -206,10 +206,11 @@ def import_households(households, division1_slug, division2_slug):
         'CH': division1,
         'EN': division2,
     }
-    family_content_type = ContentType.objects.get_for_model(Family)
+    folk_content_type = ContentType.objects.get_for_model(Folk)
     print("\n\nRunning import_households:\n")
     successfully_processed_count = 0  # households.line_num always advances despite of processing success
     pdt = pytz.timezone('America/Los_Angeles')
+    family_category = Category.objects.get(pk=Attendee.FAMILY_CATEGORY)
     long_time_ago = pdt.localize(datetime(1800, 1, 1), is_dst=None)
     for index, household in enumerate(households, start=1):
         try:
@@ -224,6 +225,7 @@ def import_households(households, division1_slug, division2_slug):
                     'created': long_time_ago + timedelta(index),  # bypass Todo: 20210516 order by attendee's family attendee display_order
                     'display_name': display_name,
                     'division': default_division,
+                    'category': family_category,
                     'infos': {
                         'access_household_id': household_id,
                         'access_household_values': household,
@@ -237,7 +239,7 @@ def import_households(households, division1_slug, division2_slug):
                     if division:
                         household_values['division'] = division
 
-                family, family_created = Family.objects.update_or_create(
+                folk, folk_created = Folk.objects.update_or_create(
                     infos__access_household_id=household_id,
                     defaults=household_values
                 )
@@ -247,19 +249,19 @@ def import_households(households, division1_slug, division2_slug):
                     phone2 = Utility.presence(household.get('HouseholdFax'))
                     # old_contact = Place.objects.filter(infos__access_address_id=address_id).first()
                     # address = old_contact.address if old_contact else None
-                    saved_place = family.places.first() or Place.objects.filter(infos__access_address_id=address_id).first()
+                    saved_place = folk.places.first() or Place.objects.filter(infos__access_address_id=address_id).first()
 
                     if saved_place:
                         potential_new_place_id = None
 
-                        if saved_place.subject == family or saved_place.content_type != family_content_type:
+                        if saved_place.subject == folk or saved_place.content_type != folk_content_type:
                             potential_new_place_id = saved_place.id
                         address = saved_place.address
 
                         if address and not address.name:
                             full_address_name = display_name + ' family: ' + address.raw
                             address.name = display_name
-                            address.raw = str(family.id)
+                            address.raw = str(folk.id)
                             address.formatted = full_address_name
                             address.save()
 
@@ -269,8 +271,8 @@ def import_households(households, division1_slug, division2_slug):
                             defaults={
                                 'address': address,
                                 'display_name':  display_name,
-                                'content_type': family_content_type,
-                                'object_id': family.id,
+                                'content_type': folk_content_type,
+                                'object_id': folk.id,
                                 'infos': {
                                     'access_address_id': address_id,  # str
                                     'contacts': {
@@ -300,7 +302,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     :param baptized_meet_slug: key of baptized_meet_slug
     :param roaster_meet_slug: key of roaster_meet_slug
     :param believer_meet_slug: key of believer_meet_slug
-    :return: successfully processed attendee count, also print out importing status and write Photo&FamilyAttendee to Attendees db (create or update)
+    :return: successfully processed attendee count, also print out importing status and write Photo&FolkAttendee to Attendees db (create or update)
     """
     gender_converter = {
         'F': GenderEnum.FEMALE,
@@ -337,7 +339,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
     member_gathering = Gathering.objects.filter(meet=member_meet).last()
     roaster_meet = Meet.objects.get(slug=roaster_meet_slug)
     roaster_gathering = Gathering.objects.filter(meet=roaster_meet).last()
-    # pdt = pytz.timezone('America/Los_Angeles')
+    # hidden_role_for_relationship_folk = Relation.objects.get(pk=Attendee.HIDDEN_ROLE)
+    # non_family_category = Category.objects.get(pk=Attendee.NON_FAMILY_CATEGORY)
     member_character = member_meet.major_character
     roaster_character = roaster_meet.major_character
     attendee_content_type = ContentType.objects.get_for_model(Attendee)
@@ -389,8 +392,8 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                         'contacts': contacts,
                         'names': {},
                         'progressions': {attendee_header: Utility.boolean_or_datetext_or_original(people.get(access_header)) for (access_header, attendee_header) in progression_converter.items() if Utility.presence(people.get(access_header)) is not None},
-                        "emergency_contacts": {}, "schedulers": {}, "updating_attendees": {},
-                        'created_reason': 'CFCCH member/directory registration from importer',
+                        'emergency_contacts': {}, 'schedulers': {}, 'updating_attendees': {},
+                        'created_reason': 'CFCCH member/directory registration from importer',  # the word "importer" is critical for signal
                     }
                 }
 
@@ -419,23 +422,42 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                     defaults={k: v for (k, v) in attendee_values.items() if v is not None}
                 )
 
+                # potential_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
+                # non_family_folk, folk_created = Folk.objects.update_or_create(
+                #     id=potential_non_family_folk.id if potential_non_family_folk else None,
+                #     defaults={
+                #         'division': attendee.division,
+                #         'category': non_family_category,
+                #         'display_name': f"{attendee.infos['names']['original']} relationship",
+                #     }
+                # )
+                # FolkAttendee.objects.update_or_create(
+                #     folk=non_family_folk,
+                #     attendee=attendee,
+                #     defaults={
+                #         'folk': non_family_folk,
+                #         'attendee': attendee,
+                #         'role': hidden_role_for_relationship_folk,
+                #     }
+                # )
+
                 photo_import_results.append(update_attendee_photo(attendee, Utility.presence(people.get('Photo'))))
                 update_attendee_membership_and_other(baptized_meet, baptized_category, attendee_content_type, attendee, data_assembly, member_meet, member_character, member_gathering, baptisee_character, believer_meet, believer_character, believer_category)
 
                 if household_role:   # filling temporary family roles
-                    family = Family.objects.filter(infos__access_household_id=household_id).first()
-                    if family:       # there are some missing records in the access data
+                    folk = Folk.objects.filter(infos__access_household_id=household_id).first()
+                    if folk:       # there are some missing records in the access data
                         if household_role == 'A(Self)':
                             relation = Relation.objects.get(title='self')
                             display_order = 0
-                            attendee.division = family.division or default_division
+                            attendee.division = folk.division or default_division
                         elif household_role == 'B(Spouse)':
                             relation = Relation.objects.get(
                                 title__in=['spouse', 'husband', 'wife'],
                                 gender=attendee.gender,
                             )  # There are wives mislabelled as 'Male' in Access data
                             display_order = 1
-                            attendee.division = family.division or default_division
+                            attendee.division = folk.division or default_division
                         else:
                             relation = Relation.objects.get(
                                 title__in=['child', 'son', 'daughter'],
@@ -445,12 +467,17 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                                 attendee.division = division3
                             display_order = 10
 
-                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(family.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(family.infos.get('access_household_values', {}).get(access_header)) is not None}
-                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {})}
+                        some_household_values = {attendee_header: Utility.boolean_or_datetext_or_original(folk.infos.get('access_household_values', {}).get(access_header)) for (access_header, attendee_header) in family_to_attendee_infos_converter.items() if Utility.presence(folk.infos.get('access_household_values', {}).get(access_header)) is not None}
+                        attendee.infos = {'fixed': {**attendee.infos.get('fixed', {}), **some_household_values}, 'contacts': contacts, 'names': attendee.infos.get('names', {}), 'emergency_contacts': attendee.infos.get('emergency_contacts', {}), 'schedulers': attendee.infos.get('schedulers', {}), 'updating_attendees': attendee.infos.get('updating_attendees', {})}
+
+                        attendee_non_family_folk = attendee.folks.filter(category=Attendee.NON_FAMILY_CATEGORY).first()
+                        if attendee_non_family_folk:
+                            attendee_non_family_folk.division = attendee.division
+                            attendee_non_family_folk.save()
 
                         attendee.save()
-                        FamilyAttendee.objects.update_or_create(
-                            family=family,
+                        FolkAttendee.objects.update_or_create(
+                            folk=folk,
                             attendee=attendee,
                             defaults={
                                 'display_order': display_order,
@@ -459,7 +486,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
                             }
                         )
                         #
-                        # address_id = family.infos.get('access_household_values', {}).get('AddressID', 'missing')
+                        # address_id = folk.infos.get('access_household_values', {}).get('AddressID', 'missing')
                         # family_place = Place.objects.filter(infos__access_address_id=address_id).first()
                         # if family_place:
                         #     Place.objects.update_or_create(
@@ -497,7 +524,7 @@ def import_attendees(peoples, division3_slug, data_assembly_slug, member_meet_sl
 
 def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_meet_slug):
     """
-    Reprocess extra data (email/relationship) from FamilyAttendee, also do data correction of Role
+    Reprocess extra data (email/relationship) from FolkAttendee, also do data correction of Role
     :param data_assembly_slug: key of data_assembly
     :param directory_meet_slug: key of directory_gathering
     :return: successfully processed relation count, also print out importing status and write to Attendees db (create or update)
@@ -516,17 +543,17 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
     directory_meet = Meet.objects.get(slug=directory_meet_slug)
     directory_gathering = Gathering.objects.filter(meet=directory_meet).last()
     directory_character = directory_meet.major_character
-    imported_families = Family.objects.filter(infos__access_household_id__isnull=False).order_by('created')  # excludes seed data
+    imported_family_folks = Folk.objects.filter(category=Attendee.FAMILY_CATEGORY, infos__access_household_id__isnull=False).order_by('created')  # excludes seed data
     successfully_processed_count = 0
-    for family in imported_families:
+    for folk in imported_family_folks:
         try:
             print('.', end='')
-            children = family.attendees.filter(familyattendee__role__title__in=['child', 'son', 'daughter']).all()
-            parents = family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
-            families_address = family.places.first() # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
-            potential_primary_phone = family.infos.get('access_household_values', {}).get('HouseholdPhone')
+            children = folk.attendees.filter(folkattendee__role__title__in=['child', 'son', 'daughter']).all()
+            parents = folk.attendees.filter(folkattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all()  # order_by() is critical for values_list('gender').distinct() later
+            families_address = folk.places.first()  # families_address = Address.objects.filter(pk=family.addresses.first().id).first()
+            potential_primary_phone = folk.infos.get('access_household_values', {}).get('HouseholdPhone')
             if len(parents) > 1:  # family role modification skipped for singles
-                potential_secondary_phone = family.infos.get('access_household_values', {}).get('HouseholdFax')
+                potential_secondary_phone = folk.infos.get('access_household_values', {}).get('HouseholdFax')
                 if len(parents.values_list('gender', flat=True).distinct()) < 2:
                     print("\n Parents genders are mislabelled, trying to reassign them: ", parents)
 
@@ -537,76 +564,82 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
 
                     husband.gender = GenderEnum.MALE.name
                     husband.save()
-                    husband_familyattendee = husband.familyattendee_set.first()
-                    husband_familyattendee.role = husband_role
-                    husband_familyattendee.save()
+                    husband_folkattendee = husband.folkattendee_set.first()
+                    husband_folkattendee.role = husband_role
+                    husband_folkattendee.save()
 
                     wife.gender = GenderEnum.FEMALE.name
                     wife.save()
-                    wife_familyattendee = wife.familyattendee_set.first()
-                    wife_familyattendee.role = wife_role
-                    wife_familyattendee.save()
+                    wife_folkattendee = wife.folkattendee_set.first()
+                    wife_folkattendee.role = wife_role
+                    wife_folkattendee.save()
                     print('After reassigning, now husband is: ', husband, '. And wife is: ', wife, '. Continuing. ')
 
-                unspecified_househead = family.attendees.filter(familyattendee__role__title='self').first()
+                unspecified_househead = folk.attendees.filter(folkattendee__role__title='self').first()
                 # Todo: even some househeads are alone, there are some cases of bachelor/widow !!
                 if unspecified_househead:
                     househead_role = Relation.objects.get(
                         title__in=['husband', 'wife'],
                         gender=unspecified_househead.gender,
                     )
-                    FamilyAttendee.objects.update_or_create(
-                        family=family,
+                    FolkAttendee.objects.update_or_create(
+                        folk=folk,
                         attendee=unspecified_househead,
                         defaults={'display_order': 0, 'role': househead_role}
                     )
                     save_two_phones(unspecified_househead, potential_primary_phone)
 
-                husband = family.attendees.filter(familyattendee__role__title='husband').order_by('created').first()
-                wife = family.attendees.filter(familyattendee__role__title='wife').order_by('created').first()
+                husband = folk.attendees.filter(folkattendee__role__title='husband').order_by('created').first()
+                wife = folk.attendees.filter(folkattendee__role__title='wife').order_by('created').first()
                 if not wife:  # widow? (since parents number is 2)
-                    wife = family.attendees.filter(familyattendee__role__title='self').order_by('created').first()
+                    wife = folk.attendees.filter(folkattendee__role__title='self').order_by('created').first()
+                if not husband:
+                    print("597, no husband found, here is potential_primary_phone: ", potential_primary_phone)
 
-                save_two_phones(husband, potential_primary_phone)
-                save_two_phones(wife, potential_secondary_phone)
+                if husband and wife:  # depend on save by save_two_phones()
+                    husband.infos['emergency_contacts'][str(wife.id)] = True
+                    wife.infos['emergency_contacts'][str(husband.id)] = True
+
+                save_two_phones(husband, potential_primary_phone or potential_secondary_phone or '+no phone+')
+                save_two_phones(wife, potential_secondary_phone or potential_primary_phone or '+no phone+')
 
                 hushand_email = husband.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
                 wife_email = wife.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                family.infos['contacts']['email1'] = Utility.presence(hushand_email)
-                family.infos['contacts']['email2'] = Utility.presence(wife_email)
-                family.save()
+                folk.infos['contacts']['email1'] = Utility.presence(hushand_email)
+                folk.infos['contacts']['email2'] = Utility.presence(wife_email)
+                folk.save()
 
-                Relationship.objects.update_or_create(
-                    from_attendee=wife,
-                    to_attendee=husband,
-                    relation=husband_role,
-                    defaults={
-                        'in_family': family,
-                        'emergency_contact': husband_role.emergency_contact,
-                        'scheduler': husband_role.scheduler,
-                        # 'finish': Utility.forever(),
-                        'infos': Utility.relationship_infos(),
-                        #{
-                        #    'show_secret': {},
-                       # },
-                    }
-                )
+                # Relationship.objects.update_or_create(
+                #     from_attendee=wife,
+                #     to_attendee=husband,
+                #     relation=husband_role,
+                #     defaults={
+                #         'in_family': folk,
+                #         'emergency_contact': husband_role.emergency_contact,
+                #         'scheduler': husband_role.scheduler,
+                #         # 'finish': Utility.forever(),
+                #         'infos': Utility.relationship_infos(),
+                #         #{
+                #         #    'show_secret': {},
+                #        # },
+                #     }
+                # )
 
-                Relationship.objects.update_or_create(
-                    from_attendee=husband,
-                    to_attendee=wife,
-                    relation=wife_role,
-                    defaults={
-                        'in_family': family,
-                        'emergency_contact': wife_role.emergency_contact,
-                        'scheduler': wife_role.scheduler,
-                        # 'finish': Utility.forever(),
-                        'infos': Utility.relationship_infos(),
-                        #{
-                        #    'show_secret': {},
-                        #},
-                    }
-                )
+                # Relationship.objects.update_or_create(
+                #     from_attendee=husband,
+                #     to_attendee=wife,
+                #     relation=wife_role,
+                #     defaults={
+                #         'in_family': folk,
+                #         'emergency_contact': wife_role.emergency_contact,
+                #         'scheduler': wife_role.scheduler,
+                #         # 'finish': Utility.forever(),
+                #         'infos': Utility.relationship_infos(),
+                #         #{
+                #         #    'show_secret': {},
+                #         #},
+                #     }
+                # )
                 successfully_processed_count += 2
 
             else:
@@ -616,45 +649,53 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                     if original_household_role == 'B(Spouse)':  # 'Chloris', 'Yvone' are parents > 1
                         househead_single.gender = GenderEnum.FEMALE.name
                         househead_single.save()
-                        family_attendee = househead_single.familyattendee_set.first()
+                        family_attendee = househead_single.folkattendee_set.first()
                         family_attendee.role = wife_role
                         family_attendee.save()
 
                     self_email = househead_single.infos.get('fixed', {}).get('access_people_values', {}).get('E-mail')
-                    family.infos['contacts']['email1'] = Utility.presence(self_email)
-                    family.save()
+                    folk.infos['contacts']['email1'] = Utility.presence(self_email)
+                    folk.save()
                     save_two_phones(househead_single, potential_primary_phone)
 
                 else:
-                    if Attendee.objects.filter(infos__fixed__access_people_household_id=family.infos['access_household_id']):
-                        print("\nSomehow there's no one in families parents or househead_single (orphan?), for family ", family, '. families_address: ', families_address, '. parents: ', parents, '. household_id: ', family.infos['access_household_id'], '. family.id: ', family.id, '. Continuing to next record.')
+                    if Attendee.objects.filter(infos__fixed__access_people_household_id=folk.infos['access_household_id']):
+                        print("\nSomehow there's no one in families parents or househead_single (orphan?), for folk ", folk, '. families_address: ', families_address, '. parents: ', parents, '. household_id: ', folk.infos['access_household_id'], '. folk.id: ', folk.id, '. Continuing to next record.')
                     else:
                         pass  # skipping since there is no such people with the household id in the original access data.
 
-            siblings = permutations(children, 2)
-            for (from_child, to_child) in siblings:
-                househead_role = Relation.objects.get(
-                    title__in=['brother', 'sister', 'sibling'],
-                    gender=to_child.gender,
-                )
-                Relationship.objects.update_or_create(
-                    from_attendee=from_child,
-                    to_attendee=to_child,
-                    relation=househead_role,
-                    defaults={
-                                'in_family': family,
-                                'emergency_contact': False,
-                                'scheduler': False,
-                                # 'finish': Utility.forever(),
-                                'infos': Utility.relationship_infos(),
-                                #{
-                                #    'show_secret': {},
-                                #},
-                             }
-                )
+            # siblings = permutations(children, 2)
+            # for (from_child, to_child) in siblings:
+            #     househead_role = Relation.objects.get(
+            #         title__in=['brother', 'sister', 'sibling'],
+            #         gender=to_child.gender,
+            #     )
+            #     Relationship.objects.update_or_create(
+            #         from_attendee=from_child,
+            #         to_attendee=to_child,
+            #         relation=househead_role,
+            #         defaults={
+            #                     'in_family': folk,
+            #                     'emergency_contact': False,
+            #                     'scheduler': False,
+            #                     # 'finish': Utility.forever(),
+            #                     'infos': Utility.relationship_infos(),
+            #                     #{
+            #                     #    'show_secret': {},
+            #                     #},
+            #                  }
+            #     )
+            for child in children:
+                for parent in parents:
+                    child.infos['emergency_contacts'][str(parent.id)] = True
+
+                    if child.age() and child.age() < 18:
+                        child.infos['schedulers'][str(parent.id)] = True
+
+                child.save()
                 successfully_processed_count += 1
 
-            for parent in family.attendees.filter(familyattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all():  # reload to get updated parent gender
+            for parent in folk.attendees.filter(folkattendee__role__title__in=['self', 'spouse', 'husband', 'wife']).order_by().all():  # reload to get updated parent gender
                 parent_role = Relation.objects.get(
                     title__in=['father', 'mother', 'parent'],
                     gender=parent.gender,
@@ -664,43 +705,49 @@ def reprocess_directory_emails_and_family_roles(data_assembly_slug, directory_me
                         title__in=['child', 'son', 'daughter'],
                         gender=child.gender,
                     )
-                    Relationship.objects.update_or_create(
-                        from_attendee=parent,
-                        to_attendee=child,
-                        relation=child_role,
-                        defaults={
-                            'in_family': family,
-                            'emergency_contact': child_role.emergency_contact,
-                            'scheduler': child_role.scheduler,
-                            # 'finish': Utility.forever(),
-                            'infos': Utility.relationship_infos(),
-                            #{
-                            #    'show_secret': {},
-                            #},
-                        }
-                    )
+                    parent.infos['emergency_contacts'][str(child.id)] = child_role.emergency_contact
+                    child.infos['emergency_contacts'][str(parent.id)] = parent_role.emergency_contact
+                    if child.age() and child.age() < 18:
+                        child.infos['schedulers'][str(parent.id)] = parent_role.scheduler
+                    # Relationship.objects.update_or_create(
+                    #     from_attendee=parent,
+                    #     to_attendee=child,
+                    #     relation=child_role,
+                    #     defaults={
+                    #         'in_family': folk,
+                    #         'emergency_contact': child_role.emergency_contact,
+                    #         'scheduler': child_role.scheduler,
+                    #         # 'finish': Utility.forever(),
+                    #         'infos': Utility.relationship_infos(),
+                    #         #{
+                    #         #    'show_secret': {},
+                    #         #},
+                    #     }
+                    # )
 
-                    Relationship.objects.update_or_create(
-                        from_attendee=child,
-                        to_attendee=parent,
-                        relation=parent_role,
-                        defaults={
-                            'in_family': family,
-                            'emergency_contact': parent_role.emergency_contact,
-                            'scheduler': parent_role.scheduler,
-                            # 'finish': Utility.forever(),
-                            'infos': Utility.relationship_infos(),
-                            #{
-                            #    'show_secret': {},
-                            #},
-                        }
-                    )
+                    # Relationship.objects.update_or_create(
+                    #     from_attendee=child,
+                    #     to_attendee=parent,
+                    #     relation=parent_role,
+                    #     defaults={
+                    #         'in_family': folk,
+                    #         'emergency_contact': parent_role.emergency_contact,
+                    #         'scheduler': parent_role.scheduler,
+                    #         # 'finish': Utility.forever(),
+                    #         'infos': Utility.relationship_infos(),
+                    #         #{
+                    #         #    'show_secret': {},
+                    #         #},
+                    #     }
+                    # )
+                    child.save()
                     successfully_processed_count += 2
-
-            update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering)
+                parent.save()
+                successfully_processed_count += 1
+            update_directory_data(data_assembly, folk, directory_meet, directory_character, directory_gathering)
 
         except Exception as e:
-            print("\nWhile importing/updating relationship for family: ", family)
+            print("\nWhile importing/updating relationship for folk: ", folk)
             print('Cannot save relationship or update_directory_data, reason: ', e)
     print('done!')
     return successfully_processed_count
@@ -897,19 +944,19 @@ def update_attendee_membership_and_other(baptized_meet, baptized_category, atten
         )
 
 
-def update_directory_data(data_assembly, family, directory_meet, directory_character, directory_gathering):
+def update_directory_data(data_assembly, folk, directory_meet, directory_character, directory_gathering):
     """
     update assembly and gathering for directory.
     :param data_assembly: data_assembly
-    :param family: each family
+    :param folk: each family folk
     :param directory_meet: directory_meet
     :param directory_character: directory_character
     :param directory_gathering: directory_gathering
     :return: None, but print out importing status and write to Attendees db (create or update)
     """
-    if family.infos.get('access_household_values', {}).get('PrintDir') in ['1', 'TRUE', 1]:
-        access_household_id = family.infos.get('access_household_id')
-        househead = family.attendees.order_by('familyattendee__display_order').first()
+    if Utility.boolean_or_datetext_or_original(folk.infos.get('access_household_values', {}).get('PrintDir')):
+        access_household_id = folk.infos.get('access_household_id')
+        househead = folk.attendees.order_by('folkattendee__display_order').first()
 
         if househead:
             data_registration, data_registration_created = Registration.objects.update_or_create(
@@ -925,7 +972,7 @@ def update_directory_data(data_assembly, family, directory_meet, directory_chara
                 }
             )
 
-            for family_member in family.attendees.all():
+            for family_member in folk.attendees.all():
                 directory_attending, directory_attending_created = Attending.objects.update_or_create(
                     registration=data_registration,
                     attendee=family_member,

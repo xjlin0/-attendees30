@@ -1,6 +1,6 @@
 from django.db.models import Q
 from attendees.occasions.models import Attendance
-from attendees.persons.models import Relationship
+# from attendees.persons.models import Relationship
 
 
 class AttendanceService:
@@ -86,12 +86,12 @@ class AttendanceService:
                     'gathering',
                     'attending__attendee',
                 ).filter(
-                    Q(attending__attendee=attendee)
-                    |
-                    Q(attending__attendee__in=Relationship.objects.filter(
-                        to_attendee=attendee,
-                        scheduler=True
-                    ).values_list('from_attendee')),
+                    Q(attending__attendee=attendee),
+                    # |
+                    # Q(attending__attendee__in=Relationship.objects.filter(
+                    #     to_attendee=attendee,
+                    #     scheduler=True
+                    # ).values_list('from_attendee')),
                     **extra_filters
                 ).order_by(
                     'gathering__meet',

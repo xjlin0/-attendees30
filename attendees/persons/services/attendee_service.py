@@ -8,8 +8,8 @@ from django.http import Http404
 from rest_framework.utils import json
 
 from attendees.occasions.models import Meet
-from attendees.persons.models import Attendee, Relationship, Registration
-from attendees.persons.services import AttendingService, FamilyService
+from attendees.persons.models import Attendee, Registration, Relation, Category, Folk, FolkAttendee  # , Relationship
+from attendees.persons.services import AttendingService, FolkService
 
 
 class AttendeeService:
@@ -67,43 +67,37 @@ class AttendeeService:
         return []
 
     @staticmethod
-    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list, self_included):
+    def find_related_ones(current_user, target_attendee, querying_attendee_id, filters_list):
         """
         return target_attendee's related ones, including dead ones, according to current_user permissions
         :param current_user:
         :param target_attendee:
         :param querying_attendee_id:
         :param filters_list:
-        :param self_included: indicate if return result should include the target_attendee
+        # :param priority: indicate what return result should sort by
         :return: related attendees of targeting attendee, or matched attendee depends on filter conditions and current user permissions
         """
 
-        # Todo: need filter on relationship finish_date?
-
-        if querying_attendee_id:
-            if current_user.privileged:
-                qs = Attendee.objects
-
+        if current_user and target_attendee:
+            qs = Attendee.objects if current_user.privileged else target_attendee.related_ones
+            if querying_attendee_id:
+                return qs.filter(
+                            pk=querying_attendee_id,
+                            division__organization=current_user.organization,
+                            is_removed=False,
+                        )
             else:
-                qs = target_attendee.related_ones
-
-            return qs.filter(
-                    pk=querying_attendee_id,
-                    division__organization=current_user.organization,
-                    is_removed=False,
-                    )
+                if current_user.privileged:
+                    init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
+                        Q(is_removed=False), Q.AND)
+                    final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
+                    return qs.filter(final_query).order_by(
+                        Case(When(id__in=target_attendee.related_ones.values_list('id', flat=True), then=0), default=1)
+                    )  # https://stackoverflow.com/a/52047221/4257237
+                else:
+                    return qs
         else:
-            init_query = Q(division__organization=current_user.organization).add(  # preventing browser hacks since
-                         Q(is_removed=False), Q.AND)
-            final_query = init_query.add(AttendeeService.filter_parser(filters_list, None, current_user), Q.AND)
-            # Todo 20210807 query.add() doesn't need reassign to a different variable
-            if current_user.privileged:
-                priority_list = list(target_attendee.related_ones.values_list('id', flat=True))+[target_attendee.id] if self_included else target_attendee.related_ones.values_list('id')
-                return Attendee.objects.filter(final_query).order_by(
-                    Case(When(id__in=priority_list, then=0), default=1)
-                )  # https://stackoverflow.com/a/52047221/4257237
-            else:
-                return list(target_attendee.related_ones.all())+[target_attendee] if self_included else target_attendee.related_ones.all()
+            return []
 
     @staticmethod
     def by_datagrid_params(current_user, meets, orderby_string, filters_list, include_dead):
@@ -216,7 +210,7 @@ class AttendeeService:
         attendee.places.filter(Q(finish__isnull=True) | Q(finish__gte=now)).update(finish=now)
 
         for family in attendee.families.filter(is_removed=False):
-            if family.familyattendee_set.filter(
+            if family.folkattendee_set.filter(
                 (Q(finish__isnull=True) | Q(finish__gte=now)),
                 attendee__deathday__isnull=True,
                 is_removed=False,
@@ -236,17 +230,17 @@ class AttendeeService:
 
         attendee.pasts.filter(is_removed=False).delete()
 
-        Relationship.objects.filter(
-            (Q(from_attendee=attendee)
-             |
-             Q(to_attendee=attendee)),
-            is_removed=False,
-        ).delete()
+        # Relationship.objects.filter(
+        #     (Q(from_attendee=attendee)
+        #      |
+        #      Q(to_attendee=attendee)),
+        #     is_removed=False,
+        # ).delete()
 
         attendee.places.filter(is_removed=False).delete()
 
-        for family in attendee.families.filter(is_removed=False):
-            FamilyService.destroy_with_associations(family, attendee)
+        for family in attendee.folks.filter(is_removed=False):
+            FolkService.destroy_with_associations(family, attendee)
 
         for registration in Registration.objects.filter(registrant=attendee, is_removed=False):
             registration.registrant = None
@@ -267,3 +261,25 @@ class AttendeeService:
         else:
             attendee.delete()
         # Todo 20211102: CCPA deletion requires history removal too
+
+    @staticmethod
+    def create_or_update_first_folk(attendee, folk_name, category_id, role_id):
+        potential_non_family_folk = attendee.folks.filter(category=category_id).first()
+        folk, folk_created = Folk.objects.update_or_create(
+            id=potential_non_family_folk.id if potential_non_family_folk else None,
+            defaults={
+                'division': attendee.division,
+                'category': Category.objects.get(pk=category_id),
+                'display_name': folk_name,
+            }
+        )
+        FolkAttendee.objects.update_or_create(
+            folk=folk,
+            attendee=attendee,
+            defaults={
+                'folk': folk,
+                'attendee': attendee,
+                'role': Relation.objects.get(pk=role_id),
+            }
+        )
+        return folk

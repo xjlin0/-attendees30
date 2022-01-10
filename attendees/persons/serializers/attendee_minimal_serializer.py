@@ -3,13 +3,13 @@ from pathlib import Path
 from attendees.persons.models import Attendee
 from rest_framework import serializers
 
-from attendees.persons.serializers import FamilyAttendeeSerializer
+from attendees.persons.serializers import FolkAttendeeSerializer
 from attendees.whereabouts.serializers import PlaceSerializer
 
 
 class AttendeeMinimalSerializer(serializers.ModelSerializer):
     places = PlaceSerializer(many=True, read_only=True)
-    familyattendee_set = FamilyAttendeeSerializer(read_only=True, many=True)
+    folkattendee_set = FolkAttendeeSerializer(read_only=True, many=True)
     photo = serializers.ImageField(use_url=True, required=False)   # trying DevExtreme dxFileUploader https://supportcenter.devexpress.com/ticket/details/t404408
     photo_path = serializers.SerializerMethodField(required=False, read_only=True)
     attendingmeets = serializers.JSONField(read_only=True)
@@ -28,7 +28,7 @@ class AttendeeMinimalSerializer(serializers.ModelSerializer):
             # 'display_label',
             # 'division_label',
             # 'parents_notifiers_names',
-            'familyattendee_set',
+            'folkattendee_set',
             'photo_path',
             # 'caregiver_email_addresses',
             'places',

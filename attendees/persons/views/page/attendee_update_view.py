@@ -7,7 +7,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import UpdateView
 
-from attendees.persons.models import Attendee, Family
+from attendees.persons.models import Attendee, Folk
 from attendees.whereabouts.models import Division
 from attendees.users.authorization import RouteAndSpyGuard
 from attendees.users.models import Menu
@@ -32,7 +32,7 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
         show_create_attendee = self.kwargs.get('show_create_attendee', Menu.user_can_create_attendee(self.request.user))
         context.update({
             'attendee_contenttype_id': ContentType.objects.get_for_model(Attendee).id,
-            'family_contenttype_id': ContentType.objects.get_for_model(Family).id,
+            'folk_contenttype_id': ContentType.objects.get_for_model(Folk).id,
             'empty_image_link': f"{settings.STATIC_URL}images/empty.png",
             'show_create_attendee': show_create_attendee,
             'characters_endpoint': '/occasions/api/user_assembly_characters/',
@@ -47,10 +47,11 @@ class AttendeeUpdateView(LoginRequiredMixin, RouteAndSpyGuard, UpdateView):
             'categories_endpoint': '/persons/api/all_categories/',
             'registrations_endpoint': '/persons/api/all_registrations/',
             'relationships_endpoint': '/persons/api/attendee_relationships/',
-            'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not be families
+            'related_attendees_endpoint': '/persons/api/related_attendees/',  # may not only be families
             'attendee_families_endpoint': f"/persons/api/attendee_families/",
             'attendings_endpoint': '/persons/api/attendee_attendings/',
-            'family_attendees_endpoint': "/persons/api/datagrid_data_familyattendees/",
+            'family_attendees_endpoint': '/persons/api/datagrid_data_familyattendees/',
+            'family_category_id': Attendee.FAMILY_CATEGORY,
             'targeting_attendee_id': targeting_attendee_id,
             'divisions': dumps(list(Division.objects.filter(organization=self.request.user.attendee.division.organization).values("id", "display_name"))),  # to avoid simultaneous AJAX calls
             'attendee_search': '/persons/api/datagrid_data_attendees/',

@@ -147,7 +147,7 @@ class Utility:
 
         return None
 
-    def update_or_create_last(klass, order_key='pk', update=True, defaults=None, filters=None, exception_save=False, excpetion_print_data=False):
+    def update_or_create_last(klass, order_key='pk', update=True, defaults={}, filters={}, exception_save=False, excpetion_print_data=False):
         """
         Sililar to update_or_create(), it'll search by the filters dictionary, get the last by
         order_by, update its values specified by defaults dictionary, return created and obj
@@ -163,7 +163,7 @@ class Utility:
         created = False
         try:
             if obj:
-                if update:
+                if update and defaults:
                     for key, value in defaults.items():
                         setattr(obj, key, value)
             else:
@@ -173,8 +173,8 @@ class Utility:
             obj.save()
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            print(f"\nUtility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
-            print(f"and data of {klass} obj#{obj.id}")
+            print(f"\nKnown bug: Utility.update_or_create_last() exception: {e} at line: {exc_tb.tb_lineno}")
+            print(f"and data of {klass} obj#{obj.id} has been saved (pk exist)")
             if excpetion_print_data:
                 print(f"with defaults: {defaults} and obj: {obj}")
             # breakpoint()

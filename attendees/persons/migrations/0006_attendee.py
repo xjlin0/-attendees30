@@ -16,7 +16,7 @@ from attendees.persons.models import Utility
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('persons', '0005_family'),
+        ('persons', '0005_folk'),
         ('whereabouts', '0004_division'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]

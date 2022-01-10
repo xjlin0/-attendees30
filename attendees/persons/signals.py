@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 from attendees.occasions.models import Meet
 from attendees.persons.models import Attendee, Attending, AttendingMeet, Category, Past, Utility
+from attendees.persons.services import AttendeeService
 
 
 @receiver(post_save, sender=Past)
@@ -77,10 +78,10 @@ def post_save_handler_for_attendingmeet_to_create_past(sender, **kwargs):
 
 
 @receiver(post_save, sender=Attendee)
-def post_save_handler_for_attendee_to_attending(sender, **kwargs):
+def post_save_handler_for_attendee_to_folk_and_attending(sender, **kwargs):
     """
-    To let coworker easily create AttendingMeet/Past, here is automatic creation
-    of Attending after creating Attendee by settings from Organization.infos
+    To let coworker easily create AttendingMeet/Past, here is automatic creation of non-family Folk and
+    Attending after creating Attendee by settings from Organization.infos
 
     :param sender: sender Class, Attendee
     :param kwargs:
@@ -89,6 +90,8 @@ def post_save_handler_for_attendee_to_attending(sender, **kwargs):
     if not kwargs.get('raw') and kwargs.get('created'):  # to skip extra creation in loaddata seed
         created_attendee = kwargs.get('instance')
         organization = created_attendee.division.organization  # Maybe 0 in access importer
+
+        AttendeeService.create_or_update_first_folk(created_attendee, f"{created_attendee.infos['names']['original']} general relationship", Attendee.NON_FAMILY_CATEGORY, Attendee.HIDDEN_ROLE)
 
         if 'importer' not in created_attendee.infos.get('created_reason', '') and organization.infos.get('settings', {}).get('attendee_to_attending'):  # skip for access importer
             defaults = {
@@ -104,3 +107,4 @@ def post_save_handler_for_attendee_to_attending(sender, **kwargs):
                 filters={'attendee': created_attendee, 'is_removed': False},
                 defaults=defaults,
             )
+            # Todo 20211124: create family and relationship folks after save

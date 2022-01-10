@@ -20,14 +20,14 @@ class AttendingMeetInline(admin.StackedInline):
     extra = 0
 
 
-class RelationshipInline(admin.TabularInline):
-    model = Relationship
-    fk_name = 'from_attendee'
-    extra = 0
+# class RelationshipInline(admin.TabularInline):
+#     model = Relationship
+#     fk_name = 'from_attendee'
+#     extra = 0
 
 
-class FamilyAttendeeInline(admin.TabularInline):
-    model = FamilyAttendee
+class FolkAttendeeInline(admin.TabularInline):
+    model = FolkAttendee
     extra = 0
 
 
@@ -73,19 +73,19 @@ class PastAdmin(admin.ModelAdmin):
             ).exclude(category__display_name=Past.COUNSELING)
 
 
-class FamilyAdmin(admin.ModelAdmin):
+class FolkAdmin(admin.ModelAdmin):
     formfield_overrides = {
         fields.JSONField: {'widget': JSONEditorWidget},
     }
     search_fields = ('id', 'display_name', 'infos')
     readonly_fields = ['id', 'created', 'modified']
-    inlines = (FamilyAttendeeInline,)
+    inlines = (FolkAttendeeInline,)
     list_display_links = ('id',)
-    list_display = ('id', 'display_name', 'infos', 'division', 'created')
+    list_display = ('id', 'display_name', 'infos', 'division', 'category')
     fieldsets = (
         (None, {"fields": (tuple(['display_name', 'display_order', 'division']),
                            tuple(['infos']),
-                           tuple(['id', 'created', 'modified']),
+                           tuple(['category', 'id', 'created', 'modified']),
                            ), }),
     )
 
@@ -96,9 +96,9 @@ class FamilyAdmin(admin.ModelAdmin):
         return qs.filter(division__organization=request.user.organization)
 
 
-class FamilyAttendeeAdmin(admin.ModelAdmin):
+class FolkAttendeeAdmin(admin.ModelAdmin):
     readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'family', 'attendee', 'role', 'infos')
+    list_display = ('id', 'folk', 'attendee', 'role', 'infos')
 
 
 class RelationAdmin(admin.ModelAdmin):
@@ -113,7 +113,7 @@ class AttendeeAdmin(admin.ModelAdmin):
     }
     search_fields = ('id', 'infos')
     readonly_fields = ['id', 'created', 'modified']
-    inlines = (RelationshipInline,)  # AttendeeContactInline
+    # inlines = (RelationshipInline,)  # AttendeeContactInline
     list_display_links = ('id',)
     list_display = ('id', 'full_name', 'infos')
 
@@ -189,28 +189,28 @@ class NoteAdmin(SummernoteModelAdmin):
         return qs.filter(organization=request.user.organization).exclude(category=counseling_category)
 
 
-class RelationshipAdmin(admin.ModelAdmin):
-    formfield_overrides = {
-        fields.JSONField: {'widget': JSONEditorWidget},
-    }
-    search_fields = ('id', 'infos', 'from_attendee__id', 'to_attendee__id')
-    list_display_links = ('relation',)
-    readonly_fields = ['id', 'created', 'modified']
-    list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.resolver_match.func.__name__ == 'changelist_view':
-            messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
-        requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
-        return qs.filter(
-            (Q(from_attendee__division__organization=request.user.organization)
-             |
-             Q(to_attendee__division__organization=request.user.organization) ),
-            (Q(**requester_permission)
-             |
-             Q(infos__show_secret={}) ),
-        )
+# class RelationshipAdmin(admin.ModelAdmin):
+#     formfield_overrides = {
+#         fields.JSONField: {'widget': JSONEditorWidget},
+#     }
+#     search_fields = ('id', 'infos', 'from_attendee__id', 'to_attendee__id')
+#     list_display_links = ('relation',)
+#     readonly_fields = ['id', 'created', 'modified']
+#     list_display = ('id', 'from_attendee', 'relation', 'to_attendee', 'emergency_contact', 'scheduler', 'in_family', 'finish')
+#
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.resolver_match.func.__name__ == 'changelist_view':
+#             messages.warning(request, 'Not all, but only those records accessible to you will be listed here.')
+#         requester_permission = {'infos__show_secret__' + request.user.attendee_uuid_str(): True}
+#         return qs.filter(
+#             (Q(from_attendee__division__organization=request.user.organization)
+#              |
+#              Q(to_attendee__division__organization=request.user.organization) ),
+#             (Q(**requester_permission)
+#              |
+#              Q(infos__show_secret={}) ),
+#         )
 
 
 class AttendingMeetAdmin(admin.ModelAdmin):
@@ -222,11 +222,11 @@ class AttendingMeetAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(Past, PastAdmin)
-admin.site.register(Family, FamilyAdmin)
+admin.site.register(Folk, FolkAdmin)
 admin.site.register(Attendee, AttendeeAdmin)
-admin.site.register(FamilyAttendee, FamilyAttendeeAdmin)
+admin.site.register(FolkAttendee, FolkAttendeeAdmin)
 admin.site.register(Registration, RegistrationAdmin)
 admin.site.register(Attending, AttendingAdmin)
 admin.site.register(Relation, RelationAdmin)
-admin.site.register(Relationship, RelationshipAdmin)
+# admin.site.register(Relationship, RelationshipAdmin)
 admin.site.register(AttendingMeet, AttendingMeetAdmin)

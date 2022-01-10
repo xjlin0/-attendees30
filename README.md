@@ -201,7 +201,9 @@ Please add your IP to ALLOWED_HOSTS in config/settings/local.py
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
-## How to start dev env on MacOS
+## How to start dev env on macOS with VirtualBox and docker-machine
+<details>
+  <summary>Click to show deprecated steps to start dev env on macOS with VirtualBox and docker-machine</summary>
 
 All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
@@ -230,6 +232,19 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 * Enter Django console by `docker-compose -f local.yml run django python manage.py shell_plus`
 * remote debug in PyCharm for docker, please check [django cookie doc](https://github.com/pydanny/cookiecutter-django/blob/master/{{cookiecutter.project_slug}}/docs/pycharm/configuration.rst).
 
+</details>
+
+## How to start dev env with docker desktop on macOS (Apple chip compatible)
+All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
+
+* clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
+* check local python version, Django coockie cutter is developed with Python 3
+* Install pre-commit for python, such as `pip3 install pre-commit` (pre-commit settings are at .git/hooks/pre-commit).
+* There is no need to have local docker machine, Django or Postgres running.
+* Install and start [docker desktop](https://www.docker.com/products/docker-desktop) (including docker compose), and [add local repo directory to file sharing in docker desktop preference](https://docs.docker.com/desktop/mac/#file-sharing).
+* build and start the CentOS based local machine by `docker-compose -f local.yml build && docker-compose -f local.yml up -d`
+
+
 ## DB SQL Backup & Restore process (with local.yml)
 * backup current db to container `docker-compose -f local.yml exec postgres backup`
 * list backup files in container `docker-compose -f local.yml exec postgres backups`
@@ -243,7 +258,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   <summary>Click to expand all</summary>
 
 - [x] make auth group not organization specific, and counselling note check on organization
-- [ ] Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as AttendingMeet with category for active/inactive)
+- [x] [PR#30](https://github.com/xjlin0/attendees30/pull/30) Past can replace Note on DB level, Attendee.progressions and calls/requests, so that any name lists such as status can be easily queried. (membership remains as AttendingMeet with category for active/inactive)
   - [x] make Past model generic
   - [ ] any past status list (Past level)
   - [ ] Attendance roaster to Past auto conversion
@@ -262,6 +277,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
   - [x] [PR#5](https://github.com/xjlin0/attendees30/pull/5) Modify Attendee save method to combine/convert names by OpenCC to support searches in different text encoding, and retire db level full_name.
   - [x] [PR#8](https://github.com/xjlin0/attendees30/pull/8) implement secret/private relation/past general
   - [x] some relationship may be internal and only shows to cowokers/admin, in category/boolean/infos column?
+  - [x] Folk model support secret but attendee UI folkattendee doesn't support it
   - [ ] Rich format of note for Past on UI?
 - [x] Move attendee/attendees page out of data assembly -- some coworkers need to see all attendees of the organization, with a way to see only family members for general users
   - [x] [PR#17](https://github.com/xjlin0/attendees30/pull/17) remove all previous attendee edit testing pages
@@ -277,7 +293,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 - [x] Add Attendee+ buttons in above pages should deduplicate before creation by providing existing names for users to choose
   - [x] [PR#24](https://github.com/xjlin0/attendees30/pull/24) fix self attendee page error
   - [x] [PR#28](https://github.com/xjlin0/attendees30/pull/28) from Attendee detail and attendee list page
-  - [ ] importer load_access_csv need to import bap date and believer, not only by membership.
+  - [x] [PR#30](https://github.com/xjlin0/attendees30/pull/30) importer load_access_csv need to import bap date and believer, not only by membership.
 - [ ] AttendingMeet list (server side processing)
   - [ ] new AttendingMeet datagrid filtered by meets and date ranges
   - [ ] auto-generation of AttendingMeet by django-schedule with certain Past
