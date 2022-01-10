@@ -158,9 +158,7 @@ class Attendee(UUIDModel, Utility, TimeStampedModel, SoftDeletableModel):
         :return: attendees' names of their parents/caregiviers
         """
         return ', '.join(list(
-                            self.get_relative_emergency_contacts().order_by(
-                                '-to_attendee__relation__display_order',
-                            ).values_list(
+                            self.get_relative_emergency_contacts().values_list(
                                 'infos__names__original',
                                 flat=True
                             )
