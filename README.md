@@ -235,7 +235,7 @@ DJANGO_DEFAULT_FROM_EMAIL=fake@email.com
 </details>
 
 ## How to start dev env with docker desktop on macOS (Apple chip compatible)
-All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied.
+All libraries are included to facilitate offline development, it will take port 8008, 8025, 5555 when running, please change port in local.yml if those ports are occupied. It's Debian based.
 
 * clone the repo, for example, `git clone https://github.com/xjlin0/attendees.git`
 * check local python version, Django coockie cutter is developed with Python 3
